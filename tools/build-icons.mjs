@@ -72,7 +72,7 @@ const MAP = {
   airplay: ['airplay', 'airplay'], dot: ['dot', 'fiber_manual_record'],
   // 平台语义别名：iOS 返回是 chevron，Android 是箭头；iOS 更多是横向省略号，Android 是竖向
   back: ['chevron-left', 'arrow_back'], overflow: ['ellipsis', 'more_vert'], 'close-sheet': ['x', 'close'],
-  'add-circle': ['circle-plus', 'add_circle'], 'play-circle': ['circle-play', 'play_circle'],
+  'add-circle': ['circle-plus', 'add'], 'play-circle': ['circle-play', 'play_arrow'],
 };
 // Google 模式下选中态用实心版本（Material Symbols 的 FILL=1）
 const FILLED = ['home', 'search', 'person', 'notifications', 'favorite', 'settings', 'star', 'bookmark', 'chat_bubble',
@@ -109,7 +109,8 @@ async function worker(queue) {
     const [ln, mn] = MAP[id];
     const lp = path.join(LUCIDE_DIR, 'icons', ln + '.svg');
     if (await exists(lp)) {
-      apple.push([id, `<symbol id="i-${id}" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">${inner(await readFile(lp, 'utf8'))}</g></symbol>`]);
+      // 不写 fill/stroke 属性，由外层 .i 的 CSS 继承下来，这样 .i.solid 可以把线条图标变成实心
+      apple.push([id, `<symbol id="i-${id}" viewBox="0 0 24 24">${inner(await readFile(lp, 'utf8'))}</symbol>`]);
     } else missing.push('lucide:' + ln);
     const ms = await material(mn);
     if (ms) google.push([id, `<symbol id="i-${id}" viewBox="0 -960 960 960"><g fill="currentColor">${inner(ms)}</g></symbol>`]);

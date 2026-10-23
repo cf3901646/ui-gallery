@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>正在播放</title>
+<meta name="ui:title" content="正在播放">
+<meta name="ui:desc" content="全屏音乐播放器：封面取色背景、进度与音量滑块、玻璃材质控制按钮。">
+<meta name="ui:category" content="媒体与娱乐">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="播放器,滑块,玻璃,深色背景">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  /* 页面专用：封面取色背景。只用 token 与命名色，两种语言都适用 */
+  body.app { background: #2a1748; color: #fff; overflow: hidden; }
+  .np-bg { position: fixed; inset: -20%; filter: blur(60px) saturate(140%); opacity: .9; }
+  .np { position: relative; z-index: 1; min-height: 100dvh; display: flex; flex-direction: column;
+    padding: calc(var(--safe-top) + 8px) 28px calc(var(--safe-bottom) + 16px); gap: 22px; }
+  .np-cover { width: min(100%, 42dvh); align-self: center; aspect-ratio: 1; border-radius: 12px; box-shadow: 0 24px 60px rgb(0 0 0 / 40%); margin-top: 8px; }
+  html[data-lang="google"] .np-cover { border-radius: 32px; }
+  .np-meta { display: flex; align-items: center; gap: 12px; }
+  .np-meta .grow > * { display: block; }
+  .np .t-2 { color: rgb(255 255 255 / 65%); }
+  .np .range { --range-fill: rgb(255 255 255 / 92%); --range-rest: rgb(255 255 255 / 25%); --range-thumb: #fff; }
+  html[data-lang="apple"] .np .range { --range-thumb-w: 0px; --range-thumb-h: 0px; --range-track: 7px; height: 16px; }
+  html[data-lang="google"] .np .range { --range-thumb: #fff; --range-fill: #fff; --range-rest: rgb(255 255 255 / 25%); --range-thumb-shadow: none; }
+  .np-time { display: flex; justify-content: space-between; margin-top: 4px; }
+  .np-controls { display: flex; align-items: center; justify-content: space-around; }
+  .np-controls .icon-btn { --b-fg: #fff; }
+
+  html[data-lang="google"] .np-play { --b-bg: #fff; --b-fg: #2a1748; border-radius: 32px; }
+  html[data-lang="google"] .np-play:active { border-radius: 50%; }
+  .np-bottom { display: flex; justify-content: space-around; margin-top: auto; }
+  .np-bottom .icon-btn { --b-fg: rgb(255 255 255 / 75%); }
+  .np-top { display: flex; justify-content: space-between; align-items: center; }
+  .np-grabber { width: 40px; height: 5px; border-radius: 9px; background: rgb(255 255 255 / 40%); margin: 0 auto; }
+</style>
+</head>
+<body class="app" data-scheme-hint="dark">
+  <div class="np-bg art a4" aria-hidden="true"></div>
+  <main class="np">
+    <div class="np-top">
+      <button class="icon-btn on-media sm only-google" aria-label="收起"><svg class="i"><use href="#i-chevron-down"/></svg></button>
+      <span class="np-grabber only-apple"></span>
+      <button class="icon-btn on-media sm only-google" aria-label="更多"><svg class="i"><use href="#i-more-vert"/></svg></button>
+    </div>
+
+    <div class="np-cover art a4" role="img" aria-label="专辑封面"><svg class="i xxl"><use href="#i-music"/></svg></div>
+
+    <div class="np-meta">
+      <div class="grow">
+        <strong class="t-title3 ellipsis" style="font-weight:600">夜航星图</strong>
+        <span class="t-body t-2 ellipsis">北岸灯塔乐队 · 远处的海</span>
+      </div>
+      <button class="icon-btn on-media sm" aria-label="收藏"><svg class="i"><use href="#i-star"/></svg></button>
+      <button class="icon-btn on-media sm only-apple" aria-label="更多"><svg class="i"><use href="#i-more"/></svg></button>
+    </div>
+
+    <div>
+      <input class="range" type="range" min="0" max="245" value="96" aria-label="播放进度">
+      <div class="np-time t-caption t-2 t-num"><span>1:36</span><span>-2:29</span></div>
+    </div>
+
+    <div class="np-controls">
+      <button class="icon-btn lg" aria-label="上一首"><svg class="i lg solid"><use href="#i-skip-back"/></svg></button>
+      <button class="icon-btn xl np-play" aria-label="暂停"><svg class="i xl solid"><use href="#i-pause"/></svg></button>
+      <button class="icon-btn lg" aria-label="下一首"><svg class="i lg solid"><use href="#i-skip-forward"/></svg></button>
+    </div>
+
+    <div class="range-row">
+      <svg class="i sm" style="color:rgb(255 255 255 / 60%)"><use href="#i-volume-off"/></svg>
+      <input class="range grow" type="range" min="0" max="100" value="62" aria-label="音量">
+      <svg class="i sm" style="color:rgb(255 255 255 / 60%)"><use href="#i-volume"/></svg>
+    </div>
+
+    <div class="np-bottom">
+      <button class="icon-btn" aria-label="歌词"><svg class="i"><use href="#i-message"/></svg></button>
+      <button class="icon-btn" aria-label="隔空播放"><svg class="i"><use href="#i-airplay"/></svg></button>
+      <button class="icon-btn" aria-label="播放列表"><svg class="i"><use href="#i-list-music"/></svg></button>
+    </div>
+  </main>
+</body>
+</html>

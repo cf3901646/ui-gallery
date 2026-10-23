@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>contact sheet</title>
+<style>
+  body { margin: 0; background: #888; display: flex; gap: 4px; }
+  iframe { border: 0; background: #fff; flex: none; }
+</style>
+</head>
+<body>
+<script>
+  // ?t=../templates/app/settings.html&w=402&h=874&safe=54,34&combos=apple-light,google-light,apple-dark,google-dark&extra=
+  const q = new URLSearchParams(location.search);
+  const t = q.get('t'), w = +(q.get('w') || 402), h = +(q.get('h') || 874);
+  const combos = (q.get('combos') || 'apple-light,google-light,apple-dark,google-dark').split(',');
+  for (const c of combos) {
+    const [lang, scheme] = c.split('-');
+    const f = document.createElement('iframe');
+    f.width = w; f.height = h;
+    f.src = `${t}?lang=${lang}&scheme=${scheme}&safe=${q.get('safe') || '0,0'}${q.get('extra') ? '&' + q.get('extra') : ''}`;
+    document.body.appendChild(f);
+  }
+</script>
+</body>
+</html>

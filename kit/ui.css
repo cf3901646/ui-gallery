@@ -1,0 +1,11 @@
+/* UI Kit 入口。模板只需引用这一个文件 + icons.js + ui.js。
+ * 层级：base（结构与默认 token）< lang（Apple / Google 外观）< util（工具类）< 页面内联样式（不分层，优先级最高）
+ * 语言切换：<html data-lang="apple|google">；明暗：data-scheme="light|dark"
+ * 只需要一种语言时，删掉另一种的 @import 即可。
+ */
+@layer base, lang, util;
+@import url("generated.css") layer(base);
+@import url("base.css") layer(base);
+@import url("apple.css") layer(lang);
+@import url("google.css") layer(lang);
+@import url("utilities.css") layer(util);

@@ -1,0 +1,33 @@
+/* UI Kit · utilities.css —— 少量布局工具类（优先级高于组件） */
+.stack { display: flex; flex-direction: column; gap: var(--gap, 12px); }
+.hstack { display: flex; align-items: center; gap: var(--gap, 12px); }
+.hstack.top { align-items: flex-start; } .hstack.base { align-items: baseline; } .hstack.wrap { flex-wrap: wrap; }
+.between { justify-content: space-between; } .center { justify-content: center; align-items: center; } .end { justify-content: flex-end; }
+.grow { flex: 1; min-width: 0; } .shrink-0 { flex: none; }
+.gap-0 { --gap: 0px; gap: 0; } .gap-1 { --gap: 4px; gap: 4px; } .gap-2 { --gap: 8px; gap: 8px; } .gap-3 { --gap: 12px; gap: 12px; }
+.gap-4 { --gap: 16px; gap: 16px; } .gap-5 { --gap: 20px; gap: 20px; } .gap-6 { --gap: 24px; gap: 24px; } .gap-8 { --gap: 32px; gap: 32px; }
+.gap-12 { --gap: 48px; gap: 48px; }
+.mt-0 { margin-top: 0; } .mt-1 { margin-top: 4px; } .mt-2 { margin-top: 8px; } .mt-3 { margin-top: 12px; } .mt-4 { margin-top: 16px; }
+.mt-5 { margin-top: 20px; } .mt-6 { margin-top: 24px; } .mt-8 { margin-top: 32px; } .mt-12 { margin-top: 48px; } .mt-16 { margin-top: 64px; }
+.mb-0 { margin-bottom: 0; } .mb-2 { margin-bottom: 8px; } .mb-4 { margin-bottom: 16px; } .mb-6 { margin-bottom: 24px; } .mb-8 { margin-bottom: 32px; }
+.mx-auto { margin-inline: auto; }
+.p-0 { padding: 0; } .p-2 { padding: 8px; } .p-3 { padding: 12px; } .p-4 { padding: 16px; } .p-5 { padding: 20px; } .p-6 { padding: 24px; } .p-8 { padding: 32px; }
+.px-4 { padding-inline: 16px; } .py-2 { padding-block: 8px; } .py-4 { padding-block: 16px; } .py-6 { padding-block: 24px; } .py-8 { padding-block: 32px; }
+.w-full { width: 100%; } .h-full { height: 100%; } .maxw-sm { max-width: 420px; } .maxw-md { max-width: 640px; }
+.rounded { border-radius: var(--ui-radius-m); } .rounded-l { border-radius: var(--ui-radius-l); } .rounded-xl { border-radius: var(--ui-radius-xl); }
+.rounded-full { border-radius: 999px; } .overflow-hidden { overflow: hidden; }
+.relative { position: relative; } .absolute { position: absolute; } .inset-0 { inset: 0; }
+.surface { background: var(--ui-surface); } .surface-2 { background: var(--ui-surface-2); } .bg-plain { background: var(--ui-bg-plain); }
+.hide { display: none !important; } .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nowrap { white-space: nowrap; } .ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.scroll-x { overflow-x: auto; scrollbar-width: none; } .scroll-x::-webkit-scrollbar { display: none; }
+.on-media { color: #fff; } .on-media .t-2 { color: rgb(255 255 255 / 78%); }
+@media (max-width: 860px) { .hide-md { display: none !important; } }
+@media (max-width: 560px) { .hide-sm { display: none !important; } }
+@media (min-width: 861px) { .show-md { display: none !important; } }
+/* 浮层的“文档内”展示：在组件目录或说明页里，把 sheet/dialog/menu/toast 放进正常文档流 */
+.inline:is(.sheet, .dialog, .menu, .toast, .action-sheet, .tabbar, .fab, .toolbar) {
+  position: relative !important; inset: auto !important; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important;
+  transform: none !important; translate: none !important; z-index: auto !important; margin: 0; max-height: none; }
+.inline.dialog, .inline.toast { width: min(var(--ui-dialog-w, 320px), 100%); }
+.inline.toolbar.floating { display: inline-flex; }

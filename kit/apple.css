@@ -1,0 +1,372 @@
+/* ==========================================================================
+   UI Kit · apple.css —— 参考 Apple Human Interface Guidelines（iOS 26 / Liquid Glass）
+   系统色取自 HIG Color 页 2025-06 版本（含 Increased Contrast 版本）
+   字号取自 iOS Dynamic Type 默认（Large）档位
+   这是风格参考实现，不是 Apple 官方组件；不包含 SF Pro 字体文件，Apple 设备上由 -apple-system 调用。
+   ========================================================================== */
+html[data-lang="apple"] {
+  /* ---- 系统色 ---- */
+  --ios-red: rgb(255 56 60); --ios-orange: rgb(255 141 40); --ios-yellow: rgb(255 204 0); --ios-green: rgb(52 199 89);
+  --ios-mint: rgb(0 200 179); --ios-teal: rgb(0 195 208); --ios-cyan: rgb(0 192 232); --ios-blue: rgb(0 136 255);
+  --ios-indigo: rgb(97 85 245); --ios-purple: rgb(203 48 224); --ios-pink: rgb(255 45 85); --ios-brown: rgb(172 127 94);
+  --ios-gray: rgb(142 142 147); --ios-gray2: rgb(174 174 178); --ios-gray3: rgb(199 199 204); --ios-gray4: rgb(209 209 214);
+  --ios-gray5: rgb(229 229 234); --ios-gray6: rgb(242 242 247);
+  --c-red: var(--ios-red); --c-orange: var(--ios-orange); --c-yellow: var(--ios-yellow); --c-green: var(--ios-green); --c-mint: var(--ios-mint);
+  --c-teal: var(--ios-teal); --c-cyan: var(--ios-cyan); --c-blue: var(--ios-blue); --c-indigo: var(--ios-indigo); --c-purple: var(--ios-purple);
+  --c-pink: var(--ios-pink); --c-brown: var(--ios-brown); --c-gray: var(--ios-gray);
+  /* 文字较深的版本（= Increased Contrast），用于浅底上的彩色文字 */
+  --ios-red-text: rgb(233 21 45); --ios-green-text: rgb(0 137 50); --ios-orange-text: rgb(197 83 0); --ios-blue-text: rgb(30 110 244);
+
+  /* ---- 字体 ---- */
+  --ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Inter", "PingFang SC", "Hiragino Sans GB",
+    "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --ui-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Inter Display", "Inter", "PingFang SC",
+    "Hiragino Sans GB", "Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --ui-font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+
+  /* ---- Dynamic Type（iOS，默认档）：字号 / 行高比 / 字重 / 字距 ---- */
+  --fs-display: 48px;     --lh-display: 1.08;     --fw-display: 700;     --ls-display: 0.2px;
+  --fs-large-title: 34px; --lh-large-title: 1.206; --fw-large-title: 700; --ls-large-title: 0.37px;
+  --fs-title1: 28px;      --lh-title1: 1.214;     --fw-title1: 700;      --ls-title1: 0.36px;
+  --fs-title2: 22px;      --lh-title2: 1.273;     --fw-title2: 700;      --ls-title2: -0.26px;
+  --fs-title3: 20px;      --lh-title3: 1.25;      --fw-title3: 600;      --ls-title3: -0.45px;
+  --fs-headline: 17px;    --lh-headline: 1.294;   --fw-headline: 600;    --ls-headline: -0.43px;
+  --fs-body: 17px;        --lh-body: 1.294;       --fw-body: 400;        --ls-body: -0.43px;
+  --fs-callout: 16px;     --lh-callout: 1.3125;   --fw-callout: 400;     --ls-callout: -0.31px;
+  --fs-subhead: 15px;     --lh-subhead: 1.333;    --fw-subhead: 400;     --ls-subhead: -0.23px;
+  --fs-footnote: 13px;    --lh-footnote: 1.385;   --fw-footnote: 400;    --ls-footnote: -0.08px;
+  --fs-caption: 12px;     --lh-caption: 1.333;    --fw-caption: 400;     --ls-caption: 0px;
+  --fs-caption2: 11px;    --lh-caption2: 1.182;   --fw-caption2: 400;    --ls-caption2: 0.06px;
+  /* apple.com 网页 */
+  --fs-hero: clamp(40px, 7.4vw, 80px); --lh-hero: 1.05; --fw-hero: 600; --ls-hero: -0.015em;
+  --fs-lead: clamp(19px, 2.3vw, 28px); --lh-lead: 1.25; --fw-lead: 400; --ls-lead: 0.004em;
+  --fs-eyebrow: 17px;    --lh-eyebrow: 1.2;   --fw-eyebrow: 600;   --ls-eyebrow: -0.02em;
+
+  /* ---- 语义色（浅色） ---- */
+  --ui-bg: var(--ios-gray6); --ui-bg-plain: #fff;
+  --ui-surface: #fff; --ui-surface-2: var(--ios-gray6); --ui-surface-3: var(--ios-gray5);
+  --ui-fill: rgb(118 118 128 / 12%); --ui-fill-2: rgb(120 120 128 / 20%);
+  --ui-text: #000; --ui-text-2: rgb(60 60 67 / 60%); --ui-text-3: rgb(60 60 67 / 30%); --ui-text-4: rgb(60 60 67 / 18%);
+  --ui-line: rgb(60 60 67 / 29%); --ui-line-strong: rgb(198 198 200);
+  --ui-accent: var(--accent, var(--ios-blue)); --ui-on-accent: #fff;
+  --ui-accent-soft: color-mix(in srgb, var(--ui-accent) 14%, transparent); --ui-on-accent-soft: var(--ui-accent);
+  --ui-accent-2: var(--ios-gray); --ui-accent-2-soft: var(--ui-fill-2); --ui-on-accent-2-soft: var(--ui-text);
+  --ui-accent-3: var(--ios-purple); --ui-accent-3-soft: color-mix(in srgb, var(--ios-purple) 14%, transparent); --ui-on-accent-3-soft: var(--ios-purple);
+  --ui-danger: var(--ios-red); --ui-danger-soft: color-mix(in srgb, var(--ios-red) 13%, transparent); --ui-on-danger-soft: var(--ios-red-text);
+  --ui-success: var(--ios-green); --ui-success-soft: color-mix(in srgb, var(--ios-green) 15%, transparent); --ui-on-success-soft: var(--ios-green-text);
+  --ui-warning: var(--ios-orange); --ui-warning-soft: color-mix(in srgb, var(--ios-orange) 15%, transparent); --ui-on-warning-soft: var(--ios-orange-text);
+  --ui-inverse: rgb(28 28 30 / 92%); --ui-on-inverse: #fff;
+  --ui-scrim: rgb(0 0 0 / 22%);
+  --ui-link: rgb(0 102 204);
+  --ui-eyebrow: rgb(191 72 0); --ui-new: rgb(191 72 0);
+
+  /* ---- 形状、阴影、间距 ---- */
+  --ui-radius-xs: 6px; --ui-radius-s: 10px; --ui-radius-m: 14px; --ui-radius-l: 22px; --ui-radius-xl: 34px;
+  --ui-shadow-1: 0 1px 2px rgb(0 0 0 / 5%), 0 2px 10px rgb(0 0 0 / 5%);
+  --ui-shadow-2: 0 4px 16px rgb(0 0 0 / 9%), 0 12px 32px rgb(0 0 0 / 7%);
+  --ui-shadow-3: 0 12px 40px rgb(0 0 0 / 16%), 0 30px 70px rgb(0 0 0 / 12%);
+  --ui-margin: 16px; --ui-margin-web: 22px; --ui-wrap: 980px;
+  --ui-ctl-h: 44px; --ui-btn-h: 44px; --ui-btn-px: 20px; --ui-btn-radius: 999px; --ui-btn-weight: 600;
+  --ui-btn-h-xs: 28px; --ui-btn-h-sm: 34px; --ui-btn-h-lg: 50px; --ui-btn-h-xl: 56px; --fs-btn-xl: var(--fs-headline); --ui-btn-radius-square: 14px;
+  --ui-row-h: 48px; --ui-row-px: 16px; --ui-row-gap: 14px; --ui-row-icon-size: 30px;
+  --ui-list-radius: 24px; --ui-list-gap: 0px; --ui-list-sep: var(--ui-line); --ui-list-bg: var(--ui-surface);
+  --ui-card-radius: 22px; --ui-card-bg: var(--ui-surface); --ui-card-pad: 16px; --ui-widget-radius: 22px;
+  --ui-field-h: 50px; --ui-field-radius: 14px; --ui-field-bg: var(--ui-fill); --ui-field-border: transparent;
+  --ui-topbar-h: 52px; --ui-topbar-px: 16px; --ui-topbar-cols: 1fr auto 1fr; --ui-topbar-title-align: center;
+  --ui-tabbar-h: 62px; --ui-icon-stroke: 1.85;
+  --ui-group-header-px: 16px; --ui-group-gap: 32px;
+  --ui-seg-bg: var(--ui-fill); --ui-seg-active-bg: #fff; --ui-seg-active-shadow: 0 3px 8px rgb(0 0 0 / 12%), 0 0 0 .5px rgb(0 0 0 / 4%);
+  --ui-seg-h: 32px; --ui-seg-pad: 2px;
+  --ui-chip-h: 34px; --ui-chip-bg: var(--ui-fill);
+  --ui-search-h: 40px; --ui-search-bg: var(--ui-fill);
+  --ui-tag-radius: 6px; --ui-check-radius: 50%; --ui-check-border: rgb(60 60 67 / 30%);
+  --ui-menu-item-radius: 12px; --ui-side-radius: 10px;
+  --ui-side-active-bg: var(--ui-fill-2); --ui-side-active-fg: var(--ui-text);
+  --ui-bubble-in: rgb(233 233 235); --ui-bubble-out: var(--ui-accent);
+  --ui-tile-bg: #f5f5f7; --ui-tile-radius: 0px; --ui-site-nav-h: 48px; --ui-section-alt: #f5f5f7; --ui-footer-bg: #f5f5f7;
+  --ui-feature-icon-radius: 14px; --ui-bento-radius: 28px; --ui-hero-media-radius: 28px; --fs-footer: 12px; --fs-nav: 12px;
+  --ui-nav-link: rgb(0 0 0 / 80%);
+  --ui-dot-active-w: 8px;
+
+  /* ---- Liquid Glass（regular）---- */
+  --ui-glass-bg: rgb(250 250 252 / 62%); --ui-glass-blur: 14px; --ui-glass-sat: 190%;
+  --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 85%), inset 0 0 0 .5px rgb(255 255 255 / 55%), 0 0 0 .5px rgb(0 0 0 / 6%);
+  --ui-glass-shadow: 0 6px 24px rgb(0 0 0 / 10%), 0 1px 3px rgb(0 0 0 / 6%);
+  --ui-glass-thick: rgb(250 250 252 / 84%);
+  --ui-glass-press: rgb(255 255 255 / 30%);
+  --ui-topbar-bg: transparent; --ui-topbar-bg-scrolled: transparent;
+
+  /* ---- 动效：SwiftUI 弹簧 ---- */
+  --ui-dur-fast: 180ms; --ui-dur: var(--spring-apple-smooth-ms); --ui-dur-slow: 600ms;
+  --ui-ease: var(--spring-apple-smooth); --ui-ease-spatial: var(--spring-apple-snappy); --ui-ease-bouncy: var(--spring-apple-bouncy);
+  --sw-ease: var(--spring-apple-bouncy); --sw-dur: var(--spring-apple-bouncy-ms);
+
+  /* ---- 开关（iOS 26：更宽的轨道 + 胶囊形滑块）---- */
+  --sw-w: 62px; --sw-h: 28px; --sw-knob-w: 38px; --sw-knob-h: 24px; --sw-inset: 2px;
+  --sw-off: rgb(120 120 128 / 16%); --sw-on: var(--ios-green); --sw-knob: #fff;
+  --sw-knob-shadow: 0 3px 8px rgb(0 0 0 / 15%), 0 1px 1px rgb(0 0 0 / 6%);
+  /* 滑块 */
+  --range-track: 6px; --range-thumb-w: 38px; --range-thumb-h: 24px; --range-thumb-radius: 999px; --range-rest: rgb(120 120 128 / 20%);
+  --range-thumb-shadow: 0 2px 8px rgb(0 0 0 / 16%), 0 0 0 .5px rgb(0 0 0 / 4%);
+
+  /* ---------- 深色 ---------- */
+  &[data-scheme="dark"] {
+    --ios-red: rgb(255 66 69); --ios-orange: rgb(255 146 48); --ios-yellow: rgb(255 214 0); --ios-green: rgb(48 209 88);
+    --ios-mint: rgb(0 218 195); --ios-teal: rgb(0 210 224); --ios-cyan: rgb(60 211 254); --ios-blue: rgb(0 145 255);
+    --ios-indigo: rgb(109 124 255); --ios-purple: rgb(219 52 242); --ios-pink: rgb(255 55 95); --ios-brown: rgb(183 138 102);
+    --ios-gray2: rgb(99 99 102); --ios-gray3: rgb(72 72 74); --ios-gray4: rgb(58 58 60); --ios-gray5: rgb(44 44 46); --ios-gray6: rgb(28 28 30);
+    --ios-red-text: rgb(255 97 101); --ios-green-text: rgb(74 217 104); --ios-orange-text: rgb(255 160 86); --ios-blue-text: rgb(92 184 255);
+    --ui-bg: #000; --ui-bg-plain: #000; --ui-surface: rgb(28 28 30); --ui-surface-2: rgb(44 44 46); --ui-surface-3: rgb(58 58 60);
+    --ui-fill: rgb(118 118 128 / 24%); --ui-fill-2: rgb(120 120 128 / 36%);
+    --ui-text: #fff; --ui-text-2: rgb(235 235 245 / 60%); --ui-text-3: rgb(235 235 245 / 30%); --ui-text-4: rgb(235 235 245 / 16%);
+    --ui-line: rgb(84 84 88 / 65%); --ui-line-strong: rgb(56 56 58);
+    --ui-accent-soft: color-mix(in srgb, var(--ui-accent) 22%, transparent);
+    --ui-danger-soft: color-mix(in srgb, var(--ios-red) 22%, transparent);
+    --ui-success-soft: color-mix(in srgb, var(--ios-green) 20%, transparent);
+    --ui-warning-soft: color-mix(in srgb, var(--ios-orange) 20%, transparent);
+    --ui-inverse: rgb(242 242 247 / 94%); --ui-on-inverse: #000;
+    --ui-scrim: rgb(0 0 0 / 48%); --ui-link: rgb(41 151 255); --ui-eyebrow: rgb(255 121 26); --ui-new: rgb(255 121 26);
+    --ui-check-border: rgb(235 235 245 / 30%);
+    --ui-seg-active-bg: rgb(99 99 102 / 85%); --ui-seg-active-shadow: 0 3px 8px rgb(0 0 0 / 30%);
+    --ui-bubble-in: rgb(38 37 42);
+    --ui-tile-bg: #161617; --ui-section-alt: #101010; --ui-footer-bg: #161617; --ui-site-bg: #000; --ui-nav-link: rgb(255 255 255 / 80%);
+    --ui-glass-bg: rgb(36 36 40 / 58%);
+    --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 16%), inset 0 0 0 .5px rgb(255 255 255 / 12%), 0 0 0 .5px rgb(0 0 0 / 40%);
+    --ui-glass-shadow: 0 8px 28px rgb(0 0 0 / 45%);
+    --ui-glass-thick: rgb(40 40 44 / 86%); --ui-glass-press: rgb(255 255 255 / 10%);
+    --sw-off: rgb(120 120 128 / 32%); --range-rest: rgb(120 120 128 / 36%);
+  }
+  /* 高对比度：换成 HIG 的 Increased Contrast 色值，分隔线加深 */
+  &[data-contrast="more"] {
+    --ios-red: rgb(233 21 45); --ios-orange: rgb(197 83 0); --ios-yellow: rgb(161 106 0); --ios-green: rgb(0 137 50);
+    --ios-mint: rgb(0 133 117); --ios-teal: rgb(0 129 152); --ios-cyan: rgb(0 126 174); --ios-blue: rgb(30 110 244);
+    --ios-indigo: rgb(86 74 222); --ios-purple: rgb(176 47 194); --ios-pink: rgb(231 18 77); --ios-brown: rgb(149 109 81);
+    --ui-text-2: rgb(60 60 67 / 82%); --ui-text-3: rgb(60 60 67 / 60%); --ui-line: rgb(60 60 67 / 50%);
+  }
+  &[data-contrast="more"][data-scheme="dark"] {
+    --ios-red: rgb(255 97 101); --ios-orange: rgb(255 160 86); --ios-yellow: rgb(254 223 67); --ios-green: rgb(74 217 104);
+    --ios-mint: rgb(84 223 203); --ios-teal: rgb(59 221 236); --ios-cyan: rgb(109 217 255); --ios-blue: rgb(92 184 255);
+    --ios-indigo: rgb(167 170 255); --ios-purple: rgb(234 141 255); --ios-pink: rgb(255 138 196); --ios-brown: rgb(219 166 121);
+    --ui-text-2: rgb(235 235 245 / 84%); --ui-text-3: rgb(235 235 245 / 60%); --ui-line: rgb(120 120 128 / 80%);
+  }
+
+  /* Liquid Glass 变体：clear（更透，用在照片、视频上）/ opaque（对应“降低透明度”辅助功能）*/
+  &[data-glass="clear"] { --ui-glass-bg: rgb(255 255 255 / 22%); --ui-glass-sat: 150%; --ui-glass-blur: 8px; }
+  &[data-glass="clear"][data-scheme="dark"] { --ui-glass-bg: rgb(30 30 34 / 28%); }
+  &[data-glass="opaque"] { --ui-glass-bg: rgb(246 246 248); --ui-glass-thick: rgb(246 246 248); --ui-glass-blur: 0px; }
+  &[data-glass="opaque"][data-scheme="dark"] { --ui-glass-bg: rgb(36 36 38); --ui-glass-thick: rgb(36 36 38); }
+
+  /* ======================= 材质 ======================= */
+  .glass, .tabbar, .toolbar.floating, .bar-group, .topbar .bar-btn, .toast, .menu, .fab, .composer, .bar-btn.glass, .btn.glass, .icon-btn.glass {
+    background: var(--ui-glass-bg); -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat));
+    backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow);
+  }
+  .glass.clear { --ui-glass-bg: rgb(255 255 255 / 14%); --ui-glass-sat: 160%; color: #fff; }
+  .glass.thick { --ui-glass-bg: var(--ui-glass-thick); }
+  .bar-group .bar-btn { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass:active, .topbar .bar-btn:active, .btn.glass:active, .icon-btn.glass:active, .fab:active { transform: scale(1.06); }
+
+  /* ======================= 顶栏 ======================= */
+  .topbar { column-gap: 12px; }
+  .topbar-title { font-weight: 600; font-size: calc(var(--fs-headline) * var(--ts)); letter-spacing: var(--ls-headline); }
+  .topbar-sub { display: block; font-size: calc(var(--fs-caption) * var(--ts)); font-weight: 400; color: var(--ui-text-2); text-align: center; }
+  /* 滚动边缘效果：内容滚到栏下方时，栏背后出现渐隐的模糊 */
+  .topbar::before { content: ""; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none; opacity: 0;
+    background: linear-gradient(var(--ui-bg) 0%, color-mix(in srgb, var(--ui-bg) 70%, transparent) 55%, transparent);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    -webkit-mask: linear-gradient(#000 55%, transparent); mask: linear-gradient(#000 55%, transparent);
+    transition: opacity var(--ui-dur-fast) linear; }
+  &.scrolled .topbar:not(.transparent)::before { opacity: 1; }
+  .topbar .bar-btn { --ui-bar-btn-color: var(--ui-text); font-weight: 500; font-size: calc(var(--fs-body) * var(--ts)); padding: 0 14px; }
+  .topbar .bar-btn:has(> .i:only-child) { padding: 0; }
+  .topbar .bar-btn.prominent, .bar-btn.prominent { background: var(--ui-accent); color: var(--ui-on-accent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%), var(--ui-glass-shadow); }
+  .bar-btn .i { --ui-icon: 22px; }
+  .bar-btn.back .i { --ui-icon: 24px; stroke-width: 2.2; }
+  .topbar.transparent .bar-btn { --ui-glass-bg: rgb(255 255 255 / 20%); color: #fff; }
+  .page-title { font: var(--fw-large-title) calc(var(--fs-large-title) * var(--ts)) / var(--lh-large-title) var(--ui-font-display);
+    letter-spacing: var(--ls-large-title); padding: 2px 0 10px; }
+
+  /* ======================= 标签栏（浮动玻璃胶囊）======================= */
+  .tabbar { left: 20px; right: 20px; bottom: max(10px, calc(var(--safe-bottom) - 12px)); height: var(--ui-tabbar-h);
+    padding: 4px; border-radius: 999px; gap: 0; }
+  .tab { border-radius: 999px; gap: 1px; font-size: calc(10px * var(--ts)); font-weight: 600; letter-spacing: .1px; color: var(--ui-text);
+    transition: background-color var(--ui-dur) var(--ui-ease), color var(--ui-dur); }
+  .tab .i { --ui-icon: 26px; }
+  .tab.is-active { background: rgb(0 0 0 / 6%); color: var(--ui-accent); }
+  &[data-scheme="dark"] .tab.is-active { background: rgb(255 255 255 / 12%); }
+  .tab.is-active .i { stroke-width: 2.2; }
+  /* 可选：搜索标签独立成右侧圆形玻璃按钮 */
+  .tabbar:has(> .tab-group) { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: 0; gap: 10px; }
+  .tab-group { flex: 1; display: flex; padding: 4px; border-radius: 999px; background: var(--ui-glass-bg);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
+  .tabbar > .tab.search { flex: 0 0 var(--ui-tabbar-h); background: var(--ui-glass-bg);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
+  .tabbar > .tab.search > span { display: none; }
+
+  /* ======================= 浮动按钮与工具栏 ======================= */
+  .fab { width: 54px; height: 54px; border-radius: 999px; color: var(--ui-accent); }
+  .fab .i { --ui-icon: 26px; stroke-width: 2.2; }
+  .fab.extended { width: auto; padding: 0 20px; font-weight: 600; }
+  .fab.prominent { background: var(--ui-accent); color: #fff; }
+  .toolbar.floating { height: 52px; padding: 4px; border-radius: 999px; }
+  .toolbar.floating .icon-btn:not(.is-active, .filled, .tonal), .toolbar.floating .bar-btn:not(.prominent) { --b-fg: var(--ui-text); color: var(--ui-text); }
+  .toolbar.floating .icon-btn.is-active { --b-bg: transparent; --b-fg: var(--ui-accent); }
+  .toolbar.docked { background: linear-gradient(transparent, color-mix(in srgb, var(--ui-bg) 85%, transparent) 40%); }
+  .toolbar.docked .bar-btn, .toolbar.docked .icon-btn { background: var(--ui-glass-bg); box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); color: var(--ui-text); }
+
+  /* ======================= 列表（内嵌分组）======================= */
+  .group-header { font-size: calc(var(--fs-footnote) * var(--ts)); line-height: var(--lh-footnote); }
+  .group-header.large { font: 700 calc(var(--fs-title3) * var(--ts)) / 1.25 var(--ui-font-display); color: var(--ui-text); padding-inline: 4px; }
+  .group-footer { font-size: calc(var(--fs-footnote) * var(--ts)); line-height: var(--lh-footnote); }
+  .row { font-size: calc(var(--fs-body) * var(--ts)); }
+  .row-sub { font-size: calc(var(--fs-subhead) * var(--ts)); line-height: var(--lh-subhead); }
+  .row-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--tint); color: #fff; }
+  .row-icon .i { --ui-icon: 19px; stroke-width: 2.1; }
+  .row-icon.plain { background: none; color: var(--tint); width: 30px; }
+  .row-icon.plain .i { --ui-icon: 24px; stroke-width: 1.85; }
+  .row-chevron { --ui-icon: 17px; stroke-width: 2.6; color: rgb(60 60 67 / 30%); margin-right: -4px; }
+  &[data-scheme="dark"] .row-chevron { color: rgb(235 235 245 / 30%); }
+  a.row:active, button.row:active, label.row:active { background: var(--ui-fill); }
+  .list.plain { background: var(--ui-bg-plain); }
+  .list.plain > li + li::before { left: var(--ui-row-px); }
+  .list.has-avatars .avatar { --size: 44px; }
+
+  /* ======================= 卡片、小组件 ======================= */
+  .card.elevated { box-shadow: var(--ui-shadow-2); }
+  .widget-value { font-weight: 600; letter-spacing: -.5px; }
+
+  /* ======================= 按钮 ======================= */
+  --ui-icon-btn-fg: var(--ui-accent); --ui-btn-glass-bg: var(--ui-glass-bg);
+  .btn.filled { box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%); }
+  .btn.text { font-weight: 500; }
+  .btn:active, .icon-btn:active { transform: scale(.96); filter: brightness(.94); }
+  .btn.filled:active { filter: brightness(1.08); }
+  .btn-group { padding: 2px; background: var(--ui-fill); border-radius: 999px; gap: 0; }
+  .btn-group > .btn { --b-bg: transparent; --b-fg: var(--ui-text); border-radius: 999px; --ui-btn-h: 32px; font-weight: 500; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .btn-group > .btn.is-active { --b-bg: var(--ui-seg-active-bg); --b-fg: var(--ui-text); box-shadow: var(--ui-seg-active-shadow); }
+  .split-btn > .btn:first-child, .split-btn > .btn:last-child { border-radius: 999px; }
+  .link-arrow { --ui-link: var(--ui-link); }
+
+  /* ======================= 分段控件 / 标签页 / 筛选片 ======================= */
+  .tabs { background: var(--ui-fill); border-radius: 999px; padding: 2px; }
+  .tabs > a, .tabs > button { min-height: 32px; border-radius: 999px; color: var(--ui-text); padding: 0 14px;
+    transition: background-color var(--ui-dur) var(--ui-ease); }
+  .tabs > .is-active { background: var(--ui-seg-active-bg); color: var(--ui-text); box-shadow: var(--ui-seg-active-shadow); }
+  .tabs.underline { background: none; padding: 0; border-bottom: .5px solid var(--ui-line); border-radius: 0; }
+  .tabs.underline > a, .tabs.underline > button { border-radius: 0; color: var(--ui-text-2); min-height: 44px; box-shadow: none; background: none; }
+  .tabs.underline > .is-active { color: var(--ui-text); box-shadow: inset 0 -2px 0 var(--ui-text); }
+  .chip { font-weight: 500; }
+  .chip.outlined { background: transparent; border-color: var(--ui-line-strong); }
+
+  /* ======================= 表单 ======================= */
+  .field-label { padding-left: 4px; font-weight: 400; }
+  .field-help { padding-left: 4px; }
+  .field-input:focus, .field textarea:focus, .field select:focus { border-color: transparent; box-shadow: 0 0 0 2px var(--ui-accent); background: var(--ui-bg-plain); }
+  .otp > input { border: 0; }
+  .searchbar { font-size: calc(var(--fs-body) * var(--ts)); }
+  .searchbar.glass { height: 48px; }
+  .stepper { height: 32px; background: var(--ui-fill); }
+
+  /* ======================= 标记与反馈 ======================= */
+  .progress { --progress-rest: var(--ui-fill-2); }
+  .toast { border-radius: 999px; padding: 12px 20px; color: var(--ui-text); font-weight: 500; }
+  .toast .btn { --b-bg: transparent; --b-fg: var(--ui-accent); padding: 0 8px; }
+  .callout { border-radius: 18px; }
+  .spinner { --spinner-rest: transparent; border: 0; animation: ui-spin 1s steps(8) infinite;
+    background: conic-gradient(from 22.5deg, var(--ui-text-2) 0 12.5%, transparent 0 25%, color-mix(in srgb, var(--ui-text-2) 80%, transparent) 0 37.5%, transparent 0 50%,
+      color-mix(in srgb, var(--ui-text-2) 60%, transparent) 0 62.5%, transparent 0 75%, color-mix(in srgb, var(--ui-text-2) 35%, transparent) 0 87.5%, transparent 0);
+    -webkit-mask: radial-gradient(circle, transparent 36%, #000 37% 70%, transparent 71%); mask: radial-gradient(circle, transparent 36%, #000 37% 70%, transparent 71%); }
+  .loader { border-radius: 30%; }
+
+  /* ======================= 浮层 ======================= */
+  .sheet { left: 8px; right: 8px; bottom: 8px; border-radius: 36px; background: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3);
+    max-height: calc(100dvh - var(--safe-top) - 20px); }
+  .sheet.full { left: 0; right: 0; bottom: 0; border-radius: 36px 36px 0 0; background: var(--ui-bg); max-height: calc(100dvh - var(--safe-top) - 8px); }
+  .sheet-head { padding: 12px 14px 4px; }
+  .sheet-head .bar-btn { background: var(--ui-fill); box-shadow: none; }
+  .sheet-head .bar-btn.prominent { background: var(--ui-accent); }
+  .sheet-title { font-size: calc(var(--fs-headline) * var(--ts)); }
+  .sheet-body { padding-bottom: calc(max(var(--safe-bottom) - 8px, 0px) + 20px); }
+  .dialog { --ui-dialog-w: 300px; padding: 22px 22px 18px; border-radius: 34px; background: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); gap: 6px; }
+  .dialog-title { font-size: calc(var(--fs-headline) * var(--ts)); line-height: var(--lh-headline); }
+  .dialog-body { font-size: calc(var(--fs-subhead) * var(--ts)); line-height: var(--lh-subhead); color: var(--ui-text); }
+  .dialog-actions { margin-top: 14px; }
+  .dialog-actions > .btn { flex: 1; --b-bg: var(--ui-fill); --b-fg: var(--ui-text); font-weight: 600; }
+  .dialog-actions > .btn.filled { --b-bg: var(--ui-accent); --b-fg: #fff; }
+  .dialog-actions > .btn.danger { --b-fg: var(--ui-danger); }
+  .dialog-actions.stack { flex-direction: column; }
+  .menu { border-radius: 26px; padding: 8px; --ui-glass-bg: var(--ui-glass-thick); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); }
+  .menu-item { font-size: calc(var(--fs-body) * var(--ts)); }
+  .menu-item .i { order: 2; }
+  .menu-item:not(.destructive) .i { color: var(--ui-text); }
+  .menu-item > span:first-of-type { order: 1; }
+  .menu-item .t-2, .menu-item .row-value { order: 3; }
+  .menu-sep { height: 8px; margin: 2px -8px; background: rgb(0 0 0 / 5%); }
+  &[data-scheme="dark"] .menu-sep { background: rgb(0 0 0 / 30%); }
+  .action-sheet > .list { --ui-list-radius: 28px; --ui-list-bg: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: var(--ui-shadow-3); }
+  .action-sheet .row { justify-content: center; color: var(--ui-accent); font-size: calc(20px * var(--ts)); min-height: 56px; }
+  .action-sheet .row.destructive { color: var(--ui-danger); }
+
+  /* ======================= 侧栏（iPadOS 浮动玻璃侧栏）======================= */
+  .sidebar.floating { margin: 8px; border-radius: 26px; min-height: calc(100dvh - 16px); background: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
+  .side-item { font-size: calc(var(--fs-body) * var(--ts)); min-height: 44px; }
+  .side-item .i { --ui-icon: 22px; }
+  .sidebar-section { font-size: calc(var(--fs-headline) * var(--ts)); color: var(--ui-text); font-weight: 700; padding-top: 20px; }
+  .rail { gap: 8px; }
+  .rail-item::before { width: 60px; height: 52px; translate: -50% -6px; border-radius: 16px; }
+  .rail-item.is-active { color: var(--ui-accent); }
+  .rail-item.is-active::before { background: var(--ui-fill); }
+
+  /* ======================= 数据、消息 ======================= */
+  .bubble { font-size: calc(var(--fs-body) * var(--ts)); line-height: var(--lh-body); padding: 8px 13px; border-radius: 19px; }
+  .bubble.out + .bubble.out, .bubble:not(.out) + .bubble:not(.out) { margin-top: -1px; }
+  .composer { padding: 8px 12px calc(max(var(--safe-bottom) - 10px, 0px) + 8px); margin: 0 10px 10px; border-radius: 999px; position: fixed; left: 0; right: 0; bottom: 0; }
+  body:has(.composer) .content { padding-bottom: calc(var(--safe-bottom) + 84px); }
+  .composer-input { border-color: var(--ui-line); background: transparent; }
+  .table th { font-weight: 600; }
+  .timeline > li.is-done::before { background: var(--ui-success); border-color: var(--ui-success); }
+  .cal-day.is-today:not(.is-selected) { color: var(--ios-red); }
+  .cal-day.is-selected { background: var(--ios-red); color: #fff; }
+  .cal-day.is-today.is-selected { background: var(--ios-red); }
+
+  /* ======================= 网页（apple.com 风格）======================= */
+  .site-nav { background: rgb(250 250 252 / 80%); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+  &[data-scheme="dark"] .site-nav { background: rgb(22 22 23 / 80%); }
+  .site-nav .nav-links { justify-content: center; gap: 34px; }
+  .site-nav .nav-links > a { letter-spacing: -.01em; }
+  .site-nav .brand { font-size: 17px; }
+  .site-nav .icon-btn { --b-fg: var(--ui-nav-link); --ui-icon-btn: 36px; }
+  .site-nav .icon-btn .i { --ui-icon: 17px; }
+  .local-nav { background: rgb(250 250 252 / 72%); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgb(0 0 0 / 16%); }
+  &[data-scheme="dark"] .local-nav { background: rgb(22 22 23 / 72%); border-color: rgb(255 255 255 / 16%); }
+  .local-nav-title { font-size: calc(21px * var(--ts)); letter-spacing: .011em; }
+  .site .btn { font-weight: 400; font-size: calc(17px * var(--ts)); --ui-btn-px: 22px; }
+  .site .btn.sm, .site .btn.xs { font-size: calc(12px * var(--ts)); --ui-btn-px: 12px; }
+  .site .btn.xs { --ui-btn-h: 26px; }
+  .site .btn:not(.filled, .tonal, .text, .outlined, .neutral) { --b-bg: transparent; --b-bd: var(--ui-accent); --b-fg: var(--ui-accent); }
+  .site .link-arrow { font-size: calc(17px * var(--ts)); }
+  .hero-actions .link-arrow { font-size: calc(19px * var(--ts)); }
+  .hero-sub { max-width: 24em; }
+  .tile .t-title1 { font-size: calc(40px * var(--ts)); letter-spacing: 0; font-weight: 600; }
+  .section-head .t-large-title, .section-head .t-title1 { font-size: calc(clamp(32px, 5vw, 48px) * var(--ts)); font-weight: 600; letter-spacing: -.003em; line-height: 1.08; }
+  .feature-icon { background: none; color: var(--ui-accent); width: auto; height: auto; justify-content: start; }
+  .feature-icon .i { --ui-icon: 40px; stroke-width: 1.5; }
+  .bento > * { background: var(--ui-bg-plain); }
+  .section.alt .bento > * { background: var(--ui-bg-plain); }
+  .price-card { border-radius: 28px; border-color: var(--ui-line-strong); background: var(--ui-bg-plain); }
+  .footer { border-top: 0; }
+  .footer-cols h4 { font-size: calc(12px * var(--ts)); }
+  .faq summary { font-size: calc(19px * var(--ts)); }
+  .prose { --fs-prose: 17px; letter-spacing: -.01em; }
+  .option { border-radius: 14px; border-color: rgb(134 134 139); }
+  .option.is-active { border-color: rgb(0 113 227); }
+}

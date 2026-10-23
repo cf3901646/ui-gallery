@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>设置</title>
+<meta name="ui:title" content="设置">
+<meta name="ui:desc" content="系统设置首页：账户卡片、搜索、带彩色图标的分组列表、开关和数值。">
+<meta name="ui:category" content="系统与设置">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="分组列表,开关,大标题,搜索">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">设置</div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">设置</h1>
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="搜索">
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+    </label>
+
+    <section class="group">
+      <ul class="list has-avatars">
+        <li><a class="row" href="#">
+          <span class="avatar lg" style="--size:56px;--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">林</span>
+          <span class="row-body">
+            <span class="row-title t-title3">林知夏</span>
+            <span class="row-sub">账户、云存储、媒体与购买项目</span>
+          </span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-body"><span class="row-title">完成设置你的新设备</span></span>
+          <span class="badge">1</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-plane"/></svg></span>
+          <span class="row-body"><span class="row-title">飞行模式</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-wifi"/></svg></span>
+          <span class="row-body"><span class="row-title">无线局域网</span></span>
+          <span class="row-value">Home-5G</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-bluetooth"/></svg></span>
+          <span class="row-body"><span class="row-title">蓝牙</span></span>
+          <span class="row-value">打开</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-smartphone"/></svg></span>
+          <span class="row-body"><span class="row-title">蜂窝网络</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-link"/></svg></span>
+          <span class="row-body"><span class="row-title">个人热点</span></span>
+          <span class="row-value">关闭</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-battery"/></svg></span>
+          <span class="row-body"><span class="row-title">电池</span></span>
+          <span class="row-value">86%</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header only-google">通知与声音</h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-bell"/></svg></span>
+          <span class="row-body"><span class="row-title">通知</span><span class="row-sub only-google">应用通知、通知历史</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-volume"/></svg></span>
+          <span class="row-body"><span class="row-title">声音与触感</span><span class="row-sub only-google">音量、振动、勿扰</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span>
+          <span class="row-body"><span class="row-title">专注模式</span><span class="row-sub only-google">睡眠、工作中</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-clock"/></svg></span>
+          <span class="row-body"><span class="row-title">屏幕使用时间</span><span class="row-sub only-google">今日 2 小时 14 分钟</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header only-google">设备</h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-settings"/></svg></span>
+          <span class="row-body"><span class="row-title">通用</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-sun"/></svg></span>
+          <span class="row-body"><span class="row-title">显示与亮度</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-cyan)"><svg class="i"><use href="#i-image"/></svg></span>
+          <span class="row-body"><span class="row-title">墙纸</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-users"/></svg></span>
+          <span class="row-body"><span class="row-title">辅助功能</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-shield"/></svg></span>
+          <span class="row-body"><span class="row-title">隐私与安全性</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+      <p class="group-footer">设备名称、软件更新和存储空间在“通用”中管理。</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>
