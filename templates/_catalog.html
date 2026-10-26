@@ -37,13 +37,13 @@
   .cat-type + .cat-type { border-top: 1px solid var(--ui-line); }
   .cat-type > span:first-child { display: flex; flex-direction: column; gap: 2px; }
   .cat-type > span:first-child code { font-size: 12px; color: var(--ui-text); }
-  .cat-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 14px 12px; width: 100%; }
+  .cat-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 14px 12px; width: 100%; }
   .cat-sw > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .cat-sw b { display: grid; place-items: center; height: 56px; border-radius: var(--ui-radius-m); background: var(--c);
     color: var(--on, transparent); font-weight: 600; box-shadow: inset 0 0 0 1px var(--ui-line); }
   .cat-pal { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
   .cat-pal b { height: 44px; }
-  .cat-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 2px; width: 100%; color: var(--ui-text); }
+  .cat-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 2px; width: 100%; color: var(--ui-text); }
   .cat-icons > div { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 4px 10px; border-radius: var(--ui-radius-m); text-align: center; }
   .cat-icons > div:hover { background: var(--ui-fill); }
   .cat-ico { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; min-width: 52px; }
@@ -59,10 +59,10 @@
   /* 以下三条只是“放进样张”：kit 的 .inline 不覆盖这些组件 */
   .cat-chat .composer { position: relative; margin: 8px 0 0; }
   .cat-specimen .rail { min-height: 0; }
-  .cat-side { width: 100%; max-width: 300px; }
+  .cat-side { width: 100%; max-width: 300px; min-height: 0; }
   .cat-arts { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; width: 100%; }
   .cat-arts > .art { aspect-ratio: 4 / 3; border-radius: var(--ui-radius-m); }
-  .cat-masks { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 18px 10px; width: 100%; }
+  .cat-masks { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 18px 10px; width: 100%; }
   .cat-masks > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
   .cat-masks .art { width: 72px; height: 72px; }
   .cat-ratio { height: 72px; border-radius: var(--ui-radius-s); }
@@ -354,7 +354,7 @@
         <div class="card accent pad stack gap-1"><span class="card-sub">本月可用额度</span><span class="t-title1 t-num">¥24,800.00</span><span class="card-sub">账单日每月 5 日</span></div>
       </div>
       <div class="cat-specimen cat-col" data-v=".card.dark">
-        <div class="card dark pad hstack"><span class="art a4 rounded" style="width:48px;height:48px"></span><div class="grow"><div class="card-title">夜航星图</div><div class="card-sub">北岸灯塔乐队</div></div><svg class="i solid"><use href="#i-pause"/></svg></div>
+        <div class="card dark pad"><div class="hstack"><span class="art a4 rounded shrink-0" style="width:48px;height:48px"></span><div class="grow"><div class="card-title">夜航星图</div><div class="card-sub">北岸灯塔乐队</div></div><svg class="i solid"><use href="#i-pause"/></svg></div></div>
       </div>
       <div class="cat-specimen cat-col" data-v=".card.media-fill">
         <a class="card media-fill" href="#"><div class="art a9"></div><div class="card-body"><span class="card-title">外滩夜景徒步</span><span class="card-sub">2.4 公里 · 约 45 分钟</span></div></a>
@@ -416,8 +416,8 @@
       </div>
       <div class="cat-specimen cat-col" data-v=".field-row">
         <div class="field-row">
-          <label class="field"><span class="field-label">开始</span><input class="field-input" value="10月24日 14:00" placeholder=" "></label>
-          <label class="field"><span class="field-label">结束</span><input class="field-input" value="15:30" placeholder=" "></label>
+          <label class="field"><span class="field-label">入住</span><input class="field-input" value="10月24日" placeholder=" "></label>
+          <label class="field"><span class="field-label">退房</span><input class="field-input" value="10月26日" placeholder=" "></label>
         </div>
       </div>
       <div class="cat-specimen cat-col" data-v=".select · .field 里的 select">
@@ -932,7 +932,7 @@
     ['lead', '网页导语 · 19–28', '网页导语 · 18–22', '更轻的背包，更远的路。'],
     ['eyebrow', '眉标 · 17 Semibold', '眉标 · 14/500', '新品']
   ], function (r) {
-    return "<div class='cat-type'><span><code>.t-" + r[0] + "</code><span class='t-caption2 t-3'><span class='only-apple'>" + r[1] +
+    return "<div class='cat-type'><span><code>.t-" + r[0] + "</code><span class='t-caption2 t-2'><span class='only-apple'>" + r[1] +
       "</span><span class='only-google'>" + r[2] + "</span></span></span><span class='t-" + r[0] + "'>" + r[3] + "</span></div>";
   });
   fill('cat-tokens', ('bg surface surface-2 fill text text-2 line accent/on-accent accent-soft/on-accent-soft accent-2-soft/on-accent-2-soft ' +

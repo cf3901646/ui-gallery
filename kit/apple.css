@@ -178,7 +178,7 @@ html[data-lang="apple"] {
     transition: opacity var(--ui-dur-fast) linear; }
   &.scrolled .topbar:not(.transparent)::before { opacity: 1; }
   .topbar .bar-btn { --ui-bar-btn-color: var(--ui-text); font-weight: 500; font-size: calc(var(--fs-body) * var(--ts)); padding: 0 14px; }
-  .topbar .bar-btn:has(> .i:only-child) { padding: 0; }
+  .topbar .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { padding: 0; }
   .topbar .bar-btn.prominent, .bar-btn.prominent { background: var(--ui-accent); color: var(--ui-on-accent);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%), var(--ui-glass-shadow); }
   .bar-btn .i { --ui-icon: 22px; }
@@ -232,7 +232,7 @@ html[data-lang="apple"] {
   &[data-scheme="dark"] .row-chevron { color: rgb(235 235 245 / 30%); }
   a.row:active, button.row:active, label.row:active { background: var(--ui-fill); }
   .list.plain { background: var(--ui-bg-plain); }
-  .list.plain > li + li::before { left: var(--ui-row-px); }
+  .list.plain:not(.has-icons, .has-avatars) > li + li::before { left: var(--ui-row-px); }
   .list.has-avatars .avatar { --size: 44px; }
 
   /* ======================= 卡片、小组件 ======================= */

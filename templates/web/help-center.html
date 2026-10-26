@@ -17,7 +17,9 @@
   .hc-title { font-size: calc(clamp(36px, 6.4vw, 72px) * var(--ts)); }
   .hc-search { width: min(640px, 100%); margin-top: 12px; padding-inline: 20px; }
   html[data-lang="apple"] .hc-search { height: 56px; font-size: calc(17px * var(--ts)); background: var(--ui-bg-plain); box-shadow: var(--ui-shadow-2); }
-  .hc-hot { justify-content: center; align-items: center; max-width: 680px; margin-top: 4px; }
+  .hero .chips.hc-hot { flex-direction: row; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; max-width: 680px; margin-top: 4px; }
+  .site .section-head.row { padding: 0; min-height: 0; font-size: inherit; }
+  .section-head .t-lead { text-wrap: balance; }
   .hc-cats .card { padding: 24px; gap: 4px; transition: border-color var(--ui-dur-fast), transform var(--ui-dur) var(--ui-ease); }
   .hc-cats .card:hover { border-color: var(--ui-accent); transform: translateY(-2px); }
   html[data-lang="google"] .hc-cats .card:nth-child(3n+2) .feature-icon { background: var(--ui-accent-3-soft); color: var(--ui-on-accent-3-soft); border-radius: 50%; }
@@ -52,7 +54,7 @@
     <div class="wrap">
       <span class="t-eyebrow">Aurora 支持</span>
       <h1 class="t-hero hc-title">有什么可以帮你？</h1>
-      <label class="searchbar hc-search"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="描述你的问题，例如“手表无法配对”"></label>
+      <label class="searchbar hc-search"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索问题，如“手表无法配对”"></label>
       <div class="chips wrap hc-hot">
         <span class="t-subhead t-2">热门搜索</span>
         <a class="chip" href="#">忘记账户密码</a><a class="chip" href="#">手表无法配对</a><a class="chip" href="#">电池续航</a><a class="chip" href="#">以旧换新</a><a class="chip" href="#">开具发票</a>

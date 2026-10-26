@@ -18,6 +18,14 @@
 - 质量标准：像 Apple / Google 第一方应用或官网那样精致、信息密度合适；每个页面综合使用多种组件；**两种语言 × 明暗四种组合都要好看**。手机按 402×874 设计；平板 1180×820；桌面 1440×900；网页要在 390 和 1280 宽都正常（kit 已有 860px / 560px 断点）。
 - 单个模板控制在 4～14 KB。
 
+## 环境注意（前几批子代理踩过的坑）
+
+- **不要使用 todo_list 工具**（会话里共用，会改到别人的清单）。
+- `execute_pwsh` 偶尔对所有命令返回 -1 且没有输出。遇到时把命令写进 `$env:TEMP\uig\` 下的 .ps1 脚本，用 `powershell -NoProfile -ExecutionPolicy Bypass -File <脚本路径>` 执行，并把输出重定向到文件再读。
+- `$env:AUDIT_W` 在共用 shell 里会残留别人的值，**每次 audit 前都显式设置**（手机 402）。
+- 用 read_file 看的截图，**宽和高都不能超过 8000 像素**，否则整个任务会失败。长页面分段截图：h ≤ 2400，再加 `y=` 参数把页面滚到指定位置，例如 `` t=../templates/web/NAME.html`&w=1280`&h=2000`&y=2000`&combos=apple-light,google-light ``。
+- kit 已修复（不用再在页面里补）：`.bar-btn` 里可以直接放 `.badge`；`.bar-group` 有圆角；`.chips.wrap` 不再多出边距；`.only-apple`/`.only-google` 的标签栏只在可见时让位；Google 下 `.glass` 有底色；Google 下带 `--c` 的头像默认白字；`.event` 在两种语言下都用 `--c`；Google 深色下 `--c-*` 自动提亮；新增 `.card.horizontal`（横向卡片，`--media-w` 控制图片宽）；`.sheet` 里的 `.composer` 自动吸底。
+
 ## 写完后的自检（必须做）
 
 命令都在 PowerShell 5.1 里运行，`cwd` 设为 `c:\网站\ui-gallery`。规则：命令用 `;` 分隔，不能用 `&&`；命令里不要写中文；截图命令的查询串里 `&` 要写成 `` `& ``；`timeout` 设 300000。

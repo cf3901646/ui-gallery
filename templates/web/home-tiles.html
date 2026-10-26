@@ -23,7 +23,11 @@
   html[data-lang="google"] .ht-grid { --gap: 16px; padding-inline: 0; }
   .ht-copy { display: flex; flex-direction: column; align-items: inherit; gap: 8px; }
   .ht-hero { min-height: 640px; }
-  .ht-hero .t-title1 { font-size: calc(clamp(40px, 4.4vw, 56px) * var(--ts)); line-height: 1.07; }
+  .ht-stack .t-title1 { text-wrap: balance; }
+  .ht-hero .t-title1 { font-size: calc(clamp(32px, 4.4vw, 56px) * var(--ts)); line-height: 1.07; }
+  html[data-lang="google"] .ht-hero .t-title1 { font-size: calc(clamp(32px, 3.8vw, 52px) * var(--ts)); }
+  html[data-lang="google"] .ht-grid .tile { --ui-btn-outlined-fg: currentColor; --ui-btn-outlined-bd: color-mix(in srgb, currentColor 40%, transparent); }
+  html[data-lang="apple"][data-scheme="dark"] .ht-grid .ht-on-dark { box-shadow: inset 0 0 0 1px var(--ui-line); }
   .ht-hero .tile-actions { margin-top: 12px; }
   .ht-media { display: flex; justify-content: center; align-items: flex-end; gap: 22px; }
   html[data-lang="apple"] .ht-media { width: min(100%, 760px); }
@@ -38,9 +42,14 @@
   @media (min-width: 861px) {
     html[data-lang="google"] .ht-hero { flex-direction: row; align-items: center; gap: 40px; padding: 0 0 0 56px; min-height: 560px; }
     html[data-lang="google"] .ht-hero .ht-copy { flex: 1; align-items: flex-start; }
-    html[data-lang="google"] .ht-hero .tile-media { flex: 1.25; align-self: stretch; margin: 16px; border-radius: 20px; }
+    html[data-lang="google"] .ht-hero .tile-media { flex: 1.1; align-self: stretch; margin: 16px; border-radius: 20px; }
   }
-  .ht-carousel { --item: 86%; --gap: 16px; --ui-margin: var(--ui-margin-web); }
+  @media (max-width: 560px) {
+    .ht-grid .tile .t-title1 { font-size: calc(32px * var(--ts)); }
+    html[data-lang="google"] .ht-grid .tile .t-title1 { font-size: calc(28px * var(--ts)); }
+  }
+  /* 横滑卡片：左边与内容对齐，右边一直延伸到窗口边缘 */
+  .ht-carousel { --item: 86%; --gap: 16px; --ui-margin: max(var(--ui-margin-web), calc((100% - var(--ui-wrap)) / 2)); margin-inline: 0; }
   @media (min-width: 861px) { .ht-carousel { --item: 46%; } }
   .ht-show { aspect-ratio: 16 / 9; }
   .ht-show .btn { align-self: flex-start; margin-top: 8px; }
@@ -115,9 +124,10 @@
   <section class="section tight">
     <div class="wrap">
       <div class="section-head row">
-        <h2 class="t-title1">娱乐 · Aurora TV+ 本周推荐</h2>
+        <h2 class="t-title1">娱乐 · <span class="nowrap">Aurora TV+</span> <span class="nowrap">本周推荐</span></h2>
         <a class="link-arrow" href="#">免费试用 3 个月</a>
       </div>
+    </div>
       <div class="carousel ht-carousel">
         <a class="card media-fill ht-show" href="#"><div class="art a9"></div><div class="card-body"><span class="card-title">长夜将尽</span><span class="card-sub">剧情 · 第 2 季 · 每周五更新</span><span class="btn xs on-media">立即观看</span></div></a>
         <a class="card media-fill ht-show" href="#"><div class="art a2"></div><div class="card-body"><span class="card-title">深海回声</span><span class="card-sub">纪录片 · 4K 杜比视界 · 全 6 集</span><span class="btn xs on-media">立即观看</span></div></a>
@@ -125,7 +135,6 @@
         <a class="card media-fill ht-show" href="#"><div class="art a11"></div><div class="card-body"><span class="card-title">沙丘之上</span><span class="card-sub">惊悚 · 10 月 31 日首播</span><span class="btn xs on-media">设置提醒</span></div></a>
         <a class="card media-fill ht-show" href="#"><div class="art a3"></div><div class="card-body"><span class="card-title">小镇球队</span><span class="card-sub">体育 · 全 8 集</span><span class="btn xs on-media">立即观看</span></div></a>
       </div>
-    </div>
   </section>
 
   <footer class="footer">
@@ -142,7 +151,7 @@
         <div><h4>关于</h4><ul><li><a href="#">新闻中心</a></li><li><a href="#">工作机会</a></li><li><a href="#">联系我们</a></li></ul></div>
       </div>
       <div class="footer-legal">
-        <span>Copyright © 2026 Aurora Inc. 保留所有权利。沪ICP备 18032217 号</span>
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。<span class="nowrap">沪ICP备 18032217 号</span></span>
         <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">销售政策</a><a href="#">网站地图</a></nav>
       </div>
     </div>

@@ -30,7 +30,9 @@
   .ar-table { overflow-x: auto; }
   .ar-table td:nth-child(n+2), .ar-table th:nth-child(n+2) { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .ar-tags { margin-top: 40px; }
-  .ar-author { display: flex; gap: 16px; align-items: flex-start; padding: 24px; margin-top: 32px; }
+  .ar-layout .prose { max-width: none; }
+  .site .section-head.row { padding: 0; min-height: 0; font-size: inherit; }
+  .ar-author { display: flex; flex-direction: row; gap: 16px; align-items: flex-start; padding: 24px; margin-top: 32px; }
   .ar-author .stack { --gap: 6px; }
   .ar-rel .card-body { gap: 8px; padding: 18px 20px 20px; flex: 1; }
   .ar-rel .tag { align-self: flex-start; }
@@ -60,7 +62,7 @@
       <p class="t-lead t-2">阻尼比和响应时间两个数字，就能描述 90% 的界面动效。本文给出常用场景的推荐值，以及两个平台落地时的差异。</p>
       <div class="ar-byline">
         <span class="avatar ar-p">许</span>
-        <div class="grow"><b>许沐阳</b><span class="t-footnote t-2">2026年5月14日 · 9 分钟阅读</span></div>
+        <div class="grow"><b>许沐阳</b><span class="t-footnote t-2"><span class="nowrap">2026年5月14日</span> · <span class="nowrap">9 分钟阅读</span></span></div>
         <div class="ar-share">
           <button class="icon-btn neutral sm" aria-label="复制链接"><svg class="i"><use href="#i-link"/></svg></button>
           <button class="icon-btn neutral sm" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>

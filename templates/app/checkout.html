@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>确认订单</title>
+<meta name="ui:title" content="确认订单">
+<meta name="ui:desc" content="电商下单确认页：带信封色条的收货地址卡片、商品缩略图摘要、配送方式选项、支付方式单选（iOS 显示 Apple Pay，Android 显示 Google Pay）、发票与备注、金额明细，以及贴底的实付金额与提交订单按钮。">
+<meta name="ui:category" content="电商与零售">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="下单,收货地址,配送方式,支付方式,单选,金额明细">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .co { padding-bottom: calc(var(--safe-bottom) + 96px); }
+  html[data-lang="google"] .co .card { background: var(--md-surface-container-low); }
+  html[data-lang="google"][data-scheme="dark"] .co .card { background: var(--md-surface-container); }
+  .co-addr { flex-direction: row; align-items: center; gap: 12px; margin-top: 4px; padding-bottom: 19px; }
+  .co-addr::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+    background: repeating-linear-gradient(-45deg, var(--c-red) 0 14px, transparent 14px 20px, var(--c-blue) 20px 34px, transparent 34px 40px); opacity: .8; }
+  .co-pin { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
+  .co-pin .i { --ui-icon: 20px; }
+  .co-addr .grow { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .co-addr .row-chevron { display: block; }
+  .co-goods { flex-direction: row; align-items: center; gap: 8px; margin-top: 12px; }
+  .co-goods .art { width: 64px; height: 64px; border-radius: var(--ui-radius-m); flex: none; }
+  .co-goods .art .i { --ui-icon: 26px; }
+  .co-goods .grow { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .co-goods .row-chevron { display: block; }
+  .co .option { padding: 14px 16px; gap: 12px; }
+  .co .option.is-active { padding: 13px 15px; }
+  .co .option .grow { display: flex; flex-direction: column; gap: 2px; }
+  .co-logo { flex: none; width: 40px; height: 28px; border-radius: 7px; display: grid; place-items: center; font: 700 12px/1 var(--ui-font); letter-spacing: -.2px; }
+  .co-logo .i { --ui-icon: 18px; }
+  .co-logo.ap { background: #000; color: #fff; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 25%); }
+  .co-logo.gp { background: #fff; color: #3c4043; box-shadow: inset 0 0 0 1px #dadce0; }
+  .co-logo.gp b { color: #4285f4; margin-right: 2px; }
+  .co-logo.wx { background: #07c160; color: #fff; }
+  .co-logo.cmb { background: #d7000f; color: #fff; }
+  .co .list .row-value { max-width: 60%; }
+  .co .kv { gap: 10px 16px; }
+  .co .kv dd.t-danger { color: var(--c-red); }
+  .co-total { display: flex; justify-content: space-between; align-items: baseline; }
+  .co-price { color: var(--c-red); font: 700 calc(22px * var(--ts)) / 1.15 var(--ui-font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  html[data-lang="google"] .co-price { font-weight: 600; }
+  .co-price small { font-size: .62em; margin-right: 1px; }
+  .co-bar { position: fixed; z-index: 36; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px;
+    padding: 10px var(--ui-margin) calc(var(--safe-bottom) + 10px); border-top: .5px solid var(--ui-line);
+    background: color-mix(in srgb, var(--ui-bg-plain) 84%, transparent); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+  html[data-lang="google"] .co-bar { background: var(--md-surface-container); border-top: 0; }
+  .co-bar .grow { display: flex; flex-direction: column; gap: 1px; }
+  .co-bar .btn { --ui-btn-h: 48px; --ui-btn-px: 28px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a></div>
+    <div class="topbar-title">确认订单</div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content co">
+    <a class="card pad co-addr" href="#">
+      <span class="co-pin"><svg class="i"><use href="#i-map-pin"/></svg></span>
+      <span class="grow">
+        <span class="hstack gap-2"><span class="t-headline">林知夏</span><span class="t-subhead t-2 t-num">138 **** 6624</span><span class="tag accent">公司</span></span>
+        <span class="t-subhead">上海市 徐汇区 漕河泾街道 宜山路 700 号 普天信息产业园 B2 栋 12 楼</span>
+      </span>
+      <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+    </a>
+
+    <a class="card pad co-goods" href="#">
+      <span class="art a2"><svg class="i"><use href="#i-headphones"/></svg></span>
+      <span class="art a6"><svg class="i"><use href="#i-zap"/></svg></span>
+      <span class="art a12"><svg class="i"><use href="#i-bed"/></svg></span>
+      <span class="grow"><span class="t-subhead t-semibold">共 3 件</span><span class="t-caption t-2">来自 2 家店铺</span></span>
+      <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+    </a>
+
+    <section class="group">
+      <h2 class="group-header">配送方式</h2>
+      <div class="option-list">
+        <button class="option is-active"><span class="grow"><span class="t-subhead t-semibold">标准快递 · 顺丰速运</span><span class="t-footnote t-2">预计 10月28日（周二）送达</span></span><span class="t-subhead t-success">免运费</span></button>
+        <button class="option"><span class="grow"><span class="t-subhead t-semibold">次日达</span><span class="t-footnote t-2">明天（10月27日）18:00 前送达</span></span><span class="t-subhead t-num">+¥12.00</span></button>
+        <button class="option"><span class="grow"><span class="t-subhead t-semibold">门店自提</span><span class="t-footnote t-2">Aurora 上海南京东路店 · 距你 8.6 km</span></span><span class="t-subhead t-success">免运费</span></button>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">支付方式</h2>
+      <ul class="list">
+        <li class="only-apple"><label class="row">
+          <span class="co-logo ap"><svg class="i"><use href="#i-wallet"/></svg></span>
+          <span class="row-body"><span class="row-title">Apple Pay</span><span class="row-sub">招商银行信用卡（3308）</span></span>
+          <input type="radio" class="radio" name="ck-pay" checked>
+        </label></li>
+        <li class="only-google"><label class="row">
+          <span class="co-logo gp"><span><b>G</b>Pay</span></span>
+          <span class="row-body"><span class="row-title">Google Pay</span><span class="row-sub">招商银行信用卡（3308）</span></span>
+          <input type="radio" class="radio" name="ck-pay-g" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="co-logo wx"><svg class="i"><use href="#i-message"/></svg></span>
+          <span class="row-body"><span class="row-title">微信支付</span><span class="row-sub">零钱余额 ¥1,284.60</span></span>
+          <input type="radio" class="radio" name="ck-pay">
+        </label></li>
+        <li><label class="row">
+          <span class="co-logo cmb"><svg class="i"><use href="#i-card"/></svg></span>
+          <span class="row-body"><span class="row-title">招商银行储蓄卡（6215）</span><span class="row-sub">单笔限额 ¥50,000</span></span>
+          <input type="radio" class="radio" name="ck-pay">
+        </label></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <ul class="list">
+        <li><a class="row" href="#"><span class="row-body"><span class="row-title">发票</span></span><span class="row-value">电子普通发票 · 个人</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+        <li><a class="row" href="#"><span class="row-body"><span class="row-title">订单备注</span></span><span class="row-value">工作日送到前台</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      </ul>
+    </section>
+
+    <section class="card pad mt-6">
+      <dl class="kv t-subhead">
+        <dt>商品金额</dt><dd>¥2,596.00</dd>
+        <dt>运费</dt><dd>¥0.00</dd>
+        <dt>店铺满减</dt><dd class="t-danger">−¥100.00</dd>
+        <dt>平台券 · 满 2,000 减 100</dt><dd class="t-danger">−¥100.00</dd>
+      </dl>
+      <div class="divider"></div>
+      <div class="co-total"><span class="t-subhead">已优惠 ¥200.00</span><span class="t-subhead">小计 <span class="co-price"><small>¥</small>2,396.00</span></span></div>
+    </section>
+    <p class="t-caption t-3 t-center mt-4">提交订单即表示你已阅读并同意《拾物商城用户购买协议》</p>
+  </main>
+
+  <div class="co-bar">
+    <div class="grow">
+      <span class="t-subhead">实付 <span class="co-price"><small>¥</small>2,396.00</span></span>
+      <span class="t-caption t-2">共 3 件 · 已优惠 ¥200.00</span>
+    </div>
+    <button class="btn filled">提交订单</button>
+  </div>
+</div>
+</body>
+</html>

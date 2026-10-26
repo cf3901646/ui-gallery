@@ -24,6 +24,7 @@
   .cm-phone::before { content: ""; position: absolute; top: 5%; left: 8%; width: var(--cam, 48%); aspect-ratio: 1; border-radius: 26%; background: rgb(0 0 0 / 16%); }
   .cm-dots { gap: 8px; justify-content: center; }
   .cm-dots .swatch { width: 12px; height: 12px; cursor: default; }
+  html[data-scheme="dark"] .cm-dots .swatch { box-shadow: inset 0 0 0 1px var(--ui-line-strong); }
   .cm-model .btn-row { margin-top: 6px; }
   .cm-price { font-variant-numeric: tabular-nums; }
   .cm-table { margin-top: 64px; }
@@ -38,6 +39,9 @@
   .cm-no { color: var(--ui-text-3); font-size: 20px; line-height: 1; }
   @media (max-width: 860px) {
     .cm-table { margin-inline: calc(-1 * var(--ui-margin-web)); padding-inline: var(--ui-margin-web); margin-top: 48px; }
+    /* 横滑时对比项名称固定在左侧 */
+    .cm-table th:first-child { position: sticky; left: 0; z-index: 1; background: var(--ui-site-bg, var(--ui-bg-plain)); box-shadow: inset -1px 0 0 var(--ui-line); }
+    .cm-table th:first-child::before { content: ""; position: absolute; top: 0; bottom: 0; right: 100%; width: var(--ui-margin-web); background: inherit; }
   }
   @media (max-width: 560px) {
     .cm-models { grid-template-columns: repeat(3, 78%); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
@@ -126,7 +130,7 @@
 
   <section class="section alt">
     <div class="wrap">
-      <div class="section-head center"><h2 class="t-large-title">在 Aurora Store 购买的理由。</h2></div>
+      <div class="section-head center"><h2 class="t-large-title t-balance">在 Aurora Store 购买的理由。</h2></div>
       <div class="grid c3 gap-8">
         <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-refresh"/></svg></span><h3 class="t-title3">以旧换新</h3><p class="t-body t-2">用符合条件的手机换购，最高抵扣 ¥4,800，评估只需 2 分钟。</p></article>
         <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-card"/></svg></span><h3 class="t-title3">24 期免息</h3><p class="t-body t-2">使用招商银行、工商银行等 12 家银行信用卡，享 24 期免息分期。</p></article>

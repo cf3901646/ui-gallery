@@ -130,7 +130,9 @@ body.app { background: var(--ui-bg); }
 .screen { min-height: 100dvh; display: flex; flex-direction: column; position: relative; }
 .content { flex: 1; padding: 0 var(--ui-margin) calc(var(--safe-bottom) + 24px); }
 .content.flush { padding-inline: 0; }
-body:has(.tabbar) .content { padding-bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 32px); }
+/* 只在“当前语言下可见”的标签栏存在时才给内容、FAB、提示条让位 */
+:is(html[data-lang="apple"] body:has(.tabbar:not(.only-google, .inline)), html[data-lang="google"] body:has(.tabbar:not(.only-apple, .inline))) .content {
+  padding-bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 32px); }
 body:has(.toolbar.floating) .content { padding-bottom: calc(var(--safe-bottom) + 96px); }
 .bleed { margin-inline: calc(-1 * var(--ui-margin)); }
 .status-spacer { height: var(--safe-top); }
@@ -157,10 +159,15 @@ html.scrolled .topbar:not(.transparent) { background: var(--ui-topbar-bg-scrolle
 .bar-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: var(--ui-ctl-h);
   height: var(--ui-ctl-h); padding: 0 10px; border-radius: var(--ui-radius-full); color: var(--ui-bar-btn-color, var(--ui-text));
   font-weight: 500; white-space: nowrap; transition: transform var(--ui-dur-fast) var(--ui-ease), background-color var(--ui-dur-fast); }
-.bar-btn:has(> .i:only-child) { padding: 0; width: var(--ui-ctl-h); }
+/* 纯图标按钮：只含图标（可以再带一个 .badge） */
+.bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { padding: 0; width: var(--ui-ctl-h); }
+.bar-btn { position: relative; }
+.bar-btn > .badge { position: absolute; top: 2px; right: 2px; pointer-events: none; }
+.bar-btn > .badge.dot { top: 8px; right: 8px; }
 .bar-btn.back > span { display: var(--ui-back-label, none); }
 .bar-btn.prominent { background: var(--ui-accent); color: var(--ui-on-accent); }
-.bar-group { display: inline-flex; align-items: center; }
+.bar-group { display: inline-flex; align-items: center; border-radius: var(--ui-radius-full); }
+.glass { background: var(--ui-glass-bg); }
 
 /* 底部标签栏 */
 .tabbar { position: fixed; z-index: 40; display: flex; justify-content: space-around; align-items: stretch; }
@@ -174,7 +181,8 @@ html.scrolled .topbar:not(.transparent) { background: var(--ui-topbar-bg-scrolle
 .fab { position: fixed; z-index: 35; right: var(--ui-margin);
   bottom: calc(var(--safe-bottom) + var(--ui-fab-offset, 16px)); display: inline-flex; align-items: center; justify-content: center;
   gap: 10px; transition: transform var(--ui-dur) var(--ui-ease-spatial), border-radius var(--ui-dur) var(--ui-ease-spatial); }
-body:has(.tabbar) .fab { --ui-fab-offset: calc(var(--ui-tabbar-h) + 16px); }
+:is(html[data-lang="apple"] body:has(.tabbar:not(.only-google, .inline)), html[data-lang="google"] body:has(.tabbar:not(.only-apple, .inline))) .fab:not(.inline) {
+  --ui-fab-offset: calc(var(--ui-tabbar-h) + 16px); }
 .fab.static { position: static; }
 .toolbar { display: flex; align-items: center; gap: 4px; }
 .toolbar.floating { position: fixed; z-index: 36; left: 50%; transform: translateX(-50%);
@@ -228,6 +236,8 @@ a.row, button.row, label.row { cursor: pointer; }
 .card-title { font-size: calc(var(--fs-headline) * var(--ts)); line-height: var(--lh-headline); font-weight: var(--fw-headline); }
 .card-sub { color: var(--ui-text-2); font-size: calc(var(--fs-subhead) * var(--ts)); line-height: var(--lh-subhead); }
 .card-actions { display: flex; gap: 8px; align-items: center; padding: 0 var(--ui-card-pad) var(--ui-card-pad); flex-wrap: wrap; }
+.card.horizontal { flex-direction: row; align-items: stretch; }
+.card.horizontal > .card-media { aspect-ratio: auto; flex: 0 0 var(--media-w, 38%); }
 .card.outlined { background: transparent; border: 1px solid var(--ui-line); }
 .card.elevated { box-shadow: var(--ui-shadow-1); }
 .card.tinted { background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
@@ -325,7 +335,7 @@ a.row, button.row, label.row { cursor: pointer; }
 .tabs.scroll > a, .tabs.scroll > button { flex: 0 0 auto; }
 .chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-block: 2px; }
 .chips::-webkit-scrollbar { display: none; }
-.chips.wrap { flex-wrap: wrap; overflow: visible; }
+.chips.wrap { flex-wrap: wrap; overflow: visible; max-width: none; margin-inline: 0; padding-inline: 0; }  /* 与网页容器 .wrap 同名，这里抵消掉 */
 .chips.bleed { padding-inline: var(--ui-margin); }
 .chip { display: inline-flex; align-items: center; gap: 6px; flex: none; height: var(--ui-chip-h, 32px); padding: 0 14px;
   border-radius: var(--ui-chip-radius, var(--ui-radius-full)); background: var(--ui-chip-bg, var(--ui-fill));
@@ -452,7 +462,8 @@ a.row, button.row, label.row { cursor: pointer; }
 .toast { position: fixed; z-index: 60; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-bottom) + 24px);
   display: flex; align-items: center; gap: 12px; max-width: calc(100% - 2 * var(--ui-margin)); width: max-content;
   padding: 12px 16px; font-size: calc(var(--fs-subhead) * var(--ts)); }
-body:has(.tabbar) .toast { bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 20px); }
+:is(html[data-lang="apple"] body:has(.tabbar:not(.only-google, .inline)), html[data-lang="google"] body:has(.tabbar:not(.only-apple, .inline))) .toast:not(.top) {
+  bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 20px); }
 .toast.top { bottom: auto; top: calc(var(--safe-top) + 12px); }
 .toast .btn { --ui-btn-h: 32px; margin-left: 8px; }
 .skeleton { background: linear-gradient(90deg, var(--ui-fill) 25%, var(--ui-fill-2) 50%, var(--ui-fill) 75%) 0 0 / 300% 100%;
@@ -596,6 +607,7 @@ body:has(.tabbar) .toast { bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) 
 .bubble-meta { align-self: center; color: var(--ui-text-3); font-size: calc(var(--fs-caption) * var(--ts)); margin: 10px 0 4px; }
 .composer { position: sticky; bottom: 0; display: flex; align-items: flex-end; gap: 8px; padding: 8px var(--ui-margin) calc(var(--safe-bottom) + 8px); z-index: 20; }
 .composer > .searchbar, .composer > .composer-input { flex: 1; }
+.sheet .composer { position: sticky !important; bottom: 0; margin: 0 !important; border-radius: 0 !important; background: inherit; }
 .composer-input { min-height: 40px; display: flex; align-items: center; padding: 0 14px; border-radius: 20px; border: 1px solid var(--ui-line); background: var(--ui-surface); color: var(--ui-text-3); }
 
 /* ---------- 14. 媒体占位（无外部图片） ---------- */

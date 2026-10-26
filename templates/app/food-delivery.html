@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>老盛昌汤包 · 外卖</title>
+<meta name="ui:title" content="外卖餐厅">
+<meta name="ui:desc" content="外卖店铺页：店铺头图、店铺信息卡（评分、月售、配送时间、起送价、满减优惠）、吸顶分类筛选片、菜品列表（加购按钮、已加购数量步进器）和底部浮动购物车条。">
+<meta name="ui:category" content="出行与本地生活">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="外卖,店铺,菜品列表,步进器,购物车,吸顶筛选">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html.title-in .fo-bar { background: var(--ui-bg); }
+  html.title-in .fo-bar .bar-btn { --ui-glass-bg: inherit; color: var(--ui-text); }
+  html[data-lang="google"].title-in .fo-bar .bar-btn { background: transparent; color: var(--md-on-surface-variant); }
+  .fo-hero { height: calc(var(--safe-top) + 172px); }
+  .fo-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgb(0 0 0 / 40%), transparent 60%); }
+  .fo-main { position: relative; margin-top: -48px; padding-bottom: calc(var(--safe-bottom) + 108px); }
+  .fo-id { display: flex; align-items: center; gap: 12px; }
+  .fo-logo { width: 52px; height: 52px; flex: none; border-radius: var(--ui-radius-m); }
+  .fo-logo .i { --ui-icon: 26px; }
+  .fo-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; padding: 12px 0; border-block: .5px solid var(--ui-line); }
+  .fo-facts .stat { align-items: center; }
+  .fo-facts .stat-value { display: flex; align-items: center; gap: 2px; font-size: calc(19px * var(--ts)); }
+  .fo-facts .stat-value small { font-size: .62em; font-weight: 500; }
+  .fo-star { --ui-icon: 16px; color: var(--c-orange); }
+  .fo-deals { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fo-note { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+  .fo-note .i { flex: none; }
+  .fo-cats { position: sticky; z-index: 20; top: calc(var(--safe-top) + var(--ui-topbar-h)); background: var(--ui-bg); padding-block: 14px 10px; }
+  .fo-cats + .group { margin-top: 6px; }
+  .fo-dish { position: relative; display: flex; gap: 12px; padding: 14px var(--ui-card-pad); }
+  .fo-dish + .fo-dish::before { content: ""; position: absolute; top: 0; right: 0; left: calc(var(--ui-card-pad) + 96px); border-top: .5px solid var(--ui-line); }
+  .fo-pic { width: 84px; height: 84px; flex: none; border-radius: var(--ui-radius-m); }
+  .fo-pic .i { --ui-icon: 30px; }
+  .fo-flag { position: absolute; left: 0; top: 0; padding: 2px 7px; border-radius: 0 0 10px 0; background: rgb(0 0 0 / 50%); color: #fff; font-size: 11px; font-weight: 600; }
+  .fo-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .fo-buy { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; }
+  .fo-buy > :last-child { margin-left: auto; }
+  .fo-price { color: var(--ui-danger); font: 600 calc(19px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  .fo-price small { font-size: .62em; margin-right: 1px; }
+  .fo-step { background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
+  .fo-step > button { width: 34px; color: inherit; }
+  .fo-step > output { min-width: 18px; }
+
+  .fo-cart { position: fixed; z-index: 40; left: 12px; right: 12px; bottom: max(10px, calc(var(--safe-bottom) - 10px)); display: flex; align-items: center; gap: 12px;
+    height: 66px; padding: 0 8px 0 10px; border-radius: var(--ui-radius-full); }
+  .fo-bag { position: relative; width: 48px; height: 48px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--ui-accent); color: var(--ui-on-accent); }
+  .fo-bag .badge { position: absolute; top: -3px; right: -5px; box-shadow: 0 0 0 2px var(--ui-surface); }
+  .fo-total { font: 700 calc(22px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  .fo-total small { font-size: .6em; }
+  .fo-cart .grow { display: flex; flex-direction: column; gap: 3px; }
+  html[data-lang="google"] .fo-cart { left: 8px; right: 8px; bottom: calc(var(--safe-bottom) + 8px); height: 76px; padding: 0 10px 0 12px;
+    border-radius: var(--ui-radius-xl); background: var(--md-surface-container-highest); }
+  html[data-lang="google"] .fo-bag { width: 52px; height: 52px; border-radius: var(--ui-radius-l); background: var(--md-primary-container); color: var(--md-on-primary-container); }
+  html[data-lang="google"] .fo-total { font-weight: 500; }
+  html[data-lang="google"] .fo-price { font-weight: 500; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar transparent has-large fo-bar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a></div>
+    <div class="topbar-title">老盛昌汤包</div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="搜索菜品"><svg class="i"><use href="#i-search"/></svg></button>
+      <button class="bar-btn" aria-label="收藏店铺"><svg class="i"><use href="#i-star"/></svg></button>
+      <button class="bar-btn" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>
+    </div>
+  </header>
+
+  <div class="fo-hero art a5" role="img" aria-label="店铺头图：蒸笼里的小笼包"><svg class="i xxl"><use href="#i-food"/></svg></div>
+
+  <main class="content fo-main">
+    <section class="card pad">
+      <div class="fo-id">
+        <span class="fo-logo art a11"><svg class="i"><use href="#i-store"/></svg></span>
+        <div class="grow">
+          <h1 class="t-title3 ellipsis">老盛昌汤包（南京西路店）</h1>
+          <p class="t-footnote t-2 ellipsis">中式点心 · 人均 ¥32 · 配送费 ¥3</p>
+        </div>
+      </div>
+      <div class="fo-facts">
+        <div class="stat"><span class="stat-value"><svg class="i solid fo-star"><use href="#i-star-fill"/></svg>4.8</span><span class="stat-label">2,416 条评价</span></div>
+        <div class="stat"><span class="stat-value">3,268</span><span class="stat-label">月售</span></div>
+        <div class="stat"><span class="stat-value">32<small>分钟</small></span><span class="stat-label">准时达</span></div>
+        <div class="stat"><span class="stat-value"><small>¥</small>20</span><span class="stat-label">起送</span></div>
+      </div>
+      <div class="fo-deals">
+        <span class="tag danger">满40减8</span><span class="tag danger">满60减15</span><span class="tag accent">新客立减¥5</span><span class="tag warning">会员红包¥6</span>
+      </div>
+      <p class="fo-note t-footnote t-2"><svg class="i sm"><use href="#i-bell"/></svg><span class="ellipsis">公告：汤包现包现蒸，午高峰出餐约 15 分钟，请耐心等待</span></p>
+    </section>
+
+    <div class="chips single bleed fo-cats">
+      <button class="chip is-active">热销</button><button class="chip">招牌汤包</button><button class="chip">生煎锅贴</button><button class="chip">面食</button><button class="chip">凉菜小食</button><button class="chip">饮品</button>
+    </div>
+
+    <section class="group">
+      <h2 class="group-header">热销 <span class="t-footnote t-3">本店销量前 3</span></h2>
+      <ul class="card">
+        <li class="fo-dish">
+          <span class="art a5 fo-pic"><svg class="i"><use href="#i-food"/></svg><span class="fo-flag">招牌</span></span>
+          <div class="fo-info">
+            <h3 class="t-headline">鲜肉小笼（8 只）</h3>
+            <p class="t-footnote t-2 t-clamp-1">前腿肉现包现蒸，皮薄汤多，配姜丝香醋</p>
+            <p class="t-caption t-3">月售 1,862 · 好评率 98%</p>
+            <div class="fo-buy">
+              <span class="fo-price"><small>¥</small>22</span><s class="t-caption t-3">¥26</s>
+              <div class="stepper fo-step"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>3</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div>
+            </div>
+          </div>
+        </li>
+        <li class="fo-dish">
+          <span class="art a9 fo-pic"><svg class="i"><use href="#i-flame"/></svg></span>
+          <div class="fo-info">
+            <h3 class="t-headline">招牌生煎（4 只）</h3>
+            <p class="t-footnote t-2 t-clamp-1">底部煎到金黄焦脆，撒芝麻和小葱</p>
+            <p class="t-caption t-3">月售 1,204 · 好评率 97%</p>
+            <div class="fo-buy">
+              <span class="fo-price"><small>¥</small>16</span>
+              <button class="icon-btn filled sm" aria-label="加入购物车"><svg class="i"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+        </li>
+        <li class="fo-dish">
+          <span class="art a1 fo-pic"><svg class="i"><use href="#i-food"/></svg></span>
+          <div class="fo-info">
+            <h3 class="t-headline">红汤大排面</h3>
+            <p class="t-footnote t-2 t-clamp-1">现炸猪大排配秘制红汤，碱水面劲道</p>
+            <p class="t-caption t-3">月售 728 · 好评率 96%</p>
+            <div class="fo-buy">
+              <span class="fo-price"><small>¥</small>28</span>
+              <button class="btn tonal xs">选规格</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">招牌汤包</h2>
+      <ul class="card">
+        <li class="fo-dish">
+          <span class="art a8 fo-pic"><svg class="i"><use href="#i-sparkles"/></svg></span>
+          <div class="fo-info">
+            <h3 class="t-headline">蟹粉小笼（6 只）</h3>
+            <p class="t-footnote t-2 t-clamp-1">整只大闸蟹现拆蟹粉，蟹黄蟹肉足料</p>
+            <p class="t-caption t-3">月售 936 · 好评率 97%</p>
+            <div class="fo-buy">
+              <span class="fo-price"><small>¥</small>48</span>
+              <button class="icon-btn filled sm" aria-label="加入购物车"><svg class="i"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+        </li>
+        <li class="fo-dish">
+          <span class="art a10 fo-pic"><svg class="i"><use href="#i-leaf"/></svg></span>
+          <div class="fo-info">
+            <h3 class="t-headline">荠菜鲜肉馄饨</h3>
+            <p class="t-footnote t-2 t-clamp-1">十只大馄饨，紫菜虾皮清汤</p>
+            <p class="t-caption t-3">月售 612 · 好评率 98%</p>
+            <div class="fo-buy">
+              <span class="fo-price"><small>¥</small>18</span>
+              <button class="icon-btn filled sm" aria-label="加入购物车"><svg class="i"><use href="#i-plus"/></svg></button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="fo-cart glass">
+    <span class="fo-bag"><svg class="i"><use href="#i-bag-fill"/></svg><span class="badge">3</span></span>
+    <div class="grow">
+      <div class="hstack gap-2 base"><span class="fo-total"><small>¥</small>51</span><s class="t-footnote t-3">¥66</s></div>
+      <span class="t-caption t-2 ellipsis">已减 ¥15 · 另需配送费 ¥3</span>
+    </div>
+    <button class="btn filled lg">去结算</button>
+  </div>
+</div>
+</body>
+</html>

@@ -39,11 +39,49 @@
     mq.addEventListener('change', function () { if (!d.hasAttribute('data-scheme-locked')) apply({ scheme: 'auto' }); });
   }
 
+  var embedded = window.parent !== window;
+  function post(msg) { if (embedded) { try { window.parent.postMessage(msg, '*'); } catch (err) { /* 忽略 */ } } }
+  // 页面视觉上是否为深色（决定外框状态栏用白字还是黑字）
+  function isDark() {
+    return d.getAttribute('data-scheme') === 'dark' || !!(document.body && document.body.getAttribute('data-scheme-hint') === 'dark');
+  }
+  function postState() { post({ type: 'ui:state', dark: isDark(), lang: d.getAttribute('data-lang'), height: d.scrollHeight }); }
+
+  // 把任意 CSS 颜色（含 oklch、color-mix、var()）解析成 #rrggbb / #rrggbbaa
+  var probe, ctx;
+  function toHex(value) {
+    if (!probe) {
+      probe = document.createElement('span'); probe.style.display = 'none'; document.body.appendChild(probe);
+      ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true }); ctx.canvas.width = ctx.canvas.height = 1;
+    }
+    probe.style.color = ''; probe.style.color = value;
+    var c = getComputedStyle(probe).color;
+    ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1);
+    var p = ctx.getImageData(0, 0, 1, 1).data;
+    var hex = '#' + [p[0], p[1], p[2]].map(function (n) { return ('0' + n.toString(16)).slice(-2); }).join('');
+    return p[3] < 255 ? hex + ('0' + p[3].toString(16)).slice(-2) : hex;
+  }
+  function tokens(names) {
+    var cs = getComputedStyle(d), out = {};
+    names.forEach(function (n) {
+      var raw = cs.getPropertyValue(n).trim();
+      out[n] = /^(#|rgb|hsl|oklch|oklab|lab|lch|color|var\(|[a-z]+$)/i.test(raw) && !/^\d/.test(raw) ? toHex('var(' + n + ')') : raw;
+    });
+    return out;
+  }
+  window.UITokens = { hex: toHex, read: tokens };
+
   window.addEventListener('message', function (e) {
     var m = e.data;
     if (!m || typeof m !== 'object') return;
-    if (m.type === 'ui:set') { if (m.scheme && m.scheme !== 'auto') d.setAttribute('data-scheme-locked', ''); apply(m); }
+    if (m.type === 'ui:set') {
+      if (m.scheme && m.scheme !== 'auto') d.setAttribute('data-scheme-locked', '');
+      apply(m);
+      requestAnimationFrame(postState);
+    }
     if (m.type === 'ui:scroll') window.scrollTo({ top: m.top || 0, behavior: m.smooth ? 'smooth' : 'auto' });
+    if (m.type === 'ui:tokens') post({ type: 'ui:tokens', id: m.id, values: tokens(m.names || []) });
+    if (m.type === 'ui:goto' && m.hash) { var el = document.getElementById(m.hash); if (el) el.scrollIntoView({ behavior: m.smooth ? 'smooth' : 'auto' }); }
   });
 
   function onScroll() {
@@ -126,12 +164,22 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     document.querySelectorAll('.range').forEach(syncRange);
     if (q.get('audit')) setTimeout(audit, 120);
-    if (window.parent !== window) {
-      try {
-        var meta = {};
-        document.querySelectorAll('meta[name^="ui:"]').forEach(function (m) { meta[m.name.slice(3)] = m.content; });
-        window.parent.postMessage({ type: 'ui:ready', title: document.title, meta: meta, height: d.scrollHeight }, '*');
-      } catch (err) { /* 忽略 */ }
+    if (embedded) {
+      var meta = {};
+      document.querySelectorAll('meta[name^="ui:"]').forEach(function (m) { meta[m.name.slice(3)] = m.content; });
+      post({ type: 'ui:ready', title: document.title, meta: meta, height: d.scrollHeight, dark: isDark(), lang: d.getAttribute('data-lang') });
+      // ?sync=1：把滚动位置报给父页面（对比模式下两个预览同步滚动）
+      if (q.get('sync')) {
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (ticking) return; ticking = true;
+          requestAnimationFrame(function () { ticking = false; post({ type: 'ui:scrolled', y: window.scrollY }); });
+        }, { passive: true });
+      }
+      // ?autoheight=1：内容高度变化时通知父页面（嵌入说明页时 iframe 自适应高度）
+      if (q.get('autoheight') && window.ResizeObserver) {
+        new ResizeObserver(function () { post({ type: 'ui:height', height: d.scrollHeight }); }).observe(document.body);
+      }
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();

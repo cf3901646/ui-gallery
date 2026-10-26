@@ -45,10 +45,12 @@
     padding: 4px 6px; gap: 6px; overflow: hidden; flex-direction: row; font-size: 12px; line-height: 1.3; border-radius: 6px; }
   .cl-ev > span { display: flex; flex-direction: column; min-width: 0; }
   .cl-ev b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .cl-ev small { font-size: 11px; color: var(--ui-text-2); }
+  .cl-ev small { font-size: 11px; color: var(--ui-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cl-ev.cl-a { right: 50%; } .cl-ev.cl-b { left: 46%; box-shadow: 0 0 0 1.5px var(--ui-bg-plain); }
   html[data-lang="google"] .cl-ev, html[data-lang="google"] .cl-allday > .event { background: var(--c); color: #fff; border-radius: 8px; }
   html[data-lang="google"] .cl-ev small { color: rgb(255 255 255 / 85%); }
+  html[data-lang="google"][data-scheme="dark"] :is(.cl-ev, .cl-allday > .event) { color: var(--md-surface-container-lowest); }
+  html[data-lang="google"][data-scheme="dark"] .cl-ev small { color: color-mix(in srgb, var(--md-surface-container-lowest) 75%, transparent); }
   html[data-lang="apple"] .cl-ev.cl-b { background: color-mix(in srgb, var(--c) 18%, var(--ui-bg-plain)); }
   .cl-now { position: absolute; left: -1px; right: 0; top: calc(var(--s) * var(--h)); height: 2px; background: var(--c-red); z-index: 3; }
   .cl-now::before { content: ""; position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--c-red); }

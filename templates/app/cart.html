@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>购物车</title>
+<meta name="ui:title" content="购物车">
+<meta name="ui:desc" content="电商购物车：大标题与管理、配送地址、按店铺分组的商品行（圆形勾选、缩略图、规格、价格、数量步进器）、店铺满减提示、平台券、失效商品灰显，以及贴底的全选、合计与去结算栏。">
+<meta name="ui:category" content="电商与零售">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="购物车,勾选,步进器,优惠券,结算栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ct { padding-bottom: calc(var(--safe-bottom) + 96px); }
+  .ct-addr { display: flex; align-items: center; gap: 4px; margin: -4px 0 14px; }
+  .ct-addr .i { --ui-icon: 16px; }
+  .ct-shop + .ct-shop, .ct .list { margin-top: 12px; }
+  html[data-lang="google"] .ct .card { background: var(--md-surface-container-low); }
+  html[data-lang="google"][data-scheme="dark"] .ct .card { background: var(--md-surface-container); }
+  .ct-head { display: flex; align-items: center; gap: 8px; padding: 14px 14px 4px; }
+  .ct-head > .i { --ui-icon: 18px; }
+  .ct-head .row-chevron { --ui-icon: 16px; display: block; margin-left: -4px; }
+  .ct-head > a:last-child { margin-left: auto; }
+  .ct-promo { display: flex; align-items: center; gap: 6px; padding: 6px 14px 0 44px; color: var(--ui-text-2); }
+  .ct-promo .tag { height: 18px; padding: 0 5px; }
+  .ct-promo a { margin-left: auto; color: var(--c-red); font-weight: 600; }
+  .ct-item { display: grid; grid-template-columns: 22px 84px minmax(0, 1fr); gap: 0 10px; padding: 12px 14px; }
+  html[data-lang="google"] .ct-item { grid-template-columns: 24px 84px minmax(0, 1fr); }
+  .ct-item > .check, .ct-item > .tag { align-self: center; }
+  .ct-thumb { width: 84px; height: 84px; border-radius: var(--ui-radius-m); }
+  .ct-thumb .i { --ui-icon: 30px; }
+  .ct-info { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .ct-spec { display: inline-flex; align-items: center; gap: 2px; align-self: flex-start; padding: 2px 6px 2px 8px; border-radius: 6px;
+    background: var(--ui-fill); color: var(--ui-text-2); max-width: 100%; }
+  .ct-spec .i { --ui-icon: 14px; flex: none; }
+  .ct-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; }
+  .ct-price { color: var(--c-red); font: 700 calc(17px * var(--ts)) / 1.2 var(--ui-font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  html[data-lang="google"] .ct-price { font-weight: 600; }
+  .ct-price small { font-size: .7em; margin-right: 1px; }
+  .ct .stepper { height: 28px; }
+  .ct .stepper > button { width: 30px; }
+  .ct .stepper > output { min-width: 24px; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .ct-dead .ct-item > .tag { padding: 0 4px; font-size: calc(10px * var(--ts)); }
+  .ct-dead .ct-thumb { filter: grayscale(1); opacity: .45; }
+  .ct-dead .ct-info > span:first-child { color: var(--ui-text-3); }
+  .ct-bar { position: fixed; z-index: 36; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 12px;
+    padding: 10px var(--ui-margin) calc(var(--safe-bottom) + 10px); border-top: .5px solid var(--ui-line);
+    background: color-mix(in srgb, var(--ui-bg-plain) 84%, transparent); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+  html[data-lang="google"] .ct-bar { background: var(--md-surface-container); border-top: 0; }
+  .ct-all { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .ct-sum { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
+  .ct-sum a { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+  .ct-sum .i { --ui-icon: 12px; }
+  .ct-bar .btn { --ui-btn-h: 46px; --ui-btn-px: 20px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a></div>
+    <div class="topbar-title">购物车（4）</div>
+    <div class="topbar-trail"><button class="bar-btn">管理</button></div>
+  </header>
+
+  <main class="content ct">
+    <h1 class="page-title">购物车（4）</h1>
+    <p class="ct-addr t-footnote t-2"><svg class="i"><use href="#i-map-pin"/></svg>配送至：上海 徐汇区 宜山路 700 号 B2 栋</p>
+
+    <section class="card ct-shop">
+      <div class="ct-head">
+        <input type="checkbox" class="check round" checked aria-label="选择本店全部商品">
+        <svg class="i"><use href="#i-store"/></svg><span class="t-subhead t-semibold">Aurora 官方旗舰店</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        <a class="t-footnote t-accent t-semibold" href="#">领券</a>
+      </div>
+      <div class="ct-promo t-caption"><span class="tag danger">满减</span>已满 ¥1,500，已减 ¥100<a href="#">再逛逛</a></div>
+      <div class="ct-item">
+        <input type="checkbox" class="check round" checked aria-label="选择">
+        <span class="art a2 ct-thumb"><svg class="i"><use href="#i-headphones"/></svg></span>
+        <div class="ct-info">
+          <span class="t-subhead t-clamp-2">Aurora Buds Pro 2 主动降噪真无线耳机 USB-C</span>
+          <span class="ct-spec t-caption"><span class="ellipsis">月光白 · 标准版</span><svg class="i"><use href="#i-chevron-down"/></svg></span>
+          <div class="ct-foot"><span class="ct-price"><small>¥</small>1,799.00</span>
+            <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>1</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
+        </div>
+      </div>
+      <div class="ct-item">
+        <input type="checkbox" class="check round" checked aria-label="选择">
+        <span class="art a6 ct-thumb"><svg class="i"><use href="#i-zap"/></svg></span>
+        <div class="ct-info">
+          <span class="t-subhead t-clamp-2">Aurora 40W 双 USB-C 口快速充电器</span>
+          <span class="ct-spec t-caption"><span class="ellipsis">白色 · 国标插头</span><svg class="i"><use href="#i-chevron-down"/></svg></span>
+          <span class="t-caption t-danger">比加入时降 ¥20</span>
+          <div class="ct-foot"><span class="ct-price"><small>¥</small>149.00</span>
+            <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>1</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card ct-shop">
+      <div class="ct-head">
+        <input type="checkbox" class="check round" aria-label="选择本店全部商品">
+        <svg class="i"><use href="#i-store"/></svg><span class="t-subhead t-semibold">南山家纺旗舰店</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        <a class="t-footnote t-accent t-semibold" href="#">领券</a>
+      </div>
+      <div class="ct-item">
+        <input type="checkbox" class="check round" checked aria-label="选择">
+        <span class="art a12 ct-thumb"><svg class="i"><use href="#i-bed"/></svg></span>
+        <div class="ct-info">
+          <span class="t-subhead t-clamp-2">南山 新疆长绒棉四件套 1.8m 床 200×230cm</span>
+          <span class="ct-spec t-caption"><span class="ellipsis">雾灰条纹 · 1.8m 床</span><svg class="i"><use href="#i-chevron-down"/></svg></span>
+          <div class="ct-foot"><span class="ct-price"><small>¥</small>648.00</span>
+            <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>1</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
+        </div>
+      </div>
+      <div class="ct-item">
+        <input type="checkbox" class="check round" aria-label="选择">
+        <span class="art a10 ct-thumb"><svg class="i"><use href="#i-moon"/></svg></span>
+        <div class="ct-info">
+          <span class="t-subhead t-clamp-2">南山 泰国天然乳胶枕 护颈款 60×40cm</span>
+          <span class="ct-spec t-caption"><span class="ellipsis">标准款 · 高 10cm</span><svg class="i"><use href="#i-chevron-down"/></svg></span>
+          <div class="ct-foot"><span class="ct-price"><small>¥</small>199.00</span>
+            <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>2</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div></div>
+        </div>
+      </div>
+    </section>
+
+    <ul class="list has-icons">
+      <li><a class="row" href="#">
+        <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-ticket"/></svg></span>
+        <span class="row-body"><span class="row-title">平台券</span><span class="row-sub">满 2,000 减 100 · 已为你选择最优</span></span>
+        <span class="row-value t-danger t-semibold">−¥100</span>
+        <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+      </a></li>
+    </ul>
+
+    <section class="card ct-shop ct-dead">
+      <div class="ct-head"><span class="t-subhead t-semibold">失效商品 1 件</span><a class="t-footnote t-accent t-semibold" href="#">清空失效商品</a></div>
+      <div class="ct-item">
+        <span class="tag">失效</span>
+        <span class="art a5 ct-thumb"><svg class="i"><use href="#i-coffee"/></svg></span>
+        <div class="ct-info">
+          <span class="t-subhead t-clamp-2">山谷 冷萃咖啡液 24 颗装 浓缩无糖</span>
+          <span class="t-caption t-3">已售罄，到货后通知你</span>
+          <div class="ct-foot"><span></span><button class="btn outlined xs">找相似</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="ct-bar">
+    <label class="ct-all t-subhead"><input type="checkbox" class="check round">全选</label>
+    <div class="ct-sum">
+      <span class="t-subhead">合计 <span class="ct-price"><small>¥</small>2,396.00</span></span>
+      <a class="t-caption t-2" href="#">已优惠 ¥200.00 · 明细 <svg class="i"><use href="#i-chevron-up"/></svg></a>
+    </div>
+    <button class="btn filled">去结算（3）</button>
+  </div>
+</div>
+</body>
+</html>

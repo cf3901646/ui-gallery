@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>登机牌 · MU5101</title>
+<meta name="ui:title" content="登机牌">
+<meta name="ui:desc" content="电子登机牌：航空公司与航班号、大号起降机场代码与航线、起降时间和日期、登机口/座位/舱位/登机时间网格、半圆缺口与虚线撕边、二维码、添加到钱包按钮和航班动态。">
+<meta name="ui:category" content="出行与本地生活">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="登机牌,航班,二维码,钱包,键值网格,票据撕边">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html[data-lang="google"] .bp-pass { --ui-card-bg: var(--md-surface-container-lowest); --ui-card-radius: var(--ui-radius-xl); }
+  html[data-lang="google"][data-scheme="dark"] .bp-pass { --ui-card-bg: var(--md-surface-container-high); }
+  .bp-head { display: flex; align-items: center; justify-content: flex-start; gap: 12px; padding: 14px 16px; color: #fff; }
+  .bp-head .grow, .bp-head .t-right { display: flex; flex-direction: column; }
+  .bp-head .t-caption { opacity: .75; letter-spacing: .6px; }
+  .bp-logo { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: rgb(255 255 255 / 22%); flex: none; }
+  .bp-logo .i { --ui-icon: 20px; rotate: 45deg; }
+  html[data-lang="google"] .bp-logo .i { rotate: 90deg; }
+  .bp-no { font: 700 calc(20px * var(--ts)) / 1.1 var(--ui-font-display); letter-spacing: .5px; font-variant-numeric: tabular-nums; }
+  .bp-body { padding: 18px 18px 6px; }
+  .bp-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
+  .bp-route > div { display: flex; flex-direction: column; }
+  .bp-code { font: 700 calc(40px * var(--ts)) / 1.05 var(--ui-font-display); letter-spacing: -.5px; }
+  html[data-lang="google"] .bp-code, html[data-lang="google"] .bp-no { font-weight: 500; }
+  .bp-route .t-right { align-items: flex-end; }
+  .bp-mid { align-items: center; gap: 4px; }
+  .bp-line { display: flex; align-items: center; gap: 6px; width: 100%; color: var(--ui-accent); }
+  .bp-line::before, .bp-line::after { content: ""; flex: 1; border-top: 1.5px dashed var(--ui-text-3); }
+  .bp-line .i { rotate: 45deg; }
+  html[data-lang="google"] .bp-line .i { rotate: 90deg; }
+  .bp-times { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; margin-top: 14px; }
+  .bp-times > div { display: flex; flex-direction: column; }
+  .bp-times .t-right { align-items: flex-end; }
+  .bp-times .t-center { align-items: center; }
+  .bp-time { font: 600 calc(24px * var(--ts)) / 1.2 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .bp-time { font-weight: 400; }
+  .bp-kv { grid-auto-flow: column; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 2px 8px; margin-top: 16px; padding: 14px 0; border-block: .5px solid var(--ui-line); }
+  .bp-kv > dt { font-size: calc(var(--fs-caption) * var(--ts)); }
+  .bp-kv > dd { text-align: left; font: 600 calc(20px * var(--ts)) / 1.2 var(--ui-font-display); white-space: nowrap; }
+  html[data-lang="google"] .bp-kv > dd { font-weight: 500; }
+  .bp-pax { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0 4px; }
+  .bp-pax > div { display: flex; flex-direction: column; }
+  .bp-pax .t-right { align-items: flex-end; }
+  .bp-tear { position: relative; height: 28px;
+    background: radial-gradient(circle at 0 50%, var(--ui-bg) 13px, transparent 13.5px), radial-gradient(circle at 100% 50%, var(--ui-bg) 13px, transparent 13.5px); }
+  .bp-tear::after { content: ""; position: absolute; left: 22px; right: 22px; top: 50%; border-top: 2px dashed var(--ui-line); }
+  .bp-qr { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 18px 20px; }
+  .bp-qr .art { width: 172px; height: 172px; border-radius: var(--ui-radius-m); margin-bottom: 8px; }
+  .bp-qr .art .i { --ui-icon: 140px; color: #1c1917; opacity: 1; stroke-width: 1.3; }
+  .bp-dots { margin: 14px 0 4px; }
+  .bp-wallet { --b-bg: #000; --b-fg: #fff; margin-top: 12px; }
+  html[data-lang="google"] .bp-wallet { --b-bg: #1f1f1f; }
+  html[data-scheme="dark"] .bp-wallet { --b-bd: rgb(255 255 255 / 40%); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg><span>行程</span></a></div>
+    <div class="topbar-title">登机牌</div>
+    <div class="topbar-trail"><button class="bar-btn" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <article class="card bp-pass">
+      <header class="bp-head art a2">
+        <span class="bp-logo"><svg class="i"><use href="#i-plane"/></svg></span>
+        <div class="grow"><strong class="t-headline">中国东方航空</strong><span class="t-caption">CHINA EASTERN</span></div>
+        <div class="t-right"><span class="t-caption">航班</span><strong class="bp-no">MU5101</strong></div>
+      </header>
+
+      <div class="bp-body">
+        <div class="bp-route">
+          <div><span class="bp-code">PVG</span><span class="t-footnote t-2">上海浦东 T1</span></div>
+          <div class="bp-mid"><span class="bp-line"><svg class="i"><use href="#i-plane"/></svg></span><span class="t-caption t-2">2 小时 20 分</span></div>
+          <div class="t-right"><span class="bp-code">PEK</span><span class="t-footnote t-2">北京首都 T2</span></div>
+        </div>
+        <div class="bp-times">
+          <div><span class="t-caption t-2">起飞</span><strong class="bp-time">08:00</strong></div>
+          <div class="t-center"><span class="t-caption t-2">日期</span><strong class="t-subhead t-semibold">11月13日 周五</strong></div>
+          <div class="t-right"><span class="t-caption t-2">到达</span><strong class="bp-time">10:20</strong></div>
+        </div>
+        <dl class="kv bp-kv">
+          <dt>登机口</dt><dd class="t-accent">17</dd>
+          <dt>座位</dt><dd>32K</dd>
+          <dt>舱位</dt><dd>经济 Y</dd>
+          <dt>登机时间</dt><dd>07:20</dd>
+        </dl>
+        <div class="bp-pax">
+          <div><span class="t-caption t-2">旅客</span><strong class="t-subhead t-semibold">陈思远 CHEN/SIYUAN</strong></div>
+          <div class="t-right"><span class="t-caption t-2">登机序号</span><strong class="t-subhead t-semibold t-num">086</strong></div>
+        </div>
+      </div>
+
+      <div class="bp-tear" aria-hidden="true"></div>
+
+      <div class="bp-qr">
+        <div class="art a12" role="img" aria-label="登机牌二维码"><svg class="i"><use href="#i-qr"/></svg></div>
+        <p class="t-footnote t-2">登机口 07:40 关闭，请提前到达</p>
+        <p class="t-caption t-3 t-num">电子客票 781-2468013579</p>
+      </div>
+    </article>
+
+    <div class="dots bp-dots" aria-label="第 1 张，共 2 张"><span class="is-active"></span><span></span></div>
+
+    <button class="btn lg block bp-wallet only-apple"><svg class="i"><use href="#i-wallet"/></svg>添加到 Apple 钱包</button>
+    <button class="btn lg block bp-wallet only-google"><svg class="i"><use href="#i-wallet"/></svg>保存到 Google 钱包</button>
+
+    <section class="group">
+      <h2 class="group-header">航班信息</h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-plane"/></svg></span>
+          <span class="row-body"><span class="row-title">航班动态</span><span class="row-sub">计划 08:00 起飞 · 前序航班已落地</span></span>
+          <span class="tag success">准点</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-bell"/></svg></span>
+          <span class="row-body"><span class="row-title">登机提醒</span><span class="row-sub">开始登机或登机口变更时通知</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-package"/></svg></span>
+          <span class="row-body"><span class="row-title">行李额</span><span class="row-sub">托运 20 公斤 · 手提 1 件 5 公斤</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+  </main>
+</div>
+</body>
+</html>

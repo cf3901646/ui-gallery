@@ -32,6 +32,7 @@
   html[data-lang="google"] .sb-opt b { font-weight: 500; }
   .sb-opt i { font-style: normal; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); }
   .option .sb-price { flex: none; font-size: calc(var(--fs-subhead) * var(--ts)); font-variant-numeric: tabular-nums; }
+  .option.sb-care { align-items: flex-start; }
   .sb-care .check-list { margin-top: 10px; gap: 6px; font-size: calc(var(--fs-footnote) * var(--ts)); }
   .sb-summary { display: flex; flex-direction: column; gap: 16px; padding: 28px; border-radius: var(--ui-radius-xl); background: var(--ui-surface-2); }
   .sb-total { font: 600 calc(var(--fs-title1) * var(--ts)) / 1.1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
@@ -111,7 +112,7 @@
             <h2 class="t-title3">蜂窝网络。<span class="t-2">不带手机也能通话。</span></h2>
             <div class="option-list">
               <button class="option is-active"><span class="sb-opt"><b>GPS 款</b><i>通过配对的手机接收通知和来电</i></span><span class="sb-price">已包含</span></button>
-              <button class="option"><span class="sb-opt"><b>GPS + 蜂窝网络款</b><i>支持中国移动、中国联通 eSIM，月费 ¥10 起</i></span><span class="sb-price">+¥700</span></button>
+              <button class="option"><span class="sb-opt"><b>GPS + 蜂窝网络款</b><i>支持中国移动、中国联通 eSIM，<span class="nowrap">月费 ¥10 起</span></i></span><span class="sb-price">+¥700</span></button>
             </div>
           </section>
 
@@ -119,7 +120,7 @@
             <svg class="i"><use href="#i-refresh"/></svg>
             <div class="stack gap-1">
               <span class="callout-title">以旧换新，最高抵扣 ¥1,200</span>
-              <span class="t-footnote">回答 3 个问题即可估价，抵扣金额会直接从订单中减去。</span>
+              <span class="t-footnote">回答 3 个问题即可估价，<span class="nowrap">抵扣金额会直接从订单中减去。</span></span>
               <a class="link-arrow t-footnote" href="#">开始估价</a>
             </div>
           </div>
@@ -129,7 +130,7 @@
             <div class="option-list">
               <div class="option is-active sb-care" role="radio" aria-checked="true" tabindex="0">
                 <span class="sb-opt"><b>AuroraCare+ 保障服务</b><i>2 年，可随时取消</i>
-                  <ul class="check-list"><li>不限次数意外损坏保修，每次服务费 ¥199</li><li>电池容量低于 80% 时免费更换</li><li>7×24 小时优先技术支持</li></ul>
+                  <ul class="check-list"><li><span>不限次数意外损坏保修，<span class="nowrap">每次服务费 ¥199</span></span></li><li>电池容量低于 80% 时免费更换</li><li>7×24 小时优先技术支持</li></ul>
                 </span>
                 <span class="sb-price">¥499</span>
               </div>
@@ -154,7 +155,7 @@
             </div>
             <a class="btn filled lg block" href="#">加入购物袋</a>
             <ul class="sb-ship">
-              <li><svg class="i"><use href="#i-truck"/></svg><span>今天 17:00 前下单，<b>明天（10 月 24 日）</b>送达，免费送货</span></li>
+              <li><svg class="i"><use href="#i-truck"/></svg><span>今天 17:00 前下单，<span class="nowrap"><b>明天（10 月 24 日）</b>送达</span>，免费送货</span></li>
               <li><svg class="i"><use href="#i-store"/></svg><span>Aurora 南京东路：今天 15:00 后可到店取货</span></li>
               <li><svg class="i"><use href="#i-message"/></svg><span>还有问题？<a class="link-arrow" href="#">与选购专家在线交流</a></span></li>
             </ul>

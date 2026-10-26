@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI 模板库 · Apple 与 Google 设计语言</title>
+<link rel="stylesheet" href="gallery/app.css">
+<script>
+  // 先套用上次的明暗，避免闪烁
+  try { var s = JSON.parse(localStorage.getItem('uig:settings') || '{}'); document.documentElement.setAttribute('data-g-scheme', s.scheme === 'dark' ? 'dark' : 'light'); } catch (e) {}
+</script>
+</head>
+<body>
+<header class="g-top" id="g-top"></header>
+<main class="g-view" id="g-view"></main>
+<div class="g-toast" id="g-toast" role="status" hidden></div>
+<script src="gallery/registry.js"></script>
+<script src="gallery/zip.js"></script>
+<script src="gallery/app.js"></script>
+</body>
+</html>

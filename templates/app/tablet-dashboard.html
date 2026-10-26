@@ -26,8 +26,8 @@
   .db-day { font: 600 calc(40px * var(--ts)) / 1 var(--ui-font-display); }
   .db-cal .event { padding: 7px 10px; gap: 8px; }
   .db-cal .event .grow, .db-tk > .grow { display: flex; flex-direction: column; }
-  html[data-lang="google"] .db-cal .event { background: color-mix(in srgb, var(--c) 18%, transparent); color: var(--ui-text); }
-  .db-weather { background: linear-gradient(170deg, #2f7cf6, #79b8ff); color: #fff; }
+  .db-weather { background: linear-gradient(170deg, #2f7cf6, #79b8ff); color: #fff; gap: 2px; }
+  .db-weather > .i { --ui-icon: 20px; margin-bottom: 2px; }
   html[data-lang="google"] .db-weather { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
   .db-temp { font: 300 calc(46px * var(--ts)) / 1 var(--ui-font-display); }
   .db-fit .ring { --stroke: 9px; }
@@ -58,6 +58,7 @@
   .db-spark polyline { fill: none; stroke: var(--c); stroke-width: 1.8; }
   .db-px { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
   .db-chg { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 5px; color: #fff; background: var(--c); }
+  html[data-lang="google"][data-scheme="dark"] :is(.db-chg, .db-rem-icon) { color: var(--md-surface-container-lowest); }
   .db-dots { margin: auto 0 14px; }
   .db-dots > span { background: rgb(255 255 255 / 45%); }
   .db-dots > .is-active { background: #fff; }

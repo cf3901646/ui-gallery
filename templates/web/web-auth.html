@@ -17,12 +17,14 @@
   .au-visual { display: flex; flex-direction: column; justify-content: space-between; align-items: stretch; gap: 32px; padding: 40px 48px; }
   .au-visual .brand { font-size: 20px; }
   .au-visual .brand-mark { background: rgb(255 255 255 / 22%); color: #fff; }
-  .au-pitch { display: flex; flex-direction: column; gap: 12px; max-width: 26em; }
-  .au-pitch .t-hero { font-size: calc(clamp(36px, 3.8vw, 52px) * var(--ts)); }
+  .au-pitch { display: flex; flex-direction: column; gap: 12px; max-width: 32em; }
+  .au-pitch .t-hero { font-size: calc(clamp(36px, 3.8vw, 52px) * var(--ts)); text-wrap: balance; }
+  .au-pitch .t-lead { max-width: 26em; text-wrap: pretty; }
   .au-float { align-self: flex-start; display: flex; align-items: center; gap: 12px; padding: 12px 16px 12px 12px; border-radius: 20px;
     background: rgb(255 255 255 / 14%); border: 1px solid rgb(255 255 255 / 24%); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
-  .au-float .avatar-stack > .avatar { --c-fg: #fff; box-shadow: 0 0 0 2px rgb(255 255 255 / 70%); }
+  .au-float .avatar-stack > .avatar { box-shadow: 0 0 0 2px rgb(255 255 255 / 70%); }
   .au-quote { max-width: 30em; padding-top: 28px; border-top: 1px solid rgb(255 255 255 / 24%); }
+  .au-quote blockquote { text-wrap: pretty; }
   .au-quote figcaption { display: flex; align-items: center; gap: 12px; }
   .au-quote b { display: block; font-weight: 600; }
   .au-main { --ui-field-label-bg: var(--ui-bg-plain); display: grid; place-items: center; padding: 48px 24px; }
@@ -45,7 +47,7 @@
     <aside class="art a7 on-media au-visual">
       <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-zap"/></svg></span>Kite</a>
       <div class="au-pitch">
-        <h2 class="t-hero">实时同步的数据库，前端直接用。</h2>
+        <h2 class="t-hero">实时同步的<span class="nowrap">数据库，</span>前端直接用。</h2>
         <p class="t-lead t-2">2,300 个团队用 Kite 做协同文档、在线白板和多人游戏。</p>
         <div class="au-float mt-4">
           <span class="avatar-stack"><span class="avatar sm" style="--c:var(--c-orange)">周</span><span class="avatar sm" style="--c:var(--c-indigo)">林</span><span class="avatar sm" style="--c:var(--c-pink)">苏</span></span>
@@ -54,7 +56,7 @@
       </div>
       <figure class="quote au-quote">
         <blockquote>“接入 Kite 之后，我们的协同编辑从立项到上线只用了 11 天，再也不用自己维护 WebSocket 集群。”</blockquote>
-        <figcaption><span class="avatar" style="--c:rgb(255 255 255 / 24%);--c-fg:#fff">周</span><span><b>周牧野</b><span class="t-footnote t-2">青柠笔记 技术负责人</span></span></figcaption>
+        <figcaption><span class="avatar" style="--c:rgb(255 255 255 / 24%)">周</span><span><b>周牧野</b><span class="t-footnote t-2">青柠笔记 技术负责人</span></span></figcaption>
       </figure>
     </aside>
 

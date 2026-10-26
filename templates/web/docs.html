@@ -38,7 +38,18 @@
   .dc-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--ui-line); }
   .dc-toc-extra { margin-top: 16px; padding: 16px 0 0 12px; border-top: 1px solid var(--ui-line); display: flex; flex-direction: column; gap: 8px; }
   .dc-toc-extra a { border: 0; padding: 0; font-size: calc(var(--fs-footnote) * var(--ts)); }
-  @media (max-width: 560px) { .dc-pager { --cols: 2; } }
+  .dc-main .prose { max-width: none; }
+  html[data-lang="apple"] .dc-main .callout p:not(.callout-title) { color: var(--ui-text); }
+  @media (max-width: 560px) {
+    .dc-pager { --cols: 2; }
+    .dc-params, .dc-params tbody { display: block; }
+    .dc-params thead { display: none; }
+    .dc-params tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 12px 16px; border-bottom: 1px solid var(--ui-line); }
+    .dc-params tr:last-child { border-bottom: 0; }
+    .dc-params td { padding: 0; border: 0; white-space: nowrap; }
+    .dc-params td:nth-child(n+2) { color: var(--ui-text-2); }
+    .dc-params td:last-child { flex-basis: 100%; min-width: 0; white-space: normal; color: var(--ui-text); }
+  }
 </style>
 </head>
 <body class="site">

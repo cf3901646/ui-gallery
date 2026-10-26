@@ -24,7 +24,7 @@ async function walk(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const p = path.join(dir, e.name);
     if (e.isDirectory()) out.push(...(await walk(p)));
-    else if (e.name.endsWith('.html') && !e.name.startsWith('_')) out.push(p);
+    else if (e.name.endsWith('.html')) out.push(p);
   }
   return out;
 }
@@ -39,7 +39,8 @@ for (const f of files) {
   for (const m of REQUIRED) if (!new RegExp(`<meta name="${m}" content="[^"]+"`).test(html)) errs.push('缺少 meta ' + m);
   const plat = (html.match(/<meta name="ui:platform" content="([^"]+)"/) || [])[1];
   if (plat && !PLATFORMS.includes(plat)) errs.push('ui:platform 只能是 ' + PLATFORMS.join('/'));
-  for (const need of ['../../kit/ui.css', '../../kit/icons.js', '../../kit/ui.js']) if (!html.includes(need)) errs.push('缺少引用 ' + need);
+  const kitRel = path.relative(path.dirname(f), path.join(ROOT, 'kit')).replaceAll('\\', '/');
+  for (const need of ['ui.css', 'icons.js', 'ui.js'].map((n) => `${kitRel}/${n}`)) if (!html.includes(need)) errs.push('缺少引用 ' + need);
   if (!/<html lang="zh-CN" data-lang="apple">/.test(html)) errs.push('<html> 必须是 lang="zh-CN" data-lang="apple"');
   const local = classesIn([...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n'));
   const unknown = new Set();

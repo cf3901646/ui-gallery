@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora Phone 17 Pro · 商品详情</title>
+<meta name="ui:title" content="商品详情">
+<meta name="ui:desc" content="电商商品详情：透明顶栏盖在商品大图上、到手价与优惠标签、颜色色板与容量单选、评分与评价摘要、配送与服务列表、图文详情，以及贴底的客服/收藏/购物车与加购、购买按钮。">
+<meta name="ui:category" content="电商与零售">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="商品详情,透明顶栏,色板,规格选择,评价,底部操作栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  /* 滚过大图后：栏按钮恢复常规玻璃 / surface 底，避免白字压在白底上 */
+  html.scrolled .topbar.transparent .bar-btn { --ui-glass-bg: inherit; color: var(--ui-text); }
+  html[data-lang="google"].scrolled .topbar.transparent { background: var(--ui-topbar-bg-scrolled); }
+  html[data-lang="google"].scrolled .topbar.transparent .bar-btn { background: transparent; color: var(--md-on-surface); }
+  .pd-hero { position: relative; aspect-ratio: 1; }
+  .pd-phone { position: relative; width: 29%; aspect-ratio: 9 / 19; border-radius: 26px; rotate: -8deg; margin-top: 36px;
+    background: linear-gradient(155deg, #ffb27a, #f77e2d 45%, #b9501a); box-shadow: 0 30px 60px rgb(0 0 0 / 45%), inset 0 0 0 2px rgb(255 255 255 / 28%); }
+  .pd-phone::before { content: ""; position: absolute; left: 8%; top: 4%; width: 48%; aspect-ratio: 1; border-radius: 24%;
+    background: radial-gradient(circle at 30% 29%, #1d1d1f 0 16%, transparent 17%), radial-gradient(circle at 30% 71%, #1d1d1f 0 16%, transparent 17%),
+      radial-gradient(circle at 71% 50%, #1d1d1f 0 16%, transparent 17%), rgb(0 0 0 / 12%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 30%); }
+  .pd-hero .dots { position: absolute; left: 0; right: 0; bottom: 16px; gap: 6px; }
+  .pd-hero .dots > span { width: 6px; height: 6px; background: rgb(255 255 255 / 40%); }
+  .pd-hero .dots > .is-active { width: 18px; background: #fff; }
+  .pd { padding-top: 12px; padding-bottom: calc(var(--safe-bottom) + 92px); }
+  .pd > * + * { margin-top: 12px; }
+  html[data-lang="google"] .pd .card { background: var(--md-surface-container-low); }
+  html[data-lang="google"][data-scheme="dark"] .pd .card { background: var(--md-surface-container); }
+  .pd .card { gap: 8px; }
+  .pd-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; color: var(--c-red); }
+  .pd-amt { font: 700 calc(32px * var(--ts)) / 1.1 var(--ui-font-display); font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
+  html[data-lang="google"] .pd-amt { font-weight: 500; letter-spacing: 0; }
+  .pd-amt small { font-size: .55em; margin-right: 2px; }
+  .pd-opt { display: flex; flex-direction: column; gap: 10px; }
+  .pd-opt + .pd-opt { margin-top: 8px; }
+  .pd .swatches { padding: 4px; }
+  html[data-scheme="dark"] .pd .swatch { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 24%); }
+  .pd-stars { display: inline-flex; gap: 1px; color: var(--c-orange); }
+  .pd-stars .i { --ui-icon: 15px; }
+  .pd-rv { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; padding-top: 4px; }
+  .pd-rv > p { grid-column: 2; }
+  .pd-k { flex: none; width: 34px; align-self: flex-start; padding-top: 1px; color: var(--ui-text-2); }
+  .pd-detail { position: relative; border-radius: var(--ui-card-radius); aspect-ratio: 1; align-content: start; padding: 32px 24px; text-align: center; gap: 6px; color: #fff; }
+  .pd-detail .i { --ui-icon: 96px; margin-top: 40px; opacity: .85; }
+  .pd-bar { position: fixed; z-index: 36; left: 0; right: 0; bottom: 0; display: flex; align-items: center; gap: 2px;
+    padding: 8px var(--ui-margin) calc(var(--safe-bottom) + 8px) 6px; border-top: .5px solid var(--ui-line);
+    background: color-mix(in srgb, var(--ui-bg-plain) 84%, transparent); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%); }
+  html[data-lang="google"] .pd-bar { background: var(--md-surface-container); border-top: 0; }
+  .pd-act { --ui-icon-btn: 44px; height: 48px; flex-direction: column; gap: 1px; border-radius: var(--ui-radius-m);
+    font-size: calc(10px * var(--ts)); font-weight: 500; --b-fg: var(--ui-text-2); }
+  .pd-act .i { --ui-icon: 22px; }
+  .pd-act .badge { position: absolute; top: 0; right: 0; }
+  .pd-bar .btn { flex: 1; min-width: 0; --ui-btn-h: 46px; --ui-btn-px: 8px; font-size: calc(16px * var(--ts)); }
+  .pd-bar .btn + .btn { margin-left: 6px; }
+  .pd-bar .pd-act:nth-of-type(3) { margin-right: 6px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar transparent">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>
+      <button class="bar-btn" aria-label="购物车"><svg class="i"><use href="#i-cart"/></svg><span class="badge">4</span></button>
+    </div>
+  </header>
+
+  <div class="pd-hero art a9" role="img" aria-label="Aurora Phone 17 Pro 宇宙橙色背面">
+    <span class="pd-phone"></span>
+    <div class="dots"><span class="is-active"></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+
+  <main class="content pd">
+    <section class="card pad">
+      <div class="pd-price">
+        <span class="t-footnote t-semibold">到手价</span>
+        <span class="pd-amt"><small>¥</small>8,499</span>
+        <s class="t-subhead t-3">¥8,999</s>
+        <span class="tag danger">立减 ¥500</span>
+      </div>
+      <div class="hstack gap-1"><span class="tag accent">24 期免息</span><span class="tag">以旧换新最高抵 ¥3,600</span><span class="t-caption t-3" style="margin-left:auto">已售 3.6万+</span></div>
+      <h1 class="t-headline">Aurora Phone 17 Pro 5G 手机 A20 Pro 芯片 4800 万像素三摄 256GB 宇宙橙色</h1>
+      <p class="t-footnote t-2">钛金属边框 · 6.3 英寸 ProMotion 屏 · 全国联保</p>
+    </section>
+
+    <section class="card pad">
+      <div class="pd-opt">
+        <span class="t-subhead"><span class="t-semibold">颜色</span> <span class="t-2">宇宙橙色</span></span>
+        <div class="swatches">
+          <button class="swatch is-active" style="--c:#f77e2d" aria-label="宇宙橙色"></button>
+          <button class="swatch" style="--c:#2e3a4f" aria-label="深蓝色"></button>
+          <button class="swatch" style="--c:#e3e4e5" aria-label="银色"></button>
+        </div>
+      </div>
+      <div class="pd-opt">
+        <span class="t-subhead t-semibold">容量</span>
+        <div class="chips single"><button class="chip is-active">256GB</button><button class="chip">512GB</button><button class="chip">1TB</button><button class="chip">2TB</button></div>
+      </div>
+    </section>
+
+    <section class="card pad">
+      <div class="hstack between">
+        <span class="hstack gap-2"><span class="t-headline">评价</span><span class="pd-stars"><svg class="i solid"><use href="#i-star-fill"/></svg><svg class="i solid"><use href="#i-star-fill"/></svg><svg class="i solid"><use href="#i-star-fill"/></svg><svg class="i solid"><use href="#i-star-fill"/></svg><svg class="i solid"><use href="#i-star-fill"/></svg></span><span class="t-subhead t-semibold t-num">4.9</span><span class="t-footnote t-2">2.3 万条评价</span></span>
+        <a class="link-arrow t-subhead" href="#">全部</a>
+      </div>
+      <div class="chips"><button class="chip" data-static>拍照清晰 4,812</button><button class="chip" data-static>续航给力 3,206</button><button class="chip" data-static>手感好 2,947</button><button class="chip" data-static>屏幕细腻 1,880</button></div>
+      <div class="pd-rv">
+        <span class="avatar xs" style="--c:linear-gradient(135deg,#5ac8fa,#1e6ef4)">陈</span>
+        <span class="t-footnote"><span class="t-semibold">陈**远</span> <span class="t-3">· 宇宙橙色 256GB · 10月19日</span></span>
+        <p class="t-subhead t-regular t-clamp-2">橙色实物比图片更沉稳，钛金属边框手感很好。夜景拍外滩基本不糊，重度用一天还剩 30% 电，顺丰第二天上午就到了。</p>
+      </div>
+    </section>
+
+    <ul class="list">
+      <li><a class="row" href="#"><span class="pd-k t-subhead">送至</span><span class="row-body"><span class="row-title t-subhead">上海 徐汇区 漕河泾街道</span><span class="row-sub t-footnote">现货 · 23:00 前下单，明天（10月27日）送达</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><div class="row"><span class="pd-k t-subhead">运费</span><span class="row-body"><span class="row-title t-subhead">免运费 · 顺丰速运</span></span></div></li>
+      <li><a class="row" href="#"><span class="pd-k t-subhead">服务</span><span class="row-body"><span class="row-title t-subhead">7 天无理由退货 · 官方正品 · 1 年保修</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><a class="row" href="#"><span class="pd-k t-subhead">分期</span><span class="row-body"><span class="row-title t-subhead">24 期免息，每期 ¥354.13</span><span class="row-sub t-footnote">招商银行、花呗、京东白条可用</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+    </ul>
+
+    <div class="divider label t-subhead">图文详情</div>
+    <div class="art a4 pd-detail" role="img" aria-label="A20 Pro 芯片介绍">
+      <span class="t-caption t-upper">A20 Pro 芯片</span>
+      <span class="t-title1">快，快得从容。</span>
+      <span class="t-subhead" style="opacity:.8">CPU 提升 20%，GPU 提升 30%，玩大型游戏也能保持凉爽。</span>
+      <svg class="i"><use href="#i-zap"/></svg>
+    </div>
+  </main>
+
+  <div class="pd-bar">
+    <button class="icon-btn pd-act"><svg class="i"><use href="#i-headphones"/></svg>客服</button>
+    <button class="icon-btn pd-act"><svg class="i"><use href="#i-heart"/></svg>收藏</button>
+    <button class="icon-btn pd-act"><svg class="i"><use href="#i-cart"/></svg>购物车<span class="badge">4</span></button>
+    <button class="btn tonal">加入购物车</button>
+    <button class="btn filled">立即购买</button>
+  </div>
+</div>
+</body>
+</html>

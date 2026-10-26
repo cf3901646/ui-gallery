@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>页面未找到 - Aurora</title>
+<meta name="ui:title" content="404 页面">
+<meta name="ui:desc" content="页面不存在：全局导航、带装饰形状的大号 404、说明文字、搜索框与热门搜索、“你可能在找”快捷入口卡片、返回首页按钮和简版页脚。">
+<meta name="ui:category" content="系统页面">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="404,错误页,搜索,快捷入口,形状">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .nf-hero { padding: 80px 0 48px; text-align: center; }
+  .nf-hero > .wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .nf-code { position: relative; isolation: isolate; display: grid; place-items: center; min-height: 240px; margin-bottom: 4px; }
+  .nf-deco { position: absolute; z-index: -1; width: 236px; aspect-ratio: 1; background: var(--ui-accent-soft); }
+  html[data-lang="google"] .nf-deco { background: var(--md-tertiary-container); animation: nf-spin 60s linear infinite; }
+  @keyframes nf-spin { to { rotate: 360deg; } }
+  .t-display.nf-num { font-size: calc(160px * var(--ts)); line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+  html[data-lang="apple"] .nf-num { background: linear-gradient(180deg, var(--ui-text) 35%, var(--ui-text-3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  html[data-lang="google"] .nf-num { color: var(--md-primary); font-weight: 500; }
+  .nf-hero h1 { font-size: calc(clamp(30px, 4vw, 40px) * var(--ts)); }
+  .nf-hero .t-lead { max-width: 30em; text-wrap: balance; }
+  .nf-search { width: min(100%, 560px); margin-top: 14px; }
+  html[data-lang="apple"] .nf-search .searchbar { --ui-search-h: 50px; padding-inline: 16px; }
+  .nf-hot { justify-content: center; align-items: center; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); }
+  .nf-links { padding: 40px 0 96px; }
+  .nf-links h2 { margin-bottom: 28px; }
+  .nf-links .card { gap: 8px; padding: 24px; transition: translate var(--ui-dur) var(--ui-ease), box-shadow var(--ui-dur); }
+  .nf-links .card:hover { translate: 0 -3px; box-shadow: var(--ui-shadow-2); }
+  html[data-lang="apple"] .nf-links .card { background: var(--ui-tile-bg); }
+  html[data-lang="google"] .nf-links .card { background: var(--md-surface-container); border-radius: 24px; }
+  .nf-links .feature-icon { margin-bottom: 6px; }
+  .nf-links .card-sub { text-wrap: pretty; }
+  .nf-links .btn-row { margin-top: 48px; }
+  @media (max-width: 560px) {
+    .nf-hero { padding-top: 48px; }
+    .nf-code { min-height: 180px; }
+    .nf-deco { width: 176px; }
+    .t-display.nf-num { font-size: calc(120px * var(--ts)); }
+    .nf-links .card { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2px 16px; padding: 18px 20px; }
+    .nf-links .feature-icon { grid-row: span 2; margin: 0; }
+    html[data-lang="google"] .nf-links .card-title { font-size: calc(20px * var(--ts)); }
+  }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-sparkles"/></svg></span>Aurora</a>
+      <nav class="nav-links"><a href="#">商店</a><a href="#">手机</a><a href="#">平板</a><a href="#">电脑</a><a href="#">手表</a><a href="#">耳机</a><a href="#">家居</a><a href="#">支持</a></nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" aria-label="购物袋"><svg class="i"><use href="#i-bag"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="nf-hero">
+      <div class="wrap">
+        <div class="nf-code">
+          <span class="nf-deco shape-cookie-12" aria-hidden="true"></span>
+          <span class="t-display nf-num" aria-hidden="true">404</span>
+        </div>
+        <h1 class="t-large-title">页面走丢了</h1>
+        <p class="t-lead t-2">你访问的链接可能已经失效，或者页面换了新地址。试试搜索，或者从下面的入口继续浏览。</p>
+        <form class="nf-search" role="search" onsubmit="return false">
+          <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索产品、订单或支持文章" aria-label="搜索 Aurora"></label>
+        </form>
+        <div class="chips wrap nf-hot"><span>热门搜索</span><a class="chip" href="#">Aurora Phone 17</a><a class="chip" href="#">以旧换新</a><a class="chip" href="#">保修查询</a><a class="chip" href="#">AirSync 耳机配对</a></div>
+      </div>
+    </section>
+
+    <section class="nf-links">
+      <div class="wrap">
+        <h2 class="t-title2 t-center">你可能在找</h2>
+        <div class="grid c3">
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-smartphone"/></svg></span><span class="card-title">选购 Aurora Phone 17</span><span class="card-sub">6.3 英寸 ProMotion 屏，¥5,999 起</span></a>
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-package"/></svg></span><span class="card-title">查询订单状态</span><span class="card-sub">输入订单号，查看出库和配送进度</span></a>
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-message"/></svg></span><span class="card-title">联系技术支持</span><span class="card-sub">在线客服 9:00–21:00，平均 2 分钟接通</span></a>
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-refresh"/></svg></span><span class="card-title">以旧换新估价</span><span class="card-sub">回答 4 个问题，最高抵扣 ¥4,800</span></a>
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-map-pin"/></svg></span><span class="card-title">查找零售店</span><span class="card-sub">全国 46 家 Aurora Store，可预约到店</span></a>
+          <a class="card feature" href="#"><span class="feature-icon"><svg class="i"><use href="#i-download"/></svg></span><span class="card-title">AuroraOS 27.1 更新</span><span class="card-sub">新功能、兼容机型和升级方法</span></a>
+        </div>
+        <div class="btn-row center"><a class="btn filled lg" href="#"><svg class="i"><use href="#i-home"/></svg>返回首页</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。<span class="nowrap">沪ICP备 18032217 号</span></span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">网站地图</a><a href="#">中国大陆</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

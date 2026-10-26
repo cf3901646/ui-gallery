@@ -19,6 +19,9 @@
     const f = document.createElement('iframe');
     f.width = w; f.height = h;
     f.src = `${t}?lang=${lang}&scheme=${scheme}&safe=${q.get('safe') || '0,0'}${q.get('extra') ? '&' + q.get('extra') : ''}`;
+    // y=：加载后把页面滚到这个位置，用于长页面分段截图
+    const y = +(q.get('y') || 0);
+    if (y) f.addEventListener('load', () => f.contentWindow.postMessage({ type: 'ui:scroll', top: y }, '*'));
     document.body.appendChild(f);
   }
 </script>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>打车</title>
+<meta name="ui:title" content="打车">
+<meta name="ui:desc" content="网约车下单页：全屏地图（附近车辆、上车点、我的位置、路线）、顶部浮动起终点卡片、非模态底部面板（经济/舒适/商务/拼车车型、预计接驾时间与价格、支付方式）和呼叫按钮。">
+<meta name="ui:category" content="出行与本地生活">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="打车,地图,底部面板,单选列表,玻璃卡片">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  body.app { overflow: hidden; }
+  .rh-map { position: fixed; inset: 0; }
+  .rh-route { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+  .rh-route path { fill: none; stroke: var(--ui-accent); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .rh-car { width: 28px; height: 28px; border-radius: 50%; translate: -50% -50%; --c: var(--ui-inverse); color: var(--ui-on-inverse); }
+  .rh-car { rotate: 0deg; box-shadow: 0 0 0 2px var(--ui-bg-plain), 0 2px 8px rgb(0 0 0 / 25%); }
+  .rh-car > * { --ui-icon: 15px; rotate: 0deg; }
+  .rh-tip { position: absolute; translate: -50% calc(-100% - 52px); display: flex; flex-direction: column; align-items: center; padding: 6px 12px;
+    border-radius: var(--ui-radius-m); white-space: nowrap; color: var(--ui-text); }
+  .rh-top { position: fixed; z-index: 30; left: var(--ui-margin); right: var(--ui-margin); top: calc(var(--safe-top) + 6px); display: flex; align-items: flex-start; gap: 8px; }
+  .rh-search { flex: 1; min-width: 0; padding: 2px 4px 2px 16px; border-radius: var(--ui-radius-l); }
+  .rh-place { display: flex; align-items: center; gap: 12px; min-height: 46px; }
+  .rh-place + .rh-place { border-top: .5px solid var(--ui-line); margin-left: 22px; }
+  .rh-place + .rh-place .rh-dot { margin-left: -22px; }
+  .rh-dot { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--c-green); }
+  .rh-dot.to { background: var(--c-orange); border-radius: 3px; }
+  .rh-locate { position: absolute; right: 0; top: calc(100% + 10px); }
+  html[data-lang="google"] .rh-search { border-radius: var(--ui-radius-xl); padding-left: 20px; }
+  html[data-lang="google"] .rh-top .icon-btn, html[data-lang="google"] .rh-tip { box-shadow: var(--ui-shadow-2); }
+
+  .rh-sheet .sheet-body { display: flex; flex-direction: column; gap: 10px; padding-top: 2px; }
+  .rh-cars { gap: 4px; }
+  .rh-cars .option { justify-content: flex-start; gap: 12px; padding: 9px 12px; }
+  .rh-cars .option.is-active { padding: 8px 11px; border-color: var(--ui-accent); }
+  .rh-cars .option:not(.is-active) { border-color: transparent; background: transparent; }
+  .rh-cars .grow { display: flex; flex-direction: column; }
+  .rh-fare { display: flex; flex-direction: column; align-items: flex-end; font-variant-numeric: tabular-nums; }
+  .rh-fare b { font: 600 calc(19px * var(--ts)) / 1.2 var(--ui-font-display); }
+  html[data-lang="google"] .rh-fare b { font-weight: 500; }
+  .rh-pay { flex-direction: row; align-items: center; gap: 12px; min-height: 48px; padding: 0 10px 0 14px; flex: none; }
+  .rh-pay > .i { color: var(--ui-text-2); }
+  .rh-pay > .i.sm { color: var(--ui-text-3); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <div class="art map rh-map" role="img" aria-label="地图：静安寺一带，附近有 6 辆车">
+    <svg class="rh-route" viewBox="0 0 402 874" preserveAspectRatio="none" aria-hidden="true"><path d="M201 330 V 296 H 118 L 52 248 H -20"/></svg>
+    <span class="map-pin rh-car" style="left:16%;top:24%;rotate:20deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-pin rh-car" style="left:78%;top:27%;rotate:-70deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-pin rh-car" style="left:68%;top:41%;rotate:110deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-pin rh-car" style="left:34%;top:42%;rotate:-15deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-pin rh-car" style="left:88%;top:36%;rotate:40deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-pin rh-car" style="left:12%;top:39%;rotate:-100deg"><svg class="i"><use href="#i-car"/></svg></span>
+    <span class="map-me" style="left:58%;top:40%"></span>
+    <span class="map-pin" style="left:50%;top:37.8%;--c:var(--c-green)"><svg class="i"><use href="#i-walk"/></svg></span>
+    <span class="rh-tip glass" style="left:50%;top:37.8%"><strong class="t-footnote t-semibold">在此上车</strong><span class="t-caption2 t-2">静安嘉里中心北门 · 步行 1 分钟</span></span>
+  </div>
+
+  <div class="rh-top">
+    <a class="icon-btn glass" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a>
+    <div class="rh-search glass">
+      <a class="rh-place" href="#"><i class="rh-dot"></i><span class="grow ellipsis t-subhead">当前位置<span class="t-2"> · 静安嘉里中心北门</span></span></a>
+      <a class="rh-place" href="#"><i class="rh-dot to"></i><span class="grow ellipsis t-subhead t-semibold">虹桥火车站</span><button class="icon-btn sm" aria-label="添加途经点"><svg class="i"><use href="#i-plus"/></svg></button></a>
+    </div>
+    <button class="icon-btn glass rh-locate" aria-label="定位到我的位置"><svg class="i"><use href="#i-locate"/></svg></button>
+  </div>
+
+  <div class="sheet rh-sheet" role="region" aria-label="选择车型">
+    <div class="sheet-grabber"></div>
+    <div class="sheet-body">
+      <div class="hstack between base"><strong class="t-headline">选择车型</strong><span class="t-footnote t-2">全程 18.6 公里 · 约 35 分钟</span></div>
+      <div class="option-list rh-cars">
+        <button class="option">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-car"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold">经济型</span><span class="t-caption t-2">3 分钟接驾 · 17:46 到达</span></span>
+          <span class="rh-fare"><b>¥58</b><s class="t-caption t-3">¥64</s></span>
+        </button>
+        <button class="option is-active">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-car"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold">舒适型</span><span class="t-caption t-2">4 分钟接驾 · 新能源 · 车内整洁</span></span>
+          <span class="rh-fare"><b>¥72</b><s class="t-caption t-3">¥80</s></span>
+        </button>
+        <button class="option">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-briefcase"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold">商务型</span><span class="t-caption t-2">6 分钟接驾 · 6 座 · 可放大件行李</span></span>
+          <span class="rh-fare"><b>¥128</b><span class="t-caption t-3">预估价</span></span>
+        </button>
+        <button class="option">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-users"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold">拼车</span><span class="t-caption t-2">8 分钟接驾 · 可能多绕 10 分钟</span></span>
+          <span class="rh-fare"><b>¥39</b><span class="t-caption t-3">一口价</span></span>
+        </button>
+      </div>
+      <a class="rh-pay card" href="#">
+        <svg class="i"><use href="#i-card"/></svg>
+        <span class="grow t-subhead ellipsis">招商银行信用卡（3308）</span>
+        <span class="tag success">已减 ¥8</span>
+        <svg class="i sm"><use href="#i-chevron-right"/></svg>
+      </a>
+      <button class="btn filled lg block">呼叫舒适型</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

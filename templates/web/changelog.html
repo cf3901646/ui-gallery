@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>更新日志 - Flowline</title>
+<meta name="ui:title" content="更新日志">
+<meta name="ui:desc" content="产品更新日志：邮件订阅、按年份分组的版本导航、按版本倒序的发布记录（日期、类型标签、要点、截图）。">
+<meta name="ui:category" content="内容与博客">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="更新日志,版本,标签,订阅,目录导航">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .cl-top { padding: 72px 0 56px; }
+  .cl-top .wrap { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 32px 64px; align-items: end; }
+  .cl-intro { display: flex; flex-direction: column; gap: 12px; }
+  .cl-intro .t-lead, .cl-rel > .t-body { max-width: 30em; text-wrap: pretty; }
+  .cl-sub { display: flex; flex-direction: column; gap: 8px; padding: 28px; border-radius: var(--ui-radius-xl); background: var(--ui-tile-bg); }
+  html[data-lang="apple"] .cl-sub .field-input { background: var(--ui-bg-plain); }
+  html[data-lang="google"] .cl-sub { --ui-field-label-bg: var(--ui-tile-bg); border-radius: 28px; }
+  .cl-form { display: flex; gap: 10px; margin: 8px 0 4px; }
+  .cl-form .field { flex: 1; min-width: 0; }
+  .cl-body { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 64px; align-items: start; padding-bottom: 96px; }
+  .cl-nav h5:first-child { padding-top: 0; }
+  .cl-rel { display: flex; flex-direction: column; gap: 14px; padding: 48px 0; border-top: 1px solid var(--ui-line); scroll-margin-top: 88px; }
+  .cl-rel:first-child { padding-top: 0; border-top: 0; }
+  .cl-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .cl-meta time { margin-right: 8px; }
+  .cl-rel .prose { max-width: 64ch; margin-top: 6px; }
+  .prose .cl-g { display: flex; align-items: center; gap: 8px; margin-top: 1.5em; font-weight: 600; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .prose .cl-g:first-child { margin-top: 0; }
+  .prose .cl-g + ul { margin-top: .5em; }
+  .cl-g::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--d); }
+  .cl-new { --d: var(--ui-accent); } .cl-imp { --d: var(--ui-success); } .cl-fix { --d: var(--ui-warning); }
+  .cl-shot { display: block; aspect-ratio: 2 / 1; border-radius: var(--ui-radius-l); margin: 8px 0 4px; }
+  html[data-lang="google"] .cl-shot { border-radius: 28px; }
+  .cl-win { position: absolute; inset: 8% 6% 0; display: flex; flex-direction: column; padding: 16px 20px 0; overflow: hidden; border-radius: 14px 14px 0 0;
+    background: var(--ui-bg-plain); color: var(--ui-text); box-shadow: 0 20px 50px rgb(0 0 0 / 30%); font-size: 12px; line-height: 1.3; }
+  .cl-win small { color: var(--ui-text-3); font-size: 11px; }
+  .cl-row { flex: 1; max-height: 60px; display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; color: var(--ui-text-2); border-bottom: 1px solid var(--ui-line); }
+  .cl-row.cl-hd { flex: none; padding: 12px 0 6px; color: var(--ui-text-3); font-size: 11px; }
+  .cl-hd > div { display: flex; justify-content: space-between; }
+  .cl-track { position: relative; align-self: stretch;
+    background: linear-gradient(90deg, transparent calc(61% - 1px), var(--c-red) 0 calc(61% + 1px), transparent 0), repeating-linear-gradient(90deg, var(--ui-line) 0 1px, transparent 1px 25%); }
+  .cl-track i { position: absolute; top: 50%; height: 16px; translate: 0 -50%; left: var(--x); width: var(--w); border-radius: 5px; background: var(--c); }
+  .cl-track i.cl-plan { height: 24px; background: none; border: 1.5px dashed var(--ui-text-3); }
+  .cl-flow .cl-win { align-items: center; justify-content: center; gap: 18px; padding: 0 0 4%; font-size: 14px;
+    background-image: radial-gradient(var(--ui-line-strong) 1px, transparent 1.5px); background-size: 18px 18px; }
+  .cl-node { position: relative; display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: 12px; white-space: nowrap;
+    border: 1px solid var(--ui-line-strong); background: var(--ui-surface); }
+  .cl-node::before { content: ""; position: absolute; bottom: calc(100% + 1px); left: 50%; width: 1.5px; height: 18px; background: var(--ui-line-strong); }
+  .cl-win > .cl-node:first-child::before { display: none; }
+  .cl-node.cl-if { background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); border-color: transparent; }
+  .cl-split { display: flex; gap: 16px; }
+  .cl-more { display: flex; justify-content: center; padding-top: 8px; }
+  @media (max-width: 860px) {
+    .cl-top .wrap, .cl-body { grid-template-columns: minmax(0, 1fr); }
+    .cl-top { padding: 48px 0 40px; }
+    .cl-sub { max-width: 520px; }
+  }
+  @media (max-width: 560px) {
+    .cl-sub { padding: 20px; }
+    .cl-meta time { order: -1; width: 100%; }
+    .cl-form { flex-direction: column; }
+    .cl-win { inset: 7% 5% 0; padding: 10px 12px 0; font-size: 11px; }
+    .cl-row { grid-template-columns: 48px 1fr; gap: 8px; }
+    .cl-row.cl-hd { padding: 6px 0 4px; }
+    .cl-track i { height: 10px; } .cl-track i.cl-plan { height: 15px; }
+    .cl-flow .cl-win { gap: 12px; font-size: 11px; }
+    .cl-node { padding: 5px 9px; } .cl-node::before { height: 12px; }
+  }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-layers"/></svg></span>Flowline</a>
+      <nav class="nav-links"><a href="#">产品</a><a href="#">方案</a><a href="#">价格</a><a href="#">客户案例</a><a href="#">文档</a><a href="#" class="is-active">更新日志</a></nav>
+      <div class="nav-actions">
+        <a class="btn text sm hide-sm" href="#">登录</a>
+        <a class="btn filled sm" href="#">免费试用</a>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <header class="cl-top">
+    <div class="wrap">
+      <div class="cl-intro">
+        <span class="t-eyebrow">Flowline</span>
+        <h1 class="t-hero">更新日志</h1>
+        <p class="t-lead t-2">每两周发布一个版本。新功能、改进和修复都记在这里，按发布时间倒序排列。</p>
+      </div>
+      <div class="cl-sub">
+        <h2 class="t-headline">订阅更新邮件</h2>
+        <p class="t-subhead t-2">每次发版后发一封摘要，每月最多 2 封，随时退订。</p>
+        <form class="cl-form" onsubmit="return false">
+          <label class="field"><span class="field-label only-google">工作邮箱</span><input class="field-input" type="email" placeholder="name@company.com"></label>
+          <button class="btn filled lg" type="submit">订阅</button>
+        </form>
+        <a class="link-arrow t-footnote" href="#">也可以用 RSS 订阅</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap cl-body">
+    <nav class="toc cl-nav" aria-label="版本">
+      <h5>2026</h5>
+      <a class="is-active" href="#v4120">v4.12.0</a><a href="#v4112">v4.11.2</a><a href="#v4110">v4.11.0</a><a href="#v4100">v4.10.0</a><a href="#">v4.9.0</a><a href="#">v4.8.0</a>
+      <h5>2025</h5>
+      <a href="#">v4.5.0</a><a href="#">v4.0.0</a><a href="#">v3.18.0</a>
+    </nav>
+
+    <div>
+      <article class="cl-rel" id="v4120">
+        <div class="cl-meta"><span class="t-headline t-mono">v4.12.0</span><time class="t-subhead t-2">2026 年 6 月 18 日</time><span class="tag accent">新功能</span><span class="tag success">改进</span><span class="tag warning">修复</span></div>
+        <h2 class="t-title1">跨项目依赖与甘特图基线</h2>
+        <p class="t-body t-2">大型项目常常拆成好几个子项目。现在可以在甘特图里跨项目连线，并把当前计划存为基线，随时对比实际进度。</p>
+        <div class="art a2 cl-shot" role="img" aria-label="甘特图基线对比截图">
+          <div class="cl-win">
+            <div><b>官网改版 2026</b> <small>· 基线 1，5 月 20 日保存</small></div>
+            <div class="cl-row cl-hd"><span></span><div><span>6/1</span><span>6/8</span><span>6/15</span><span>6/22</span><span>6/29</span></div></div>
+            <div class="cl-row"><span>需求评审</span><div class="cl-track"><i class="cl-plan" style="--x:0%;--w:20%"></i><i style="--x:0%;--w:18%;--c:var(--c-blue)"></i></div></div>
+            <div class="cl-row"><span>交互设计</span><div class="cl-track"><i class="cl-plan" style="--x:14%;--w:26%"></i><i style="--x:16%;--w:30%;--c:var(--c-purple)"></i></div></div>
+            <div class="cl-row"><span>前端开发</span><div class="cl-track"><i class="cl-plan" style="--x:36%;--w:32%"></i><i style="--x:44%;--w:34%;--c:var(--c-orange)"></i></div></div>
+            <div class="cl-row"><span>接口联调</span><div class="cl-track"><i class="cl-plan" style="--x:62%;--w:20%"></i><i style="--x:72%;--w:18%;--c:var(--c-teal)"></i></div></div>
+            <div class="cl-row"><span>灰度发布</span><div class="cl-track"><i class="cl-plan" style="--x:82%;--w:12%"></i><i style="--x:90%;--w:10%;--c:var(--c-green)"></i></div></div>
+          </div>
+        </div>
+        <div class="prose">
+          <p class="cl-g cl-new">新功能</p>
+          <ul>
+            <li>跨项目依赖：任务可以依赖其他项目里的任务。前置任务延期时，后续任务自动顺延，并通知负责人。</li>
+            <li>甘特图基线：每个项目最多保存 5 条基线，对比视图里用虚线显示原计划。</li>
+            <li>工作量视图支持按小时估算，每周超过 40 小时的成员会标红。</li>
+          </ul>
+          <p class="cl-g cl-imp">改进</p>
+          <ul>
+            <li>看板单列超过 200 张卡片时，滚动帧率从 38 fps 提升到 60 fps。</li>
+            <li>导出 Excel 时保留子任务层级和全部自定义字段。</li>
+          </ul>
+          <p class="cl-g cl-fix">修复</p>
+          <ul>
+            <li>修复了在 Safari 17 中拖动任务条，日期偶尔错位一天的问题。</li>
+            <li>修复了不在 UTC+8 时区的成员看到的截止时间不一致的问题。</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="cl-rel" id="v4112">
+        <div class="cl-meta"><span class="t-headline t-mono">v4.11.2</span><time class="t-subhead t-2">2026 年 6 月 4 日</time><span class="tag warning">修复</span></div>
+        <h2 class="t-title1">稳定性更新</h2>
+        <div class="prose">
+          <ul>
+            <li>修复了一次批量移动 50 个以上任务时偶发超时的问题。</li>
+            <li>修复了钉钉通知里的任务链接在手机上打不开的问题。</li>
+            <li>修复了深色模式下日历视图周末列对比度不足的问题。</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="cl-rel" id="v4110">
+        <div class="cl-meta"><span class="t-headline t-mono">v4.11.0</span><time class="t-subhead t-2">2026 年 5 月 21 日</time><span class="tag accent">新功能</span><span class="tag success">改进</span></div>
+        <h2 class="t-title1">自动化规则支持条件分支</h2>
+        <p class="t-body t-2">一条规则里就能写“如果……否则……”，不用再为同一个触发条件建好几条规则。</p>
+        <div class="art a4 cl-shot cl-flow" role="img" aria-label="条件分支规则编辑器截图">
+          <div class="cl-win">
+            <span class="cl-node"><svg class="i sm"><use href="#i-zap"/></svg>当任务<b>状态</b>变为<b>已完成</b></span>
+            <span class="cl-node cl-if">如果<b>优先级</b>是<b>高</b></span>
+            <div class="cl-split"><span class="cl-node"><svg class="i sm"><use href="#i-bell"/></svg>通知<b>@产品组</b></span><span class="cl-node"><small>否则</small>移到<b>归档</b></span></div>
+          </div>
+        </div>
+        <div class="prose">
+          <p class="cl-g cl-new">新功能</p>
+          <ul>
+            <li>条件分支：支持“如果 / 否则如果 / 否则”，最多嵌套 5 层。</li>
+            <li>新增“字段变更”触发器，可以监听任意自定义字段。</li>
+            <li>规则运行记录保留 90 天，可以按规则和运行结果筛选。</li>
+          </ul>
+          <p class="cl-g cl-imp">改进</p>
+          <ul>
+            <li>规则编辑器支持撤销和重做<span class="nowrap">（<code>⌘Z</code> / <code>Ctrl+Z</code>）</span>。</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="cl-rel" id="v4100">
+        <div class="cl-meta"><span class="t-headline t-mono">v4.10.0</span><time class="t-subhead t-2">2026 年 5 月 7 日</time><span class="tag accent">新功能</span><span class="tag success">改进</span></div>
+        <h2 class="t-title1">飞书多维表格双向同步</h2>
+        <div class="prose">
+          <p class="cl-g cl-new">新功能</p>
+          <ul><li>与飞书多维表格双向同步任务、状态和负责人，延迟不超过 5 秒。</li></ul>
+          <p class="cl-g cl-imp">改进</p>
+          <ul><li>搜索支持拼音首字母，例如输入“zbh”可以找到“周报会”。</li><li>访客也可以在任务评论里 @ 成员。</li></ul>
+        </div>
+      </article>
+
+      <div class="cl-more"><a class="btn" href="#">查看更早版本<svg class="i sm"><use href="#i-chevron-down"/></svg></a></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>© 2026 杭州流线科技有限公司 · <span class="nowrap">浙ICP备 2023018846 号</span></span>
+        <nav><a href="#">帮助中心</a><a href="#">服务状态</a><a href="#">服务协议</a><a href="#">隐私政策</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -21,20 +21,20 @@
   .fm-main { background: var(--ui-bg-plain); display: flex; flex-direction: column; }
   .fm-main > * { flex: none; }
   .fm-bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 14px 20px; background: var(--ui-bg-plain); border-bottom: 1px solid var(--ui-line); }
-  .fm-bar .bar-group { border-radius: var(--ui-radius-full); }
   .fm-bar .breadcrumb { font-size: calc(var(--fs-subhead) * var(--ts)); }
   .fm-bar .breadcrumb > :last-child { color: var(--ui-text); font-weight: 600; }
   .fm-bar .segmented { width: 96px; }
   .fm-bar .searchbar { width: 200px; height: 36px; }
-  .fm-grid { flex: 1 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 18px 8px; padding: 20px 20px 24px; align-content: start; }
+  .fm-grid { flex: 1 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 18px 8px; padding: 20px 20px 24px; align-content: start; }
   .fm-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px; border-radius: 12px; text-align: center; min-width: 0; }
-  .fm-ico { height: 72px; display: grid; place-items: center; padding: 0 6px; border-radius: 10px; }
-  .fm-ico > .i { --ui-icon: 68px; color: var(--c, var(--c-blue)); }
-  .fm-file { width: 52px; height: 66px; border-radius: 6px 14px 6px 6px; background: var(--ui-surface); box-shadow: 0 0 0 1px var(--ui-line), var(--ui-shadow-1);
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 8px; gap: 6px; color: var(--c); }
-  .fm-file .i { --ui-icon: 22px; }
-  .fm-file b { font-size: 9px; font-weight: 700; color: #fff; background: var(--c); border-radius: 3px; padding: 1px 5px; letter-spacing: .3px; }
-  .fm-thumb { width: 76px; height: 56px; border-radius: 6px; box-shadow: 0 0 0 2px var(--ui-surface), var(--ui-shadow-1); }
+  .fm-ico { height: 92px; display: grid; place-items: center; padding: 0 6px; border-radius: 10px; }
+  .fm-ico > .i { --ui-icon: 86px; color: var(--c, var(--c-blue)); }
+  .fm-file { width: 64px; height: 82px; border-radius: 6px 16px 6px 6px; background: var(--ui-surface); box-shadow: 0 0 0 1px var(--ui-line), var(--ui-shadow-1);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 10px; gap: 8px; color: var(--c); }
+  .fm-file .i { --ui-icon: 26px; }
+  .fm-file b { font-size: 10px; font-weight: 700; color: #fff; background: var(--c); border-radius: 3px; padding: 1px 5px; letter-spacing: .3px; }
+  html[data-lang="google"][data-scheme="dark"] .fm-file b { color: var(--md-surface-container-lowest); }
+  .fm-thumb { width: 96px; height: 70px; border-radius: 6px; box-shadow: 0 0 0 2px var(--ui-surface), var(--ui-shadow-1); }
   .fm-name { font-size: calc(var(--fs-footnote) * var(--ts)); line-height: 1.3; padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .fm-item.is-active .fm-ico { background: var(--ui-fill-2); }
   .fm-item.is-active .fm-name { background: var(--ui-accent); color: var(--ui-on-accent); }
@@ -50,6 +50,7 @@
   .fm-prev .kv { font-size: calc(var(--fs-footnote) * var(--ts)); gap: 8px 12px; }
   .fm-prev .kv dd { min-width: 0; overflow-wrap: anywhere; }
   .fm-prev .btn-row .btn { flex: 1; }
+  .fm-log { gap: 14px; } .fm-log li { display: flex; flex-direction: column; gap: 2px; }
 </style>
 </head>
 <body class="app">
@@ -141,9 +142,16 @@
     </dl>
     <div class="divider"></div>
     <div class="hstack gap-3">
-      <span class="avatar-stack"><span class="avatar sm" style="--c:#ff5e7e;--c-fg:#fff">周</span><span class="avatar sm" style="--c:#4f8dff;--c-fg:#fff">陈</span><span class="avatar sm" style="--c:#34c47c;--c-fg:#fff">许</span></span>
+      <span class="avatar-stack"><span class="avatar sm" style="--c:#ff5e7e">周</span><span class="avatar sm" style="--c:#4f8dff">陈</span><span class="avatar sm" style="--c:#34c47c">许</span></span>
       <span class="t-footnote t-2">与周以宁等 3 人共享 · 可编辑</span>
     </div>
+    <div class="divider"></div>
+    <h2 class="t-subhead t-semibold">最近活动</h2>
+    <ol class="timeline fm-log t-footnote">
+      <li class="is-current"><span>陈默 修改了第 12 页图表</span><span class="t-2">今天 09:40</span></li>
+      <li><span>周以宁 添加了 2 条批注</span><span class="t-2">昨天 18:22</span></li>
+      <li><span>你 上传了这个文件</span><span class="t-2">10 月 14 日</span></li>
+    </ol>
   </aside>
 </div>
 </body>

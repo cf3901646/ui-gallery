@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>机票</title>
+<meta name="ui:title" content="机票搜索">
+<meta name="ui:desc" content="机票查询首页：单程/往返/多程分段控件、出发到达城市卡片与交换按钮、出发日期、乘客步进器、舱位单选筛选片、搜索按钮、最近搜索列表和特价机票横滑卡片。">
+<meta name="ui:category" content="出行与本地生活">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="机票,搜索表单,分段控件,步进器,筛选片,横滑卡片,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ts-trip { margin-bottom: 12px; }
+  html[data-lang="google"] .ts-form { --ui-card-bg: var(--md-surface-container-low); }
+  html[data-lang="google"][data-scheme="dark"] .ts-form { --ui-card-bg: var(--md-surface-container); }
+  .ts-route { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; padding-bottom: 14px; }
+  .ts-city { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .ts-to { align-items: flex-end; text-align: right; }
+  .ts-name { display: flex; align-items: baseline; gap: 6px; font: 700 calc(30px * var(--ts)) / 1.15 var(--ui-font-display); letter-spacing: -.3px; }
+  .ts-name small { font: 600 calc(14px * var(--ts)) / 1 var(--ui-font); color: var(--ui-text-2); letter-spacing: .5px; }
+  html[data-lang="google"] .ts-name { font-weight: 400; }
+  html[data-lang="google"] .ts-name small { font-weight: 500; }
+  .ts-swap .i { rotate: 90deg; }
+  .ts-row { display: flex; align-items: center; gap: 14px; min-height: 62px; border-top: .5px solid var(--ui-line); }
+  .ts-row > .i { color: var(--ui-text-2); }
+  .ts-row .grow { display: flex; flex-direction: column; }
+  .ts-val { font-weight: 600; font-size: calc(var(--fs-headline) * var(--ts)); }
+  html[data-lang="google"] .ts-val { font-weight: 500; }
+  .ts-add { display: inline-flex; align-items: center; gap: 2px; font-weight: 600; }
+  .ts-row .chips { flex: 1; }
+  .ts-go { margin-top: 10px; }
+  .ts-deal .card-media { display: grid; }
+  .ts-deal .tag { position: absolute; top: 10px; left: 10px; }
+  .ts-dest { position: absolute; left: 12px; bottom: 10px; color: #fff; font: 700 calc(22px * var(--ts)) / 1 var(--ui-font-display); text-shadow: 0 1px 8px rgb(0 0 0 / 30%); }
+  html[data-lang="google"] .ts-dest { font-weight: 500; }
+  .ts-deal .card-body { padding: 10px 12px 12px; gap: 2px; }
+  .ts-from { color: var(--ui-danger); font: 700 calc(20px * var(--ts)) / 1.2 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  .ts-from small { font-size: .6em; }
+  html[data-lang="google"] .ts-from { font-weight: 500; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">机票</div>
+    <div class="topbar-trail"><button class="bar-btn" aria-label="我的订单"><svg class="i"><use href="#i-receipt"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">机票</h1>
+    <div class="segmented ts-trip"><button class="is-active">单程</button><button>往返</button><button>多程</button></div>
+
+    <section class="card pad ts-form">
+      <div class="ts-route">
+        <a class="ts-city" href="#"><span class="t-footnote t-2">出发</span><strong class="ts-name">上海<small>SHA</small></strong><span class="t-footnote t-2">虹桥 · 浦东</span></a>
+        <button class="icon-btn outlined ts-swap" aria-label="交换出发地和目的地"><svg class="i"><use href="#i-sort"/></svg></button>
+        <a class="ts-city ts-to" href="#"><span class="t-footnote t-2">到达</span><strong class="ts-name">北京<small>PEK</small></strong><span class="t-footnote t-2">首都国际机场</span></a>
+      </div>
+      <a class="ts-row" href="#">
+        <svg class="i"><use href="#i-calendar"/></svg>
+        <span class="grow"><span class="t-footnote t-2">出发日期</span><span class="ts-val">11月13日 <span class="t-2 t-regular">周五</span></span></span>
+        <span class="ts-add t-subhead t-accent"><svg class="i sm"><use href="#i-plus"/></svg>返程</span>
+      </a>
+      <div class="ts-row">
+        <svg class="i"><use href="#i-users"/></svg>
+        <span class="grow"><span class="t-footnote t-2">乘客</span><span class="ts-val">2 位成人</span></span>
+        <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>2</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      </div>
+      <div class="ts-row">
+        <svg class="i"><use href="#i-ticket"/></svg>
+        <div class="chips single"><button class="chip is-active">经济舱</button><button class="chip">公务舱</button><button class="chip">头等舱</button></div>
+      </div>
+      <button class="btn filled lg block ts-go"><svg class="i"><use href="#i-search"/></svg>搜索航班</button>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">最近搜索 <a href="#">清空</a></h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-plane"/></svg></span>
+          <span class="row-body"><span class="row-title">上海 → 成都</span><span class="row-sub ellipsis">11月20日 周五 · 1人 · 经济舱</span></span>
+          <span class="row-value">¥680 起</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-repeat"/></svg></span>
+          <span class="row-body"><span class="row-title">上海 ⇄ 三亚</span><span class="row-sub ellipsis">12月24日 – 28日 · 2人 · 往返</span></span>
+          <span class="row-value">¥2,160 起</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-plane"/></svg></span>
+          <span class="row-body"><span class="row-title">杭州 → 广州</span><span class="row-sub ellipsis">11月6日 周五 · 1人 · 公务舱</span></span>
+          <span class="row-value">¥1,950 起</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">特价机票 · 上海出发 <a href="#">更多</a></h2>
+      <div class="carousel" style="--item:42%">
+        <a class="card ts-deal" href="#">
+          <div class="card-media art a8" style="--ratio:1"><svg class="i"><use href="#i-sun"/></svg><span class="tag solid">2.6 折</span><span class="ts-dest">三亚</span></div>
+          <div class="card-body"><span class="t-caption t-2">11月18日 周三 · 直飞</span><span class="ts-from"><small>¥</small>590<span class="t-caption t-2 t-regular"> 起</span></span></div>
+        </a>
+        <a class="card ts-deal" href="#">
+          <div class="card-media art a5" style="--ratio:1"><svg class="i"><use href="#i-mountain"/></svg><span class="tag solid">3.1 折</span><span class="ts-dest">成都</span></div>
+          <div class="card-body"><span class="t-caption t-2">11月21日 周六 · 直飞</span><span class="ts-from"><small>¥</small>420<span class="t-caption t-2 t-regular"> 起</span></span></div>
+        </a>
+        <a class="card ts-deal" href="#">
+          <div class="card-media art a7" style="--ratio:1"><svg class="i"><use href="#i-umbrella"/></svg><span class="tag solid">2.8 折</span><span class="ts-dest">厦门</span></div>
+          <div class="card-body"><span class="t-caption t-2">11月27日 周五 · 直飞</span><span class="ts-from"><small>¥</small>380<span class="t-caption t-2 t-regular"> 起</span></span></div>
+        </a>
+        <a class="card ts-deal" href="#">
+          <div class="card-media art a6" style="--ratio:1"><svg class="i"><use href="#i-snowflake"/></svg><span class="tag solid">4.2 折</span><span class="ts-dest">哈尔滨</span></div>
+          <div class="card-body"><span class="t-caption t-2">12月5日 周六 · 直飞</span><span class="ts-from"><small>¥</small>720<span class="t-caption t-2 t-regular"> 起</span></span></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-plane"/></svg><span>机票</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-hotel"/></svg><span>酒店</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-train"/></svg><span>火车票</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-ticket"/></svg><span>行程</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我的</span></a>
+  </nav>
+</div>
+</body>
+</html>

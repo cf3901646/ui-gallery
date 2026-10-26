@@ -32,12 +32,14 @@
   .ps-stats .stat-value { color: var(--ui-text); }
   .ps-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
   @media (min-width: 1100px) { html[data-lang="google"] .ps-cols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-  .ps-cols > div { display: flex; flex-direction: column; gap: 4px; font-size: calc(var(--fs-callout) * var(--ts)); line-height: 1.45; }
+  .ps-cols > div { display: flex; flex-direction: column; gap: 4px; font-size: calc(var(--fs-callout) * var(--ts)); line-height: 1.45; text-wrap: pretty; }
+  .ps-sw + p { text-wrap: pretty; }
+  html[data-scheme="dark"] .ps-sw .swatch { box-shadow: inset 0 0 0 1px var(--ui-line-strong); }
   .ps-cols b { color: var(--ui-text); font-size: calc(var(--fs-title3) * var(--ts)); font-weight: 600; line-height: 1.25; }
   html[data-lang="google"] .ps-cols b { font-weight: 400; font-family: var(--ui-font-display); }
   .ps-last { border-bottom: 1px solid var(--ui-line); }
   .ps-notes { list-style: decimal; padding-left: 1.4em; display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
-  @media (max-width: 560px) { .ps-dim { grid-template-columns: 1fr; } .ps-cols { gap: 20px; } }
+  @media (max-width: 560px) { .ps-dim { grid-template-columns: 1fr; } .ps-cols { grid-template-columns: 1fr; gap: 18px; } }
 </style>
 </head>
 <body class="site">
@@ -99,7 +101,7 @@
       <dl class="spec">
         <dt>显示屏</dt>
         <dd class="ps-cols">
-          <div><b>6.3 英寸<sup>1</sup></b>超视网膜 XDR 显示屏，OLED 全面屏</div>
+          <div><b>6.3 英寸<sup>1</sup></b><span>超视网膜 XDR 显示屏，<span class="nowrap">OLED 全面屏</span></span></div>
           <div><b>2622 × 1206</b>像素分辨率，460 ppi</div>
           <div><b>1–120Hz</b>ProMotion 自适应刷新率，支持全天候显示</div>
           <div><b>3000 尼特</b>户外峰值亮度，最低亮度 1 尼特</div>
@@ -140,7 +142,7 @@
         <dt>电池与充电</dt>
         <dd class="ps-cols">
           <div><b>31 小时</b><span>视频播放最长时间<sup>2</sup></span></div>
-          <div><b>20 分钟 50%</b><span>使用 40 瓦或更大功率适配器快充<sup>3</sup></span></div>
+          <div><b>20 分钟 50%</b><span>使用 40 瓦或更大功率<span class="nowrap">适配器快充<sup>3</sup></span></span></div>
           <div><b>25 瓦</b>MagSafe 与 Qi2.2 无线充电</div>
           <div><b>USB-C</b>USB 3，最高 10Gb/s 传输速率</div>
         </dd>

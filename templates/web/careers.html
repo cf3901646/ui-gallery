@@ -33,7 +33,9 @@
   @media (max-width: 860px) { .footer-cols { --cols: 2; } }
   .cr-more { display: flex; justify-content: center; margin-top: 32px; }
   .cr-quote { max-width: 760px; margin-inline: auto; align-items: center; text-align: center; gap: 24px; }
-  .cr-quote blockquote { font-size: calc(clamp(22px, 2.6vw, 30px) * var(--ts)); line-height: 1.45; font-weight: 500; }
+  .cr-quote blockquote { font-size: calc(clamp(22px, 2.6vw, 30px) * var(--ts)); line-height: 1.45; font-weight: 500; text-wrap: balance; }
+  .site .section-head.row { padding: 0; min-height: 0; font-size: inherit; }
+  .cr-hero .hero-sub { text-wrap: pretty; }
   html[data-lang="google"] .cr-quote blockquote { font-family: var(--ui-font-display); font-weight: 400; }
   .cr-quote figcaption { display: flex; align-items: center; gap: 12px; text-align: left; }
   .cr-quote b { display: block; font-weight: 600; }
@@ -116,7 +118,7 @@
       <figure class="quote cr-quote">
         <span class="t-eyebrow">同事说</span>
         <blockquote>“入职第三周，我做的行程分享卡片就上线了，第二天有 9 万人在用。在这里，你的工作离用户只有一次发版的距离。”</blockquote>
-        <figcaption><span class="avatar" style="--c:var(--c-teal);--c-fg:#fff">程</span><span><b>程一帆</b><span class="t-footnote t-2">iOS 工程师 · 2024 年加入</span></span></figcaption>
+        <figcaption><span class="avatar" style="--c:var(--c-teal)">程</span><span><b>程一帆</b><span class="t-footnote t-2">iOS 工程师 · 2024 年加入</span></span></figcaption>
       </figure>
     </div>
   </section>

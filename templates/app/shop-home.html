@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>首页 · 拾物商城</title>
+<meta name="ui:title" content="商城首页">
+<meta name="ui:desc" content="电商首页：吸顶搜索框与扫码、横滑活动 Banner、8 个分类入口、限时秒杀（倒计时、划线原价、抢购进度）、猜你喜欢双列商品卡和带购物车角标的标签栏。">
+<meta name="ui:category" content="电商与零售">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="搜索,Banner,分类入口,秒杀,商品卡,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .sh-head { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 2px;
+    padding: calc(var(--safe-top) + 6px) 6px 10px var(--ui-margin); background: var(--ui-bg); }
+  .sh-head .searchbar { flex: 1; min-width: 0; }
+  .sh-head > .icon-btn, .sh-bw .icon-btn { --b-fg: var(--ui-text); }
+  .sh-bw { position: relative; display: inline-flex; }
+  .sh-bw .badge { position: absolute; top: 4px; right: 3px; pointer-events: none; box-shadow: 0 0 0 2px var(--ui-bg); }
+  .sh-banner .card { min-height: 168px; }
+  .sh-banner .card-body { gap: 2px; }
+  .sh-banner .card-title { font-size: calc(var(--fs-title3) * var(--ts)); font-weight: 700; }
+  .sh-banner .tag { align-self: flex-start; margin-bottom: 4px; background: rgb(255 255 255 / 22%); color: #fff; }
+  .sh-banner .dots { margin-top: 10px; gap: 5px; --ui-dot-active-w: 16px; }
+  .sh-banner .dots > span { width: 6px; height: 6px; }
+  .sh-banner .dots > .is-active { width: 16px; }
+  .sh-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 4px; margin-top: 18px; }
+  .sh-cats a { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: calc(var(--fs-caption) * var(--ts)); white-space: nowrap; }
+  .sh-ic { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--tint) 14%, transparent); color: var(--tint); }
+  html[data-scheme="dark"] .sh-ic { background: color-mix(in srgb, var(--tint) 26%, transparent); color: color-mix(in srgb, var(--tint) 70%, white); }
+  .sh-flash { margin-top: 22px; gap: 12px; }
+  .sh-flash-t { display: inline-flex; align-items: center; gap: 4px; }
+  .sh-flash-t .i { --ui-icon: 20px; color: var(--c-red); }
+  .sh-flash .tag { font-variant-numeric: tabular-nums; }
+  .sh-fi { display: flex; flex-direction: column; gap: 4px; }
+  .sh-fi .art { aspect-ratio: 1; border-radius: var(--ui-radius-m); }
+  .sh-fi .art .i { --ui-icon: 32px; }
+  .sh-fi .progress { --progress-fill: var(--c-red); margin-top: 2px; }
+  .sh-price { color: var(--c-red); font: 700 calc(17px * var(--ts)) / 1.2 var(--ui-font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  html[data-lang="google"] .sh-price { font-weight: 600; }
+  .sh-price small { font-size: .68em; margin-right: 1px; }
+  .sh-fi s { line-height: 1.2; }
+  .sh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .sh-goods .card-media .i { --ui-icon: 44px; }
+  .sh-gb { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px; }
+  .sh-gb .tag { height: 18px; padding: 0 5px; font-size: calc(10px * var(--ts)); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="sh-head">
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="羽绒服 轻薄款">
+      <svg class="i"><use href="#i-camera"/></svg>
+    </label>
+    <button class="icon-btn" aria-label="扫一扫"><svg class="i"><use href="#i-scan"/></svg></button>
+    <span class="sh-bw"><button class="icon-btn" aria-label="消息"><svg class="i"><use href="#i-message"/></svg></button><span class="badge">5</span></span>
+  </header>
+
+  <main class="content">
+    <section class="sh-banner">
+      <div class="carousel" style="--item:100%;--gap:16px">
+        <a class="card media-fill" href="#">
+          <div class="art a4"><svg class="i xxl"><use href="#i-sparkles"/></svg></div>
+          <div class="card-body"><span class="tag">10.24 20:00 开抢</span><span class="card-title">双 11 狂欢季 · 预售开启</span><span class="card-sub">Aurora 全系最高立省 ¥1,200，享 24 期免息</span></div>
+        </a>
+        <a class="card media-fill" href="#">
+          <div class="art a3"><svg class="i xxl"><use href="#i-mountain"/></svg></div>
+          <div class="card-body"><span class="tag">户外装备节</span><span class="card-title">冲锋衣低至 5 折</span><span class="card-sub">满 399 减 60，可叠加店铺券</span></div>
+        </a>
+        <a class="card media-fill" href="#">
+          <div class="art a5"><svg class="i xxl"><use href="#i-leaf"/></svg></div>
+          <div class="card-body"><span class="tag">产地直发</span><span class="card-title">阿克苏冰糖心苹果 5kg</span><span class="card-sub">¥59.9 包邮，坏果包赔</span></div>
+        </a>
+      </div>
+      <div class="dots"><span class="is-active"></span><span></span><span></span></div>
+    </section>
+
+    <nav class="sh-cats" aria-label="分类">
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-smartphone"/></svg></span>手机数码</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-laptop"/></svg></span>电脑办公</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-tv"/></svg></span>家用电器</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-sparkles"/></svg></span>美妆个护</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-bag"/></svg></span>服饰鞋包</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-food"/></svg></span>食品生鲜</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-green)"><svg class="i"><use href="#i-bike"/></svg></span>运动户外</a>
+      <a href="#"><span class="sh-ic" style="--tint:var(--c-brown)"><svg class="i"><use href="#i-bed"/></svg></span>家居家纺</a>
+    </nav>
+
+    <section class="card pad sh-flash">
+      <div class="hstack between">
+        <div class="hstack gap-2"><span class="t-headline sh-flash-t"><svg class="i solid"><use href="#i-zap"/></svg>限时秒杀</span><span class="t-caption t-2">14:00 场</span><span class="tag danger"><svg class="i"><use href="#i-clock"/></svg>02:14:36</span></div>
+        <a class="link-arrow t-subhead" href="#">更多</a>
+      </div>
+      <div class="carousel" style="--item:100px;--gap:10px">
+        <a class="sh-fi" href="#"><span class="art a2"><svg class="i"><use href="#i-headphones"/></svg></span><span class="sh-price"><small>¥</small>499</span><s class="t-caption2 t-3">¥799</s><span class="progress" style="--value:86%"></span></a>
+        <a class="sh-fi" href="#"><span class="art a10"><svg class="i"><use href="#i-coffee"/></svg></span><span class="sh-price"><small>¥</small>59</span><s class="t-caption2 t-3">¥129</s><span class="progress" style="--value:72%"></span></a>
+        <a class="sh-fi" href="#"><span class="art a3"><svg class="i"><use href="#i-mountain"/></svg></span><span class="sh-price"><small>¥</small>399</span><s class="t-caption2 t-3">¥899</s><span class="progress" style="--value:64%"></span></a>
+        <a class="sh-fi" href="#"><span class="art a12"><svg class="i"><use href="#i-bed"/></svg></span><span class="sh-price"><small>¥</small>89</span><s class="t-caption2 t-3">¥199</s><span class="progress" style="--value:41%"></span></a>
+        <a class="sh-fi" href="#"><span class="art a6"><svg class="i"><use href="#i-battery"/></svg></span><span class="sh-price"><small>¥</small>129</span><s class="t-caption2 t-3">¥199</s><span class="progress" style="--value:28%"></span></a>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">猜你喜欢</h2>
+      <div class="chips single bleed">
+        <button class="chip is-active">推荐</button><button class="chip">数码</button><button class="chip">家居</button><button class="chip">服饰</button><button class="chip">美食</button><button class="chip">运动</button>
+      </div>
+      <div class="sh-grid">
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a9" style="--ratio:1"><svg class="i"><use href="#i-clock"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">Aurora Watch 3 智能手表 GPS 版 45mm 午夜色</span>
+            <span class="hstack gap-1"><span class="tag accent">新品</span><span class="tag danger">24 期免息</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>2,999</span><span class="t-caption2 t-3">已售 1.2万+</span></span></div>
+        </a>
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a12" style="--ratio:1"><svg class="i"><use href="#i-bed"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">南山 新疆长绒棉四件套 1.8m 床 雾灰条纹</span>
+            <span class="hstack gap-1"><span class="tag danger">包邮</span><span class="tag">满 299 减 30</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>648</span><span class="t-caption2 t-3">已售 3,862</span></span></div>
+        </a>
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a3" style="--ratio:1"><svg class="i"><use href="#i-mountain"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">山野 男款三合一冲锋衣 防水防风 可拆抓绒内胆</span>
+            <span class="hstack gap-1"><span class="tag danger">包邮</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>899</span><span class="t-caption2 t-3">已售 2.6万+</span></span></div>
+        </a>
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a5" style="--ratio:1"><svg class="i"><use href="#i-food"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">小鹿 每日坚果 30 袋装 750g 混合果仁</span>
+            <span class="hstack gap-1"><span class="tag danger">包邮</span><span class="tag">第 2 件半价</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>89.9</span><span class="t-caption2 t-3">已售 10万+</span></span></div>
+        </a>
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a8" style="--ratio:1"><svg class="i"><use href="#i-laptop"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">Aurora Pad Air 11 英寸 128GB WLAN 星光色</span>
+            <span class="hstack gap-1"><span class="tag accent">新品</span><span class="tag danger">包邮</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>4,399</span><span class="t-caption2 t-3">已售 8,640</span></span></div>
+        </a>
+        <a class="card sh-goods" href="#">
+          <div class="card-media art a10" style="--ratio:1"><svg class="i"><use href="#i-coffee"/></svg></div>
+          <div class="sh-gb"><span class="t-subhead t-clamp-2">云杉 316 不锈钢真空保温杯 500ml 雾霾蓝</span>
+            <span class="hstack gap-1"><span class="tag danger">包邮</span></span>
+            <span class="hstack between base"><span class="sh-price"><small>¥</small>129</span><span class="t-caption2 t-3">已售 5.3万+</span></span></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-grid"/></svg><span>分类</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-cart"/></svg><span>购物车</span><span class="badge">4</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我的</span></a>
+  </nav>
+</div>
+</body>
+</html>

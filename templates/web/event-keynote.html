@@ -16,6 +16,9 @@
   .ek-hero { --ui-link: var(--c-blue); --ui-hero-pad: 112px; }
   html[data-lang="google"] .ek-hero { --ui-link: var(--md-inverse-primary); --ui-accent: var(--md-inverse-primary); --ui-on-accent: var(--md-inverse-surface);
     --ui-eyebrow: var(--md-inverse-primary); --ui-text-2: color-mix(in srgb, currentColor 72%, transparent); }
+  /* Google 深色下 kit 的 .hero.dark 用 inverse-surface，会变成浅色，这里保持深色首屏 */
+  html[data-lang="google"][data-scheme="dark"] .ek-hero { background: var(--md-surface-container-lowest); color: var(--md-on-surface);
+    --ui-link: var(--md-primary); --ui-accent: var(--md-primary); --ui-on-accent: var(--md-on-primary); --ui-eyebrow: var(--md-primary); }
   .ek-hero .wrap { position: relative; z-index: 1; }
   .ek-glow { position: absolute; left: 50%; top: 58%; width: min(900px, 120%); aspect-ratio: 2; translate: -50% -50%; border-radius: 50%; filter: blur(90px); opacity: .55; }
   html[data-lang="google"] .ek-glow { opacity: .4; }
@@ -38,10 +41,11 @@
   .ek-live > .art { min-height: 100%; }
   .ek-live .card-body { padding: 32px; gap: 12px; justify-content: center; }
   .ek-live .tag { align-self: flex-start; }
-  .ek-live .chips { padding-inline: 0; margin-inline: 0; }
+  .footer-cols { --cols: 4; }
   @media (max-width: 860px) {
     .ek-agenda, .ek-live { grid-template-columns: 1fr; gap: 24px; }
     .ek-live .card-body { padding: 24px; }
+    .footer-cols { --cols: 2; }
   }
   @media (max-width: 560px) {
     .ek-hero { --ui-hero-pad: 72px; }
@@ -67,8 +71,8 @@
     <div class="ek-glow art a4" aria-hidden="true"></div>
     <div class="wrap">
       <span class="t-eyebrow">特别活动</span>
-      <h1 class="t-hero ek-title">灵感，一触即发。</h1>
-      <p class="t-lead t-2">2026 年 9 月 9 日 · 北京时间 01:00 · 线上直播</p>
+      <h1 class="t-hero ek-title">灵感，<span class="nowrap">一触即发。</span></h1>
+      <p class="t-lead t-2"><span class="nowrap">2026 年 9 月 9 日</span> · <span class="nowrap">北京时间 01:00</span> · <span class="nowrap">线上直播</span></p>
       <div class="ek-count" aria-label="距离开始还有 12 天 08 小时 45 分 30 秒">
         <div><b>12</b><span>天</span></div><div><b>08</b><span>时</span></div><div><b>45</b><span>分</span></div><div><b>30</b><span>秒</span></div>
       </div>
@@ -83,7 +87,7 @@
     <div class="wrap ek-agenda">
       <div class="section-head mb-0">
         <span class="t-eyebrow">议程</span>
-        <h2 class="t-large-title">100 分钟，六个篇章。</h2>
+        <h2 class="t-large-title">100 分钟，<span class="nowrap">六个篇章。</span></h2>
         <p class="t-body t-2">时间均为北京时间。直播结束后可在官网与 Aurora TV 观看回放。</p>
       </div>
       <ol class="timeline">
@@ -118,7 +122,7 @@
         <div class="card-body">
           <span class="tag danger"><svg class="i"><use href="#i-dot"/></svg>9 月 9 日 01:00 开播</span>
           <h2 class="t-title2">在这里观看直播</h2>
-          <p class="t-callout t-2">支持 4K HDR 画质，提供中文同声传译、手语翻译和实时字幕。现在可以先看 2 分钟预告片。</p>
+          <p class="t-callout t-2">支持 4K HDR 画质，提供中文同声传译、手语翻译和实时字幕。现在可以先看 2 分钟<span class="nowrap">预告片。</span></p>
           <div class="chips wrap"><span class="chip">中文同传</span><span class="chip">手语翻译</span><span class="chip">实时字幕</span></div>
           <div class="btn-row mt-2"><a class="btn filled sm" href="#">设置开播提醒</a><a class="link-arrow" href="#">在 Aurora TV 观看</a></div>
         </div>
@@ -140,7 +144,7 @@
 
   <footer class="footer">
     <div class="wrap">
-      <div class="footer-cols" style="--cols:4">
+      <div class="footer-cols">
         <div><h4>活动</h4><ul><li><a href="#">往期发布会</a></li><li><a href="#">开发者大会</a></li></ul></div>
         <div><h4>新闻中心</h4><ul><li><a href="#">新闻稿</a></li><li><a href="#">媒体素材</a></li></ul></div>
         <div><h4>选购</h4><ul><li><a href="#">商店</a></li><li><a href="#">以旧换新</a></li></ul></div>

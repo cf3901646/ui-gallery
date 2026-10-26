@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>订单跟踪 · 外卖</title>
+<meta name="ui:title" content="订单跟踪">
+<meta name="ui:desc" content="外卖配送跟踪：上半屏地图（骑手、终点、我的位置与虚线路线、距离气泡），下方面板显示预计送达时间与进度、骑手信息和联系按钮、订单状态时间线，以及可展开的订单商品明细。">
+<meta name="ui:category" content="出行与本地生活">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="地图,配送,骑手,时间线,进度条,折叠">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  body.app { display: flow-root; }  /* 防止面板的 margin-top 穿透 body，导致底部多出空白 */
+  .ot-map { position: fixed; z-index: 0; top: 0; left: 0; right: 0; height: 440px; }
+  .ot-route { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ot-route path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .ot-route .case { stroke: rgb(255 255 255 / 90%); stroke-width: 10; }
+  html[data-scheme="dark"] .ot-route .case { stroke: rgb(0 0 0 / 40%); }
+  .ot-route .done { stroke: var(--ui-text-3); stroke-width: 5; }
+  .ot-route .todo { stroke: var(--ui-accent); stroke-width: 5; stroke-dasharray: 10 8; }
+  .ot-chip { position: absolute; translate: -50% -100%; white-space: nowrap; padding: 6px 12px; border-radius: var(--ui-radius-full);
+    background: var(--ui-bg-plain); color: var(--ui-text); box-shadow: var(--ui-shadow-2); font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 600; }
+  .ot-chip b { color: var(--ui-accent); }
+  .ot-top { position: fixed; z-index: 30; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: calc(var(--safe-top) + 6px) var(--ui-margin) 0; }
+  html[data-lang="google"] .ot-top .icon-btn, html[data-lang="google"] .ot-locate { box-shadow: var(--ui-shadow-1); }
+  .ot-locate { position: absolute; left: var(--ui-margin); top: 336px; }
+  .ot-sheet { position: relative; z-index: 1; margin-top: 392px; min-height: calc(100dvh - 392px); display: flex; flex-direction: column; gap: 12px;
+    padding: 2px var(--ui-margin) calc(var(--safe-bottom) + 24px); background: var(--ui-bg); border-radius: 28px 28px 0 0; box-shadow: 0 -6px 24px rgb(0 0 0 / 12%); }
+  html[data-lang="google"] .ot-sheet .card { background: var(--md-surface-container-low); }
+  html[data-lang="google"][data-scheme="dark"] .ot-sheet .card { background: var(--md-surface-container); }
+  .ot-sheet .card.pad { gap: 10px; }
+  .ot-time { font: 700 calc(46px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; letter-spacing: -1px; }
+  html[data-lang="google"] .ot-time { font-weight: 400; letter-spacing: 0; }
+  .ot-rider { display: flex; align-items: center; gap: 12px; }
+  .ot-rider .grow { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ot-rider .t-footnote { display: flex; align-items: center; gap: 3px; }
+  .ot-rider .t-footnote .i { --ui-icon: 13px; color: var(--c-orange); }
+  .ot-sheet .divider { margin: 4px 0; }
+  .timeline > li { display: flex; flex-direction: column; gap: 2px; }
+  .ot-tl-h { display: flex; justify-content: space-between; gap: 12px; }
+  .timeline > li:not(.is-done, .is-current) .ot-tl-h > :first-child { color: var(--ui-text-2); }
+  .ot-order > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 12px; cursor: pointer; }
+  .ot-order > summary::-webkit-details-marker { display: none; }
+  .ot-order > summary .grow { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ot-order > summary .art { width: 48px; height: 48px; border-radius: var(--ui-radius-m); flex: none; }
+  .ot-order > summary .art .i { --ui-icon: 22px; }
+  .ot-chev { --ui-icon: 20px; color: var(--ui-text-3); transition: rotate var(--ui-dur) var(--ui-ease); }
+  .ot-order[open] .ot-chev { rotate: 180deg; }
+  .ot-order .kv { padding: 4px 16px 16px; gap: 8px 16px; }
+</style>
+</head>
+<body class="app">
+  <div class="ot-map art map" role="img" aria-label="配送地图">
+    <svg class="ot-route" viewBox="0 0 402 440" preserveAspectRatio="none" aria-hidden="true">
+      <path class="case" d="M92 150 V178 H196 V214 V262 H312 V318"/>
+      <path class="done" d="M92 150 V178 H196 V214"/>
+      <path class="todo" d="M196 214 V262 H312 V318"/>
+    </svg>
+    <span class="map-pin" style="left:22.89%;top:34.09%;--c:var(--c-orange)"><svg class="i"><use href="#i-store"/></svg></span>
+    <span class="map-pin" style="left:77.61%;top:72.27%;--c:var(--c-red)"><svg class="i"><use href="#i-home"/></svg></span>
+    <span class="map-me" style="left:85.3%;top:77.5%"></span>
+    <span class="map-pin" style="left:48.76%;top:48.64%"><svg class="i"><use href="#i-bike"/></svg></span>
+    <span class="ot-chip" style="left:48.76%;top:calc(48.64% - 48px)">距你 <b>1.2 km</b> · 约 8 分钟</span>
+    <button class="icon-btn glass ot-locate" aria-label="定位"><svg class="i"><use href="#i-locate"/></svg></button>
+  </div>
+
+  <header class="ot-top">
+    <a class="icon-btn glass" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a>
+    <button class="icon-btn glass" aria-label="联系客服"><svg class="i"><use href="#i-headphones"/></svg></button>
+  </header>
+
+  <main class="ot-sheet">
+    <span class="sheet-grabber"></span>
+    <section class="card pad">
+      <span class="t-footnote t-2">预计送达</span>
+      <div class="hstack base gap-3"><span class="ot-time">12:46</span><span class="t-subhead t-2">约 14 分钟后</span><span class="tag success" style="margin-left:auto">比预计早 3 分钟</span></div>
+      <div class="progress" style="--value:68%"></div>
+      <div class="hstack between t-caption t-3"><span>12:24 已取餐</span><span>还剩 1.2 km</span></div>
+      <div class="divider"></div>
+      <div class="ot-rider">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">王</span>
+        <div class="grow">
+          <span class="t-headline">王志强 · 专送骑手</span>
+          <span class="t-footnote t-2"><svg class="i solid"><use href="#i-star-fill"/></svg>4.9 · 准时率 99%</span>
+        </div>
+        <button class="icon-btn tonal" aria-label="发消息"><svg class="i"><use href="#i-message"/></svg></button>
+        <button class="icon-btn tonal" aria-label="打电话"><svg class="i"><use href="#i-phone"/></svg></button>
+      </div>
+    </section>
+
+    <section class="card pad">
+      <ol class="timeline">
+        <li class="is-done"><div class="ot-tl-h"><span class="t-subhead t-semibold">已下单</span><span class="t-footnote t-2 t-num">11:58</span></div><span class="t-footnote t-2">在线支付 ¥86.50</span></li>
+        <li class="is-done"><div class="ot-tl-h"><span class="t-subhead t-semibold">商家已接单</span><span class="t-footnote t-2 t-num">12:01</span></div><span class="t-footnote t-2">外婆家（徐家汇店）开始备餐</span></li>
+        <li class="is-current"><div class="ot-tl-h"><span class="t-subhead t-semibold t-accent">骑手已取餐</span><span class="t-footnote t-2 t-num">12:24</span></div><span class="t-footnote t-2">王志强正沿宜山路赶来，距你 1.2 公里</span></li>
+        <li><div class="ot-tl-h"><span class="t-subhead t-semibold">送达</span><span class="t-footnote t-2 t-num">预计 12:46</span></div><span class="t-footnote t-2">宜山路 700 号 B2 栋 12 楼前台 · 林知夏</span></li>
+      </ol>
+    </section>
+
+    <details class="card ot-order">
+      <summary>
+        <span class="art a5"><svg class="i"><use href="#i-food"/></svg></span>
+        <span class="grow"><span class="t-subhead t-semibold">外婆家（徐家汇店）</span><span class="t-footnote t-2">茶香鸡 等 5 件 · 实付 ¥86.50</span></span>
+        <svg class="i ot-chev"><use href="#i-chevron-down"/></svg>
+      </summary>
+      <dl class="kv t-subhead">
+        <dt>茶香鸡（半只）× 1</dt><dd>¥38.00</dd>
+        <dt>东坡肉 × 1</dt><dd>¥28.00</dd>
+        <dt>麻婆豆腐 × 1</dt><dd>¥16.00</dd>
+        <dt>米饭 × 2</dt><dd>¥4.00</dd>
+        <dt>打包费 · 配送费</dt><dd>¥5.50</dd>
+        <dt>红包</dt><dd class="t-danger">−¥5.00</dd>
+      </dl>
+    </details>
+  </main>
+</body>
+</html>

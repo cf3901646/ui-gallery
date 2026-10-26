@@ -13,7 +13,9 @@
 <script src="../../kit/icons.js"></script>
 <script src="../../kit/ui.js"></script>
 <style>
-  .ab-hero .hero-sub { max-width: 32em; }
+  .ab-hero .hero-sub { max-width: 32em; text-wrap: balance; }
+  .ab-split .section-head h2, .ab-cta h2, .ab-cta p { text-wrap: balance; }
+  .ab-stats .stat-label, .ab-tl p, .ab-team .t-footnote { text-wrap: pretty; }
   .ab-stats { --gap: 32px; }
   .ab-stats .stat { border-top: 1px solid var(--ui-line-strong); padding-top: 20px; gap: 6px; }
   .ab-stats .stat-value { font-size: calc(clamp(34px, 4.4vw, 52px) * var(--ts)); letter-spacing: -.02em; }
@@ -26,7 +28,7 @@
   .ab-tl .t-headline { color: var(--ui-accent); font-variant-numeric: tabular-nums; }
   .ab-team { --gap: 40px 24px; }
   .ab-team > div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
-  .ab-team .avatar { --c-fg: #fff; margin-bottom: 10px; }
+  .ab-team .avatar { margin-bottom: 10px; }
   .ab-team .t-footnote { max-width: 18em; margin-top: 4px; }
   .ab-office .art { border-radius: 0; }
   .ab-office .tag { align-self: flex-start; margin-bottom: 4px; }
