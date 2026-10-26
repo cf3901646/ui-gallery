@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>账户与安全</title>
+<meta name="ui:title" content="账户与安全">
+<meta name="ui:desc" content="账户安全设置：密码与通行密钥、两步验证开关、恢复联系人、登录设备列表（标记本机）、安全建议提示，以及退出登录和注销账户。">
+<meta name="ui:category" content="系统与设置">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="安全,两步验证,登录设备,提示框,危险操作,分组列表">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .as-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .as-title > span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .as-tip { margin-top: 28px; }
+  .as-tip .stack { --gap: 4px; }
+  .as-tip .link-arrow { margin-top: 4px; font-weight: 600; }
+  .as-delete { margin-top: 12px; }
+  .as-note { padding: 0 24px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>设置</span></a></div>
+    <div class="topbar-title">账户与安全</div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content">
+    <section class="group">
+      <ul class="list has-avatars">
+        <li><a class="row" href="#">
+          <span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span>
+          <span class="row-body"><span class="row-title t-headline">林知夏</span><span class="row-sub">zhixia.lin@shiguang.me</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">登录与验证</h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-key"/></svg></span>
+          <span class="row-body"><span class="row-title">密码与通行密钥</span><span class="row-sub only-google">密码于 2025 年 6 月更改</span></span>
+          <span class="row-value">2 个通行密钥</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-shield"/></svg></span>
+          <span class="row-body"><span class="row-title">两步验证</span><span class="row-sub">短信验证码 · 138 **** 5620</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-users"/></svg></span>
+          <span class="row-body"><span class="row-title">恢复联系人</span><span class="row-sub only-google">林知远、陈默</span></span>
+          <span class="row-value">2 位</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+      <p class="group-footer">在新设备上登录时，需要输入发送到你手机的 6 位验证码。</p>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">登录设备 <a href="#">管理</a></h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-smartphone"/></svg></span>
+          <span class="row-body">
+            <span class="row-title as-title"><span><span class="only-apple">iPhone 16 Pro</span><span class="only-google">Pixel 9 Pro</span></span><span class="tag accent">本机</span></span>
+            <span class="row-sub">上海 · 正在使用</span>
+          </span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-laptop"/></svg></span>
+          <span class="row-body"><span class="row-title">MacBook Air</span><span class="row-sub">上海 · 2 小时前</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-globe"/></svg></span>
+          <span class="row-body"><span class="row-title">网页版 · Chrome</span><span class="row-sub">杭州 · 8 月 12 日 22:47</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><button class="row action"><span class="row-body"><span class="row-title">退出其他所有设备</span></span></button></li>
+      </ul>
+    </section>
+
+    <div class="callout warning as-tip">
+      <svg class="i"><use href="#i-warning"/></svg>
+      <div class="stack">
+        <span class="callout-title">安全建议</span>
+        <span class="t-footnote">你的密码已 14 个月未更换，并且在另一个网站上使用过。建议尽快改成只用于拾光的新密码。</span>
+        <a class="link-arrow t-footnote" href="#">立即更改密码</a>
+      </div>
+    </div>
+
+    <section class="group">
+      <ul class="list">
+        <li><button class="row center destructive"><span class="row-title">退出登录</span></button></li>
+      </ul>
+    </section>
+    <button class="btn text danger block as-delete">注销账户</button>
+    <p class="t-footnote t-3 t-center as-note">注销后，你的日记、照片和订阅将在 30 天后永久删除，且无法恢复。</p>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>远处的海</title>
+<meta name="ui:title" content="平板音乐（专辑页）">
+<meta name="ui:desc" content="平板音乐专辑页：侧栏（现在就听、浏览、广播、资料库、播放列表），大封面与专辑信息、播放/随机按钮、曲目列表（正在播放高亮），底部固定迷你播放器（进度、控制、音量）。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="tablet">
+<meta name="ui:tags" content="双栏,侧栏,音乐,专辑,迷你播放器,滑块">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .mu-split { height: 100dvh; --split-cols: 280px 1fr; }
+  .mu-split > .pane { height: 100dvh; min-height: 0; }
+  html[data-lang="apple"] body.app { --ui-accent: var(--c-red); --ui-accent-soft: color-mix(in srgb, var(--c-red) 14%, transparent);
+    --ui-on-accent-soft: var(--c-red); --ui-icon-btn-fg: var(--c-red); }
+  .mu-track .icon-btn { --b-fg: var(--ui-text-2); }
+  .mu-main { background: var(--ui-bg-plain); }
+  .mu-side .searchbar { margin: 0 4px 8px; }
+  .mu-pl { width: 24px; height: 24px; border-radius: 6px; flex: none; }
+  .mu-top { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 8px; padding: 12px 20px; }
+  .mu-body { padding: 0 40px 120px; }
+  .mu-hero { display: flex; gap: 32px; align-items: flex-end; padding-bottom: 24px; }
+  .mu-cover { width: 260px; aspect-ratio: 1; border-radius: 12px; flex: none; box-shadow: var(--ui-shadow-3); }
+  html[data-lang="google"] .mu-cover { border-radius: 28px; }
+  .mu-info { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .mu-info .btn-row { margin: 12px 0 6px; }
+  .mu-artist { color: var(--ui-accent); }
+  .mu-tracks > li + li::before { left: 60px; }
+  .mu-tracks > li.is-active::before, .mu-tracks > li.is-active + li::before { opacity: 0; }
+  .mu-tracks > li.is-active { background: var(--ui-fill); border-radius: 12px; }
+  .mu-track { gap: 14px; min-height: 52px; }
+  .mu-no { width: 28px; text-align: center; color: var(--ui-text-2); flex: none; }
+  .mu-track .row-value { min-width: 40px; text-align: right; }
+  .mu-track .icon-btn { margin-right: -8px; }
+  .mu-tracks > li.is-active .row-title { color: var(--ui-accent); font-weight: 600; }
+  .mu-eq { --bars-h: 14px; --bars-gap: 2px; --bars-radius: 1px; width: 16px; margin: 0 6px; --bar-color: var(--ui-accent); }
+  .mu-foot { padding: 20px 0 0 4px; display: flex; flex-direction: column; gap: 2px; }
+
+  .mu-mini { position: fixed; z-index: 20; left: 296px; right: 16px; bottom: 16px; height: 64px; border-radius: 999px;
+    display: flex; align-items: center; gap: 14px; padding: 0 18px 0 10px; }
+  html[data-lang="google"] .mu-mini { background: var(--md-surface-container-high); box-shadow: var(--ui-shadow-2); border-radius: 20px; height: 72px; }
+  .mu-mini-cover { width: 44px; height: 44px; border-radius: 8px; flex: none; }
+  html[data-lang="google"] .mu-mini-cover { border-radius: 12px; }
+  .mu-now { width: 150px; display: flex; flex-direction: column; flex: none; min-width: 0; }
+  .mu-ctl { display: flex; align-items: center; gap: 2px; flex: none; }
+  .mu-ctl .icon-btn { --b-fg: var(--ui-text); }
+  .mu-seek { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
+  .mu-mini .range { --range-track: 4px; --range-thumb-w: 12px; --range-thumb-h: 12px; --range-thumb-radius: 50%; --range-fill: var(--ui-text-2); }
+  html[data-lang="google"] .mu-mini .range { --range-track: 6px; --range-thumb-w: 4px; --range-thumb-h: 22px; --range-thumb-radius: 2px; --range-fill: var(--md-primary); }
+  .mu-seek .range { flex: 1; min-width: 0; }
+  .mu-vol { width: 96px; flex: none; }
+  .mu-mini .i.sm { color: var(--ui-text-2); flex: none; }
+</style>
+</head>
+<body class="app">
+<div class="split mu-split">
+  <aside class="pane mu-side">
+    <nav class="sidebar floating">
+      <div class="sidebar-title t-title2">音乐</div>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="艺人、歌曲、歌词"></label>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-play-circle"/></svg><span>现在就听</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-grid"/></svg><span>浏览</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-radio"/></svg><span>广播</span></a>
+      <div class="sidebar-section">资料库</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-clock"/></svg><span>最近添加</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-mic"/></svg><span>艺人</span></a>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-library-fill"/></svg><span>专辑</span><span class="count">286</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-music"/></svg><span>歌曲</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-download"/></svg><span>已下载</span></a>
+      <div class="sidebar-section">播放列表</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-list-music"/></svg><span>所有播放列表</span></a>
+      <a class="side-item" href="#"><i class="art a2 mu-pl"></i><span>通勤路上</span></a>
+      <a class="side-item" href="#"><i class="art a9 mu-pl"></i><span>深夜写代码</span></a>
+      <a class="side-item" href="#"><i class="art a3 mu-pl"></i><span>周末徒步</span></a>
+    </nav>
+  </aside>
+
+  <main class="pane mu-main">
+    <div class="mu-top">
+      <button class="icon-btn glass" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></button>
+      <span class="grow"></span>
+      <button class="icon-btn glass" aria-label="添加到资料库"><svg class="i"><use href="#i-plus"/></svg></button>
+      <button class="icon-btn glass" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+    </div>
+    <div class="mu-body">
+      <section class="mu-hero">
+        <div class="art a4 mu-cover" role="img" aria-label="专辑封面"><svg class="i xxl"><use href="#i-music"/></svg></div>
+        <div class="mu-info">
+          <h1 class="t-title1">远处的海</h1>
+          <a class="mu-artist t-title3" href="#">北岸灯塔乐队</a>
+          <span class="hstack gap-2 t-footnote t-2">独立民谣 · 2025<span class="tag">无损</span><span class="tag">杜比全景声</span></span>
+          <div class="btn-row">
+            <button class="btn filled"><svg class="i solid"><use href="#i-play"/></svg>播放</button>
+            <button class="btn tonal"><svg class="i"><use href="#i-shuffle"/></svg>随机播放</button>
+          </div>
+          <p class="t-subhead t-2 t-clamp-2">乐队的第二张录音室专辑，在舟山东极岛一座废弃灯塔里录完。手风琴、口琴和真实的潮汐采样贯穿全碟，写给每一个在海边长大又离开的人。</p>
+        </div>
+      </section>
+
+      <ul class="list plain mu-tracks">
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">1</span><span class="row-body"><span class="row-title">起风之前</span></span><span class="row-value t-num">3:28</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li class="is-active"><a class="row mu-track" href="#"><span class="mu-no"><span class="bars mu-eq"><span style="--h:70%"></span><span style="--h:100%"></span><span style="--h:45%"></span></span></span><span class="row-body"><span class="row-title">夜航星图</span></span><span class="row-value t-num">4:05</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">3</span><span class="row-body"><span class="row-title">灯塔守望者</span></span><span class="row-value t-num">3:51</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">4</span><span class="row-body"><span class="row-title">远处的海</span></span><span class="row-value t-num">5:12</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">5</span><span class="row-body"><span class="row-title">潮汐之间</span><span class="row-sub">北岸灯塔乐队、苏晚</span></span><span class="row-value t-num">3:47</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">6</span><span class="row-body"><span class="row-title">北纬三十度</span></span><span class="row-value t-num">4:20</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">7</span><span class="row-body"><span class="row-title">盐</span></span><span class="row-value t-num">2:58</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">8</span><span class="row-body"><span class="row-title">雾中码头</span></span><span class="row-value t-num">3:36</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">9</span><span class="row-body"><span class="row-title">第七个夏天</span></span><span class="row-value t-num">4:44</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+        <li><a class="row mu-track" href="#"><span class="mu-no t-num">10</span><span class="row-body"><span class="row-title">回航</span></span><span class="row-value t-num">6:02</span><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></a></li>
+      </ul>
+      <div class="mu-foot t-footnote t-2"><span>2025 年 9 月 12 日</span><span>10 首歌曲，42 分钟</span><span>℗ 2025 海风唱片</span></div>
+    </div>
+  </main>
+</div>
+
+<div class="mu-mini glass" role="region" aria-label="迷你播放器">
+  <div class="art a4 mu-mini-cover"></div>
+  <div class="mu-now"><span class="t-subhead t-semibold ellipsis">夜航星图</span><span class="t-footnote t-2 ellipsis">北岸灯塔乐队</span></div>
+  <div class="mu-ctl">
+    <button class="icon-btn sm" aria-label="上一首"><svg class="i solid"><use href="#i-skip-back"/></svg></button>
+    <button class="icon-btn" aria-label="暂停"><svg class="i solid"><use href="#i-pause"/></svg></button>
+    <button class="icon-btn sm" aria-label="下一首"><svg class="i solid"><use href="#i-skip-forward"/></svg></button>
+  </div>
+  <div class="mu-seek t-caption t-2 t-num"><span>1:36</span><input type="range" class="range" min="0" max="245" value="96" aria-label="播放进度"><span>-2:29</span></div>
+  <svg class="i sm"><use href="#i-volume"/></svg>
+  <input type="range" class="range mu-vol" value="62" aria-label="音量">
+  <button class="icon-btn sm" aria-label="隔空播放"><svg class="i"><use href="#i-airplay"/></svg></button>
+  <button class="icon-btn sm" aria-label="待播清单"><svg class="i"><use href="#i-list-music"/></svg></button>
+</div>
+</body>
+</html>

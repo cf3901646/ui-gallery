@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>待办</title>
+<meta name="ui:title" content="待办">
+<meta name="ui:desc" content="今日待办：进度环汇总卡、项目筛选片、带截止时间/优先级/子任务计数的任务列表、已完成分组和底部快速添加。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="待办,复选框,进度环,标签,输入栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .tk-title { padding-bottom: 0; }
+  .tk-date { margin: 2px 0 16px; }
+  .tk-sum { flex-direction: row; align-items: center; gap: 16px; }
+  .tk-sum .ring-wrap span { font-weight: 600; }
+  .tk-sum .stack { --gap: 2px; }
+  .tk-list .row { align-items: flex-start; padding-block: 12px; }
+  .tk-list .check { margin-top: 1px; }
+  .tk-list .tag { margin-top: 1px; }
+  .tk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 4px; color: var(--ui-text-2);
+    font-size: calc(var(--fs-footnote) * var(--ts)); line-height: var(--lh-footnote); }
+  .tk-meta > span { display: inline-flex; align-items: center; gap: 4px; }
+  .tk-meta .i { --ui-icon: 14px; }
+  .tk-proj::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .tk-done .row-title { text-decoration: line-through; color: var(--ui-text-3); }
+  .tk-done .check { opacity: .5; }
+  .tk-composer { align-items: center; }
+  .tk-composer .composer-input { min-width: 0; outline: none; color: var(--ui-text); }
+  html[data-lang="google"] .content { padding-bottom: calc(var(--safe-bottom) + 96px); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>列表</span></a></div>
+    <div class="topbar-title">今天</div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="排序"><svg class="i"><use href="#i-sort"/></svg></button>
+      <button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title tk-title">今天</h1>
+    <p class="tk-date t-subhead t-2">10 月 16 日 星期五 · 杭州 多云 22°</p>
+
+    <div class="card pad tk-sum">
+      <div class="ring-wrap">
+        <div class="ring" style="--value:62.5;--size:68px;--stroke:7px"></div>
+        <span class="t-subhead t-num">5/8</span>
+      </div>
+      <div class="stack grow">
+        <strong class="t-headline">还剩 3 项，按计划 19:00 前完成</strong>
+        <span class="t-footnote t-2">已完成 5 项 · 已连续 6 天清空</span>
+      </div>
+    </div>
+
+    <div class="chips single mt-4">
+      <button class="chip is-active">全部 8</button>
+      <button class="chip">工作 3</button>
+      <button class="chip">设计 2</button>
+      <button class="chip">生活 3</button>
+    </div>
+
+    <section class="group">
+      <h2 class="group-header">待完成 · 3 <a href="#">按截止时间</a></h2>
+      <ul class="list tk-list">
+        <li><label class="row">
+          <input type="checkbox" class="check round">
+          <span class="row-body">
+            <span class="row-title">提交 Q4 预算表给财务</span>
+            <span class="tk-meta">
+              <span class="t-danger"><svg class="i"><use href="#i-clock"/></svg>12:00 截止</span>
+              <span><svg class="i"><use href="#i-checklist"/></svg>2/3</span>
+              <span class="tk-proj" style="--c:var(--c-blue)">工作</span>
+            </span>
+          </span>
+          <span class="tag danger">高</span>
+        </label></li>
+        <li><label class="row">
+          <input type="checkbox" class="check round">
+          <span class="row-body">
+            <span class="row-title">按评审意见修改「日历 2.0」交互稿</span>
+            <span class="tk-meta">
+              <span><svg class="i"><use href="#i-clock"/></svg>15:30 截止</span>
+              <span><svg class="i"><use href="#i-checklist"/></svg>1/4</span>
+              <span><svg class="i"><use href="#i-paperclip"/></svg>2</span>
+              <span class="tk-proj" style="--c:var(--c-purple)">设计</span>
+            </span>
+          </span>
+          <span class="tag warning">中</span>
+        </label></li>
+        <li><label class="row">
+          <input type="checkbox" class="check round">
+          <span class="row-body">
+            <span class="row-title">菜鸟驿站取快递</span>
+            <span class="tk-meta">
+              <span><svg class="i"><use href="#i-clock"/></svg>19:00 前</span>
+              <span><svg class="i"><use href="#i-package"/></svg>取件码 6-2-4031</span>
+              <span class="tk-proj" style="--c:var(--c-green)">生活</span>
+            </span>
+          </span>
+          <span class="tag">低</span>
+        </label></li>
+      </ul>
+    </section>
+
+    <section class="group tk-done">
+      <h2 class="group-header">已完成 · 5 <a href="#">隐藏</a></h2>
+      <ul class="list tk-list">
+        <li><label class="row"><input type="checkbox" class="check round" checked>
+          <span class="row-body"><span class="row-title">晨跑 5 公里</span><span class="tk-meta"><span>07:42 完成</span><span class="tk-proj" style="--c:var(--c-green)">生活</span></span></span></label></li>
+        <li><label class="row"><input type="checkbox" class="check round" checked>
+          <span class="row-body"><span class="row-title">回复王经理关于报价单的邮件</span><span class="tk-meta"><span>09:15 完成</span><span class="tk-proj" style="--c:var(--c-blue)">工作</span></span></span></label></li>
+        <li><label class="row"><input type="checkbox" class="check round" checked>
+          <span class="row-body"><span class="row-title">整理周会纪要并发到项目群</span><span class="tk-meta"><span>10:48 完成</span><span class="tk-proj" style="--c:var(--c-blue)">工作</span></span></span></label></li>
+        <li><label class="row"><input type="checkbox" class="check round" checked>
+          <span class="row-body"><span class="row-title">导出图标切图给前端</span><span class="tk-meta"><span>11:30 完成</span><span class="tk-proj" style="--c:var(--c-purple)">设计</span></span></span></label></li>
+        <li><label class="row"><input type="checkbox" class="check round" checked>
+          <span class="row-body"><span class="row-title">预约周六 10:00 洗牙</span><span class="tk-meta"><span>12:05 完成</span><span class="tk-proj" style="--c:var(--c-green)">生活</span></span></span></label></li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="composer tk-composer only-apple">
+    <button class="icon-btn sm filled" aria-label="添加"><svg class="i"><use href="#i-plus"/></svg></button>
+    <input class="composer-input" placeholder="添加任务，如“明天 9 点交周报”">
+    <button class="icon-btn sm" aria-label="语音输入"><svg class="i"><use href="#i-mic"/></svg></button>
+  </div>
+  <button class="fab extended only-google"><svg class="i"><use href="#i-plus"/></svg>新建任务</button>
+</div>
+</body>
+</html>

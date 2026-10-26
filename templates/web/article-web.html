@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>弹簧动画参数怎么调 · Lumen 设计笔记</title>
+<meta name="ui:title" content="长文页">
+<meta name="ui:desc" content="博客文章详情：面包屑、作者行与分享、头图、完整排版的正文、宽屏吸顶目录、标签、作者卡片和相关文章。">
+<meta name="ui:category" content="内容与博客">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="文章,排版,目录,作者卡片,相关文章">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ar-wrap { --ui-wrap: 1000px; padding-top: 32px; padding-bottom: 72px; }
+  .ar-head { max-width: 760px; display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+  .ar-title { font-size: calc(clamp(30px, 4.6vw, 46px) * var(--ts)); line-height: 1.18; }
+  .ar-byline { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+  .ar-byline b { display: block; font-weight: 600; }
+  .ar-share { display: flex; gap: 8px; }
+  .ar-p { --c: linear-gradient(135deg, #5eead4, #0ea5e9); --c-fg: #fff; }
+  .ar-cover { margin: 32px 0 48px; }
+  .ar-cover > .art { border-radius: var(--ui-radius-xl); }
+  .ar-layout { display: grid; grid-template-columns: minmax(0, 1fr) 200px; gap: 64px; }
+  .ar-layout > .toc { align-self: start; }
+  .ar-chart { padding: 20px 20px 12px; border-radius: var(--ui-radius-l); background: var(--ui-surface-2); }
+  .ar-chart .legend { margin-top: 8px; }
+  .ar-chart text { font-size: 14px; }
+  .ar-table { overflow-x: auto; }
+  .ar-table td:nth-child(n+2), .ar-table th:nth-child(n+2) { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ar-tags { margin-top: 40px; }
+  .ar-author { display: flex; gap: 16px; align-items: flex-start; padding: 24px; margin-top: 32px; }
+  .ar-author .stack { --gap: 6px; }
+  .ar-rel .card-body { gap: 8px; padding: 18px 20px 20px; flex: 1; }
+  .ar-rel .tag { align-self: flex-start; }
+  .ar-rel .t-footnote { margin-top: auto; }
+  @media (max-width: 860px) { .ar-layout { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 560px) { .ar-author { flex-direction: column; } .ar-cover { margin: 24px 0 32px; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-palette"/></svg></span>Lumen</a>
+      <nav class="nav-links">
+        <a href="#">作品</a><a href="#">服务</a><a href="#" class="is-active">设计笔记</a><a href="#">播客</a><a href="#">关于</a><a href="#">联系</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap ar-wrap">
+    <nav class="breadcrumb"><a href="#">设计笔记</a><a href="#">动效</a><span>弹簧动画参数</span></nav>
+    <header class="ar-head">
+      <h1 class="t-large-title ar-title">弹簧动画参数怎么调：SwiftUI 与 Compose 对照表</h1>
+      <p class="t-lead t-2">阻尼比和响应时间两个数字，就能描述 90% 的界面动效。本文给出常用场景的推荐值，以及两个平台落地时的差异。</p>
+      <div class="ar-byline">
+        <span class="avatar ar-p">许</span>
+        <div class="grow"><b>许沐阳</b><span class="t-footnote t-2">2026年5月14日 · 9 分钟阅读</span></div>
+        <div class="ar-share">
+          <button class="icon-btn neutral sm" aria-label="复制链接"><svg class="i"><use href="#i-link"/></svg></button>
+          <button class="icon-btn neutral sm" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>
+          <button class="icon-btn neutral sm" aria-label="收藏"><svg class="i"><use href="#i-bookmark"/></svg></button>
+        </div>
+      </div>
+    </header>
+    <figure class="ar-cover"><div class="art a2 ratio-21x9" role="img" aria-label="头图"><svg class="i xxl"><use href="#i-activity"/></svg></div></figure>
+
+    <div class="ar-layout">
+      <div>
+        <article class="prose">
+          <p>做动效时最常听到的反馈是“有点肉”或者“太弹了”。这些感受其实都能落到两个参数上，只要团队用同一套词，设计稿和代码就不会各说各话。</p>
+          <h2 id="why">为什么用弹簧，而不是缓动曲线</h2>
+          <p>缓动曲线要同时指定时长和形状，动画被打断时速度会突变。弹簧只描述物理属性，被打断时从当前速度继续，这正是手势驱动的界面需要的。</p>
+          <blockquote>好的动效让人察觉不到它的存在，只觉得界面“跟手”。</blockquote>
+          <h2 id="params">两个参数就够了</h2>
+          <p>SwiftUI 用 <code>duration</code> 和 <code>bounce</code> 描述弹簧，Compose 用 <code>dampingRatio</code> 和 <code>stiffness</code>。换算之后，它们说的是同一件事：</p>
+          <ul>
+            <li><strong>阻尼比</strong>：1 表示不回弹，越小越弹，界面里很少低于 0.6。</li>
+            <li><strong>响应时间</strong>：大致等于到达目标所需的时间，0.2–0.5 秒最常用。</li>
+          </ul>
+          <h3 id="damping">阻尼比怎么选</h3>
+          <p>按下、切换这类高频操作用 1.0；卡片展开、页面转场用 0.85 左右，有一点生命感但不抢戏；只有庆祝类反馈才值得用到 0.6。</p>
+          <figure>
+            <div class="ar-chart">
+              <svg class="chart" viewBox="0 0 600 210" role="img" aria-label="三种阻尼比的位移曲线">
+                <line class="grid" x1="20" y1="50" x2="580" y2="50"/><line class="grid" x1="20" y1="190" x2="580" y2="190"/>
+                <text x="24" y="44">目标位置</text><text x="548" y="206">0.6 秒</text>
+                <polyline class="line" style="stroke:var(--c-gray)" points="20,190 67,164 113,125 160,95 207,75 300,57 393,52 580,50"/>
+                <polyline class="line" points="20,190 67,162 113,119 160,85 207,65 253,55 300,50 393,49 580,50"/>
+                <polyline class="line" style="stroke:var(--c-orange)" points="20,190 67,159 113,106 160,64 207,42 253,37 300,40 347,45 393,49 440,51 487,51 580,50"/>
+              </svg>
+              <div class="legend"><span style="--c:var(--c-gray)">1.0</span><span>0.85</span><span style="--c:var(--c-orange)">0.6</span></div>
+            </div>
+            <figcaption>图 1：响应时间同为 0.4 秒时，三种阻尼比的位移曲线</figcaption>
+          </figure>
+          <h3 id="response">响应时间怎么选</h3>
+          <p>移动距离越大、元素越大，响应时间越长。下面是同一个“按下缩放”在两个平台上的写法：</p>
+<pre><code>// SwiftUI
+withAnimation(.spring(duration: 0.25, bounce: 0)) {
+    isPressed = true
+}
+
+// Jetpack Compose
+val scale by animateFloatAsState(
+    targetValue = if (pressed) 0.96f else 1f,
+    animationSpec = spring(dampingRatio = 1f, stiffness = 1400f)
+)</code></pre>
+          <h2 id="table">常用场景推荐值</h2>
+          <div class="ar-table">
+            <table>
+              <thead><tr><th>场景</th><th>阻尼比</th><th>响应</th><th>令牌</th></tr></thead>
+              <tbody>
+                <tr><td>按钮按下</td><td>1.0</td><td>0.25 s</td><td>snappy</td></tr>
+                <tr><td>开关切换</td><td>0.9</td><td>0.3 s</td><td>snappy</td></tr>
+                <tr><td>卡片展开</td><td>0.85</td><td>0.4 s</td><td>smooth</td></tr>
+                <tr><td>底部面板</td><td>0.88</td><td>0.45 s</td><td>smooth</td></tr>
+                <tr><td>点赞反馈</td><td>0.6</td><td>0.35 s</td><td>bouncy</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <hr>
+          <h2 id="checklist">落地清单</h2>
+          <ol>
+            <li>设计稿里标注阻尼比和响应时间，而不是贝塞尔曲线。</li>
+            <li>把常用组合做成令牌：<code>spring.snappy</code>、<code>spring.smooth</code>、<code>spring.bouncy</code>。</li>
+            <li>手势结束时把手指速度传给动画，否则松手会“顿”一下。</li>
+            <li>系统开启“减弱动态效果”时，把回弹换成淡入淡出。</li>
+          </ol>
+        </article>
+
+        <div class="chips wrap ar-tags">
+          <a class="chip" href="#">动效</a><a class="chip" href="#">SwiftUI</a><a class="chip" href="#">Jetpack Compose</a><a class="chip" href="#">设计令牌</a>
+        </div>
+        <div class="card outlined ar-author">
+          <span class="avatar lg ar-p">许</span>
+          <div class="stack grow">
+            <span class="t-headline">许沐阳</span>
+            <span class="t-subhead t-2">Lumen 交互设计师，负责动效规范和原型工具。之前在一家出行公司做了 5 年司机端 App。</span>
+            <div class="btn-row mt-2"><a class="btn sm tonal" href="#">关注</a><a class="link-arrow" href="#">他的 23 篇文章</a></div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="toc hide-md">
+        <h5>本文目录</h5>
+        <a class="is-active" href="#why">为什么用弹簧</a>
+        <a href="#params">两个参数就够了</a>
+        <a href="#damping">阻尼比怎么选</a>
+        <a href="#response">响应时间怎么选</a>
+        <a href="#table">常用场景推荐值</a>
+        <a href="#checklist">落地清单</a>
+      </nav>
+    </div>
+  </main>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head row"><h2 class="t-title1">相关文章</h2><a class="link-arrow" href="#">全部动效文章</a></div>
+      <div class="grid c3 ar-rel">
+        <a class="card" href="#">
+          <div class="card-media art a4" style="--ratio:16/10"><svg class="i xl"><use href="#i-layers"/></svg></div>
+          <div class="card-body"><span class="tag accent">设计系统</span><span class="card-title">把 412 个组件收敛到 64 个</span><span class="t-footnote t-2">何一舟 · 18 分钟</span></div>
+        </a>
+        <a class="card" href="#">
+          <div class="card-media art a8" style="--ratio:16/10"><svg class="i xl"><use href="#i-sparkles"/></svg></div>
+          <div class="card-body"><span class="tag accent">动效</span><span class="card-title">共享元素转场：从列表到详情的 300 毫秒</span><span class="t-footnote t-2">许沐阳 · 12 分钟</span></div>
+        </a>
+        <a class="card" href="#">
+          <div class="card-media art a10" style="--ratio:16/10"><svg class="i xl"><use href="#i-eye"/></svg></div>
+          <div class="card-body"><span class="tag accent">无障碍</span><span class="card-title">“减弱动态效果”打开后，界面该怎么动</span><span class="t-footnote t-2">宋晚晴 · 6 分钟</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>© 2026 Lumen Design Studio · 本文采用 CC BY-NC 4.0 许可</span>
+        <nav><a href="#">RSS 订阅</a><a href="#">隐私政策</a><a href="#">联系我们</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

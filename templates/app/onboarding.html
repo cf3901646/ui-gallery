@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>欢迎使用拾光日记</title>
+<meta name="ui:title" content="欢迎引导">
+<meta name="ui:desc" content="首次启动页：渐变插画配 Expressive 装饰形状、大标题、三条特性说明、分页点，以及继续与稍后设置按钮。">
+<meta name="ui:category" content="引导与账户">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="引导,首次启动,插画,形状,分页点,特性列表">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  body.app { background: var(--ui-bg-plain); }
+  .ob { min-height: 100dvh; display: flex; flex-direction: column; padding: calc(var(--safe-top) + 8px) 24px calc(var(--safe-bottom) + 12px); }
+  .ob-hero { height: 232px; flex: none; border-radius: var(--ui-radius-xl); }
+  .ob-deco { position: absolute; }
+  .ob-deco.d1 { width: 150px; height: 150px; left: -34px; top: -38px; background: rgb(255 255 255 / 16%); rotate: 14deg; }
+  .ob-deco.d2 { width: 92px; height: 92px; right: 18px; bottom: 16px; background: rgb(255 210 140 / 60%); rotate: -18deg; }
+  .ob-logo { position: relative; width: 104px; height: 104px; border-radius: 26px; display: grid; place-items: center;
+    background: linear-gradient(160deg, #fff 30%, #ffe3cc); color: #f0603a; box-shadow: 0 18px 40px rgb(60 10 50 / 38%); }
+  html[data-lang="google"] .ob-logo { border-radius: 50%; }
+  .ob-logo .i { --ui-icon: 52px; }
+  .ob-note { position: absolute; left: 22px; bottom: 22px; display: flex; align-items: center; gap: 6px; padding: 6px 12px 6px 8px;
+    border-radius: 999px; background: rgb(255 255 255 / 88%); color: #3b1d5c; font-size: 13px; font-weight: 600; box-shadow: 0 6px 18px rgb(40 0 40 / 22%); }
+  .ob-note .i { --ui-icon: 18px; color: #f59e0b; }
+  .ob-spark { position: absolute; right: 30%; top: 20%; color: #fff; }
+  .ob-title { margin-top: 28px; }
+  .ob-lead { margin-top: 6px; }
+  .ob-list { margin-top: 18px; }
+  .ob-list .row { padding-inline: 0; align-items: flex-start; }
+  .ob-list .row-title { font-weight: 600; }
+  .ob-list .row-sub { text-wrap: balance; }
+  html[data-lang="apple"] .ob-list .row-icon { width: 40px; height: 40px; border-radius: 12px; margin-top: 2px; }
+  html[data-lang="apple"] .ob-list .row-icon .i { --ui-icon: 22px; }
+  html[data-lang="google"] .ob-list .row-title { font-weight: 500; }
+  .ob-foot { margin-top: auto; padding-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .ob-foot .dots { margin-bottom: 14px; }
+</style>
+</head>
+<body class="app">
+<main class="ob">
+  <div class="ob-hero art a1" role="img" aria-label="拾光日记插画">
+    <span class="ob-deco d1 shape-cookie-9" aria-hidden="true"></span>
+    <span class="ob-deco d2 shape-clover" aria-hidden="true"></span>
+    <svg class="i lg ob-spark" aria-hidden="true"><use href="#i-sparkles"/></svg>
+    <span class="ob-logo"><svg class="i"><use href="#i-book"/></svg></span>
+    <span class="ob-note"><svg class="i solid"><use href="#i-sun"/></svg>8 月 21 日 · 晴 26°</span>
+  </div>
+
+  <h1 class="t-large-title t-center ob-title">欢迎使用拾光日记</h1>
+  <p class="t-body t-2 t-center ob-lead">把平凡日子里的光，一点点收集起来。</p>
+
+  <ul class="list plain no-sep ob-list">
+    <li><div class="row">
+      <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-edit"/></svg></span>
+      <span class="row-body"><span class="row-title">随手记录</span><span class="row-sub">文字、照片、语音和地点，一篇日记装下整个今天。</span></span>
+    </div></li>
+    <li><div class="row">
+      <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-lock"/></svg></span>
+      <span class="row-body"><span class="row-title">只属于你</span><span class="row-sub">端到端加密，用<span class="only-apple">面容 ID</span><span class="only-google">指纹</span>解锁，没有人能偷看。</span></span>
+    </div></li>
+    <li><div class="row">
+      <span class="row-icon" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-history"/></svg></span>
+      <span class="row-body"><span class="row-title">那年今日</span><span class="row-sub">往年今天写下的日记，每天早上推送给你。</span></span>
+    </div></li>
+  </ul>
+
+  <div class="ob-foot">
+    <div class="dots" aria-label="第 1 页，共 3 页"><span class="is-active"></span><span></span><span></span></div>
+    <button class="btn filled lg block">继续</button>
+    <button class="btn text block">稍后设置</button>
+  </div>
+</main>
+</body>
+</html>

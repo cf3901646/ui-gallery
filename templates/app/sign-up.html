@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>创建账号</title>
+<meta name="ui:title" content="注册（多步表单）">
+<meta name="ui:desc" content="多步注册第 2 步：步骤进度、并排输入框、性别分段控件、带区号前缀的手机号、密码强度与规则提示、同意条款和贴底的下一步按钮。">
+<meta name="ui:category" content="引导与账户">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="注册,多步表单,步骤条,密码强度,复选框,分段控件">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .su { padding-bottom: calc(var(--safe-bottom) + 124px); }
+  .su-steps { margin: 4px 0 18px; }
+  .su-lead { margin: 6px 0 24px; }
+  /* .field 里包一层 .field-affix 时，Google 的浮动标签需要页面补上（标签固定在上浮位置） */
+  html[data-lang="google"] .su-field { display: grid; }
+  html[data-lang="google"] .su-field > .field-label { grid-area: 1 / 1; z-index: 1; justify-self: start; align-self: start; margin: -8px 0 0 12px; padding: 0 4px;
+    font-size: calc(12px * var(--ts)); line-height: 16px; font-weight: 400; background: var(--ui-bg); }
+  html[data-lang="google"] .su-field > .field-affix { grid-area: 1 / 1; }
+  .su-tel .affix { color: var(--ui-text); padding-right: 12px; border-right: 1px solid var(--ui-line); line-height: 20px; }
+  html[data-lang="google"] .su-tel .affix { left: 16px; }
+  .su-tel .field-input { padding-left: 66px; }
+  .su-pw .field-input { padding-right: 52px; }
+  .su-pw .affix-end { --b-fg: var(--ui-text-2); }
+  .su-meter { display: flex; flex-direction: column; gap: 8px; margin-top: -4px; padding: 0 4px; }
+  .su-meter .progress { --progress-fill: var(--ui-warning); }
+  .su-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: calc(var(--fs-footnote) * var(--ts)); line-height: var(--lh-footnote); }
+  .su-rules > li::before { width: 16px; height: 16px; margin-top: 0; background: var(--ui-success); }
+  .su-rules > li.off::before { background: var(--ui-text-4); }
+  .su-terms { display: flex; align-items: flex-start; gap: 12px; padding: 4px 4px 0; cursor: pointer; }
+  .su-terms a { color: var(--ui-accent); }
+  .su-foot { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; padding: 16px var(--ui-margin) calc(var(--safe-bottom) + 12px);
+    background: linear-gradient(color-mix(in srgb, var(--ui-bg) 0%, transparent), var(--ui-bg) 24px); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>返回</span></a></div>
+    <div class="topbar-title">创建账号<span class="topbar-sub">第 2 步，共 4 步</span></div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content su">
+    <div class="steps su-steps" aria-label="第 2 步，共 4 步"><span class="is-done"></span><span class="is-done"></span><span></span><span></span></div>
+    <h1 class="t-title1">介绍一下你自己</h1>
+    <p class="t-callout t-2 su-lead">仅用于找回账号和“那年今日”，不会公开。</p>
+
+    <form class="form" onsubmit="return false">
+      <div class="field-row">
+        <label class="field"><span class="field-label">姓名</span><input class="field-input" value="林知夏" placeholder=" " autocomplete="name"></label>
+        <label class="field"><span class="field-label">生日</span><input class="field-input" value="1996年5月14日" placeholder=" "></label>
+      </div>
+
+      <div class="field">
+        <span class="field-label">性别</span>
+        <div class="segmented"><button type="button" class="is-active">女</button><button type="button">男</button><button type="button">其他</button><button type="button">不透露</button></div>
+      </div>
+
+      <div class="field su-field su-tel">
+        <label class="field-label" for="su-tel">手机号</label>
+        <div class="field-affix">
+          <span class="affix">+86</span>
+          <input class="field-input" id="su-tel" type="tel" value="138 2716 5620" autocomplete="tel">
+        </div>
+        <span class="field-help">下一步会向这个号码发送 6 位验证码</span>
+      </div>
+
+      <div class="field su-field su-pw">
+        <label class="field-label" for="su-pw">设置密码</label>
+        <div class="field-affix">
+          <input class="field-input" id="su-pw" type="password" value="Guang0821" autocomplete="new-password">
+          <button class="icon-btn sm affix-end" type="button" aria-label="显示密码"><svg class="i"><use href="#i-eye-off"/></svg></button>
+        </div>
+      </div>
+      <div class="su-meter">
+        <div class="hstack between t-footnote"><span class="t-2">密码强度</span><span class="t-warning t-semibold">中等</span></div>
+        <div class="progress" style="--value:68%" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100"></div>
+        <ul class="check-list su-rules">
+          <li>8 个字符以上</li>
+          <li>大写和小写字母</li>
+          <li>至少 1 个数字</li>
+          <li class="off">至少 1 个符号，如 ! @ #</li>
+        </ul>
+      </div>
+
+      <label class="su-terms">
+        <input type="checkbox" class="check" checked>
+        <span class="t-footnote t-2">我已阅读并同意<a href="#">《拾光用户协议》</a>和<a href="#">《隐私政策》</a>，并同意接收账户安全通知。</span>
+      </label>
+    </form>
+  </main>
+
+  <div class="su-foot">
+    <button class="btn filled lg block">下一步</button>
+  </div>
+</div>
+</body>
+</html>

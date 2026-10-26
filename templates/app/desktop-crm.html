@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>客户 · 云杉 CRM</title>
+<meta name="ui:title" content="客户管理">
+<meta name="ui:desc" content="桌面 CRM：侧导航、指标卡、搜索与阶段筛选、可勾选的客户表格与分页，右侧详情窗格（阶段进度、联系方式、跟进时间线、备注）。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="desktop">
+<meta name="ui:tags" content="三栏,表格,筛选,详情窗格,时间线,CRM">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .cr-split { height: 100dvh; --split-cols: 220px minmax(0, 1fr) 360px; }
+  .cr-split > .pane { height: 100dvh; min-height: 0; }
+  .cr-split .avatar { --c-fg: #fff; }
+  .cr-main { background: var(--ui-bg-plain); padding: 24px 28px 32px; display: flex; flex-direction: column; gap: 16px; }
+  .cr-main > *, .cr-detail > * { flex: none; }
+  .cr-brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 14px; }
+  .cr-logo { width: 32px; height: 32px; border-radius: 9px; background: var(--ui-accent); color: var(--ui-on-accent); display: grid; place-items: center; }
+  .cr-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .cr-filter { display: flex; align-items: center; gap: 10px; }
+  .cr-filter .searchbar { width: 280px; height: 40px; }
+  .cr-filter .select { min-height: 40px; }
+  .cr-table th, .cr-table td { padding: 10px 12px; }
+  .cr-table th:first-child, .cr-table td:first-child { padding-left: 16px; width: 44px; }
+  .cr-table tr.is-active { background: var(--ui-accent-soft); }
+  .cr-who { display: flex; align-items: center; gap: 10px; }
+  .cr-who .avatar { --size: 34px; font-size: 13px; }
+  .cr-who > span:last-child { display: flex; flex-direction: column; line-height: 1.3; }
+  .cr-table .avatar-stack .avatar { --size: 24px; font-size: 11px; }
+  .cr-table .avatar-stack > .avatar { box-shadow: 0 0 0 2px var(--ui-surface); }
+  .cr-pager { display: flex; align-items: center; justify-content: space-between; }
+
+  .cr-detail { background: var(--ui-bg); border-left: 1px solid var(--ui-line); padding: 16px 20px 28px; display: flex; flex-direction: column; gap: 16px; }
+  html[data-lang="google"]:not([data-scheme="dark"]) .cr-detail { --ui-card-bg: var(--md-surface-container-lowest); }
+  .cr-card { gap: 12px; }
+  .cr-card .avatar { --size: 52px; font-size: 20px; }
+  .cr-steps { display: flex; flex-direction: column; gap: 6px; }
+  .cr-card .btn-row { gap: 8px; }
+  .cr-card .btn-row .btn { flex: 1; padding: 0 8px; }
+  .cr-kv { font-size: calc(var(--fs-subhead) * var(--ts)); gap: 10px 12px; }
+  .cr-kv dd { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .cr-log .timeline { gap: 16px; }
+  .cr-log li { display: flex; flex-direction: column; gap: 3px; }
+  .cr-note textarea { min-height: 84px; }
+  .cr-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .cr-kpis .card { background: var(--ui-surface-2); }
+  .cr-kpis .stat-value { font-size: calc(22px * var(--ts)); }
+</style>
+</head>
+<body class="app">
+<div class="split cr-split">
+  <aside class="pane">
+    <nav class="sidebar floating">
+      <div class="cr-brand"><span class="cr-logo"><svg class="i sm"><use href="#i-briefcase"/></svg></span><span class="t-headline">云杉 CRM</span></div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-home"/></svg><span>工作台</span></a>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-users-fill"/></svg><span>客户</span><span class="count">248</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-trending-up"/></svg><span>商机</span><span class="count">36</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-user"/></svg><span>联系人</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-checklist"/></svg><span>跟进任务</span><span class="count">12</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-doc"/></svg><span>合同</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-chart"/></svg><span>报表</span></a>
+      <div class="sidebar-section">视图</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-star"/></svg><span>重点客户</span></a>
+    </nav>
+  </aside>
+
+  <main class="pane cr-main">
+    <header class="cr-head">
+      <div><h1 class="t-title1">客户</h1><span class="t-footnote t-2">华东大区 · 2026 年 10 月</span></div>
+      <div class="btn-row">
+        <button class="btn neutral sm"><svg class="i"><use href="#i-upload"/></svg>导入</button>
+        <button class="btn filled sm"><svg class="i"><use href="#i-plus"/></svg>新建客户</button>
+      </div>
+    </header>
+    <div class="cr-kpis">
+      <div class="card pad stat"><span class="stat-label">客户总数</span><span class="stat-value">248</span><span class="stat-delta">本月新增 31</span></div>
+      <div class="card pad stat"><span class="stat-label">进行中商机</span><span class="stat-value">¥862.4 万</span><span class="stat-delta">↑ 8.6% 较上月</span></div>
+      <div class="card pad stat"><span class="stat-label">本月赢单</span><span class="stat-value">¥318 万</span><span class="stat-delta">完成目标 79%</span></div>
+      <div class="card pad stat"><span class="stat-label">平均成交周期</span><span class="stat-value">42 天</span><span class="stat-delta down">↑ 3 天</span></div>
+    </div>
+
+    <div class="cr-filter">
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索公司、联系人、电话"></label>
+      <select class="select" aria-label="负责人"><option>负责人：全部</option><option>林知夏</option><option>陈默</option><option>许嘉禾</option></select>
+      <span class="grow"></span>
+      <button class="icon-btn" aria-label="更多筛选"><svg class="i"><use href="#i-sliders"/></svg></button>
+    </div>
+    <div class="chips single">
+      <button class="chip is-active">全部 248</button><button class="chip">初步接洽 62</button><button class="chip">需求确认 48</button>
+      <button class="chip">方案报价 41</button><button class="chip">商务谈判 27</button><button class="chip">赢单 70</button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="table cr-table">
+        <thead><tr><th><input type="checkbox" class="check" aria-label="全选"></th><th>客户</th><th>阶段</th><th class="num">预计成交额</th><th>最近联系</th><th>负责人</th></tr></thead>
+        <tbody>
+          <tr class="is-active"><td><input type="checkbox" class="check" checked aria-label="选择"></td>
+            <td><span class="cr-who"><span class="avatar square" style="--c:#2f9e6e">青</span><span><span class="t-semibold">杭州青禾科技</span><span class="t-footnote t-2">周明远 · 采购总监</span></span></span></td>
+            <td><span class="tag warning">商务谈判</span></td><td class="num t-semibold">¥486,000</td><td><span class="t-subhead">今天 10:20</span><br><span class="t-footnote t-2">电话</span></td>
+            <td><span class="avatar-stack"><span class="avatar" style="--c:#ff5e7e">林</span><span class="avatar" style="--c:#4f8dff">陈</span></span></td></tr>
+          <tr><td><input type="checkbox" class="check" aria-label="选择"></td>
+            <td><span class="cr-who"><span class="avatar square" style="--c:#7a5cff">澄</span><span><span class="t-semibold">上海澄观文化传媒</span><span class="t-footnote t-2">韩露 · 市场副总裁</span></span></span></td>
+            <td><span class="tag accent">方案报价</span></td><td class="num t-semibold">¥128,000</td><td><span class="t-subhead">昨天 16:45</span><br><span class="t-footnote t-2">邮件</span></td>
+            <td><span class="avatar-stack"><span class="avatar" style="--c:#34c47c">许</span></span></td></tr>
+          <tr><td><input type="checkbox" class="check" aria-label="选择"></td>
+            <td><span class="cr-who"><span class="avatar square" style="--c:#1a73e8">远</span><span><span class="t-semibold">苏州远帆智能制造</span><span class="t-footnote t-2">吴启航 · CIO</span></span></span></td>
+            <td><span class="tag success">赢单</span></td><td class="num t-semibold">¥1,260,000</td><td><span class="t-subhead">10 月 18 日</span><br><span class="t-footnote t-2">上门拜访</span></td>
+            <td><span class="avatar-stack"><span class="avatar" style="--c:#ff5e7e">林</span><span class="avatar" style="--c:#34c47c">许</span><span class="avatar" style="--c:#ffb33c">何</span></span></td></tr>
+          <tr><td><input type="checkbox" class="check" aria-label="选择"></td>
+            <td><span class="cr-who"><span class="avatar square" style="--c:#e8710a">知</span><span><span class="t-semibold">南京知行教育</span><span class="t-footnote t-2">冯一诺 · 校长助理</span></span></span></td>
+            <td><span class="tag">初步接洽</span></td><td class="num t-semibold">¥56,000</td><td><span class="t-subhead">10 月 17 日</span><br><span class="t-footnote t-2">微信</span></td>
+            <td><span class="avatar-stack"><span class="avatar" style="--c:#4f8dff">陈</span></span></td></tr>
+          <tr><td><input type="checkbox" class="check" aria-label="选择"></td>
+            <td><span class="cr-who"><span class="avatar square" style="--c:#d93025">星</span><span><span class="t-semibold">合肥星澜新能源</span><span class="t-footnote t-2">杨帆 · 总经理</span></span></span></td>
+            <td><span class="tag danger">输单</span></td><td class="num t-semibold t-2">¥210,000</td><td><span class="t-subhead">10 月 12 日</span><br><span class="t-footnote t-2">电话</span></td>
+            <td><span class="avatar-stack"><span class="avatar" style="--c:#ff5e7e">林</span></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cr-pager">
+      <span class="t-footnote t-2">已选 1 位 · 显示第 1–5 条，共 248 条</span>
+      <div class="hstack gap-1">
+        <button class="icon-btn sm" aria-label="上一页" disabled><svg class="i"><use href="#i-chevron-left"/></svg></button>
+        <button class="btn filled xs">1</button><button class="btn text xs">2</button><button class="btn text xs">3</button>
+        <span class="t-footnote t-2 px-4">…</span><button class="btn text xs">36</button>
+        <button class="icon-btn sm" aria-label="下一页"><svg class="i"><use href="#i-chevron-right"/></svg></button>
+      </div>
+    </div>
+  </main>
+
+  <aside class="pane cr-detail">
+    <div class="hstack between">
+      <span class="t-headline">客户详情</span>
+      <span class="hstack gap-1">
+        <button class="icon-btn sm" aria-label="编辑"><svg class="i"><use href="#i-edit"/></svg></button>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+        <button class="icon-btn sm" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+      </span>
+    </div>
+
+    <section class="card pad cr-card">
+      <div class="hstack gap-3">
+        <span class="avatar square" style="--c:#2f9e6e">青</span>
+        <div class="grow"><div class="t-title3">杭州青禾科技有限公司</div><div class="t-footnote t-2">企业服务 · 杭州余杭 · 120–500 人</div></div>
+      </div>
+      <div class="hstack between"><span class="t-title2 t-num">¥486,000</span><span class="tag warning">商务谈判</span></div>
+      <div class="cr-steps">
+        <div class="steps"><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span></span></div>
+        <span class="t-footnote t-2">第 4 / 5 阶段 · 预计 11 月 15 日成交 · 赢率 70%</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn tonal sm"><svg class="i"><use href="#i-phone"/></svg>电话</button>
+        <button class="btn tonal sm"><svg class="i"><use href="#i-mail"/></svg>邮件</button>
+        <button class="btn tonal sm"><svg class="i"><use href="#i-calendar"/></svg>约会议</button>
+      </div>
+    </section>
+
+    <section class="card pad">
+      <h2 class="t-subhead t-semibold mb-4">联系方式</h2>
+      <dl class="kv cr-kv">
+        <dt>联系人</dt><dd>周明远（采购总监）</dd>
+        <dt>电话</dt><dd>139 5718 2046</dd>
+        <dt>邮箱</dt><dd>zhou.my@qinghe-tech.cn</dd>
+        <dt>地址</dt><dd>杭州市余杭区文一西路 998 号</dd>
+        <dt>来源</dt><dd>2026 杭州数字经济展</dd>
+      </dl>
+    </section>
+
+    <section class="card pad cr-log">
+      <h2 class="t-subhead t-semibold mb-4">跟进记录</h2>
+      <ol class="timeline">
+        <li class="is-current"><span class="t-footnote t-2">今天 10:20 · 林知夏 · 电话</span><span class="t-subhead">对方确认预算 48.6 万，要求 11 月 5 日前给最终报价，并附送 1 年维保。</span></li>
+        <li class="is-done"><span class="t-footnote t-2">10 月 16 日 · 陈默 · 上门拜访</span><span class="t-subhead">演示仓储模块，IT 负责人对接口方案无异议。</span></li>
+        <li class="is-done"><span class="t-footnote t-2">10 月 9 日 · 林知夏 · 邮件</span><span class="t-subhead">发送《青禾科技 WMS 实施方案 v2.pdf》。</span></li>
+      </ol>
+    </section>
+
+    <div class="stack gap-2 cr-note">
+      <label class="field"><span class="field-label">添加跟进备注</span><textarea placeholder=" "></textarea></label>
+      <div class="hstack between">
+        <span class="hstack gap-0">
+          <button class="icon-btn sm" aria-label="附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+          <button class="icon-btn sm" aria-label="提及同事"><svg class="i"><use href="#i-at"/></svg></button>
+        </span>
+        <button class="btn filled sm">保存</button>
+      </div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

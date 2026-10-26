@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>浮层示例</title>
+<meta name="ui:title" content="弹窗与浮层合集">
+<meta name="ui:desc" content="浮层组件演示页：警告框、带图标的确认框、操作表、分享底部面板、全高表单面板、弹出菜单、顶部与底部提示条，点按列表行即可打开。">
+<meta name="ui:category" content="状态与反馈">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="对话框,操作表,底部面板,菜单,提示条,遮罩">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ov-danger { color: var(--ui-danger) !important; }
+  .ov-menu { top: calc(var(--safe-top) + 54px); right: 12px; }
+  .ov-preview { display: flex; align-items: center; gap: 12px; padding: 4px 4px 16px; }
+  .ov-thumb { width: 52px; height: 52px; border-radius: var(--ui-radius-m); flex: none; }
+  .ov-targets { display: flex; gap: 16px; padding: 4px 4px 18px; }
+  .ov-targets a { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 60px; flex: none; text-align: center; }
+  .ov-targets .avatar { --size: 60px; }
+  .ov-airdrop { --c: var(--c-blue); --c-fg: #fff; }
+  .toast .icon-btn { --b-fg: currentColor; opacity: .7; margin-right: -6px; }
+  html[data-lang="google"] #ov-form { --ui-field-label-bg: var(--md-surface-container-low); }
+  /* kit：Google 下 .sheet-head .bar-btn 的 primary 文字色压掉了 .prominent 的 on-primary，按钮文字不可见 */
+  html[data-lang="google"] .sheet-head .bar-btn.prominent { color: var(--md-on-primary); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>组件</span></a></div>
+    <div class="topbar-title">浮层示例</div>
+    <div class="topbar-trail"><button class="bar-btn" data-open="ov-menu" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <section class="group">
+      <h2 class="group-header">对话框</h2>
+      <ul class="list has-icons">
+        <li><button class="row" data-open="ov-alert">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-warning"/></svg></span>
+          <span class="row-body"><span class="row-title">警告框</span><span class="row-sub">.dialog · 无法连接服务器</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+        <li><button class="row" data-open="ov-confirm">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-trash"/></svg></span>
+          <span class="row-body"><span class="row-title">带图标的确认框</span><span class="row-sub">.dialog-icon · 确认删除</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">面板</h2>
+      <ul class="list has-icons">
+        <li><button class="row" data-open="ov-actions">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-list"/></svg></span>
+          <span class="row-body"><span class="row-title">操作表</span><span class="row-sub">.action-sheet · 更换头像</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+        <li><button class="row" data-open="ov-share">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-share"/></svg></span>
+          <span class="row-body"><span class="row-title">底部面板</span><span class="row-sub">.sheet · 分享行程</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+        <li><button class="row" data-open="ov-form">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-calendar"/></svg></span>
+          <span class="row-body"><span class="row-title">全高面板</span><span class="row-sub">.sheet.full · 新建日程表单</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">菜单与提示</h2>
+      <ul class="list has-icons">
+        <li><button class="row" data-open="ov-menu">
+          <span class="row-icon" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-more"/></svg></span>
+          <span class="row-body"><span class="row-title">弹出菜单</span><span class="row-sub">.menu · 分隔线与删除项</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+        <li><button class="row" data-open="ov-toast-top">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-bell"/></svg></span>
+          <span class="row-body"><span class="row-title">顶部提示条</span><span class="row-sub">.toast.top · 已拷贝链接</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+        <li><button class="row" data-open="ov-toast">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-archive"/></svg></span>
+          <span class="row-body"><span class="row-title">底部提示条</span><span class="row-sub">.toast · 带“撤销”操作</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </button></li>
+      </ul>
+      <p class="group-footer">点按一行打开对应浮层；点遮罩、“取消”或关闭按钮收起。</p>
+    </section>
+  </main>
+</div>
+
+<!-- 警告框 -->
+<div class="scrim" data-for="ov-alert" hidden></div>
+<div class="dialog" id="ov-alert" role="alertdialog" hidden>
+  <h2 class="dialog-title">无法连接到服务器</h2>
+  <p class="dialog-body">请检查网络连接后重试。你的草稿“周末去莫干山”已保存在本机。</p>
+  <div class="dialog-actions"><button class="btn" data-close>好</button><button class="btn filled" data-close>重试</button></div>
+</div>
+
+<!-- 确认删除（默认展示） -->
+<div class="scrim" data-for="ov-confirm"></div>
+<div class="dialog" id="ov-confirm" role="alertdialog">
+  <svg class="i lg dialog-icon ov-danger"><use href="#i-trash"/></svg>
+  <h2 class="dialog-title">删除 3 张照片？</h2>
+  <p class="dialog-body">照片将从所有设备上的“图库”中移除，并在“最近删除”中保留 30 天。</p>
+  <div class="dialog-actions"><button class="btn" data-close>取消</button><button class="btn danger" data-close>删除</button></div>
+</div>
+
+<!-- 操作表 -->
+<div class="scrim" data-for="ov-actions" hidden></div>
+<div class="action-sheet" id="ov-actions" hidden>
+  <div class="sheet-grabber only-google" style="margin-top:0"></div>
+  <ul class="list">
+    <li><button class="row" data-close><span class="row-icon plain only-google"><svg class="i"><use href="#i-camera"/></svg></span>拍照</button></li>
+    <li><button class="row" data-close><span class="row-icon plain only-google"><svg class="i"><use href="#i-image"/></svg></span>从相册选择</button></li>
+    <li><button class="row" data-close><span class="row-icon plain only-google"><svg class="i"><use href="#i-folder"/></svg></span>浏览文件</button></li>
+    <li><button class="row destructive" data-close><span class="row-icon plain only-google"><svg class="i ov-danger"><use href="#i-trash"/></svg></span>移除当前头像</button></li>
+  </ul>
+  <ul class="list only-apple"><li><button class="row t-semibold" data-close>取消</button></li></ul>
+</div>
+
+<!-- 底部面板：分享 -->
+<div class="scrim" data-for="ov-share" hidden></div>
+<div class="sheet" id="ov-share" hidden>
+  <div class="sheet-grabber only-google"></div>
+  <div class="sheet-body">
+    <div class="ov-preview">
+      <span class="art a3 ov-thumb"></span>
+      <div class="grow"><div class="t-headline ellipsis">周末去莫干山 · 2 天 1 晚</div><div class="t-footnote t-2">行程 · 含 12 张照片</div></div>
+      <button class="icon-btn neutral sm" data-close aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ov-targets scroll-x">
+      <a href="#"><span class="avatar ov-airdrop"><svg class="i only-apple"><use href="#i-radio"/></svg><svg class="i only-google"><use href="#i-share"/></svg></span><span class="t-caption"><span class="only-apple">隔空投送</span><span class="only-google">快速分享</span></span></a>
+      <a href="#"><span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span><span class="t-caption">林知夏</span></a>
+      <a href="#"><span class="avatar" style="--c:var(--c-indigo);--c-fg:#fff">周</span><span class="t-caption">周屿</span></a>
+      <a href="#"><span class="avatar" style="--c:var(--c-teal);--c-fg:#fff">家</span><span class="t-caption">相亲相爱一家人</span></a>
+      <a href="#"><span class="avatar" style="--c:var(--c-pink);--c-fg:#fff">许</span><span class="t-caption">许念</span></a>
+    </div>
+    <ul class="list has-icons">
+      <li><button class="row" data-close><span class="row-icon plain"><svg class="i"><use href="#i-copy"/></svg></span><span class="row-body"><span class="row-title">拷贝链接</span></span></button></li>
+      <li><button class="row" data-close><span class="row-icon plain"><svg class="i"><use href="#i-star"/></svg></span><span class="row-body"><span class="row-title">添加到收藏</span></span></button></li>
+      <li><button class="row" data-close><span class="row-icon plain"><svg class="i"><use href="#i-folder"/></svg></span><span class="row-body"><span class="row-title">存储到“文件”</span></span></button></li>
+      <li><button class="row" data-close><span class="row-icon plain"><svg class="i"><use href="#i-printer"/></svg></span><span class="row-body"><span class="row-title">打印</span></span></button></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 全高面板：表单 -->
+<div class="scrim" data-for="ov-form" hidden></div>
+<div class="sheet full" id="ov-form" hidden>
+  <div class="sheet-head">
+    <button class="bar-btn" data-close>取消</button>
+    <div class="sheet-title">新建日程</div>
+    <button class="bar-btn prominent" data-close>添加</button>
+  </div>
+  <div class="sheet-body">
+    <form class="form">
+      <label class="field"><span class="field-label">标题</span><input class="field-input" value="产品评审会" placeholder=" "></label>
+      <label class="field"><span class="field-label">地点</span><input class="field-input" value="漕河泾 · 3 号楼 12F 会议室" placeholder=" "></label>
+      <div class="field-row">
+        <label class="field"><span class="field-label">开始</span><input class="field-input" value="10月24日 14:00" placeholder=" "></label>
+        <label class="field"><span class="field-label">结束</span><input class="field-input" value="15:30" placeholder=" "></label>
+      </div>
+      <ul class="list">
+        <li><label class="row"><span class="row-body"><span class="row-title">全天</span></span><input type="checkbox" class="switch"></label></li>
+        <li><div class="row"><span class="row-body"><span class="row-title">提醒</span></span><span class="row-value">提前 15 分钟</span></div></li>
+      </ul>
+      <label class="field"><span class="field-label">备注</span><textarea placeholder=" ">带上 v2.3 版本的原型和埋点数据。</textarea></label>
+    </form>
+  </div>
+</div>
+
+<!-- 弹出菜单 -->
+<div class="menu ov-menu" id="ov-menu" hidden>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-copy"/></svg><span>拷贝</span></button>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-share"/></svg><span>共享…</span></button>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-edit"/></svg><span>重新命名</span></button>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-pin"/></svg><span>置顶</span></button>
+  <div class="menu-sep"></div>
+  <button class="menu-item destructive" data-close><svg class="i"><use href="#i-trash"/></svg><span>删除</span></button>
+</div>
+
+<!-- 提示条 -->
+<div class="toast top" id="ov-toast-top" role="status" hidden>
+  <svg class="i sm"><use href="#i-link"/></svg><span>已拷贝链接</span>
+  <button class="icon-btn sm" data-close aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+</div>
+<div class="toast" id="ov-toast" role="status" hidden>
+  <span>已归档 3 封邮件</span>
+  <button class="btn" data-close>撤销</button>
+</div>
+</body>
+</html>

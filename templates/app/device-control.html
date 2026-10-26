@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>客厅空调</title>
+<meta name="ui:title" content="空调控制">
+<meta name="ui:desc" content="单个设备控制页：顶栏电源开关、大号圆形温度盘与加减按钮、模式分段、风速滑块、摆风/睡眠开关、定时列表和能耗统计。">
+<meta name="ui:category" content="智能家居">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="圆环,分段控件,滑块,开关,柱状图">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .dc { --dc-c: var(--c-cyan); }
+  html[data-lang="google"] .dc { --dc-c: var(--ui-accent); }
+  .dc-dial { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 18px; }
+  .dc-dial .ring { --ring-rest: var(--ui-fill); }
+  .dc-center { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .dc-temp { font: 300 calc(68px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; letter-spacing: -2px; }
+  .dc-temp sup { font-size: .4em; font-weight: 500; vertical-align: top; position: relative; top: .35em; letter-spacing: 0; margin-left: 2px; }
+  .dc-mode { display: inline-flex; align-items: center; gap: 4px; color: var(--dc-c); font-weight: 600; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  html[data-scheme="dark"][data-lang="google"] .dc-mode { color: var(--ui-accent); }
+  .dc-knob { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 6px rgb(0 0 0 / 30%);
+    left: calc(50% + 110px * sin(205.2deg)); top: calc(50% - 110px * cos(205.2deg)); translate: -50% -50%; }
+  .dc-range-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .dc-ticks { display: flex; justify-content: space-between; color: var(--ui-text-3); font-size: calc(var(--fs-caption2) * var(--ts)); padding: 0 4px; }
+  .dc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .dc-stats .stat-value { font-size: calc(var(--fs-title3) * var(--ts)); }
+  .dc-energy .bars { --bars-h: 56px; --bars-gap: 8px; }
+  html[data-lang="google"] .dc-energy .bars > span { border-radius: 8px 8px 4px 4px; }
+  .dc-energy .bars-labels { --bars-gap: 8px; }
+</style>
+</head>
+<body class="app">
+<div class="screen dc">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>我的家</span></a></div>
+    <div class="topbar-title">客厅空调<span class="topbar-sub">格力 云佳 1.5 匹 · 已连接</span></div>
+    <div class="topbar-trail"><input type="checkbox" class="switch" checked aria-label="电源"></div>
+  </header>
+
+  <main class="content">
+    <section class="dc-dial">
+      <button class="icon-btn lg neutral" aria-label="降低温度"><svg class="i"><use href="#i-minus"/></svg></button>
+      <div class="ring-wrap">
+        <div class="ring" style="--value:57;--size:240px;--stroke:20px;--ring-color:var(--dc-c)"></div>
+        <span class="dc-knob" aria-hidden="true"></span>
+        <div class="dc-center">
+          <span class="t-footnote t-2">目标温度</span>
+          <span class="dc-temp">24<sup>°C</sup></span>
+          <span class="dc-mode"><svg class="i sm"><use href="#i-snowflake"/></svg>制冷中</span>
+          <span class="t-caption t-2 mt-1">室内 26.5°C · 湿度 52%</span>
+        </div>
+      </div>
+      <button class="icon-btn lg neutral" aria-label="升高温度"><svg class="i"><use href="#i-plus"/></svg></button>
+    </section>
+
+    <div class="segmented"><button class="is-active">制冷</button><button>制热</button><button>除湿</button><button>送风</button><button>自动</button></div>
+
+    <section class="card pad mt-4">
+      <div class="dc-range-head"><span class="t-headline">风速</span><span class="t-subhead t-2">中速 · 3 档</span></div>
+      <div class="range-row">
+        <svg class="i sm"><use href="#i-fan"/></svg>
+        <input class="range grow" type="range" min="1" max="5" value="3" aria-label="风速">
+        <svg class="i"><use href="#i-wind"/></svg>
+      </div>
+      <div class="dc-ticks"><span>静音</span><span>低</span><span>中</span><span>高</span><span>强劲</span></div>
+    </section>
+
+    <section class="group">
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-wind"/></svg></span>
+          <span class="row-body"><span class="row-title">上下摆风</span><span class="row-sub">出风口自动扫掠，避免直吹</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span>
+          <span class="row-body"><span class="row-title">睡眠模式</span><span class="row-sub">每小时升高 1°C，最高 27°C</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-leaf"/></svg></span>
+          <span class="row-body"><span class="row-title">节能 ECO</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">定时 <a href="#">添加</a></h2>
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-clock"/></svg></span>
+          <span class="row-body"><span class="row-title t-num">18:30 开启</span><span class="row-sub">工作日 · 回家前预冷 · 制冷 25°C</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-clock"/></svg></span>
+          <span class="row-body"><span class="row-title t-num">01:30 关闭</span><span class="row-sub">每天</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-clock"/></svg></span>
+          <span class="row-body"><span class="row-title t-num">07:00 开启</span><span class="row-sub">周六、周日 · 送风</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">能耗统计 <a href="#">详情</a></h2>
+      <div class="card pad dc-energy stack gap-4">
+        <div class="dc-stats">
+          <div class="stat"><span class="stat-label">今日</span><span class="stat-value">3.2<span class="t-footnote t-2"> 度</span></span></div>
+          <div class="stat"><span class="stat-label">本月</span><span class="stat-value">68.4<span class="t-footnote t-2"> 度</span></span></div>
+          <div class="stat"><span class="stat-label">本月电费约</span><span class="stat-value">¥41.72</span></div>
+        </div>
+        <div>
+          <div class="bars"><span style="--h:52%"></span><span style="--h:64%"></span><span style="--h:48%"></span><span style="--h:80%"></span><span style="--h:100%"></span><span style="--h:72%"></span><span class="is-active" style="--h:40%"></span></div>
+          <div class="bars-labels"><span>周五</span><span>周六</span><span>周日</span><span>周一</span><span>周二</span><span>周三</span><span>今天</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

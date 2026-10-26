@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>拾光 Pro</title>
+<meta name="ui:title" content="订阅付费墙">
+<meta name="ui:desc" content="订阅付费墙：渐变主视觉、权益清单、年度/月度/永久三档套餐选择、免费试用说明，以及贴底的开始试用按钮和法律链接。">
+<meta name="ui:category" content="引导与账户">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="订阅,付费墙,套餐,内购,试用">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .pw { padding-bottom: calc(var(--safe-bottom) + 150px); }
+  .pw-hero { height: calc(var(--safe-top) + 124px); padding-top: var(--safe-top); }
+  .pw-deco { position: absolute; width: 220px; height: 220px; right: -60px; top: -40px; background: rgb(255 255 255 / 12%); rotate: 18deg; }
+  .pw-deco.d2 { width: 120px; height: 120px; left: -30px; right: auto; top: auto; bottom: -36px; background: rgb(255 190 230 / 30%); }
+  .pw-emblem { width: 88px; height: 88px; display: grid; place-items: center; background: linear-gradient(150deg, #fff, #f3d9ff); color: #7c3aed;
+    box-shadow: 0 16px 36px rgb(30 0 60 / 40%); }
+  .pw-emblem .i { --ui-icon: 44px; }
+  .pw-close { position: absolute; top: calc(var(--safe-top) + 6px); right: 16px; }
+  .pw-title { margin-top: 16px; }
+  .pw-perks { margin: 18px 4px 20px; gap: 9px; }
+  .pw-perks > li::before { background: var(--ui-success); }
+  .pw-plan { display: flex; align-items: center; gap: 8px; }
+  .pw .option { gap: 14px; padding-block: 14px; }
+  .pw .option.is-active { padding-block: 13px; }
+  .pw .option .grow { display: flex; flex-direction: column; gap: 2px; }
+  .pw-price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; text-align: right; }
+  .pw-foot { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 10px;
+    padding: 18px var(--ui-margin) calc(var(--safe-bottom) + 8px); background: linear-gradient(color-mix(in srgb, var(--ui-bg) 0%, transparent), var(--ui-bg) 16px); }
+  .pw-links { display: flex; justify-content: center; gap: 6px; }
+  .pw-links a { color: var(--ui-text-2); }
+</style>
+</head>
+<body class="app">
+<main class="content pw">
+  <div class="pw-hero art a4 bleed" role="img" aria-label="拾光 Pro 主视觉">
+    <span class="pw-deco shape-soft-burst" aria-hidden="true"></span>
+    <span class="pw-deco d2 shape-flower" aria-hidden="true"></span>
+    <span class="pw-emblem shape-cookie-12"><svg class="i"><use href="#i-gem"/></svg></span>
+    <button class="icon-btn glass sm pw-close" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+  </div>
+
+  <h1 class="t-large-title t-center pw-title">解锁拾光 Pro</h1>
+  <p class="t-callout t-2 t-center">让每一段回忆，都有地方好好安放。</p>
+
+  <ul class="check-list pw-perks t-subhead">
+    <li>无限添加照片、视频和语音，原图保存</li>
+    <li>所有设备实时同步，每天自动云端备份</li>
+    <li>每周回顾与“那年今日”智能推送</li>
+    <li>一键导出 PDF 年度纪念册</li>
+    <li>独立密码锁，日记端到端加密</li>
+  </ul>
+
+  <div class="option-list" role="radiogroup" aria-label="选择套餐">
+    <label class="option is-active">
+      <input type="radio" class="radio" name="plan" checked>
+      <span class="grow"><span class="pw-plan t-headline">年度<span class="tag solid">最受欢迎</span></span><span class="t-footnote t-2">约 ¥16.5/月，比月付省 34%</span></span>
+      <span class="pw-price"><span class="t-headline t-num">¥198</span><span class="t-caption t-2">每年</span></span>
+    </label>
+    <label class="option">
+      <input type="radio" class="radio" name="plan">
+      <span class="grow"><span class="pw-plan t-headline">月度</span><span class="t-footnote t-2">按月付费，随时取消</span></span>
+      <span class="pw-price"><span class="t-headline t-num">¥25</span><span class="t-caption t-2">每月</span></span>
+    </label>
+    <label class="option">
+      <input type="radio" class="radio" name="plan">
+      <span class="grow"><span class="pw-plan t-headline">永久</span><span class="t-footnote t-2">一次购买，终身使用全部功能</span></span>
+      <span class="pw-price"><span class="t-headline t-num">¥398</span><span class="t-caption t-2">一次性</span></span>
+    </label>
+  </div>
+</main>
+
+<div class="pw-foot">
+  <p class="t-footnote t-2 t-center">7 天免费试用，随时取消。试用结束前 24 小时提醒你。</p>
+  <button class="btn filled lg block">开始免费试用</button>
+  <nav class="pw-links t-caption"><a href="#">恢复购买</a><span class="t-3">·</span><a href="#">使用条款</a><span class="t-3">·</span><a href="#">隐私政策</a></nav>
+</div>
+</body>
+</html>

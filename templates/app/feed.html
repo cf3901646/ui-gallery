@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>拾光</title>
+<meta name="ui:title" content="社交信息流">
+<meta name="ui:desc" content="图片社交首页：品牌顶栏、带渐变环的快拍头像条、动态卡片（多图、点赞评论分享收藏、点赞数、正文截断、评论入口）、标签栏与发帖按钮。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="信息流,快拍,动态卡片,标签栏,FAB">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .avatar { --c-fg: #fff; }
+  .fd-brand { font: 700 calc(26px * var(--ts)) / 1 var(--ui-font-display); letter-spacing: -.03em; padding-left: 2px; }
+  html[data-lang="google"] .fd-brand { font-weight: 500; letter-spacing: 0; padding-left: 12px; }
+  .bar-group { border-radius: var(--ui-radius-full); }
+  .fd-bw { position: relative; display: inline-flex; }
+  .fd-badge { position: absolute; top: 7px; right: 7px; pointer-events: none; box-shadow: 0 0 0 2px var(--ui-bg); }
+  .fd-badge:not(.dot) { top: 2px; right: 0; }
+
+  .fd-stories { display: flex; gap: 12px; padding: 6px var(--ui-margin) 16px; }
+  .fd-story { flex: none; width: 70px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--ui-text-2); }
+  .fd-story > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fd-ring { position: relative; padding: 2.5px; border-radius: 50%;
+    background: conic-gradient(from 200deg, var(--c-yellow), var(--c-orange), var(--c-pink), var(--c-purple), var(--c-orange), var(--c-yellow)); }
+  .fd-ring.seen { background: var(--ui-line-strong); }
+  .fd-ring.me { background: transparent; }
+  .fd-ring > .avatar { --size: 62px; border: 3px solid var(--ui-bg); }
+  .fd-add { position: absolute; right: 0; bottom: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--ui-accent); color: var(--ui-on-accent); border: 2.5px solid var(--ui-bg); }
+  .fd-add .i { --ui-icon: 14px; stroke-width: 3; }
+  .fd-live { position: absolute; left: 50%; bottom: -5px; translate: -50% 0; padding: 1px 5px; border-radius: 5px; border: 2px solid var(--ui-bg);
+    background: var(--c-pink); color: #fff; font-size: 10px; font-weight: 700; line-height: 1.3; letter-spacing: .04em; white-space: nowrap; }
+  .fd-story.is-live { color: var(--ui-text); }
+
+  .fd-post + .fd-post { margin-top: 16px; }
+  html[data-lang="google"] .fd-post { background: var(--md-surface-container-low); border-radius: 24px; }
+  html[data-lang="google"][data-scheme="dark"] .fd-post { background: var(--md-surface-container); }
+  .fd-head { display: flex; align-items: center; gap: 10px; padding: 10px 4px 10px 14px; }
+  .fd-head .grow > * { display: block; }
+  .fd-head .icon-btn { --b-fg: var(--ui-text-2); }
+  .fd-pic { position: relative; }
+  .fd-pic > .fd-count { position: absolute; top: 12px; right: 12px; padding: 2px 9px; border-radius: 99px; background: rgb(0 0 0 / 45%); color: #fff;
+    font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .fd-acts { position: relative; display: flex; align-items: center; padding: 4px 4px 0; }
+  .fd-acts .icon-btn { --b-fg: var(--ui-text); }
+  .fd-acts .icon-btn.fd-on { --b-fg: var(--c-red); }
+  .fd-acts .icon-btn.fd-saved { --b-fg: var(--ui-text); }
+  .fd-acts .dots { position: absolute; left: 50%; translate: -50% 0; gap: 5px; }
+  .fd-acts .dots > span { width: 6px; height: 6px; }
+  .fd-acts .dots > .is-active { background: var(--ui-accent); }
+  .fd-body { display: flex; flex-direction: column; gap: 6px; padding: 2px 16px 16px; }
+  .fd-likes { display: flex; align-items: center; gap: 8px; }
+  .fd-likes .avatar { --size: 20px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><span class="fd-brand">拾光</span></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail">
+      <div class="bar-group">
+        <button class="bar-btn only-apple" aria-label="发布"><svg class="i"><use href="#i-plus"/></svg></button>
+        <span class="fd-bw"><button class="bar-btn" aria-label="通知"><svg class="i"><use href="#i-bell"/></svg></button><span class="badge dot fd-badge"></span></span>
+        <span class="fd-bw"><button class="bar-btn" aria-label="私信"><svg class="i"><use href="#i-send"/></svg></button><span class="badge fd-badge">3</span></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="fd-stories scroll-x bleed" aria-label="快拍">
+      <a class="fd-story" href="#">
+        <span class="fd-ring me"><span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span><span class="fd-add"><svg class="i"><use href="#i-plus"/></svg></span></span>
+        <span class="t-caption">你的快拍</span>
+      </a>
+      <a class="fd-story is-live" href="#">
+        <span class="fd-ring"><span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span><span class="fd-live">直播</span></span>
+        <span class="t-caption">陈一舟</span>
+      </a>
+      <a class="fd-story" href="#">
+        <span class="fd-ring"><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span></span>
+        <span class="t-caption">许嘉禾</span>
+      </a>
+      <a class="fd-story" href="#">
+        <span class="fd-ring"><span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span></span>
+        <span class="t-caption">苏沐</span>
+      </a>
+      <a class="fd-story" href="#">
+        <span class="fd-ring"><span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">何</span></span>
+        <span class="t-caption">何田田</span>
+      </a>
+      <a class="fd-story" href="#">
+        <span class="fd-ring seen"><span class="avatar" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">唐</span></span>
+        <span class="t-caption">唐棠</span>
+      </a>
+      <a class="fd-story" href="#">
+        <span class="fd-ring seen"><span class="avatar" style="--c:linear-gradient(135deg,#a78bfa,#6366f1)">沈</span></span>
+        <span class="t-caption">沈知远</span>
+      </a>
+    </div>
+
+    <article class="card fd-post">
+      <header class="fd-head">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">周</span>
+        <div class="grow"><span class="t-subhead t-semibold">周以安</span><span class="t-caption t-2">湖州 · 莫干山 · 2 小时前</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </header>
+      <div class="fd-pic">
+        <div class="art a3 ratio-4x3" role="img" aria-label="竹林民宿"><svg class="i"><use href="#i-mountain"/></svg></div>
+        <span class="fd-count">1/4</span>
+      </div>
+      <div class="fd-acts">
+        <button class="icon-btn fd-on" aria-label="已赞"><svg class="i solid"><use href="#i-heart-fill"/></svg></button>
+        <button class="icon-btn" aria-label="评论"><svg class="i"><use href="#i-message"/></svg></button>
+        <button class="icon-btn" aria-label="分享"><svg class="i"><use href="#i-send"/></svg></button>
+        <div class="dots"><span class="is-active"></span><span></span><span></span><span></span></div>
+        <button class="icon-btn" aria-label="收藏" style="margin-left:auto"><svg class="i"><use href="#i-bookmark"/></svg></button>
+      </div>
+      <div class="fd-body">
+        <div class="fd-likes">
+          <span class="avatar-stack"><span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)"></span><span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)"></span><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)"></span></span>
+          <span class="t-subhead"><b>林知夏</b> 等 <b class="t-num">1,286</b> 人赞过</span>
+        </div>
+        <p class="t-subhead t-regular t-clamp-2"><b>周以安</b> 周末躲进莫干山，住在半山腰的民宿，早上六点被鸟叫醒，推开窗就是一整片竹海。下山路过庾村，买了两斤刚炒的山核桃，回上海的路上就吃掉了一半。</p>
+        <a class="t-subhead t-regular t-2" href="#">查看全部 86 条评论</a>
+      </div>
+    </article>
+
+    <article class="card fd-post">
+      <header class="fd-head">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span>
+        <div class="grow"><span class="t-subhead t-semibold">苏沐</span><span class="t-caption t-2">上海 · 武康路 · 5 小时前</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </header>
+      <div class="art a5 ratio-4x3" role="img" aria-label="梧桐街道"><svg class="i"><use href="#i-leaf"/></svg></div>
+      <div class="fd-acts">
+        <button class="icon-btn" aria-label="赞"><svg class="i"><use href="#i-heart"/></svg></button>
+        <button class="icon-btn" aria-label="评论"><svg class="i"><use href="#i-message"/></svg></button>
+        <button class="icon-btn" aria-label="分享"><svg class="i"><use href="#i-send"/></svg></button>
+        <button class="icon-btn fd-saved" aria-label="已收藏" style="margin-left:auto"><svg class="i solid"><use href="#i-bookmark-fill"/></svg></button>
+      </div>
+      <div class="fd-body">
+        <span class="t-subhead"><b class="t-num">642</b> 次赞</span>
+        <p class="t-subhead t-regular t-clamp-2"><b>苏沐</b> 武康路的梧桐开始黄了。下午四点的光从安福路斜着照过来，整条街像被调成了胶片色，在武康大楼对面的咖啡店坐了一下午。</p>
+        <a class="t-subhead t-regular t-2" href="#">查看全部 23 条评论</a>
+      </div>
+    </article>
+
+    <article class="card fd-post">
+      <header class="fd-head">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span>
+        <div class="grow"><span class="t-subhead t-semibold">许嘉禾</span><span class="t-caption t-2">杭州 · 西溪湿地 · 昨天</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </header>
+      <div class="art a2 ratio-4x3" role="img" aria-label="湿地晨雾"><svg class="i"><use href="#i-camera"/></svg></div>
+      <div class="fd-acts">
+        <button class="icon-btn" aria-label="赞"><svg class="i"><use href="#i-heart"/></svg></button>
+        <button class="icon-btn" aria-label="评论"><svg class="i"><use href="#i-message"/></svg></button>
+        <button class="icon-btn" aria-label="分享"><svg class="i"><use href="#i-send"/></svg></button>
+        <button class="icon-btn" aria-label="收藏" style="margin-left:auto"><svg class="i"><use href="#i-bookmark"/></svg></button>
+      </div>
+      <div class="fd-body">
+        <span class="t-subhead"><b class="t-num">3,904</b> 次赞</span>
+        <p class="t-subhead t-regular t-clamp-2"><b>许嘉禾</b> 五点半出门，赶在雾散之前到了深潭口。这台用了六年的富士还是最顺手，135 胶片拍了一整卷，冲出来再发第二组。</p>
+        <a class="t-subhead t-regular t-2" href="#">查看全部 214 条评论</a>
+      </div>
+    </article>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-play-circle"/></svg><span>视频</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-bag"/></svg><span>市集</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我</span></a>
+  </nav>
+  <button class="fab only-google" aria-label="发帖"><svg class="i"><use href="#i-plus"/></svg></button>
+</div>
+</body>
+</html>

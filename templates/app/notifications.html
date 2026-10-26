@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通知</title>
+<meta name="ui:title" content="通知中心">
+<meta name="ui:desc" content="社交应用通知页：大标题与全部已读、全部/提及/系统标签页，按今天、本周、更早分组的点赞评论关注提醒（作品缩略图、回关按钮）、系统通知和未读圆点。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="通知,标签页,分组列表,关注,未读">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .avatar { --c-fg: #fff; }
+  .nt { --nt-av: 44px; }
+  html[data-lang="google"] .nt { --nt-av: 40px; }
+  .nt-tabs { margin-bottom: 4px; }
+  .nt-tabs .badge { margin-left: 2px; }
+  .nt-list .row { align-items: flex-start; padding-block: 12px; }
+  .nt-list .row-body { gap: 3px; padding-top: 1px; }
+  .nt-text { font-size: calc(var(--fs-callout) * var(--ts)); line-height: var(--lh-callout); }
+  .nt-text b { font-weight: 600; }
+  html[data-lang="google"] .nt-text b { font-weight: 500; }
+  .nt-text q { color: var(--ui-text-2); }
+  .nt-dot { position: absolute; left: 5px; top: 30px; width: 8px; height: 8px; border-radius: 50%; background: var(--ui-accent); }
+  .nt-thumb { width: var(--nt-av); height: var(--nt-av); border-radius: var(--ui-radius-s); flex: none; }
+  .nt-thumb > .i { --ui-icon: 18px; }
+  .nt-list .btn.xs { margin-top: 6px; flex: none; }
+  .nt-list .row-icon { width: var(--nt-av); height: var(--nt-av); border-radius: 50%; }
+  html[data-lang="apple"] .nt-list .row-icon .i { --ui-icon: 22px; }
+  .nt-stack { position: relative; width: var(--nt-av); height: var(--nt-av); flex: none; }
+  .nt-stack > .avatar { --size: 30px; position: absolute; font-size: 12px; }
+  .nt-stack > .avatar:first-child { top: 0; left: 0; }
+  .nt-stack > .avatar + .avatar { margin-left: 0; right: 0; bottom: 0; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">通知</div>
+    <div class="topbar-trail"><button class="bar-btn">全部已读</button></div>
+  </header>
+
+  <main class="content nt">
+    <h1 class="page-title">通知</h1>
+    <nav class="tabs nt-tabs">
+      <a class="is-active" href="#">全部</a>
+      <a href="#">提及<span class="badge">2</span></a>
+      <a href="#">系统</a>
+    </nav>
+
+    <section class="group">
+      <h2 class="group-header">今天</h2>
+      <ul class="list has-avatars nt-list">
+        <li><a class="row" href="#">
+          <span class="nt-dot"></span>
+          <span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span>
+          <span class="row-body"><span class="nt-text"><b>陈一舟</b> 赞了你的作品《雨后》</span><span class="t-footnote t-2">12 分钟前</span></span>
+          <span class="nt-thumb art a2"><svg class="i"><use href="#i-rain"/></svg></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="nt-dot"></span>
+          <span class="nt-stack avatar-stack"><span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span></span>
+          <span class="row-body"><span class="nt-text"><b>林知夏</b>、<b>许嘉禾</b> 等 23 人赞了你的作品《外滩的清晨》</span><span class="t-footnote t-2">1 小时前</span></span>
+          <span class="nt-thumb art a1"><svg class="i"><use href="#i-sun"/></svg></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="nt-dot"></span>
+          <span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span>
+          <span class="row-body"><span class="nt-text"><b>苏沐</b> 评论了你的作品《雨后》：<q>这张的光影太好了，用的什么镜头？</q></span><span class="t-footnote t-2">2 小时前</span></span>
+          <span class="nt-thumb art a2"><svg class="i"><use href="#i-rain"/></svg></span>
+        </a></li>
+        <li><div class="row">
+          <span class="avatar" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">何</span>
+          <span class="row-body"><span class="nt-text"><b>何田田</b> 开始关注你</span><span class="t-footnote t-2">3 小时前 · 你们有 6 位共同好友</span></span>
+          <button class="btn xs filled">回关</button>
+        </div></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">本周</h2>
+      <ul class="list has-avatars nt-list">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-shield"/></svg></span>
+          <span class="row-body"><span class="nt-text"><b>登录提醒</b> 你的账号于 10 月 22 日 21:04 在一台新的 iPad 上登录（上海）。不是你本人？</span><span class="t-footnote t-2">星期三</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">周</span>
+          <span class="row-body"><span class="nt-text"><b>周以安</b> 在评论中提到了你：<q>@林知夏 下周一起去莫干山吗？</q></span><span class="t-footnote t-2">星期二</span></span>
+          <span class="nt-thumb art a3"><svg class="i"><use href="#i-mountain"/></svg></span>
+        </a></li>
+        <li><div class="row">
+          <span class="avatar" style="--c:linear-gradient(135deg,#a78bfa,#6366f1)">唐</span>
+          <span class="row-body"><span class="nt-text"><b>唐棠</b> 开始关注你</span><span class="t-footnote t-2">星期二</span></span>
+          <button class="btn xs neutral">已互关</button>
+        </div></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-award"/></svg></span>
+          <span class="row-body"><span class="nt-text"><b>入选本周精选</b> 你的作品《雨后》被推荐到发现页，已获得 1.2 万次浏览</span><span class="t-footnote t-2">星期一</span></span>
+          <span class="nt-thumb art a2"><svg class="i"><use href="#i-rain"/></svg></span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">更早</h2>
+      <ul class="list has-avatars nt-list">
+        <li><a class="row" href="#">
+          <span class="avatar" style="--c:linear-gradient(135deg,#94a3b8,#475569)">沈</span>
+          <span class="row-body"><span class="nt-text"><b>沈知远</b> 收藏了你的作品《老弄堂》</span><span class="t-footnote t-2">10月18日</span></span>
+          <span class="nt-thumb art a6"><svg class="i"><use href="#i-building"/></svg></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-sparkles"/></svg></span>
+          <span class="row-body"><span class="nt-text"><b>拾光 4.2 更新</b> 新增 6 款胶片滤镜和九宫格排版，去试试吧</span><span class="t-footnote t-2">10月15日</span></span>
+        </a></li>
+      </ul>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab" href="#"><svg class="i"><use href="#i-home"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-bell-fill"/></svg><span>通知</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我</span></a>
+  </nav>
+</div>
+</body>
+</html>

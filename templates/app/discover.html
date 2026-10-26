@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>发现</title>
+<meta name="ui:title" content="发现">
+<meta name="ui:desc" content="内容发现页：大标题、搜索栏、分类筛选片、横滑精选大卡片、两列瀑布流推荐卡片和带名次的热门话题列表。">
+<meta name="ui:category" content="首页与内容">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="发现,轮播,瀑布流,筛选片,排行榜">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .avatar { --c-fg: #fff; }
+  .dc-hero { min-height: 300px; }
+  .dc-hero .card-body { padding: 56px 18px 18px; gap: 4px; }
+  .dc-hero .card-title { font: var(--fw-title2) calc(var(--fs-title2) * var(--ts)) / 1.25 var(--ui-font-display); letter-spacing: var(--ls-title2); }
+  .dc-kicker { font-weight: 600; letter-spacing: .04em; opacity: .85; }
+  .dc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+  .dc-card { background: var(--ui-surface); }
+  .dc-card .card-body { padding: 10px 12px 12px; gap: 8px; }
+  .dc-meta { display: flex; align-items: center; gap: 6px; color: var(--ui-text-2); }
+  .dc-meta .avatar { --size: 20px; font-size: 10px; }
+  .dc-meta .i { --ui-icon: 15px; }
+  .dc-rank { flex: none; width: var(--ui-row-icon-size); text-align: center; font: 700 calc(20px * var(--ts)) / 1 var(--ui-font-display);
+    color: var(--ui-text-3); font-variant-numeric: tabular-nums; font-style: italic; }
+  .dc-rank.top { color: var(--ui-accent); }
+  .dc-dots { margin-top: 12px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">发现</div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="扫一扫"><svg class="i"><use href="#i-scan"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">发现</h1>
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="搜索目的地、作者或话题">
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+      <span class="avatar only-google" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span>
+    </label>
+
+    <div class="chips single bleed mt-3">
+      <button class="chip is-active">推荐</button>
+      <button class="chip">旅行</button>
+      <button class="chip">美食</button>
+      <button class="chip">摄影</button>
+      <button class="chip">城市漫步</button>
+      <button class="chip">露营</button>
+      <button class="chip">家居</button>
+      <button class="chip">读书</button>
+    </div>
+
+    <div class="carousel mt-4" style="--item:86%">
+      <a class="card media-fill dc-hero" href="#">
+        <div class="art a9"><svg class="i"><use href="#i-mountain"/></svg></div>
+        <div class="card-body">
+          <span class="t-caption dc-kicker">编辑精选 · 江西婺源</span>
+          <span class="card-title">秋天去婺源，看一场晒秋</span>
+          <span class="card-sub">12 位摄影师的私藏机位 · 3 天 2 晚路线</span>
+        </div>
+      </a>
+      <a class="card media-fill dc-hero" href="#">
+        <div class="art a7"><svg class="i"><use href="#i-hotel"/></svg></div>
+        <div class="card-body">
+          <span class="t-caption dc-kicker">住进风景 · 云南大理</span>
+          <span class="card-title">在苍山脚下，住一间有院子的房子</span>
+          <span class="card-sub">洱海西岸 8 家民宿实测 · ¥420 起</span>
+        </div>
+      </a>
+      <a class="card media-fill dc-hero" href="#">
+        <div class="art a11"><svg class="i"><use href="#i-food"/></svg></div>
+        <div class="card-body">
+          <span class="t-caption dc-kicker">吃遍一座城 · 四川成都</span>
+          <span class="card-title">成都 24 小时，只吃不逛</span>
+          <span class="card-sub">从早茶到夜宵的 14 家苍蝇馆子</span>
+        </div>
+      </a>
+    </div>
+    <div class="dots dc-dots"><span class="is-active"></span><span></span><span></span></div>
+
+    <section class="group">
+      <h2 class="group-header large">为你推荐 <a class="t-subhead" href="#">查看全部</a></h2>
+      <div class="dc-cols">
+        <div class="stack">
+          <a class="card dc-card" href="#">
+            <div class="card-media art a5" style="--ratio:3/4"><svg class="i"><use href="#i-coffee"/></svg></div>
+            <div class="card-body">
+              <span class="t-subhead t-semibold t-clamp-2">愚园路 7 家值得专程去的咖啡馆</span>
+              <span class="dc-meta"><span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span><span class="t-caption grow ellipsis">苏沐</span><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">2.3万</span></span>
+            </div>
+          </a>
+          <a class="card dc-card" href="#">
+            <div class="card-media art a10" style="--ratio:1"><svg class="i"><use href="#i-leaf"/></svg></div>
+            <div class="card-body">
+              <span class="t-subhead t-semibold t-clamp-2">阳台种菜第 90 天：小番茄终于红了</span>
+              <span class="dc-meta"><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span><span class="t-caption grow ellipsis">许嘉禾</span><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">8,416</span></span>
+            </div>
+          </a>
+        </div>
+        <div class="stack">
+          <a class="card dc-card" href="#">
+            <div class="card-media art a2" style="--ratio:1"><svg class="i"><use href="#i-camera"/></svg></div>
+            <div class="card-body">
+              <span class="t-subhead t-semibold t-clamp-2">千岛湖环湖骑行，一天 140 公里怎么分配体力</span>
+              <span class="dc-meta"><span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span><span class="t-caption grow ellipsis">陈一舟</span><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">1.1万</span></span>
+            </div>
+          </a>
+          <a class="card dc-card" href="#">
+            <div class="card-media art a8" style="--ratio:3/4"><svg class="i"><use href="#i-book"/></svg></div>
+            <div class="card-body">
+              <span class="t-subhead t-semibold t-clamp-2">十月读完的 4 本书，最推荐《置身事内》</span>
+              <span class="dc-meta"><span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">周</span><span class="t-caption grow ellipsis">周以安</span><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">5,902</span></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">热门话题 <a class="t-subhead" href="#">榜单</a></h2>
+      <ol class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="dc-rank top">1</span>
+          <span class="row-body"><span class="row-title">#城市骑行地图</span><span class="row-sub">24.6 万人在讨论 · 今日 +3,182</span></span>
+          <span class="tag danger">热</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="dc-rank top">2</span>
+          <span class="row-body"><span class="row-title">#秋天的第一锅羊肉</span><span class="row-sub">18.2 万人在讨论</span></span>
+          <span class="tag warning">沸</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="dc-rank top">3</span>
+          <span class="row-body"><span class="row-title">#小户型收纳改造</span><span class="row-sub">9.7 万人在讨论</span></span>
+          <span class="tag accent">新</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="dc-rank">4</span>
+          <span class="row-body"><span class="row-title">#周末去哪儿露营</span><span class="row-sub">7.3 万人在讨论</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="dc-rank">5</span>
+          <span class="row-body"><span class="row-title">#胶片相机入门</span><span class="row-sub">5.1 万人在讨论</span></span>
+        </a></li>
+      </ol>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab" href="#"><svg class="i"><use href="#i-home"/></svg><span>首页</span></a>
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-compass-fill"/></svg><span>发现</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-bookmark"/></svg><span>收藏</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-message"/></svg><span>消息</span><span class="badge">8</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我</span></a>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>搜索</title>
+<meta name="ui:title" content="搜索">
+<meta name="ui:desc" content="聚焦状态的搜索页：iOS 搜索框加“取消”、Android 全屏搜索视图带返回箭头；可删除的最近搜索、两列热搜榜（前三名强调色）和混排的猜你想搜结果。">
+<meta name="ui:category" content="首页与内容">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="搜索,最近搜索,热搜榜,筛选片,混排列表">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .avatar { --c-fg: #fff; }
+  .sr-top { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 4px;
+    padding: calc(var(--safe-top) + 6px) 8px 8px var(--ui-margin); background: var(--ui-bg); }
+  .sr-top .searchbar { flex: 1; }
+  .sr-top .btn.text { padding-inline: 8px; }
+  html[data-lang="google"] .sr-top { padding: var(--safe-top) 0 0; background: var(--md-surface-container-high); border-bottom: 1px solid var(--md-outline-variant); }
+  html[data-lang="google"] .sr-top .searchbar { height: 72px; padding: 0 4px; gap: 4px; background: transparent; border-radius: 0; }
+  html[data-lang="google"] .sr-top .searchbar > input { padding-left: 4px; }
+  .sr-top .icon-btn:first-child { --b-fg: var(--ui-text); }
+  .sr-wrap { padding-top: 12px; }
+
+  .sr-recent .chips { padding-inline: 0; }
+  .sr-recent .chip { gap: 4px; padding-right: 10px; }
+  .sr-recent .chip .i { --ui-icon: 14px; color: var(--ui-text-3); }
+  .group-header .t-subhead { font-weight: 400; }
+
+  .sr-hot { background: var(--ui-surface); }
+  .sr-hot ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 14px 16px; }
+  .sr-hot a { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .sr-hot .ellipsis { flex: 1; }
+  .sr-hot .tag { height: 18px; padding: 0 5px; flex: none; }
+  .sr-n { flex: none; width: 18px; font: 700 calc(16px * var(--ts)) / 1 var(--ui-font-display); font-style: italic; color: var(--ui-text-3); font-variant-numeric: tabular-nums; }
+  .sr-n.top { color: var(--ui-accent); }
+
+  .sr-mix .avatar, .sr-thumb, .sr-topic { --size: 48px; width: 48px; height: 48px; flex: none; }
+  .sr-mix > li + li::before { left: calc(var(--ui-row-px) + 48px + var(--ui-row-gap)); }
+  .sr-thumb { border-radius: var(--ui-radius-s); }
+  .sr-thumb > .i { --ui-icon: 22px; }
+  .sr-topic { display: grid; place-items: center; border-radius: 50%; background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="sr-top">
+    <label class="searchbar">
+      <a class="icon-btn only-google" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a>
+      <svg class="i only-apple"><use href="#i-search"/></svg>
+      <input type="search" placeholder="搜索用户、笔记、话题" autofocus>
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+      <span class="icon-btn only-google" aria-label="语音搜索"><svg class="i"><use href="#i-mic"/></svg></span>
+    </label>
+    <button class="btn text only-apple">取消</button>
+  </header>
+
+  <main class="content sr-wrap">
+    <section class="group sr-recent">
+      <h2 class="group-header large">最近搜索 <a class="t-subhead" href="#">清空</a></h2>
+      <div class="chips wrap">
+        <button class="chip">露营装备清单<svg class="i"><use href="#i-close"/></svg></button>
+        <button class="chip">苏州河步道<svg class="i"><use href="#i-close"/></svg></button>
+        <button class="chip">富士 X100VI<svg class="i"><use href="#i-close"/></svg></button>
+        <button class="chip">安福路咖啡<svg class="i"><use href="#i-close"/></svg></button>
+        <button class="chip">莫干山民宿<svg class="i"><use href="#i-close"/></svg></button>
+        <button class="chip">羊肉汤做法<svg class="i"><use href="#i-close"/></svg></button>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">热搜榜 <span class="t-footnote t-3">10:30 更新</span></h2>
+      <div class="card pad sr-hot">
+        <ol>
+          <li><a href="#"><span class="sr-n top">1</span><span class="ellipsis t-subhead">苏州河步道全线贯通</span><span class="tag danger">热</span></a></li>
+          <li><a href="#"><span class="sr-n top">2</span><span class="ellipsis t-subhead">下周首场寒潮来袭</span><span class="tag warning">沸</span></a></li>
+          <li><a href="#"><span class="sr-n top">3</span><span class="ellipsis t-subhead">西湖边桂花二次开</span><span class="tag accent">新</span></a></li>
+          <li><a href="#"><span class="sr-n">4</span><span class="ellipsis t-subhead">双十一预售比价</span></a></li>
+          <li><a href="#"><span class="sr-n">5</span><span class="ellipsis t-subhead">折叠屏手机上手</span></a></li>
+          <li><a href="#"><span class="sr-n">6</span><span class="ellipsis t-subhead">周末露营地推荐</span></a></li>
+          <li><a href="#"><span class="sr-n">7</span><span class="ellipsis t-subhead">秋冬养生汤</span></a></li>
+          <li><a href="#"><span class="sr-n">8</span><span class="ellipsis t-subhead">迪士尼新园区开放</span><span class="tag accent">新</span></a></li>
+          <li><a href="#"><span class="sr-n">9</span><span class="ellipsis t-subhead">考研倒计时 60 天</span></a></li>
+          <li><a href="#"><span class="sr-n">10</span><span class="ellipsis t-subhead">云南菌子季尾声</span></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">猜你想搜</h2>
+      <ul class="list sr-mix">
+        <li><div class="row">
+          <span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0f766e)">杰</span>
+          <span class="row-body"><span class="row-title">山野阿杰</span><span class="row-sub">户外博主 · 32.6 万粉丝</span></span>
+          <button class="btn xs filled">关注</button>
+        </div></li>
+        <li><a class="row" href="#">
+          <span class="sr-thumb art a3"><svg class="i solid"><use href="#i-play"/></svg></span>
+          <span class="row-body"><span class="row-title t-clamp-2">新手露营别乱买：这 12 件够用三年</span><span class="row-sub">视频 · 山野阿杰 · 1.2 万赞</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="sr-topic"><svg class="i"><use href="#i-hash"/></svg></span>
+          <span class="row-body"><span class="row-title">周末露营去哪儿</span><span class="row-sub">话题 · 1.8 亿次浏览</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="sr-thumb art a5"><svg class="i"><use href="#i-image"/></svg></span>
+          <span class="row-body"><span class="row-title t-clamp-2">安吉云上草原露营攻略，帐篷位怎么抢</span><span class="row-sub">笔记 · 何田田 · 6,240 赞</span></span>
+        </a></li>
+        <li><div class="row">
+          <span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">营</span>
+          <span class="row-body"><span class="row-title">野营研究所</span><span class="row-sub">装备测评 · 你关注的许嘉禾也关注了</span></span>
+          <button class="btn xs tonal">已关注</button>
+        </div></li>
+      </ul>
+    </section>
+  </main>
+</div>
+</body>
+</html>

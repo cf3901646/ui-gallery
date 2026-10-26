@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>林知夏</title>
+<meta name="ui:title" content="个人主页">
+<meta name="ui:desc" content="社交个人主页：封面与压边头像、昵称简介和所在地、关注/粉丝/获赞数据、编辑与分享按钮、内容标签页、三列作品墙和底部标签栏。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="个人主页,头像,封面,统计,标签页,作品墙,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .pf-cover { height: calc(var(--safe-top) + 112px); }
+  .pf-avatar { display: grid; margin-top: -48px; box-shadow: 0 0 0 4px var(--ui-bg); font-size: 38px; }
+  .pf-name { margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+  .pf-name .i { --ui-icon: 20px; color: var(--ui-accent); }
+  .pf-bio { margin-top: 8px; }
+  .pf-meta { margin-top: 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+  .pf-meta > span { display: inline-flex; align-items: center; gap: 4px; }
+  .pf-stats { display: flex; gap: 28px; margin-top: 16px; }
+  .pf-stats .stat { flex-direction: row; align-items: baseline; gap: 4px; }
+  .pf-stats .stat-value { font-size: calc(var(--fs-headline) * var(--ts)); font-weight: 600; }
+  html[data-lang="google"] .pf-stats .stat-value { font-weight: 500; }
+  .pf-btns { margin-top: 16px; gap: 8px; }
+  .pf-tabs { margin-top: 20px; }
+  .pf-grid > * { position: relative; }
+  .pf-grid .i { --ui-icon: 18px; position: absolute; top: 6px; right: 6px; opacity: 1; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 40%)); }
+  .pf-pin { position: absolute; top: 6px; left: 6px; padding: 2px 6px; border-radius: 6px; background: rgb(0 0 0 / 45%); color: #fff; font-size: 11px; font-weight: 600; }
+  .pf-views { position: absolute; left: 6px; bottom: 6px; color: #fff; font-size: 12px; font-weight: 600; text-shadow: 0 1px 2px rgb(0 0 0 / 50%); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar transparent">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="扫一扫"><svg class="i"><use href="#i-qr"/></svg></button>
+      <button class="bar-btn" aria-label="设置"><svg class="i"><use href="#i-settings"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="pf-cover art a7 bleed" role="img" aria-label="封面"></div>
+    <span class="avatar xl pf-avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span>
+
+    <h1 class="t-title2 pf-name">林知夏<svg class="i" aria-label="已认证"><use href="#i-circle-check"/></svg></h1>
+    <p class="t-subhead t-2">@zhixia · 插画师</p>
+    <p class="t-callout pf-bio">在上海画画、拍胶片，记录日常里的光。每周日更新一篇城市散步日记。</p>
+    <p class="t-footnote t-2 pf-meta">
+      <span><svg class="i sm"><use href="#i-map-pin"/></svg>上海 · 徐汇区</span>
+      <span><svg class="i sm"><use href="#i-link"/></svg><a class="t-accent" href="#">zhixia.art</a></span>
+      <span><svg class="i sm"><use href="#i-calendar"/></svg>2021 年 3 月加入</span>
+    </p>
+
+    <div class="pf-stats">
+      <a class="stat" href="#"><span class="stat-value t-num">286</span><span class="stat-label">关注</span></a>
+      <a class="stat" href="#"><span class="stat-value t-num">1.2万</span><span class="stat-label">粉丝</span></a>
+      <a class="stat" href="#"><span class="stat-value t-num">3.8万</span><span class="stat-label">获赞</span></a>
+    </div>
+
+    <div class="btn-row stretch pf-btns">
+      <button class="btn neutral sm">编辑资料</button>
+      <button class="btn neutral sm"><svg class="i"><use href="#i-share"/></svg>分享主页</button>
+    </div>
+
+    <nav class="tabs underline bleed pf-tabs">
+      <a class="is-active" href="#">作品 128</a><a href="#">收藏</a><a href="#">赞过</a>
+    </nav>
+
+    <div class="media-grid bleed pf-grid" style="--cols:3;--gap:2px">
+      <a class="art a5 ratio-3x4" href="#" aria-label="武康大楼的黄昏"><span class="pf-pin">置顶</span><span class="pf-views">2.4万</span></a>
+      <a class="art a2 ratio-3x4" href="#" aria-label="苏州河夜跑"><svg class="i solid"><use href="#i-play"/></svg><span class="pf-views">8,912</span></a>
+      <a class="art a8 ratio-3x4" href="#" aria-label="樱花插画"><svg class="i"><use href="#i-layers"/></svg><span class="pf-views">1.1万</span></a>
+      <a class="art a3 ratio-3x4" href="#" aria-label="植物园速写"><span class="pf-views">3,406</span></a>
+      <a class="art a9 ratio-3x4" href="#" aria-label="外滩日落"><svg class="i solid"><use href="#i-play"/></svg><span class="pf-views">5,277</span></a>
+      <a class="art a6 ratio-3x4" href="#" aria-label="胶片相机"><span class="pf-views">2,980</span></a>
+      <a class="art a11 ratio-3x4" href="#" aria-label="展览现场"><svg class="i"><use href="#i-layers"/></svg><span class="pf-views">4,135</span></a>
+      <a class="art a10 ratio-3x4" href="#" aria-label="海边"><span class="pf-views">6,048</span></a>
+      <a class="art a1 ratio-3x4" href="#" aria-label="城市灯光"><span class="pf-views">1,822</span></a>
+    </div>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab" href="#"><svg class="i"><use href="#i-home"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-message"/></svg><span>消息</span><span class="badge">3</span></a>
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-user-fill"/></svg><span>我</span></a>
+  </nav>
+</div>
+</body>
+</html>

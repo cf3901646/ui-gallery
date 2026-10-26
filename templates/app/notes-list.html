@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>备忘录</title>
+<meta name="ui:title" content="笔记列表">
+<meta name="ui:desc" content="备忘录首页：大标题、搜索、置顶彩色卡片、按时间分组的笔记列表（预览、文件夹、锁定），底部计数工具栏或 FAB。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="笔记,卡片,分组列表,搜索,工具栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .bar-group { border-radius: var(--ui-radius-full); }
+  .nl-pins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .nl-pin { min-height: 136px; gap: 6px; }
+  .nl-pin .nl-pin-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .nl-pin .nl-pin-head .i { --ui-icon: 16px; opacity: .7; }
+  .nl-pin p { opacity: .78; }
+  .nl-pin .nl-pin-date { margin-top: auto; opacity: .6; }
+  html[data-lang="apple"] .nl-pin { background: color-mix(in srgb, var(--c) 18%, var(--ui-surface)); color: var(--ui-text); }
+  .nl-list .row-title { font-weight: 600; }
+  .nl-list .row-sub { display: flex; gap: 8px; min-width: 0; }
+  .nl-list .row-sub > span:first-child { color: var(--ui-text); flex: none; }
+  .nl-list .row-sub > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nl-folder { display: flex; align-items: center; gap: 4px; color: var(--ui-text-3); font-size: calc(var(--fs-footnote) * var(--ts)); }
+  .nl-folder .i, .nl-lock { --ui-icon: 15px; }
+  .nl-lock { color: var(--ui-text-3); align-self: flex-start; margin-top: 4px; }
+  html[data-lang="apple"] .content { padding-bottom: calc(var(--safe-bottom) + 84px); }
+  .nl-bar { justify-content: space-between; align-items: center; }
+  .nl-bar .nl-spacer { width: 44px; }
+  .nl-count { color: var(--ui-text-2); font-weight: 500; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>文件夹</span></a></div>
+    <div class="topbar-title">备忘录</div>
+    <div class="topbar-trail">
+      <button class="bar-btn only-google" aria-label="网格视图"><svg class="i"><use href="#i-grid"/></svg></button>
+      <button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">备忘录</h1>
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="搜索">
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+    </label>
+
+    <section class="group">
+      <h2 class="group-header large">置顶</h2>
+      <div class="nl-pins">
+        <a class="card pad nl-pin tinted" href="#" style="--c:var(--c-yellow)">
+          <span class="nl-pin-head"><strong class="t-headline ellipsis">周末采购清单</strong><svg class="i"><use href="#i-checklist"/></svg></span>
+          <p class="t-footnote t-clamp-3">牛奶 2 盒、全麦吐司、牛油果 ×3、挂面、洗衣凝珠、猫砂（豆腐砂 6L）</p>
+          <span class="nl-pin-date t-caption">今天 08:12</span>
+        </a>
+        <a class="card pad nl-pin tonal-3" href="#" style="--c:var(--c-teal)">
+          <span class="nl-pin-head"><strong class="t-headline ellipsis">东京行程</strong><svg class="i"><use href="#i-plane"/></svg></span>
+          <p class="t-footnote t-clamp-3">11/08 浦东 T2 → 羽田 NH968，新宿住 3 晚，11/12 箱根温泉一晚</p>
+          <span class="nl-pin-date t-caption">昨天 22:40</span>
+        </a>
+        <a class="card pad nl-pin tonal-2" href="#" style="--c:var(--c-orange)">
+          <span class="nl-pin-head"><strong class="t-headline ellipsis">读书笔记《置身事内》</strong><svg class="i"><use href="#i-book"/></svg></span>
+          <p class="t-footnote t-clamp-3">第三章：土地财政与城投债。地方政府的“经营城市”逻辑……</p>
+          <span class="nl-pin-date t-caption">10 月 12 日</span>
+        </a>
+        <a class="card pad nl-pin tinted" href="#" style="--c:var(--c-indigo)">
+          <span class="nl-pin-head"><strong class="t-headline ellipsis">家里网络与门锁</strong><svg class="i"><use href="#i-lock"/></svg></span>
+          <p class="t-footnote t-clamp-3">已锁定 · 使用面容 ID 查看</p>
+          <span class="nl-pin-date t-caption">9 月 28 日</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">今天</h2>
+      <ul class="list nl-list">
+        <li><a class="row" href="#"><span class="row-body">
+          <span class="row-title">周会纪要 10/16</span>
+          <span class="row-sub"><span>14:32</span><span>1. Q4 OKR 对齐：日活目标 120 万，留存提升 3 个点</span></span>
+          <span class="nl-folder"><svg class="i"><use href="#i-folder"/></svg>工作</span>
+        </span></a></li>
+        <li><a class="row" href="#"><span class="row-body">
+          <span class="row-title">番茄炖牛腩</span>
+          <span class="row-sub"><span>11:05</span><span>牛腩 500g 冷水下锅焯水，番茄 3 个去皮切块</span></span>
+          <span class="nl-folder"><svg class="i"><use href="#i-folder"/></svg>菜谱</span>
+        </span></a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">过去 7 天</h2>
+      <ul class="list nl-list">
+        <li><a class="row" href="#"><span class="row-body">
+          <span class="row-title">公积金提取材料</span>
+          <span class="row-sub"><span>昨天</span><span>已锁定</span></span>
+          <span class="nl-folder"><svg class="i"><use href="#i-folder"/></svg>个人</span>
+        </span><svg class="i nl-lock"><use href="#i-lock"/></svg></a></li>
+        <li><a class="row" href="#"><span class="row-body">
+          <span class="row-title">装修预算</span>
+          <span class="row-sub"><span>星期二</span><span>水电改造 ¥18,600，瓷砖 ¥9,200，橱柜定金 ¥5,000</span></span>
+          <span class="nl-folder"><svg class="i"><use href="#i-folder"/></svg>新家</span>
+        </span></a></li>
+        <li><a class="row" href="#"><span class="row-body">
+          <span class="row-title">半马训练计划</span>
+          <span class="row-sub"><span>星期一</span><span>周二 间歇跑 6×800m，周四 节奏跑 8km，周六 LSD 18km</span></span>
+          <span class="nl-folder"><svg class="i"><use href="#i-folder"/></svg>运动</span>
+        </span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <div class="toolbar docked nl-bar only-apple">
+    <span class="nl-spacer"></span>
+    <span class="nl-count t-caption">28 个备忘录</span>
+    <button class="icon-btn" aria-label="新建备忘录"><svg class="i"><use href="#i-edit"/></svg></button>
+  </div>
+  <button class="fab only-google" aria-label="新建笔记"><svg class="i"><use href="#i-edit"/></svg></button>
+</div>
+</body>
+</html>

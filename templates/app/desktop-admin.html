@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>概览 · 云杉商城后台</title>
+<meta name="ui:title" content="后台仪表盘">
+<meta name="ui:desc" content="电商后台概览：侧栏 / 导航轨、日期范围与搜索、KPI 卡（涨跌与迷你折线）、收入面积图、渠道占比圆环、最近订单表格和动态时间线。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="desktop">
+<meta name="ui:tags" content="仪表盘,KPI,图表,表格,时间线,导航轨">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ad-frame { height: 100dvh; }
+  .ad-frame > .sidebar { width: 240px; }
+  .ad-frame > .rail { height: 100dvh; }
+  .ad-main { height: 100dvh; overflow: auto; padding: 0 32px 40px; }
+  html[data-lang="google"] .ad-main { --ui-card-bg: var(--md-surface-container-lowest); }
+  html[data-lang="google"][data-scheme="dark"] .ad-main { --ui-card-bg: var(--md-surface-container); }
+  .ad-brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px 16px; }
+  .ad-logo { width: 34px; height: 34px; border-radius: 10px; background: var(--ui-accent); color: var(--ui-on-accent); display: grid; place-items: center; flex: none; }
+  .ad-me { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px; border-top: 1px solid var(--ui-line); }
+  .ad-me > .grow, .ad-feed li { display: flex; flex-direction: column; }
+  .ad-avatar { --c: linear-gradient(135deg, #ff9f6b, #ff5e7e); --c-fg: #fff; }
+  .ad-top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 16px; padding: 22px 0 18px; background: var(--ui-bg); }
+  .ad-top .segmented { width: 320px; flex: none; }
+  .ad-top .searchbar { width: 240px; flex: none; height: 44px; }
+  .ad-bell .badge { position: absolute; top: 6px; right: 6px; }
+  .ad-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .ad-kpi { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .ad-kpi .stat-value { font-size: calc(26px * var(--ts)); }
+  .ad-spark { width: 92px; height: 36px; flex: none; }
+  .ad-spark polyline { fill: none; stroke: var(--c); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ad-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  .ad-card { gap: 14px; }
+  .ad-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ad-chart text { font-size: 11px; }
+  .ad-chart .area2 { fill: none; stroke: var(--ui-text-4); stroke-width: 2; stroke-dasharray: 5 5; }
+  .ad-chart .dot { fill: var(--ui-accent); stroke: var(--ui-card-bg); stroke-width: 3; }
+  .ad-ch { display: flex; align-items: center; gap: 24px; }
+  .ad-ch .rings .ring { --stroke: 11px; }
+  .ad-ch ul { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .ad-ch li { display: flex; align-items: center; gap: 8px; }
+  .ad-ch li::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+  .ad-ch li > span:first-child { flex: 1; }
+  .ad-card .table-wrap { border: 0; border-radius: 0; background: transparent; margin: 0 calc(-1 * var(--ui-card-pad)) calc(-1 * var(--ui-card-pad)); }
+  .ad-card .table th:first-child, .ad-card .table td:first-child { padding-left: var(--ui-card-pad); }
+  .ad-cust { display: flex; align-items: center; gap: 10px; }
+  .ad-cust .avatar { --size: 28px; font-size: 12px; --c-fg: #fff; }
+</style>
+</head>
+<body class="app">
+<div class="app-frame ad-frame">
+  <nav class="sidebar floating only-apple">
+    <div class="ad-brand"><span class="ad-logo"><svg class="i sm"><use href="#i-store"/></svg></span><span class="stack gap-0"><span class="t-headline">云杉商城</span><span class="t-caption t-2">管理后台</span></span></div>
+    <a class="side-item is-active" href="#"><svg class="i"><use href="#i-home"/></svg><span>概览</span></a>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-receipt"/></svg><span>订单</span><span class="count">128</span></a>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-package"/></svg><span>商品</span></a>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-users"/></svg><span>客户</span></a>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-tag"/></svg><span>营销活动</span></a>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-chart"/></svg><span>数据分析</span></a>
+    <div class="sidebar-section">设置</div>
+    <a class="side-item" href="#"><svg class="i"><use href="#i-settings"/></svg><span>店铺设置</span></a>
+    <div class="ad-me"><span class="avatar sm ad-avatar">林</span><span class="grow"><span class="t-subhead t-semibold">林知夏</span><span class="t-caption t-2">运营负责人</span></span><svg class="i sm t-3"><use href="#i-chevron-up"/></svg></div>
+  </nav>
+  <nav class="rail only-google">
+    <button class="icon-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+    <button class="fab" aria-label="新建订单"><svg class="i"><use href="#i-edit"/></svg></button>
+    <a class="rail-item is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>概览</span></a>
+    <a class="rail-item" href="#"><svg class="i"><use href="#i-receipt"/></svg><span>订单</span></a>
+    <a class="rail-item" href="#"><svg class="i"><use href="#i-package"/></svg><span>商品</span></a>
+    <a class="rail-item" href="#"><svg class="i"><use href="#i-users"/></svg><span>客户</span></a>
+    <a class="rail-item" href="#"><svg class="i"><use href="#i-chart"/></svg><span>分析</span></a>
+    <a class="rail-item" href="#"><svg class="i"><use href="#i-settings"/></svg><span>设置</span></a>
+  </nav>
+
+  <main class="app-main ad-main">
+    <header class="ad-top">
+      <div class="grow"><h1 class="t-title1">概览</h1><span class="t-footnote t-2">2026 年 10 月 21 日 星期三 · 数据更新于 10:45</span></div>
+      <div class="segmented"><button>今天</button><button class="is-active">近 7 天</button><button>近 30 天</button><button>本季度</button></div>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索订单、商品、客户"></label>
+      <button class="icon-btn ad-bell" aria-label="通知"><svg class="i"><use href="#i-bell"/></svg><span class="badge">3</span></button>
+      <span class="avatar sm ad-avatar">林</span>
+    </header>
+
+    <section class="ad-kpis">
+      <div class="card pad ad-kpi"><div class="stat"><span class="stat-label">总收入</span><span class="stat-value">¥1,284,560</span><span class="stat-delta">↑ 12.4% 较上周</span></div>
+        <svg class="ad-spark" viewBox="0 0 92 36" style="--c:var(--c-green)"><polyline points="2,28 14,26 26,27 38,20 50,22 62,15 74,13 90,6"/></svg></div>
+      <div class="card pad ad-kpi"><div class="stat"><span class="stat-label">订单数</span><span class="stat-value">8,642</span><span class="stat-delta">↑ 6.1% 较上周</span></div>
+        <svg class="ad-spark" viewBox="0 0 92 36" style="--c:var(--c-green)"><polyline points="2,24 14,25 26,20 38,22 50,17 62,18 74,14 90,12"/></svg></div>
+      <div class="card pad ad-kpi"><div class="stat"><span class="stat-label">新客户</span><span class="stat-value">1,206</span><span class="stat-delta">↑ 18.3% 较上周</span></div>
+        <svg class="ad-spark" viewBox="0 0 92 36" style="--c:var(--c-green)"><polyline points="2,30 14,27 26,28 38,22 50,18 62,19 74,10 90,8"/></svg></div>
+      <div class="card pad ad-kpi"><div class="stat"><span class="stat-label">客单价</span><span class="stat-value">¥148.64</span><span class="stat-delta down">↓ 2.1% 较上周</span></div>
+        <svg class="ad-spark" viewBox="0 0 92 36" style="--c:var(--c-red)"><polyline points="2,10 14,12 26,9 38,15 50,14 62,19 74,18 90,23"/></svg></div>
+    </section>
+
+    <section class="ad-row">
+      <div class="card pad ad-card">
+        <div class="ad-head">
+          <div><h2 class="t-headline">收入趋势</h2><span class="t-footnote t-2">10 月 1 日 – 10 月 21 日 · 日收入（元）</span></div>
+          <div class="legend"><span style="--c:var(--ui-accent)">本期</span><span style="--c:var(--ui-text-4)">上期</span></div>
+        </div>
+        <svg class="chart ad-chart" viewBox="0 0 680 220" role="img" aria-label="收入趋势面积图">
+          <line class="grid" x1="40" y1="20" x2="680" y2="20"/><line class="grid" x1="40" y1="70" x2="680" y2="70"/>
+          <line class="grid" x1="40" y1="120" x2="680" y2="120"/><line class="grid" x1="40" y1="170" x2="680" y2="170"/>
+          <text x="0" y="24">8 万</text><text x="0" y="74">6 万</text><text x="0" y="124">4 万</text><text x="0" y="174">2 万</text>
+          <path class="area" d="M40,150 L72,138 104,142 136,120 168,126 200,104 232,110 264,96 296,100 328,84 360,92 392,76 424,82 456,70 488,74 520,58 552,66 584,52 616,60 648,44 680,38 L680,196 L40,196 Z"/>
+          <polyline class="area2" points="40,160 72,156 104,150 136,148 168,140 200,142 232,134 264,130 296,132 328,124 360,120 392,122 424,114 456,110 488,112 520,104 552,100 584,102 616,96 648,92 680,90"/>
+          <polyline class="line" points="40,150 72,138 104,142 136,120 168,126 200,104 232,110 264,96 296,100 328,84 360,92 392,76 424,82 456,70 488,74 520,58 552,66 584,52 616,60 648,44 680,38"/>
+          <line class="grid" x1="648" y1="20" x2="648" y2="196"/><circle class="dot" cx="648" cy="44" r="6"/>
+          <text x="40" y="214">10/1</text><text x="168" y="214">10/5</text><text x="296" y="214">10/9</text><text x="424" y="214">10/13</text><text x="552" y="214">10/17</text><text x="640" y="214">10/20</text>
+        </svg>
+      </div>
+      <div class="card pad ad-card">
+        <div class="ad-head"><h2 class="t-headline">渠道占比</h2><button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div>
+        <div class="ad-ch">
+          <div class="rings">
+            <span class="ring" style="--value:42;--size:150px;--ring-color:var(--c-red)"></span>
+            <span class="ring" style="--value:28;--size:122px;--ring-color:var(--c-orange)"></span>
+            <span class="ring" style="--value:18;--size:94px;--ring-color:var(--c-green)"></span>
+            <span class="ring" style="--value:12;--size:66px;--ring-color:var(--c-indigo)"></span>
+          </div>
+          <ul class="t-subhead">
+            <li style="--c:var(--c-red)"><span>天猫旗舰店</span><span class="t-num t-semibold">42%</span></li>
+            <li style="--c:var(--c-orange)"><span>京东自营</span><span class="t-num t-semibold">28%</span></li>
+            <li style="--c:var(--c-green)"><span>微信小程序</span><span class="t-num t-semibold">18%</span></li>
+            <li style="--c:var(--c-indigo)"><span>抖音小店</span><span class="t-num t-semibold">12%</span></li>
+          </ul>
+        </div>
+        <p class="t-footnote t-2">小程序渠道环比提升 4.2 个百分点，主要来自“双十一预售”社群裂变。</p>
+      </div>
+    </section>
+
+    <section class="ad-row">
+      <div class="card pad ad-card">
+        <div class="ad-head"><h2 class="t-headline">最近订单</h2><a class="link-arrow t-subhead" href="#">查看全部</a></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>订单号</th><th>客户</th><th class="num">金额</th><th>状态</th><th>渠道</th><th class="num">时间</th></tr></thead>
+            <tbody>
+              <tr><td class="t-mono">DD20261021-0386</td><td><span class="ad-cust"><span class="avatar" style="--c:#4f8dff">王</span>王思远</span></td><td class="num">¥2,368.00</td><td><span class="tag success">已付款</span></td><td>天猫</td><td class="num t-2">10:42</td></tr>
+              <tr><td class="t-mono">DD20261021-0385</td><td><span class="ad-cust"><span class="avatar" style="--c:#ff5c8a">李</span>李佳琪</span></td><td class="num">¥189.00</td><td><span class="tag warning">待发货</span></td><td>小程序</td><td class="num t-2">10:31</td></tr>
+              <tr><td class="t-mono">DD20261021-0384</td><td><span class="ad-cust"><span class="avatar" style="--c:#34c47c">陈</span>陈浩然</span></td><td class="num">¥5,920.00</td><td><span class="tag accent">已发货</span></td><td>京东</td><td class="num t-2">10:18</td></tr>
+              <tr><td class="t-mono">DD20261021-0383</td><td><span class="ad-cust"><span class="avatar" style="--c:#b36bff">赵</span>赵雨桐</span></td><td class="num">¥76.50</td><td><span class="tag danger">退款中</span></td><td>抖音</td><td class="num t-2">09:57</td></tr>
+              <tr><td class="t-mono">DD20261021-0382</td><td><span class="ad-cust"><span class="avatar" style="--c:#ff8a5b">刘</span>刘子涵</span></td><td class="num">¥1,104.00</td><td><span class="tag">已完成</span></td><td>天猫</td><td class="num t-2">09:40</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card pad ad-card ad-feed">
+        <div class="ad-head"><h2 class="t-headline">动态</h2><span class="t-footnote t-2">今天</span></div>
+        <ol class="timeline">
+          <li class="is-current"><span class="t-subhead t-semibold">王思远下单 ¥2,368.00</span><span class="t-footnote t-2">10:42 · 天猫旗舰店</span></li>
+          <li><span class="t-subhead t-semibold">库存预警：云杉保温杯 400ml</span><span class="t-footnote t-2">10:20 · 仅剩 32 件，建议补货 500 件</span></li>
+          <li><span class="t-subhead t-semibold">赵雨桐申请退款 ¥76.50</span><span class="t-footnote t-2">09:57 · 原因：尺码不合适</span></li>
+          <li class="is-done"><span class="t-subhead t-semibold">周以宁发布了双十一预售页</span><span class="t-footnote t-2">09:30 · 营销活动</span></li>
+        </ol>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

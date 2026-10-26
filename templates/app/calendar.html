@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>日程</title>
+<meta name="ui:title" content="日程">
+<meta name="ui:desc" content="日历月视图：带日程标记的日期、今天与选中日，选中日的全天事件条和彩色日程卡片（时间、地点、参会人）。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="日历,月视图,日程,头像组">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .bar-group { border-radius: var(--ui-radius-full); }
+  .cal-month { padding-bottom: 12px; border-bottom: 1px solid var(--ui-line); }
+  .cal-month .cal-head { padding: 0 2px; }
+  .cal-agenda { display: flex; flex-direction: column; gap: 8px; padding-top: 16px; }
+  .cal-agenda-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 2px 4px; }
+  .cal-ev { align-items: center; padding: 12px; }
+  .cal-ev .grow { display: flex; flex-direction: column; gap: 2px; }
+  .cal-ev .cal-meta { display: flex; align-items: center; gap: 4px; }
+  .cal-ev .cal-meta .i { --ui-icon: 14px; }
+  .cal-ev .avatar { --size: 26px; font-size: 11px; }
+  .cal-allday { align-items: center; padding: 8px 12px; }
+  .cal-allday > .i { color: var(--c); }
+  html[data-lang="google"] .cal-ev, html[data-lang="google"] .cal-allday {
+    background: color-mix(in srgb, var(--c) 20%, var(--ui-bg-plain)); color: var(--ui-text); border-radius: var(--ui-radius-l); }
+  html[data-lang="google"] .cal-ev .avatar-stack > .avatar { box-shadow: 0 0 0 2px color-mix(in srgb, var(--c) 20%, var(--ui-bg-plain)); }
+  html[data-lang="google"] .fab { --ui-fab-offset: 16px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead">
+      <a class="bar-btn only-apple" href="#"><svg class="i"><use href="#i-chevron-left"/></svg><span>2026 年</span></a>
+      <button class="bar-btn only-google" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+    </div>
+    <div class="topbar-title"><span class="only-google">2026 年 </span>10 月</div>
+    <div class="topbar-trail">
+      <div class="bar-group only-apple">
+        <button class="bar-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="bar-btn" aria-label="新建日程"><svg class="i"><use href="#i-plus"/></svg></button>
+      </div>
+      <button class="bar-btn only-google" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+      <span class="avatar sm only-google" style="--c:linear-gradient(135deg,#7aa7ff,#5a5cf0)">周</span>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="calendar cal-month">
+      <div class="cal-head">
+        <span class="t-footnote t-2">第 40 – 44 周 · 22 个日程</span>
+        <div class="hstack gap-1">
+          <button class="icon-btn sm" aria-label="上个月"><svg class="i"><use href="#i-chevron-left"/></svg></button>
+          <button class="btn tonal xs">今天</button>
+          <button class="icon-btn sm" aria-label="下个月"><svg class="i"><use href="#i-chevron-right"/></svg></button>
+        </div>
+      </div>
+      <div class="cal-grid">
+        <span class="cal-dow">日</span><span class="cal-dow">一</span><span class="cal-dow">二</span><span class="cal-dow">三</span><span class="cal-dow">四</span><span class="cal-dow">五</span><span class="cal-dow">六</span>
+        <span class="cal-day is-muted">27</span><span class="cal-day is-muted">28</span><span class="cal-day is-muted">29</span><span class="cal-day is-muted">30</span><span class="cal-day">1</span><span class="cal-day has-dot">2</span><span class="cal-day">3</span>
+        <span class="cal-day">4</span><span class="cal-day">5</span><span class="cal-day has-dot">6</span><span class="cal-day">7</span><span class="cal-day">8</span><span class="cal-day has-dot">9</span><span class="cal-day">10</span>
+        <span class="cal-day">11</span><span class="cal-day has-dot">12</span><span class="cal-day">13</span><span class="cal-day is-today has-dot">14</span><span class="cal-day has-dot">15</span><span class="cal-day is-selected has-dot">16</span><span class="cal-day">17</span>
+        <span class="cal-day">18</span><span class="cal-day has-dot">19</span><span class="cal-day">20</span><span class="cal-day has-dot">21</span><span class="cal-day">22</span><span class="cal-day has-dot">23</span><span class="cal-day">24</span>
+        <span class="cal-day">25</span><span class="cal-day has-dot">26</span><span class="cal-day">27</span><span class="cal-day has-dot">28</span><span class="cal-day">29</span><span class="cal-day has-dot">30</span><span class="cal-day">31</span>
+      </div>
+    </section>
+
+    <section class="cal-agenda">
+      <div class="cal-agenda-head">
+        <h2 class="t-title3">10 月 16 日 星期五</h2>
+        <span class="t-footnote t-2">4 个日程</span>
+      </div>
+      <div class="event cal-allday" style="--c:var(--c-pink)">
+        <svg class="i sm"><use href="#i-gift"/></svg><span class="grow ellipsis t-subhead t-semibold">林晓雯生日</span><span class="t-footnote t-2">全天</span>
+      </div>
+      <div class="event cal-allday" style="--c:var(--c-teal)">
+        <svg class="i sm"><use href="#i-flag"/></svg><span class="grow ellipsis t-subhead t-semibold">杭州设计周 · 第 2 天</span><span class="t-footnote t-2">10/15 – 10/18</span>
+      </div>
+
+      <div class="event cal-ev" style="--c:var(--c-blue)">
+        <div class="grow">
+          <strong class="t-subhead t-semibold ellipsis">产品周会</strong>
+          <span class="cal-meta t-footnote t-2"><svg class="i"><use href="#i-clock"/></svg>09:30 – 10:30</span>
+          <span class="cal-meta t-footnote t-2 ellipsis"><svg class="i"><use href="#i-map-pin"/></svg>西溪园区 3F 西湖厅</span>
+        </div>
+        <div class="avatar-stack">
+          <span class="avatar" style="--c:#ff8a5b">林</span><span class="avatar" style="--c:#34c47c">陈</span><span class="avatar" style="--c:#4f8dff">赵</span><span class="avatar" style="--c:#8e8e93">+3</span>
+        </div>
+      </div>
+      <div class="event cal-ev" style="--c:var(--c-orange)">
+        <div class="grow">
+          <strong class="t-subhead t-semibold ellipsis">午餐 · 和张一鸣</strong>
+          <span class="cal-meta t-footnote t-2"><svg class="i"><use href="#i-clock"/></svg>12:00 – 13:00</span>
+          <span class="cal-meta t-footnote t-2 ellipsis"><svg class="i"><use href="#i-map-pin"/></svg>湖滨银泰 in77 · 绿茶餐厅</span>
+        </div>
+        <div class="avatar-stack"><span class="avatar" style="--c:#b36bff">张</span></div>
+      </div>
+      <div class="event cal-ev" style="--c:var(--c-purple)">
+        <div class="grow">
+          <strong class="t-subhead t-semibold ellipsis">设计评审：日历 2.0</strong>
+          <span class="cal-meta t-footnote t-2"><svg class="i"><use href="#i-clock"/></svg>14:00 – 15:30</span>
+          <span class="cal-meta t-footnote t-2 ellipsis"><svg class="i"><use href="#i-video"/></svg>腾讯会议 618-204-993</span>
+        </div>
+        <div class="avatar-stack">
+          <span class="avatar" style="--c:#ff5c8a">苏</span><span class="avatar" style="--c:#00a389">何</span><span class="avatar" style="--c:#ffb33c">王</span>
+        </div>
+      </div>
+      <div class="event cal-ev" style="--c:var(--c-green)">
+        <div class="grow">
+          <strong class="t-subhead t-semibold ellipsis">羽毛球</strong>
+          <span class="cal-meta t-footnote t-2"><svg class="i"><use href="#i-clock"/></svg>19:30 – 21:00</span>
+          <span class="cal-meta t-footnote t-2 ellipsis"><svg class="i"><use href="#i-map-pin"/></svg>黄龙体育中心 5 号场</span>
+        </div>
+        <div class="avatar-stack"><span class="avatar" style="--c:#4f8dff">周</span><span class="avatar" style="--c:#ff8a5b">吴</span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar only-apple">
+    <a class="tab" href="#"><svg class="i"><use href="#i-sun"/></svg><span>今天</span></a>
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-calendar-fill"/></svg><span>日历</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-inbox"/></svg><span>收件箱</span><span class="badge">2</span></a>
+  </nav>
+  <button class="fab only-google" aria-label="新建日程"><svg class="i"><use href="#i-plus"/></svg></button>
+</div>
+</body>
+</html>

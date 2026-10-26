@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>云杉计划 · 文件</title>
+<meta name="ui:title" content="桌面文件管理器">
+<meta name="ui:desc" content="桌面文件管理器：侧栏（个人收藏、位置、彩色标签），工具栏（前进后退、路径、图标/列表视图、排序、搜索），彩色文件夹与文件类型图标网格（选中态）、底部状态栏和右侧预览窗格。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="desktop">
+<meta name="ui:tags" content="三栏,文件,网格,预览,面包屑,侧栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .fm-split { height: 100dvh; --split-cols: 230px minmax(0, 1fr) 300px; }
+  .fm-split > .pane { height: 100dvh; min-height: 0; }
+  .fm-lights { display: flex; gap: 8px; padding: 4px 10px 14px; }
+  .fm-lights i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); }
+  .fm-swatch { width: 12px; height: 12px; border-radius: 50%; background: var(--c); margin: 0 5px; flex: none; }
+  .fm-main { background: var(--ui-bg-plain); display: flex; flex-direction: column; }
+  .fm-main > * { flex: none; }
+  .fm-bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 14px 20px; background: var(--ui-bg-plain); border-bottom: 1px solid var(--ui-line); }
+  .fm-bar .bar-group { border-radius: var(--ui-radius-full); }
+  .fm-bar .breadcrumb { font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .fm-bar .breadcrumb > :last-child { color: var(--ui-text); font-weight: 600; }
+  .fm-bar .segmented { width: 96px; }
+  .fm-bar .searchbar { width: 200px; height: 36px; }
+  .fm-grid { flex: 1 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 18px 8px; padding: 20px 20px 24px; align-content: start; }
+  .fm-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px; border-radius: 12px; text-align: center; min-width: 0; }
+  .fm-ico { height: 72px; display: grid; place-items: center; padding: 0 6px; border-radius: 10px; }
+  .fm-ico > .i { --ui-icon: 68px; color: var(--c, var(--c-blue)); }
+  .fm-file { width: 52px; height: 66px; border-radius: 6px 14px 6px 6px; background: var(--ui-surface); box-shadow: 0 0 0 1px var(--ui-line), var(--ui-shadow-1);
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 8px; gap: 6px; color: var(--c); }
+  .fm-file .i { --ui-icon: 22px; }
+  .fm-file b { font-size: 9px; font-weight: 700; color: #fff; background: var(--c); border-radius: 3px; padding: 1px 5px; letter-spacing: .3px; }
+  .fm-thumb { width: 76px; height: 56px; border-radius: 6px; box-shadow: 0 0 0 2px var(--ui-surface), var(--ui-shadow-1); }
+  .fm-name { font-size: calc(var(--fs-footnote) * var(--ts)); line-height: 1.3; padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .fm-item.is-active .fm-ico { background: var(--ui-fill-2); }
+  .fm-item.is-active .fm-name { background: var(--ui-accent); color: var(--ui-on-accent); }
+  html[data-lang="google"] .fm-item.is-active { background: var(--md-secondary-container); }
+  html[data-lang="google"] .fm-item.is-active .fm-ico { background: none; }
+  html[data-lang="google"] .fm-item.is-active .fm-name { background: none; color: var(--md-on-secondary-container); font-weight: 500; }
+  .fm-status { position: sticky; bottom: 0; margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 20px; background: var(--ui-bg-plain); border-top: 1px solid var(--ui-line); }
+  .fm-status .range { width: 96px; --range-thumb-w: 14px; --range-thumb-h: 14px; --range-track: 3px; --range-thumb-radius: 50%; }
+  .fm-prev { border-left: 1px solid var(--ui-line); padding: 20px 20px 28px; display: flex; flex-direction: column; gap: 16px; background: var(--ui-bg); }
+  .fm-prev > * { flex: none; }
+  .fm-slide { aspect-ratio: 16 / 10; border-radius: var(--ui-radius-m); align-content: center; gap: 4px; color: #fff; box-shadow: var(--ui-shadow-2); }
+  .fm-prev .kv { font-size: calc(var(--fs-footnote) * var(--ts)); gap: 8px 12px; }
+  .fm-prev .kv dd { min-width: 0; overflow-wrap: anywhere; }
+  .fm-prev .btn-row .btn { flex: 1; }
+</style>
+</head>
+<body class="app">
+<div class="split fm-split">
+  <aside class="pane">
+    <nav class="sidebar floating">
+      <div class="fm-lights only-apple"><i style="--c:#ff5f57"></i><i style="--c:#febc2e"></i><i style="--c:#28c840"></i></div>
+      <div class="sidebar-title t-title3 only-google">文件</div>
+      <div class="sidebar-section">个人收藏</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-clock"/></svg><span>最近使用</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-share"/></svg><span>共享给我</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-laptop"/></svg><span>桌面</span></a>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-doc-fill"/></svg><span>文稿</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-download"/></svg><span>下载</span><span class="count">6</span></a>
+      <div class="sidebar-section">位置</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-cloud"/></svg><span>云盘</span><span class="count">68%</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-package"/></svg><span>T7 移动硬盘</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-globe"/></svg><span>网络</span></a>
+      <div class="sidebar-section">标签</div>
+      <a class="side-item" href="#"><i class="fm-swatch" style="--c:var(--c-red)"></i><span>重要</span></a>
+      <a class="side-item" href="#"><i class="fm-swatch" style="--c:var(--c-orange)"></i><span>待审阅</span></a>
+      <a class="side-item" href="#"><i class="fm-swatch" style="--c:var(--c-green)"></i><span>已完成</span></a>
+      <a class="side-item" href="#"><i class="fm-swatch" style="--c:var(--c-blue)"></i><span>工作</span></a>
+    </nav>
+  </aside>
+
+  <main class="pane fm-main">
+    <div class="fm-bar">
+      <div class="bar-group">
+        <button class="bar-btn" aria-label="后退"><svg class="i"><use href="#i-chevron-left"/></svg></button>
+        <button class="bar-btn" aria-label="前进" disabled><svg class="i"><use href="#i-chevron-right"/></svg></button>
+      </div>
+      <nav class="breadcrumb grow"><a href="#">林知夏</a><a href="#">文稿</a><span>云杉计划</span></nav>
+      <div class="segmented"><button class="is-active" aria-label="图标视图"><svg class="i sm"><use href="#i-grid"/></svg></button><button aria-label="列表视图"><svg class="i sm"><use href="#i-list"/></svg></button></div>
+      <button class="icon-btn" aria-label="排序"><svg class="i"><use href="#i-sort"/></svg></button>
+      <button class="icon-btn" aria-label="新建文件夹"><svg class="i"><use href="#i-plus"/></svg></button>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索"></label>
+    </div>
+
+    <div class="fm-grid">
+      <a class="fm-item" href="#"><span class="fm-ico"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">设计稿</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">会议纪要</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico" style="--c:var(--c-orange)"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">合同与报价</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico" style="--c:var(--c-green)"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">素材库</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico" style="--c:var(--c-purple)"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">竞品分析</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico" style="--c:var(--c-gray)"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">2025 归档</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico" style="--c:var(--c-teal)"><svg class="i solid"><use href="#i-folder-fill"/></svg></span><span class="fm-name">用户访谈</span></a>
+      <a class="fm-item is-active" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-orange)"><svg class="i"><use href="#i-play-circle"/></svg><b>KEY</b></span></span><span class="fm-name">Q3 评审-云杉计划.key</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-green)"><svg class="i"><use href="#i-grid"/></svg><b>XLSX</b></span></span><span class="fm-name">预算明细-2026Q4.xlsx</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-red)"><svg class="i"><use href="#i-doc"/></svg><b>PDF</b></span></span><span class="fm-name">产品需求文档 v3.2.pdf</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="art a1 fm-thumb"></span></span><span class="fm-name">首页改版-终稿.png</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="art a3 fm-thumb"></span></span><span class="fm-name">九溪徒步-0412.heic</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-purple)"><svg class="i"><use href="#i-film"/></svg><b>MP4</b></span></span><span class="fm-name">发布会彩排.mp4</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-blue)"><svg class="i"><use href="#i-type"/></svg><b>DOCX</b></span></span><span class="fm-name">用户访谈记录.docx</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="art map fm-thumb"></span></span><span class="fm-name">西溪园区平面图.png</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-pink)"><svg class="i"><use href="#i-mic"/></svg><b>M4A</b></span></span><span class="fm-name">访谈录音-1018.m4a</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-red)"><svg class="i"><use href="#i-doc"/></svg><b>PDF</b></span></span><span class="fm-name">品牌规范 2026.pdf</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-gray)"><svg class="i"><use href="#i-archive"/></svg><b>ZIP</b></span></span><span class="fm-name">字体包.zip</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-green)"><svg class="i"><use href="#i-grid"/></svg><b>XLSX</b></span></span><span class="fm-name">埋点方案.xlsx</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="art a5 fm-thumb"></span></span><span class="fm-name">海报-双十一.jpg</span></a>
+      <a class="fm-item" href="#"><span class="fm-ico"><span class="fm-file" style="--c:var(--c-gray)"><svg class="i"><use href="#i-code"/></svg><b>MD</b></span></span><span class="fm-name">README.md</span></a>
+    </div>
+
+    <div class="fm-status t-footnote t-2">
+      <span>已选 1 项（共 42 项），可用 128 GB</span>
+      <span class="hstack gap-2"><svg class="i sm"><use href="#i-grid"/></svg><input type="range" class="range" value="45" aria-label="图标大小"></span>
+    </div>
+  </main>
+
+  <aside class="pane fm-prev">
+    <div class="art a9 fm-slide"><span class="t-caption t-semibold">云杉计划</span><span class="t-title3 t-bold">第三季度评审</span><span class="t-caption">2026.10.22 · 产品部</span></div>
+    <div>
+      <div class="t-headline">Q3 评审-云杉计划.key</div>
+      <div class="t-footnote t-2">演示文稿 · 18.4 MB</div>
+    </div>
+    <div class="hstack gap-2 t-footnote"><span class="tag danger">重要</span><span class="tag accent">工作</span></div>
+    <div class="btn-row">
+      <button class="btn filled sm">打开</button>
+      <button class="btn tonal sm"><svg class="i"><use href="#i-share"/></svg>共享</button>
+    </div>
+    <div class="divider"></div>
+    <h2 class="t-subhead t-semibold">信息</h2>
+    <dl class="kv">
+      <dt>创建时间</dt><dd>2026/10/14 09:12</dd>
+      <dt>修改时间</dt><dd>今天 09:40</dd>
+      <dt>上次打开</dt><dd>今天 09:41</dd>
+      <dt>幻灯片</dt><dd>24 张 · 1920×1080</dd>
+      <dt>位置</dt><dd>文稿 › 云杉计划</dd>
+    </dl>
+    <div class="divider"></div>
+    <div class="hstack gap-3">
+      <span class="avatar-stack"><span class="avatar sm" style="--c:#ff5e7e;--c-fg:#fff">周</span><span class="avatar sm" style="--c:#4f8dff;--c-fg:#fff">陈</span><span class="avatar sm" style="--c:#34c47c;--c-fg:#fff">许</span></span>
+      <span class="t-footnote t-2">与周以宁等 3 人共享 · 可编辑</span>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

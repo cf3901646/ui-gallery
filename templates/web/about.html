@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>关于我们 · 漫游</title>
+<meta name="ui:title" content="关于我们">
+<meta name="ui:desc" content="公司介绍页：使命宣言首屏、关键数据、发展历程时间线、价值观、团队成员、办公室地图卡片和招聘号召。">
+<meta name="ui:category" content="公司与招聘">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="关于,时间线,团队,价值观,办公室">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ab-hero .hero-sub { max-width: 32em; }
+  .ab-stats { --gap: 32px; }
+  .ab-stats .stat { border-top: 1px solid var(--ui-line-strong); padding-top: 20px; gap: 6px; }
+  .ab-stats .stat-value { font-size: calc(clamp(34px, 4.4vw, 52px) * var(--ts)); letter-spacing: -.02em; }
+  html[data-lang="google"] .ab-stats .stat-value { font-weight: 400; }
+  .ab-stats .stat-label { font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .ab-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 64px; align-items: start; }
+  .ab-split .section-head { position: sticky; top: calc(var(--ui-site-nav-h, 56px) + 32px); margin-bottom: 0; }
+  .ab-tl { gap: 32px; }
+  .ab-tl li { display: flex; flex-direction: column; gap: 4px; }
+  .ab-tl .t-headline { color: var(--ui-accent); font-variant-numeric: tabular-nums; }
+  .ab-team { --gap: 40px 24px; }
+  .ab-team > div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+  .ab-team .avatar { --c-fg: #fff; margin-bottom: 10px; }
+  .ab-team .t-footnote { max-width: 18em; margin-top: 4px; }
+  .ab-office .art { border-radius: 0; }
+  .ab-office .tag { align-self: flex-start; margin-bottom: 4px; }
+  .footer-cols { --cols: 4; }
+  @media (max-width: 860px) { .footer-cols { --cols: 2; } }
+  html[data-lang="apple"] .ab-cta { background: var(--ui-tile-bg); border-radius: var(--ui-radius-xl); }
+  @media (max-width: 860px) { .ab-split { grid-template-columns: 1fr; gap: 32px; } .ab-split .section-head { position: static; } }
+  @media (max-width: 560px) { .ab-stats, .ab-team { --cols: 2; } .ab-stats { --gap: 24px 16px; } .ab-team .avatar { --size: 80px; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-compass"/></svg></span>漫游</a>
+      <nav class="nav-links">
+        <a href="#">产品</a><a href="#">商家合作</a><a href="#" class="is-active">关于我们</a><a href="#">招聘</a><a href="#">新闻中心</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn filled sm hide-sm" href="#">下载 App</a>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero ab-hero">
+    <div class="wrap">
+      <span class="t-eyebrow">关于漫游</span>
+      <h1 class="t-hero">让每一次出发，<br>都更从容。</h1>
+      <p class="t-lead hero-sub t-2">2016 年，我们在上海一间 40 平米的办公室里写下第一行代码。今天，漫游帮 4,600 万人规划行程、预订住宿，找到只有当地人才知道的好去处。</p>
+      <div class="hero-media art a7 ratio-21x9" role="img" aria-label="团队合影"><svg class="i xxl"><use href="#i-compass"/></svg></div>
+    </div>
+  </section>
+
+  <section class="section tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="grid c4 ab-stats">
+        <div class="stat"><span class="stat-value">2016</span><span class="stat-label">成立于上海</span></div>
+        <div class="stat"><span class="stat-value">1,280</span><span class="stat-label">位同事，来自 19 个国家和地区</span></div>
+        <div class="stat"><span class="stat-value">368</span><span class="stat-label">座城市可以用漫游订到住宿</span></div>
+        <div class="stat"><span class="stat-value">4,600 万</span><span class="stat-label">注册用户</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap ab-split">
+      <div class="section-head">
+        <span class="t-eyebrow">发展历程</span>
+        <h2 class="t-large-title">十年，一步一步走到这里。</h2>
+        <p class="t-body t-2">从 12 座城市的周末短途游开始，每一步都来自用户的一句反馈。</p>
+      </div>
+      <ol class="timeline ab-tl">
+        <li class="is-done"><span class="t-headline">2016</span><p class="t-body t-2">在上海徐汇上线第一版，只覆盖江浙沪 12 座城市的周末短途游。</p></li>
+        <li class="is-done"><span class="t-headline">2018</span><p class="t-body t-2">用户突破 500 万，开始提供酒店和民宿预订。</p></li>
+        <li class="is-done"><span class="t-headline">2020</span><p class="t-body t-2">推出“周边游”频道，帮 3 万家本地商户把客人找回来。</p></li>
+        <li class="is-done"><span class="t-headline">2022</span><p class="t-body t-2">新加坡办公室开业，服务扩展到东南亚 6 个国家。</p></li>
+        <li class="is-done"><span class="t-headline">2024</span><p class="t-body t-2">上线 AI 行程助手，平均 40 秒生成一份可以直接预订的行程。</p></li>
+        <li class="is-current"><span class="t-headline">2026</span><p class="t-body t-2">服务城市达到 368 座，所有交通产品都标注了碳排放量。</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head center"><span class="t-eyebrow">价值观</span><h2 class="t-large-title">我们怎么做决定。</h2></div>
+      <div class="grid c3 gap-8">
+        <article class="feature">
+          <span class="feature-icon"><svg class="i"><use href="#i-heart"/></svg></span>
+          <h3 class="t-title3">用户的时间最贵</h3>
+          <p class="t-body t-2">每个新功能都要先回答一个问题：它帮用户省下了多少时间？答不上来就不做。</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg class="i"><use href="#i-check-square"/></svg></span>
+          <h3 class="t-title3">把事情做完</h3>
+          <p class="t-body t-2">每周二发版。宁可先做好一件小事，也不同时推进十件半成品。</p>
+        </article>
+        <article class="feature">
+          <span class="feature-icon"><svg class="i"><use href="#i-message"/></svg></span>
+          <h3 class="t-title3">坦诚直接</h3>
+          <p class="t-body t-2">坏消息第一时间说。任何人都可以在周会上质疑任何决定，包括 CEO 的。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head center"><span class="t-eyebrow">团队</span><h2 class="t-large-title">掌舵的人。</h2></div>
+      <div class="grid c4 ab-team">
+        <div><span class="avatar xl" style="--c:var(--c-orange)">沈</span><h3 class="t-headline">沈知远</h3><p class="t-subhead t-2">联合创始人 · CEO</p><p class="t-footnote t-2">去过 61 个国家，仍然会在机场迷路。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-indigo)">林</span><h3 class="t-headline">林可</h3><p class="t-subhead t-2">联合创始人 · CTO</p><p class="t-footnote t-2">写了漫游第一版的全部后端代码。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-pink)">赵</span><h3 class="t-headline">赵一鸣</h3><p class="t-subhead t-2">设计副总裁</p><p class="t-footnote t-2">相信最好的界面是用户不用想。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-teal)">何</span><h3 class="t-headline">何晴</h3><p class="t-subhead t-2">产品副总裁</p><p class="t-footnote t-2">每月至少跟用户出一次门。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-green)">吴</span><h3 class="t-headline">吴迪</h3><p class="t-subhead t-2">数据科学负责人</p><p class="t-footnote t-2">让推荐少一点套路，多一点惊喜。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-purple)">许</span><h3 class="t-headline">许诺</h3><p class="t-subhead t-2">东南亚业务负责人</p><p class="t-footnote t-2">在新加坡住了 8 年，会说 4 种语言。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-blue)">方</span><h3 class="t-headline">方圆</h3><p class="t-subhead t-2">工程总监</p><p class="t-footnote t-2">把发版从两周一次变成了每周一次。</p></div>
+        <div><span class="avatar xl" style="--c:var(--c-brown)">陈</span><h3 class="t-headline">陈佳宁</h3><p class="t-subhead t-2">用户研究负责人</p><p class="t-footnote t-2">去年做了 214 场用户访谈。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><span class="t-eyebrow">办公室</span><h2 class="t-large-title">来坐坐。</h2></div>
+      <div class="grid c3">
+        <div class="card outlined ab-office">
+          <div class="art map ratio-16x9"><span class="map-pin" style="left:46%;top:56%"><svg class="i"><use href="#i-building"/></svg></span></div>
+          <div class="card-body"><span class="tag accent">总部</span><span class="card-title">上海</span><span class="card-sub">徐汇区龙腾大道 2555 号 西岸智塔 18 层</span></div>
+        </div>
+        <div class="card outlined ab-office">
+          <div class="art map ratio-16x9"><span class="map-pin" style="left:58%;top:44%;--c:var(--c-orange)"><svg class="i"><use href="#i-building"/></svg></span></div>
+          <div class="card-body"><span class="tag">研发中心</span><span class="card-title">杭州</span><span class="card-sub">余杭区文一西路 998 号 海创园 5 号楼</span></div>
+        </div>
+        <div class="card outlined ab-office">
+          <div class="art map ratio-16x9"><span class="map-pin" style="left:38%;top:60%;--c:var(--c-green)"><svg class="i"><use href="#i-building"/></svg></span></div>
+          <div class="card-body"><span class="tag">东南亚</span><span class="card-title">新加坡</span><span class="card-sub">1 Fusionopolis Way, #12-08 Connexis</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="cta-band ab-cta">
+        <span class="t-eyebrow">加入我们</span>
+        <h2 class="t-title1">我们正在招聘 38 个职位。</h2>
+        <p class="t-body t-2">工程、设计、产品、数据和市场，上海、杭州、新加坡都有，也接受远程。</p>
+        <div class="btn-row center"><a class="btn filled lg" href="#">查看职位</a><a class="link-arrow" href="#">了解实习生计划</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-cols">
+        <div><h4>产品</h4><ul><li><a href="#">漫游 App</a></li><li><a href="#">AI 行程助手</a></li><li><a href="#">企业差旅</a></li></ul></div>
+        <div><h4>合作</h4><ul><li><a href="#">商家入驻</a></li><li><a href="#">分销联盟</a></li><li><a href="#">开放平台</a></li></ul></div>
+        <div><h4>公司</h4><ul><li><a href="#">关于我们</a></li><li><a href="#">招聘</a></li><li><a href="#">新闻中心</a></li></ul></div>
+        <div><h4>联系</h4><ul><li><a href="#">客服 400-616-2016</a></li><li><a href="#">press@wander.cn</a></li></ul></div>
+      </div>
+      <div class="footer-legal">
+        <span>© 2026 上海漫游网络科技有限公司</span>
+        <nav><a href="#">隐私政策</a><a href="#">用户协议</a><a href="#">沪ICP备16052188号</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

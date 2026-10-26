@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>主屏幕</title>
+<meta name="ui:title" content="平板小组件主屏">
+<meta name="ui:desc" content="平板横屏主屏幕：壁纸上的小组件网格（日程、天气、健身圆环、照片回忆、正在播放、提醒事项、设备电量、自选股）和玻璃程序坞。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="tablet">
+<meta name="ui:tags" content="主屏幕,小组件,壁纸,圆环,程序坞">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  body.app { overflow: hidden; }
+  .db-wall { position: fixed; inset: 0; }
+  html[data-scheme="dark"] .db-wall::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / 38%); }
+  .db { position: relative; height: 100dvh; display: flex; flex-direction: column; padding: 10px 40px 18px; }
+  .db-status { display: flex; justify-content: space-between; align-items: center; color: #fff; font-weight: 600; text-shadow: 0 1px 2px rgb(0 0 0 / 25%); padding: 0 4px 16px; }
+  .db-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(3, 172px); gap: 22px; }
+  .db-grid .widget { min-height: 0; padding: 16px; }
+  .db-cal { grid-area: 1 / 1 / 3 / 3; } .db-weather { grid-area: 1 / 3 / 2 / 4; } .db-fit { grid-area: 1 / 4 / 2 / 5; }
+  .db-photo { grid-area: 1 / 5 / 3 / 7; } .db-music { grid-area: 2 / 3 / 3 / 5; } .db-rem { grid-area: 3 / 1 / 4 / 3; }
+  .db-batt { grid-area: 3 / 3 / 4 / 5; } .db-stock { grid-area: 3 / 5 / 4 / 7; }
+  .db-day { font: 600 calc(40px * var(--ts)) / 1 var(--ui-font-display); }
+  .db-cal .event { padding: 7px 10px; gap: 8px; }
+  .db-cal .event .grow, .db-tk > .grow { display: flex; flex-direction: column; }
+  html[data-lang="google"] .db-cal .event { background: color-mix(in srgb, var(--c) 18%, transparent); color: var(--ui-text); }
+  .db-weather { background: linear-gradient(170deg, #2f7cf6, #79b8ff); color: #fff; }
+  html[data-lang="google"] .db-weather { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
+  .db-temp { font: 300 calc(46px * var(--ts)) / 1 var(--ui-font-display); }
+  .db-fit .ring { --stroke: 9px; }
+  .db-fit .stack { white-space: nowrap; }
+  .db-fit b { font-size: calc(17px * var(--ts)); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .db-fit small { font-size: 11px; color: var(--ui-text-2); margin-left: 2px; }
+  .db-photo { padding: 0 !important; justify-content: flex-end; color: #fff; }
+  .db-photo > .art { position: absolute; inset: 0; }
+  .db-photo-txt { position: relative; padding: 48px 18px 16px; background: linear-gradient(transparent, rgb(0 0 0 / 50%)); display: flex; flex-direction: column; gap: 2px; }
+  .db-music { flex-direction: row; align-items: center; gap: 16px; }
+  .db-cover { width: 136px; height: 136px; border-radius: 14px; flex: none; }
+  .db-music .grow { display: flex; flex-direction: column; gap: 4px; align-self: stretch; justify-content: center; }
+  .db-rem { flex-direction: row; gap: 16px; }
+  .db-rem-head { width: 92px; flex: none; display: flex; flex-direction: column; justify-content: space-between; }
+  .db-rem-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--c-orange); color: #fff; display: grid; place-items: center; }
+  .db-rem ul { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .db-rem li { display: flex; align-items: center; gap: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--ui-line); }
+  .db-rem li:last-child { border: 0; padding-bottom: 0; }
+  .db-rem .check { width: 20px; height: 20px; }
+  .db-batt { flex-direction: row; justify-content: space-around; align-items: center; }
+  .db-batt .ring { --size: 60px; --stroke: 6px; --ring-color: var(--ui-success); }
+  .db-batt .ring-wrap .i { --ui-icon: 22px; }
+  .db-cell { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .db-stock { gap: 0; justify-content: space-between; }
+  .db-tk { display: flex; align-items: center; gap: 10px; }
+  .db-tk + .db-tk { border-top: 1px solid var(--ui-line); padding-top: 6px; }
+  .db-spark { width: 64px; height: 26px; flex: none; }
+  .db-spark polyline { fill: none; stroke: var(--c); stroke-width: 1.8; }
+  .db-px { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .db-chg { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 5px; color: #fff; background: var(--c); }
+  .db-dots { margin: auto 0 14px; }
+  .db-dots > span { background: rgb(255 255 255 / 45%); }
+  .db-dots > .is-active { background: #fff; }
+  .db-dock { align-self: center; display: flex; align-items: center; gap: 14px; padding: 12px; border-radius: 34px; }
+  html[data-lang="google"] .db-dock { background: var(--md-surface-container); box-shadow: var(--ui-shadow-2); border-radius: 28px; }
+  .db-app { width: 62px; height: 62px; display: grid; place-items: center; color: #fff; background: var(--c); flex: none; }
+  .db-app .i { --ui-icon: 30px; }
+  html[data-lang="google"] .db-app { --shape-mask: radial-gradient(closest-side, #000 98%, transparent 100%); }
+  .db-cal-app { background: #fff; color: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1; }
+  .db-cal-app small { font-size: 10px; color: #ff3b30; font-weight: 600; } .db-cal-app b { font-size: 28px; font-weight: 400; }
+</style>
+</head>
+<body class="app">
+<div class="art a2 db-wall" aria-hidden="true"></div>
+<div class="db">
+  <div class="db-status t-subhead">
+    <span>9:41　10月21日 周三</span>
+    <span class="hstack gap-2"><svg class="i sm"><use href="#i-wifi"/></svg>86%<svg class="i sm"><use href="#i-battery"/></svg></span>
+  </div>
+
+  <div class="db-grid">
+    <section class="widget glass db-cal">
+      <div class="hstack between top">
+        <div><div class="t-footnote t-semibold t-danger">星期三</div><div class="db-day">21</div></div>
+        <span class="t-footnote t-2">4 个日程</span>
+      </div>
+      <div class="stack gap-2 mt-2">
+        <div class="event" style="--c:var(--c-blue)"><span class="grow"><span class="t-subhead t-semibold ellipsis">产品周会</span><span class="t-caption t-2 ellipsis">09:30–10:30 · 西溪园区 3F</span></span></div>
+        <div class="event" style="--c:var(--c-orange)"><span class="grow"><span class="t-subhead t-semibold ellipsis">午餐 · 和张一鸣</span><span class="t-caption t-2 ellipsis">12:00–13:00 · 湖滨 in77</span></span></div>
+        <div class="event" style="--c:var(--c-purple)"><span class="grow"><span class="t-subhead t-semibold ellipsis">设计评审：日历 2.0</span><span class="t-caption t-2 ellipsis">14:00–15:30 · 腾讯会议</span></span></div>
+        <div class="event" style="--c:var(--c-green)"><span class="grow"><span class="t-subhead t-semibold ellipsis">羽毛球</span><span class="t-caption t-2 ellipsis">19:30–21:00 · 黄龙体育中心</span></span></div>
+      </div>
+    </section>
+
+    <section class="widget db-weather">
+      <span class="t-subhead t-semibold hstack gap-1">杭州<svg class="i sm"><use href="#i-navigation"/></svg></span>
+      <span class="db-temp">23°</span>
+      <span class="grow"></span>
+      <svg class="i"><use href="#i-sun"/></svg>
+      <span class="t-footnote t-semibold">晴间多云</span>
+      <span class="t-caption">最高 26° 最低 17°</span>
+    </section>
+
+    <section class="widget glass db-fit">
+      <span class="widget-label" style="--tint:var(--c-red)"><svg class="i sm"><use href="#i-activity"/></svg>健身</span>
+      <div class="hstack gap-3 grow">
+        <div class="rings">
+          <span class="ring" style="--value:76;--size:68px;--ring-color:var(--c-red)"></span>
+          <span class="ring" style="--value:60;--size:48px;--ring-color:var(--c-green)"></span>
+          <span class="ring" style="--value:83;--size:28px;--ring-color:var(--c-cyan)"></span>
+        </div>
+        <div class="stack gap-0">
+          <span><b style="color:var(--c-red)">412</b><small>千卡</small></span>
+          <span><b style="color:var(--c-green)">18</b><small>分钟</small></span>
+          <span><b style="color:var(--c-cyan)">10</b><small>小时</small></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="widget db-photo">
+      <div class="art a3"><svg class="i xxl"><use href="#i-mountain"/></svg></div>
+      <div class="db-photo-txt">
+        <span class="t-caption t-semibold">回忆 · 一年前的今天</span>
+        <span class="t-title3 t-bold">九溪十八涧</span>
+        <span class="t-footnote">2025 年 10 月 19 日 · 46 张照片</span>
+      </div>
+    </section>
+
+    <section class="widget wide glass db-music">
+      <div class="art a4 db-cover"><svg class="i xl"><use href="#i-music"/></svg></div>
+      <div class="grow">
+        <span class="widget-label" style="--tint:var(--c-pink)"><svg class="i sm"><use href="#i-music"/></svg>正在播放</span>
+        <span class="t-headline ellipsis">夜航星图</span>
+        <span class="t-footnote t-2 ellipsis">北岸灯塔乐队 · 远处的海</span>
+        <div class="progress mt-2" style="--value:39%"></div>
+        <div class="hstack between">
+          <button class="icon-btn sm" aria-label="上一首"><svg class="i solid"><use href="#i-skip-back"/></svg></button>
+          <button class="icon-btn sm" aria-label="暂停"><svg class="i solid"><use href="#i-pause"/></svg></button>
+          <button class="icon-btn sm" aria-label="下一首"><svg class="i solid"><use href="#i-skip-forward"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="widget wide glass db-rem">
+      <div class="db-rem-head">
+        <span class="db-rem-icon"><svg class="i sm"><use href="#i-checklist"/></svg></span>
+        <div><div class="widget-value" style="color:var(--c-orange)">5</div><div class="t-footnote t-semibold">提醒事项</div></div>
+      </div>
+      <ul class="t-subhead">
+        <li><input type="checkbox" class="check round"><span class="ellipsis">交物业费 ¥1,280（截至周五）</span></li>
+        <li><input type="checkbox" class="check round"><span class="ellipsis">取干洗衣服 · 翠苑店</span></li>
+        <li><input type="checkbox" class="check round" checked><span class="ellipsis t-2">给妈妈订生日蛋糕</span></li>
+        <li><input type="checkbox" class="check round"><span class="ellipsis">周四前提交 10 月报销单</span></li>
+      </ul>
+    </section>
+
+    <section class="widget wide glass db-batt">
+      <div class="db-cell"><span class="ring-wrap"><span class="ring" style="--value:86"></span><svg class="i"><use href="#i-smartphone"/></svg></span><span class="t-footnote t-semibold t-num">86%</span></div>
+      <div class="db-cell"><span class="ring-wrap"><span class="ring" style="--value:64"></span><svg class="i"><use href="#i-edit"/></svg></span><span class="t-footnote t-semibold t-num">64%</span></div>
+      <div class="db-cell"><span class="ring-wrap"><span class="ring" style="--value:18;--ring-color:var(--ui-danger)"></span><svg class="i"><use href="#i-headphones"/></svg></span><span class="t-footnote t-semibold t-num t-danger">18%</span></div>
+    </section>
+
+    <section class="widget wide glass db-stock">
+      <span class="widget-label" style="--tint:var(--c-red)"><svg class="i sm"><use href="#i-trending-up"/></svg>自选股 · 10:45</span>
+      <div class="db-tk">
+        <span class="grow"><span class="t-subhead t-semibold">腾讯控股</span><span class="t-caption t-2">00700 · 港股</span></span>
+        <svg class="db-spark" viewBox="0 0 64 26" style="--c:var(--c-red)"><polyline points="0,20 8,18 16,19 24,14 32,15 40,10 48,11 56,6 64,4"/></svg>
+        <span class="db-px"><span class="t-subhead t-semibold t-num">512.50</span><span class="db-chg t-num" style="--c:var(--c-red)">+1.84%</span></span>
+      </div>
+      <div class="db-tk">
+        <span class="grow"><span class="t-subhead t-semibold">贵州茅台</span><span class="t-caption t-2">600519 · 沪</span></span>
+        <svg class="db-spark" viewBox="0 0 64 26" style="--c:var(--c-green)"><polyline points="0,6 8,8 16,7 24,12 32,11 40,15 48,14 56,18 64,19"/></svg>
+        <span class="db-px"><span class="t-subhead t-semibold t-num">1,486.00</span><span class="db-chg t-num" style="--c:var(--c-green)">−0.62%</span></span>
+      </div>
+    </section>
+  </div>
+
+  <div class="dots db-dots"><span class="is-active"></span><span></span><span></span></div>
+
+  <nav class="db-dock glass" aria-label="程序坞">
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#5bf675,#0cbd2a)" aria-label="信息"><svg class="i solid"><use href="#i-message"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#5ac8fa,#1a6dff)" aria-label="浏览器"><svg class="i"><use href="#i-compass"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#4fb3ff,#1269f0)" aria-label="邮件"><svg class="i"><use href="#i-mail"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#ff6b81,#fa233b)" aria-label="音乐"><svg class="i solid"><use href="#i-music"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:conic-gradient(#ffcc00,#ff9500,#ff2d55,#af52de,#5856d6,#34c759,#ffcc00)" aria-label="照片"><svg class="i"><use href="#i-image"/></svg></a>
+    <a class="db-app shape-squircle db-cal-app" href="#" aria-label="日历"><small>周三</small><b>21</b></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#ffe36e,#ffc800)" aria-label="备忘录"><svg class="i"><use href="#i-note"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#b4b4bb,#7c7c84)" aria-label="设置"><svg class="i"><use href="#i-settings"/></svg></a>
+    <a class="db-app shape-squircle" href="#" style="--c:linear-gradient(#7ee0a1,#4a9cf5)" aria-label="地图"><svg class="i"><use href="#i-map"/></svg></a>
+  </nav>
+</div>
+</body>
+</html>

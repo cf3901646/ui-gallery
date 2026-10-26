@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sail 服务状态</title>
+<meta name="ui:title" content="服务状态页">
+<meta name="ui:desc" content="云服务状态页：总体状态提示、各组件 90 天可用率条形图、整体可用率数字、近 7 天记录和已解决事件时间线。">
+<meta name="ui:category" content="系统页面">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="状态页,可用率,事件,时间线,监控">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .sp-wrap { --ui-wrap: 880px; }
+  .sp-main { padding-top: 40px; padding-bottom: 80px; display: flex; flex-direction: column; gap: 48px; }
+  .sp-ok { align-items: center; padding: 20px 24px; gap: 16px; }
+  .sp-ok .callout-title { font-size: calc(var(--fs-title3) * var(--ts)); }
+  .sp-box { padding: 0; }
+  .sp-box-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 16px 24px; border-bottom: 1px solid var(--ui-line); }
+  .sp-comp { padding: 20px 24px; }
+  .sp-comp + .sp-comp { border-top: 1px solid var(--ui-line); }
+  .sp-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .sp-bars { display: flex; gap: 3px; height: 34px; margin-top: 14px; }
+  .sp-bars i { flex: 1; min-width: 0; border-radius: 2px; background: var(--ui-success); transition: opacity var(--ui-dur-fast); }
+  .sp-bars i:hover { opacity: .6; }
+  .sp-bars i.sp-w { background: var(--ui-warning); }
+  .sp-bars i.sp-d { background: var(--ui-danger); }
+  .sp-axis { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; color: var(--ui-text-3); font-size: calc(var(--fs-caption) * var(--ts)); }
+  .sp-axis b { color: var(--ui-text-2); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sp-sm { display: none; }
+  .sp-stats { --gap: 16px; }
+  .sp-stats .stat { padding: 20px 24px; border-radius: var(--ui-radius-l); background: var(--ui-tile-bg); }
+  .sp-stats .stat-value { font-size: calc(clamp(30px, 4vw, 40px) * var(--ts)); }
+  .sp-h { margin-bottom: 16px; }
+  .sp-days > li { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--ui-line); }
+  .sp-days > li:first-child { border-top: 1px solid var(--ui-line); }
+  .sp-hist { gap: 28px; }
+  .sp-hist li { display: flex; flex-direction: column; gap: 4px; }
+  .sp-ev { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+  @media (max-width: 560px) {
+    .sp-bars { gap: 2px; } .sp-bars i:nth-child(-n+60) { display: none; }
+    .sp-sm { display: inline; } .sp-lg { display: none; }
+    .sp-comp, .sp-box-head { padding-inline: 16px; }
+    .sp-stats { --cols: 3; --gap: 8px; } .sp-stats .stat { padding: 14px; } .sp-stats .stat-value { font-size: calc(22px * var(--ts)); }
+  }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap sp-wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-navigation"/></svg></span>Sail 状态</a>
+      <div class="nav-actions">
+        <a class="btn text sm hide-sm" href="#">返回 sail.cn</a>
+        <a class="btn filled sm" href="#"><svg class="i sm"><use href="#i-bell"/></svg>订阅更新</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap sp-wrap sp-main">
+    <div class="callout success sp-ok">
+      <svg class="i lg"><use href="#i-circle-check"/></svg>
+      <div class="grow"><p class="callout-title">所有系统运行正常</p><p class="t-footnote">更新于 2026年6月18日 14:32（北京时间）· 每 60 秒自动刷新</p></div>
+    </div>
+
+    <section class="card outlined sp-box">
+      <div class="sp-box-head">
+        <span class="t-headline">组件状态</span>
+        <div class="legend"><span style="--c:var(--ui-success)">正常</span><span style="--c:var(--ui-warning)">性能下降</span><span style="--c:var(--ui-danger)">中断</span></div>
+      </div>
+      <ul>
+        <li class="sp-comp">
+          <div class="sp-top"><span class="t-headline">API</span><span class="tag success">正常运行</span></div>
+          <div class="sp-bars" role="img" aria-label="API 过去 90 天每日状态">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="sp-axis"><span class="sp-lg">90 天前</span><span class="sp-sm">30 天前</span><span><b>100%</b> 可用</span><span>今天</span></div>
+        </li>
+        <li class="sp-comp">
+          <div class="sp-top"><span class="t-headline">控制台</span><span class="tag success">正常运行</span></div>
+          <div class="sp-bars" role="img" aria-label="控制台过去 90 天每日状态">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i class="sp-d"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="sp-axis"><span class="sp-lg">90 天前</span><span class="sp-sm">30 天前</span><span><b>99.98%</b> 可用</span><span>今天</span></div>
+        </li>
+        <li class="sp-comp">
+          <div class="sp-top"><span class="t-headline">支付</span><span class="tag success">正常运行</span></div>
+          <div class="sp-bars" role="img" aria-label="支付过去 90 天每日状态">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i class="sp-w"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="sp-axis"><span class="sp-lg">90 天前</span><span class="sp-sm">30 天前</span><span><b>99.97%</b> 可用</span><span>今天</span></div>
+        </li>
+        <li class="sp-comp">
+          <div class="sp-top"><span class="t-headline">CDN</span><span class="tag success">正常运行</span></div>
+          <div class="sp-bars" role="img" aria-label="CDN 过去 90 天每日状态">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="sp-w"></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="sp-axis"><span class="sp-lg">90 天前</span><span class="sp-sm">30 天前</span><span><b>99.95%</b> 可用</span><span>今天</span></div>
+        </li>
+        <li class="sp-comp">
+          <div class="sp-top"><span class="t-headline">消息推送</span><span class="tag success">正常运行</span></div>
+          <div class="sp-bars" role="img" aria-label="消息推送过去 90 天每日状态">
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+<i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="sp-axis"><span class="sp-lg">90 天前</span><span class="sp-sm">30 天前</span><span><b>100%</b> 可用</span><span>今天</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="grid c3 sp-stats">
+      <div class="stat"><span class="stat-value t-success">99.98%</span><span class="stat-label">过去 90 天整体可用率</span></div>
+      <div class="stat"><span class="stat-value">182 ms</span><span class="stat-label">API 平均响应时间</span></div>
+      <div class="stat"><span class="stat-value">3 起</span><span class="stat-label">90 天内事件，均已解决</span></div>
+    </section>
+
+    <section>
+      <h2 class="t-title2 sp-h">过去 7 天</h2>
+      <ul class="sp-days t-subhead">
+        <li><span class="t-medium">6月18日 周四</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月17日 周三</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月16日 周二</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月15日 周一</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月14日 周日</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月13日 周六</span><span class="t-2">未报告任何事件</span></li>
+        <li><span class="t-medium">6月12日 周五</span><span class="t-2">未报告任何事件</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="t-title2 sp-h">历史事件</h2>
+      <ol class="timeline sp-hist">
+        <li class="is-done">
+          <div class="sp-ev"><span class="t-headline">支付回调延迟</span><span class="tag success">已解决</span></div>
+          <span class="t-footnote t-2">6月9日 20:14 – 20:52 · 持续 38 分钟 · 影响：支付</span>
+          <p class="t-subhead t-2">部分商户的微信支付回调通知最长延迟 6 分钟。原因是回调队列的一个节点磁盘写满，扩容后恢复，期间所有订单状态最终一致。</p>
+        </li>
+        <li class="is-done">
+          <div class="sp-ev"><span class="t-headline">CDN 华南节点访问变慢</span><span class="tag success">已解决</span></div>
+          <span class="t-footnote t-2">5月27日 10:05 – 11:20 · 持续 75 分钟 · 影响：CDN</span>
+          <p class="t-subhead t-2">广州、深圳部分用户的静态资源加载时间从 0.3 秒升到 2.1 秒。已将流量切换到备用节点，并更换了故障的上游线路。</p>
+        </li>
+        <li class="is-done">
+          <div class="sp-ev"><span class="t-headline">控制台无法登录</span><span class="tag success">已解决</span></div>
+          <span class="t-footnote t-2">4月30日 23:40 – 5月1日 00:02 · 持续 22 分钟 · 影响：控制台</span>
+          <p class="t-subhead t-2">一次证书轮换的配置错误导致控制台登录失败，API 与支付未受影响。我们已为证书变更加上灰度发布。</p>
+        </li>
+      </ol>
+      <a class="link-arrow mt-6" href="#">查看全部历史事件</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap sp-wrap">
+      <div class="footer-legal">
+        <span>© 2026 Sail 云帆 · 状态数据每 60 秒更新一次</span>
+        <nav><a href="#">RSS</a><a href="#">API 状态接口</a><a href="#">联系支持</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>东京行程</title>
+<meta name="ui:title" content="笔记编辑">
+<meta name="ui:desc" content="笔记编辑页：返回与完成按钮、日期与标题、正文段落、可勾选清单、插入的图片、引用块，底部浮动格式工具栏。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="编辑器,清单,图片,引用,浮动工具栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .bar-group { border-radius: var(--ui-radius-full); }
+  html[data-lang="apple"] .bar-btn.back > span { display: inline; }
+  html[data-lang="apple"] .bar-btn.back { padding: 0 14px 0 8px; }
+  .ne { display: flex; flex-direction: column; gap: 14px; padding-top: 4px; }
+  .ne-date { text-align: center; }
+  .ne p { line-height: 1.6; }
+  .ne-h { margin-top: 6px; }
+  .ne-checks { display: flex; flex-direction: column; gap: 10px; }
+  .ne-checks label { display: flex; align-items: flex-start; gap: 12px; }
+  .ne-checks .check { margin-top: 1px; }
+  .ne-checks .is-done span { text-decoration: line-through; color: var(--ui-text-3); }
+  .ne-fig { display: flex; flex-direction: column; gap: 6px; }
+  .ne-img { border-radius: var(--ui-radius-m); }
+  .ne-quote { padding: 2px 0 2px 14px; border-left: 3px solid var(--ui-line-strong); color: var(--ui-text-2); }
+  html[data-lang="google"] .ne-quote { border-left-color: var(--ui-accent); }
+  .ne-tag { color: var(--ui-accent); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>备忘录</span></a></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail">
+      <div class="bar-group">
+        <button class="bar-btn" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>
+        <button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </div>
+      <button class="bar-btn prominent">完成</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <article class="ne">
+      <p class="ne-date t-footnote t-3">2026 年 10 月 16 日 14:32 · 与陈思远共享</p>
+      <h1 class="t-title1">东京行程 11/08 – 11/13</h1>
+      <p class="t-body">五晚六天，机票已出，酒店还差箱根那一晚。每天预算 ¥1,200（不含住宿），市内交通尽量用 Suica，跨城坐 JR。</p>
+
+      <h2 class="t-headline ne-h">出发前清单</h2>
+      <div class="ne-checks t-body">
+        <label class="is-done"><input type="checkbox" class="check round" checked><span>换 3 万日元现金</span></label>
+        <label class="is-done"><input type="checkbox" class="check round" checked><span>开通 Suica 并添加到钱包</span></label>
+        <label><input type="checkbox" class="check round"><span>预约 teamLab Planets 11/10 16:00 场</span></label>
+        <label><input type="checkbox" class="check round"><span>订 11/12 箱根温泉旅馆（两人 ¥2,400 以内）</span></label>
+        <label><input type="checkbox" class="check round"><span>下载离线地图：新宿、浅草、镰仓</span></label>
+      </div>
+
+      <figure class="ne-fig">
+        <div class="art a5 ratio-16x9 ne-img" role="img" aria-label="照片：箱根芦之湖与富士山"><svg class="i xl"><use href="#i-mountain"/></svg></div>
+        <figcaption class="t-footnote t-2">芦之湖看富士山，去年 11 月 14 日拍的，早上 7 点前最清楚。</figcaption>
+      </figure>
+
+      <blockquote class="ne-quote t-callout">“去箱根别挑周末，登山电车要排一个小时。红叶 11 月中旬最好，京都要晚一周左右。”<br><span class="t-footnote t-3">—— 陈思远，去年去过</span></blockquote>
+
+      <h2 class="t-headline ne-h">每日安排</h2>
+      <p class="t-body"><strong>11/09</strong> 筑地场外市场早餐 → 银座 → 晚上东京塔。<br><strong>11/10</strong> 丰洲 teamLab → 台场 → 涩谷 Sky 看日落（16:42）。<br><strong>11/11</strong> 镰仓一日：鹤冈八幡宫、江之电、七里滨。</p>
+      <p class="t-callout ne-tag">#旅行 #2026</p>
+    </article>
+  </main>
+
+  <div class="toolbar floating">
+    <button class="icon-btn" aria-label="清单"><svg class="i"><use href="#i-checklist"/></svg></button>
+    <button class="icon-btn" aria-label="表格"><svg class="i"><use href="#i-grid"/></svg></button>
+    <button class="icon-btn" aria-label="相机"><svg class="i"><use href="#i-camera"/></svg></button>
+    <button class="icon-btn" aria-label="附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+    <button class="icon-btn" aria-label="文字样式"><svg class="i"><use href="#i-type"/></svg></button>
+    <button class="icon-btn" aria-label="手写"><svg class="i"><use href="#i-edit"/></svg></button>
+  </div>
+</div>
+</body>
+</html>

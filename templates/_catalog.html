@@ -1,0 +1,970 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>组件目录</title>
+<meta name="ui:title" content="组件目录">
+<meta name="ui:desc" content="UI Kit 全部组件的样张：文字、颜色、图标、按钮、列表、卡片、表单、反馈、浮层、导航、数据展示、消息、媒体与网页区块，每格标出类名。">
+<meta name="ui:category" content="系统页面">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="组件目录,样张,设计系统,类名">
+<link rel="stylesheet" href="../kit/ui.css">
+<script src="../kit/icons.js"></script>
+<script src="../kit/ui.js"></script>
+<style>
+  /* 组件目录页专用。只做排版，不修 kit 组件本身：样张里看到的就是 kit 的真实效果 */
+  .cat-head { display: flex; flex-direction: column; gap: 8px; padding: 44px 0 20px; }
+  .cat-head p { max-width: 42em; }
+  .cat-toc { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 32px; }
+  .cat { padding: 36px 0 44px; border-top: 1px solid var(--ui-line); }
+  .cat > p { margin-top: 6px; max-width: 46em; }
+  .cat-grid { display: grid; gap: 16px; margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cat-min, 300px)), 1fr)); }
+  .cat-2 { --cat-min: 420px; }
+  .cat-specimen { position: relative; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: 12px;
+    padding: 14px 20px 20px; border-radius: var(--ui-radius-l); background: var(--ui-bg); }
+  .cat-specimen::before { content: attr(data-v); flex: 0 0 100%; align-self: stretch; margin-bottom: 2px;
+    font: 500 11px/1.4 var(--ui-font-mono); color: var(--ui-text-2); }
+  html[data-scheme="dark"] .cat-specimen { box-shadow: inset 0 0 0 1px var(--ui-line); }
+  .cat-col { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+  .cat-col::before { flex: none; }
+  .cat-wide { grid-column: 1 / -1; }
+  .cat-tall { grid-row: span 2; }
+  .cat code { font: 11px/1.35 var(--ui-font-mono); color: var(--ui-text-2); overflow-wrap: anywhere; }
+  .cat .art code { color: inherit; }
+  .cat-type { display: grid; grid-template-columns: 176px minmax(0, 1fr); gap: 4px 20px; align-items: baseline; padding: 12px 0; }
+  .cat-type + .cat-type { border-top: 1px solid var(--ui-line); }
+  .cat-type > span:first-child { display: flex; flex-direction: column; gap: 2px; }
+  .cat-type > span:first-child code { font-size: 12px; color: var(--ui-text); }
+  .cat-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 14px 12px; width: 100%; }
+  .cat-sw > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .cat-sw b { display: grid; place-items: center; height: 56px; border-radius: var(--ui-radius-m); background: var(--c);
+    color: var(--on, transparent); font-weight: 600; box-shadow: inset 0 0 0 1px var(--ui-line); }
+  .cat-pal { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
+  .cat-pal b { height: 44px; }
+  .cat-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 2px; width: 100%; color: var(--ui-text); }
+  .cat-icons > div { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 4px 10px; border-radius: var(--ui-radius-m); text-align: center; }
+  .cat-icons > div:hover { background: var(--ui-fill); }
+  .cat-ico { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; min-width: 52px; }
+  .cat-backdrop { width: 100%; min-height: 128px; padding: 20px; border-radius: var(--ui-radius-m); }
+  .cat-stage { height: 400px; border-radius: var(--ui-radius-m); display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; }
+  .cat-stage > :is(.sheet, .action-sheet) { color: var(--ui-text); }
+  html[data-lang="apple"] .cat-stage > :is(.sheet, .action-sheet) { margin: 8px; }
+  .cat-widgets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 760px; }
+  /* kit 没有静态的“聚焦”状态类，这里照 :focus 的样式画一个样张 */
+  html[data-lang="apple"] .cat-focus .field-input { box-shadow: 0 0 0 2px var(--ui-accent); background: var(--ui-bg-plain); }
+  html[data-lang="google"] .cat-focus .field-input { border-color: var(--md-primary); box-shadow: inset 0 0 0 1px var(--md-primary); }
+  html[data-lang="google"] .cat-focus .field-label { color: var(--md-primary); }
+  /* 以下三条只是“放进样张”：kit 的 .inline 不覆盖这些组件 */
+  .cat-chat .composer { position: relative; margin: 8px 0 0; }
+  .cat-specimen .rail { min-height: 0; }
+  .cat-side { width: 100%; max-width: 300px; }
+  .cat-arts { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; width: 100%; }
+  .cat-arts > .art { aspect-ratio: 4 / 3; border-radius: var(--ui-radius-m); }
+  .cat-masks { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 18px 10px; width: 100%; }
+  .cat-masks > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .cat-masks .art { width: 72px; height: 72px; }
+  .cat-ratio { height: 72px; border-radius: var(--ui-radius-s); }
+  .cat-map { width: 100%; height: 220px; border-radius: var(--ui-radius-m); }
+  @media (max-width: 720px) { .cat-widgets { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) {
+    .cat-toc { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--ui-margin-web)); padding-inline: var(--ui-margin-web); }
+    .cat-toc::-webkit-scrollbar { display: none; }
+    .cat-specimen { padding: 12px 16px 16px; }
+    .cat-type { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body class="site">
+<div class="wrap">
+  <header class="cat-head">
+    <div class="hstack wrap gap-2"><span class="tag accent only-apple">Apple · iOS 26 / Liquid Glass</span><span class="tag accent only-google">Google · Material 3 Expressive</span><span class="tag">189 个图标</span></div>
+    <h1 class="t-large-title">组件目录</h1>
+    <p class="t-callout t-2">UI Kit 全部组件的样张。同一份标记在 Apple 与 Google 两种设计语言、浅色与深色下渲染；每格左上角是所用的类名。样张直接使用 kit 样式，不做页面内修补。</p>
+  </header>
+
+  <nav class="cat-toc" aria-label="区块目录">
+    <a class="chip" href="#c-type">文字</a><a class="chip" href="#c-color">颜色</a><a class="chip" href="#c-icons">图标</a><a class="chip" href="#c-buttons">按钮</a><a class="chip" href="#c-icon-buttons">图标按钮</a><a class="chip" href="#c-groups">按钮组</a><a class="chip" href="#c-tabs">标签页</a><a class="chip" href="#c-chips">筛选片</a><a class="chip" href="#c-lists">列表</a><a class="chip" href="#c-cards">卡片</a><a class="chip" href="#c-widgets">小组件</a><a class="chip" href="#c-forms">表单</a><a class="chip" href="#c-selection">选择控件</a><a class="chip" href="#c-search">搜索</a><a class="chip" href="#c-feedback">标记与进度</a><a class="chip" href="#c-callouts">提示</a><a class="chip" href="#c-overlays">浮层</a><a class="chip" href="#c-nav">导航栏</a><a class="chip" href="#c-sidebar">侧栏</a><a class="chip" href="#c-data">数据展示</a><a class="chip" href="#c-chat">消息</a><a class="chip" href="#c-media">媒体</a><a class="chip" href="#c-web">网页区块</a>
+  </nav>
+
+  <section class="cat" id="c-type">
+    <h2 class="t-title2">文字样式</h2>
+    <p class="t-callout t-2">同名角色分别映射到 iOS Dynamic Type 与 M3 type scale；左列灰字是当前语言下的字号。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-col cat-wide" id="cat-type" data-v=".t-*"></div>
+      <div class="cat-specimen cat-wide" data-v="修饰 · .t-2 .t-3 .t-4 · .t-accent .t-danger .t-success .t-warning · 字重 · .t-num .t-mono .t-upper">
+        <span class="t-body">主要</span><span class="t-body t-2">次要</span><span class="t-body t-3">三级</span><span class="t-body t-4">四级</span>
+        <span class="t-body t-accent">强调</span><span class="t-body t-danger">危险</span><span class="t-body t-success">成功</span><span class="t-body t-warning">警告</span>
+        <span class="t-body t-regular">常规</span><span class="t-body t-medium">中等</span><span class="t-body t-semibold">半粗</span><span class="t-body t-bold">粗体</span>
+        <span class="t-body t-num">1,234.50</span><span class="t-body t-mono">0x1F4A</span><span class="t-body t-upper">beta</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-color">
+    <h2 class="t-title2">颜色</h2>
+    <p class="t-callout t-2">页面样式只用语义 token；带“Aa”的色块用对应的 on- 色写字。命名色板两种语言都可用，Apple 映射到系统色。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-wide" data-v="语义 token · --ui-*"><div class="cat-sw" id="cat-tokens"></div></div>
+      <div class="cat-specimen cat-wide" data-v="命名色板 · --c-*"><div class="cat-sw cat-pal" id="cat-pal"></div></div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-icons">
+    <h2 class="t-title2">图标</h2>
+    <p class="t-callout t-2">Apple 用 Lucide 线条图标，Google 用 Material Symbols。下面的网格由 window.UIIcons.names 生成。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen" data-v=".i.sm 18 · .i 24 · .i.lg 28 · .i.xl 40 · .i.xxl 56">
+        <span class="cat-ico"><svg class="i sm"><use href="#i-star"/></svg><code>.sm</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-star"/></svg><code>.i</code></span>
+        <span class="cat-ico"><svg class="i lg"><use href="#i-star"/></svg><code>.lg</code></span>
+        <span class="cat-ico"><svg class="i xl"><use href="#i-star"/></svg><code>.xl</code></span>
+        <span class="cat-ico"><svg class="i xxl"><use href="#i-star"/></svg><code>.xxl</code></span>
+      </div>
+      <div class="cat-specimen" data-v=".solid（Apple 填充）· -fill（Google 实心）">
+        <span class="cat-ico"><svg class="i"><use href="#i-play"/></svg><code>play</code></span>
+        <span class="cat-ico"><svg class="i solid"><use href="#i-play"/></svg><code>.solid</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-heart"/></svg><code>heart</code></span>
+        <span class="cat-ico"><svg class="i solid"><use href="#i-heart"/></svg><code>.solid</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-heart-fill"/></svg><code>-fill</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-home"/></svg><code>home</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-home-fill"/></svg><code>-fill</code></span>
+      </div>
+      <div class="cat-specimen" data-v="平台别名 · back · overflow">
+        <span class="cat-ico"><svg class="i"><use href="#i-back"/></svg><code>back</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-overflow"/></svg><code>overflow</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-more"/></svg><code>more</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-more-vert"/></svg><code>more-vert</code></span>
+        <span class="cat-ico"><svg class="i"><use href="#i-close-sheet"/></svg><code>close-sheet</code></span>
+      </div>
+      <div class="cat-specimen cat-wide" data-v="全部图标 id · &lt;use href=#i-id&gt;"><div class="cat-icons" id="cat-icons"></div></div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-buttons">
+    <h2 class="t-title2">按钮</h2>
+    <p class="t-callout t-2">.btn 的变体、尺寸、形状与状态。Google 下按下时圆角变小；本页是 .site 网页，Apple 的默认按钮按 apple.com 显示为描边。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-wide" data-v="变体 · .filled .tonal 默认 .outlined .text .neutral .glass · .danger">
+        <button class="btn filled">购买</button><button class="btn tonal">加入购物袋</button><button class="btn">默认</button><button class="btn outlined">描边</button><button class="btn text">文字</button><button class="btn neutral">中性</button><button class="btn glass">玻璃</button><button class="btn filled danger">删除</button><button class="btn tonal danger">移除</button><button class="btn danger">停用</button>
+      </div>
+      <div class="cat-specimen cat-wide" data-v="尺寸 · .xs .sm 默认 .lg .xl">
+        <button class="btn filled xs">xs</button><button class="btn filled sm">sm</button><button class="btn filled">默认</button><button class="btn filled lg">lg</button><button class="btn filled xl">xl</button>
+      </div>
+      <div class="cat-specimen" data-v=".square">
+        <button class="btn filled square sm">确认</button><button class="btn tonal square">编辑资料</button><button class="btn filled square lg">下一步</button>
+      </div>
+      <div class="cat-specimen" data-v="带图标 · .icon-only">
+        <button class="btn filled"><svg class="i"><use href="#i-plus"/></svg>新建</button>
+        <button class="btn tonal"><svg class="i"><use href="#i-download"/></svg>下载</button>
+        <button class="btn outlined"><svg class="i"><use href="#i-share"/></svg>分享</button>
+        <button class="btn tonal icon-only" aria-label="收藏"><svg class="i"><use href="#i-heart"/></svg></button>
+      </div>
+      <div class="cat-specimen" data-v="状态 · disabled · .is-loading">
+        <button class="btn filled" disabled>提交</button><button class="btn outlined" disabled>描边</button><button class="btn filled is-loading">提交</button><button class="btn tonal is-loading">保存</button>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".block">
+        <button class="btn filled lg block">继续</button><button class="btn tonal block">稍后再说</button>
+      </div>
+      <div class="cat-specimen" data-v=".link-arrow · .inverse · .success.filled · .elevated">
+        <a class="link-arrow" href="#">进一步了解</a><a class="link-arrow" href="#">比较所有机型</a>
+        <button class="btn inverse sm">反色</button><button class="btn success filled sm">已签到</button><button class="btn elevated sm">浮起</button>
+      </div>
+      <div class="cat-specimen" data-v=".btn.on-media（放在图片上）">
+        <div class="art a4 cat-backdrop"><div class="btn-row center"><button class="btn on-media">观看预告片</button><button class="btn filled">订阅</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-icon-buttons">
+    <h2 class="t-title2">图标按钮</h2>
+    <p class="t-callout t-2">.icon-btn 只放一个图标，务必写 aria-label。Google 下带底色的变体是 40px，按下变成圆角方形。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen" data-v="默认 · .filled .tonal .neutral .outlined .glass · .is-active">
+        <button class="icon-btn" aria-label="收藏"><svg class="i"><use href="#i-heart"/></svg></button>
+        <button class="icon-btn filled" aria-label="添加"><svg class="i"><use href="#i-plus"/></svg></button>
+        <button class="icon-btn tonal" aria-label="编辑"><svg class="i"><use href="#i-edit"/></svg></button>
+        <button class="icon-btn neutral" aria-label="分享"><svg class="i"><use href="#i-share"/></svg></button>
+        <button class="icon-btn outlined" aria-label="书签"><svg class="i"><use href="#i-bookmark"/></svg></button>
+        <button class="icon-btn glass" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+        <button class="icon-btn is-active" aria-label="已加星标"><svg class="i"><use href="#i-star-fill"/></svg></button>
+      </div>
+      <div class="cat-specimen" data-v=".sm · 默认 · .lg · .xl">
+        <button class="icon-btn tonal sm" aria-label="播放"><svg class="i solid"><use href="#i-play"/></svg></button>
+        <button class="icon-btn tonal" aria-label="播放"><svg class="i solid"><use href="#i-play"/></svg></button>
+        <button class="icon-btn tonal lg" aria-label="播放"><svg class="i solid"><use href="#i-play"/></svg></button>
+        <button class="icon-btn filled xl" aria-label="播放"><svg class="i solid"><use href="#i-play"/></svg></button>
+      </div>
+      <div class="cat-specimen" data-v=".on-media（放在 .art 上）">
+        <div class="art a9 cat-backdrop"><div class="hstack gap-3">
+          <button class="icon-btn on-media sm" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+          <button class="icon-btn on-media" aria-label="喜欢"><svg class="i"><use href="#i-heart"/></svg></button>
+          <button class="icon-btn on-media lg" aria-label="播放"><svg class="i solid"><use href="#i-play"/></svg></button>
+          <button class="icon-btn on-media" aria-label="静音"><svg class="i"><use href="#i-volume-off"/></svg></button>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-groups">
+    <h2 class="t-title2">按钮组与分段</h2>
+    <p class="t-callout t-2">.btn-group 是 M3 连接按钮组 / Apple 分段样式；.segmented 是分段控件；点按可切换选中项。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen" data-v=".btn-group">
+        <div class="btn-group"><button class="btn is-active">日</button><button class="btn">周</button><button class="btn">月</button><button class="btn">年</button></div>
+      </div>
+      <div class="cat-specimen" data-v=".split-btn">
+        <div class="split-btn"><button class="btn filled">发送</button><button class="btn filled" aria-label="更多发送选项"><svg class="i"><use href="#i-chevron-down"/></svg></button></div>
+        <div class="split-btn"><button class="btn tonal">导出 PDF</button><button class="btn tonal" aria-label="选择格式"><svg class="i"><use href="#i-chevron-down"/></svg></button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".segmented · 2 段">
+        <div class="segmented"><button class="is-active">列表</button><button>网格</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".segmented · 4 段">
+        <div class="segmented"><button class="is-active">全部</button><button>未读</button><button>已标记</button><button>草稿</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".segmented · 带图标">
+        <div class="segmented"><button class="is-active"><svg class="i sm"><use href="#i-map"/></svg>地图</button><button><svg class="i sm"><use href="#i-navigation"/></svg>公交</button><button><svg class="i sm"><use href="#i-globe"/></svg>卫星</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-tabs">
+    <h2 class="t-title2">标签页</h2>
+    <p class="t-callout t-2">Apple 是胶囊分段样式，Google 是带指示条的 M3 标签页；.underline 两边都是下划线样式。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col" data-v=".tabs">
+        <nav class="tabs"><a class="is-active" href="#">推荐</a><a href="#">关注</a><a href="#">热门</a><a href="#">附近</a></nav>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".tabs.underline">
+        <nav class="tabs underline"><a class="is-active" href="#">概览</a><a href="#">规格</a><a href="#">评价</a><a href="#">问答</a></nav>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".tabs.scroll · 很多项时横滑">
+        <nav class="tabs scroll"><a class="is-active" href="#">推荐</a><a href="#">关注</a><a href="#">热榜</a><a href="#">视频</a><a href="#">直播</a><a href="#">本地</a><a href="#">科技</a><a href="#">财经</a><a href="#">体育</a><a href="#">汽车</a><a href="#">美食</a><a href="#">旅行</a></nav>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".tabs · 带图标">
+        <nav class="tabs"><a class="is-active" href="#"><svg class="i sm"><use href="#i-image"/></svg>照片</a><a href="#"><svg class="i sm"><use href="#i-film"/></svg>视频</a><a href="#"><svg class="i sm"><use href="#i-heart"/></svg>喜欢</a></nav>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-chips">
+    <h2 class="t-title2">筛选片</h2>
+    <p class="t-callout t-2">.chips 默认多选，.chips.single 单选；放不下时横向滑动，.wrap 换行。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col" data-v=".chips · 多选">
+        <div class="chips"><button class="chip is-active">咖啡</button><button class="chip is-active">可外带</button><button class="chip">营业中</button><button class="chip">4.5 分以上</button><button class="chip">人均 ¥50 以下</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chips.single · 单选">
+        <div class="chips single"><button class="chip is-active">全部</button><button class="chip">照片</button><button class="chip">视频</button><button class="chip">截屏</button><button class="chip">实况</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chip · 带图标">
+        <div class="chips"><button class="chip"><svg class="i"><use href="#i-filter"/></svg>筛选</button><button class="chip is-active"><svg class="i"><use href="#i-star"/></svg>收藏</button><button class="chip"><svg class="i"><use href="#i-clock"/></svg>最近</button><button class="chip"><svg class="i"><use href="#i-sort"/></svg>排序</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chip · 带头像">
+        <div class="chips"><button class="chip"><span class="avatar" style="--c:var(--c-teal);--c-fg:#fff">周</span>周屿</button><button class="chip is-active"><span class="avatar" style="--c:var(--c-pink);--c-fg:#fff">许</span>许念</button><button class="chip"><span class="avatar" style="--c:var(--c-indigo);--c-fg:#fff">陈</span>陈一鸣</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chips.wrap · 换行">
+        <div class="chips wrap"><button class="chip is-active">建筑</button><button class="chip">城市漫步</button><button class="chip is-active">咖啡</button><button class="chip">胶片摄影</button><button class="chip">爵士乐</button><button class="chip">露营</button><button class="chip">播客</button><button class="chip">独立书店</button><button class="chip">徒步</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chip.outlined（Apple）· .chip.filled（Google）">
+        <div class="chips"><button class="chip outlined">描边筛选片</button><button class="chip filled">浮起筛选片</button><button class="chip">默认</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-lists">
+    <h2 class="t-title2">列表</h2>
+    <p class="t-callout t-2">Apple 是白底圆角分组 + 发丝分隔线；Google 是分段列表，首尾大圆角、中间 4px，chevron 自动隐藏。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col" data-v=".list.has-icons · 开关 / 值 / 徽章 / chevron / 副标题">
+        <ul class="list has-icons">
+          <li><label class="row"><span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-plane"/></svg></span><span class="row-body"><span class="row-title">飞行模式</span></span><input type="checkbox" class="switch"></label></li>
+          <li><a class="row" href="#"><span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-wifi"/></svg></span><span class="row-body"><span class="row-title">无线局域网</span></span><span class="row-value">Home-5G</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+          <li><a class="row" href="#"><span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-bell"/></svg></span><span class="row-body"><span class="row-title">通知</span></span><span class="badge">2</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+          <li><label class="row"><span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span><span class="row-body"><span class="row-title">睡眠专注</span><span class="row-sub">每天 22:30 – 07:00 自动开启</span></span><input type="checkbox" class="switch" checked></label></li>
+        </ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".list.has-avatars · 双行 · .row-meta">
+        <ul class="list has-avatars">
+          <li><a class="row" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span><span class="row-body"><span class="row-title">林知夏</span><span class="row-sub t-clamp-1">周六莫干山的民宿订好了，两晚含早餐。</span></span><span class="row-meta"><span>18:42</span><span class="badge">2</span></span></a></li>
+          <li><a class="row" href="#"><span class="avatar" style="--c:var(--c-indigo);--c-fg:#fff">周</span><span class="row-body"><span class="row-title">周屿</span><span class="row-sub t-clamp-1">设计评审改到周五下午 3 点，地点不变。</span></span><span class="row-meta"><span>昨天</span></span></a></li>
+          <li><a class="row" href="#"><span class="avatar" style="--c:var(--c-teal);--c-fg:#fff">家</span><span class="row-body"><span class="row-title">相亲相爱一家人</span><span class="row-sub t-clamp-1">妈妈：[图片] 今天包的荠菜馄饨</span></span><span class="row-meta"><span>星期二</span></span></a></li>
+        </ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".list.plain · .row-overline">
+        <ul class="list plain">
+          <li><a class="row" href="#"><span class="row-body"><span class="row-overline">京东物流</span><span class="row-title">您的订单已签收</span><span class="row-sub t-clamp-1">包裹已放入小区 3 号门丰巢柜，取件码 482913。</span></span><span class="row-meta"><span>09:15</span></span></a></li>
+          <li><a class="row" href="#"><span class="row-body"><span class="row-overline">招商银行</span><span class="row-title">10 月账单已出</span><span class="row-sub t-clamp-1">本期应还 ¥3,286.40，到期还款日 11 月 8 日。</span></span><span class="row-meta"><span>昨天</span></span></a></li>
+          <li><a class="row" href="#"><span class="row-body"><span class="row-overline">12306</span><span class="row-title">购票成功 · G7 次</span><span class="row-sub t-clamp-1">10 月 26 日 08:00 上海虹桥 → 北京南，06 车 12F。</span></span><span class="row-meta"><span>周一</span></span></a></li>
+        </ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v="表单行 · .row-input">
+        <ul class="list">
+          <li><label class="row"><span class="row-title">姓名</span><input class="row-input" value="林知夏" placeholder="必填"></label></li>
+          <li><label class="row"><span class="row-title">手机</span><input class="row-input" type="tel" value="138 1234 5678"></label></li>
+          <li><label class="row"><span class="row-title">邮箱</span><input class="row-input" type="email" placeholder="name@example.com"></label></li>
+        </ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".row.action · .row.destructive · .row.center">
+        <ul class="list">
+          <li><button class="row action"><span class="row-body"><span class="row-title">添加账户</span></span></button></li>
+          <li><button class="row destructive"><span class="row-body"><span class="row-title">退出登录</span></span></button></li>
+        </ul>
+        <ul class="list"><li><button class="row center destructive">抹掉所有内容和设置</button></li></ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".group-header · .group-header.large · .group-footer">
+        <section class="group">
+          <h3 class="group-header large">最近添加 <a href="#">查看全部</a></h3>
+          <ul class="list">
+            <li><a class="row" href="#"><span class="row-body"><span class="row-title">夜航星图</span></span><span class="row-value">北岸灯塔乐队</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+            <li><a class="row" href="#"><span class="row-body"><span class="row-title">远处的海</span></span><span class="row-value">12 首歌曲</span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+          </ul>
+          <p class="group-footer">已同步到所有设备，最后更新于今天 08:30。</p>
+        </section>
+        <section class="group">
+          <h3 class="group-header">网络 <a href="#">编辑</a></h3>
+          <ul class="list"><li><div class="row"><span class="row-body"><span class="row-title">Office-5G</span></span><span class="row-value">已保存</span></div></li></ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-cards">
+    <h2 class="t-title2">卡片</h2>
+    <p class="t-callout t-2">.card 是带圆角的容器；.card-body / .card-media / .card-actions 组织内容，.pad 直接加内边距。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-col" data-v=".card · .card-body">
+        <div class="card"><div class="card-body"><span class="card-title">本周阅读 4 小时 12 分</span><span class="card-sub">比上周多 38 分钟 · 读完《额尔古纳河右岸》</span></div></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.pad">
+        <div class="card pad"><div class="hstack"><span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span><div class="grow"><div class="card-title">林知夏</div><div class="card-sub">产品设计师 · 上海</div></div><button class="btn tonal sm">关注</button></div></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.outlined">
+        <div class="card outlined pad stack gap-2"><div class="hstack between"><span class="card-title">订单已发货</span><span class="tag success">运输中</span></div><span class="card-sub">顺丰速运 SF1428 0831 6627 · 预计明天 18:00 前送达</span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.elevated">
+        <div class="card elevated pad stack gap-1"><span class="t-footnote t-2 hstack gap-1"><svg class="i sm"><use href="#i-train"/></svg>2 号线 · 往浦东国际机场</span><span class="card-title">陆家嘴站 · 2 分钟后</span><span class="card-sub">下一班 8 分钟 · 车厢较空</span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.tinted">
+        <div class="card tinted pad stack gap-1"><span class="card-title">会员还剩 23 天</span><span class="card-sub">续费年卡 ¥198，平均每月 ¥16.5</span><div class="mt-2"><button class="btn filled sm">立即续费</button></div></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.accent">
+        <div class="card accent pad stack gap-1"><span class="card-sub">本月可用额度</span><span class="t-title1 t-num">¥24,800.00</span><span class="card-sub">账单日每月 5 日</span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.dark">
+        <div class="card dark pad hstack"><span class="art a4 rounded" style="width:48px;height:48px"></span><div class="grow"><div class="card-title">夜航星图</div><div class="card-sub">北岸灯塔乐队</div></div><svg class="i solid"><use href="#i-pause"/></svg></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.media-fill">
+        <a class="card media-fill" href="#"><div class="art a9"></div><div class="card-body"><span class="card-title">外滩夜景徒步</span><span class="card-sub">2.4 公里 · 约 45 分钟</span></div></a>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card-media · .card-body · .card-actions">
+        <a class="card" href="#"><div class="card-media art a3" style="--ratio:16/9"></div><div class="card-body"><span class="card-title">周末去莫干山</span><span class="card-sub">2 晚 · 含早餐 · ¥1,280 起</span></div><div class="card-actions"><button class="btn filled sm">预订</button><button class="btn text sm">收藏</button></div></a>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".card.tonal-2 · .tonal-3（仅 Google 有区别）">
+        <div class="card tonal-2 pad"><span class="card-title">本月已省 ¥326</span><span class="card-sub">比上月多省 12%</span></div>
+        <div class="card tonal-3 pad"><span class="card-title">新徽章：早起鸟</span><span class="card-sub">连续 7 天 7 点前起床</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-widgets">
+    <h2 class="t-title2">小组件</h2>
+    <p class="t-callout t-2">.widget 用 --tint 设置标签颜色；放进网格时 .wide 占两列。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-wide" data-v=".widget · .widget.wide · .widget-label · .widget-value">
+        <div class="cat-widgets">
+          <div class="widget" style="--tint:var(--c-orange)"><span class="widget-label"><svg class="i sm"><use href="#i-flame"/></svg>活动</span><span class="widget-value">426</span><span class="t-footnote t-2">/ 600 千卡</span></div>
+          <div class="widget" style="--tint:var(--c-green)"><span class="widget-label"><svg class="i sm"><use href="#i-walk"/></svg>步数</span><span class="widget-value">8,204</span><span class="t-footnote t-2">约 5.6 公里</span></div>
+          <div class="widget wide" style="--tint:var(--c-blue)"><span class="widget-label"><svg class="i sm"><use href="#i-cloud"/></svg>上海 · 多云</span><span class="widget-value">18°</span><span class="t-footnote t-2">最高 22° 最低 14° · 降水概率 10%</span></div>
+          <div class="widget wide" style="--tint:var(--c-red)"><span class="widget-label"><svg class="i sm"><use href="#i-calendar"/></svg>10月23日 周五</span><div class="event" style="--c:var(--c-orange)"><div><div class="t-subhead t-semibold">产品评审会</div><div class="t-footnote t-2">14:00 – 15:30 · 3 号楼 12F</div></div></div><div class="event" style="--c:var(--c-green)"><div><div class="t-subhead t-semibold">羽毛球</div><div class="t-footnote t-2">19:30 · 徐汇体育馆</div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-forms">
+    <h2 class="t-title2">表单</h2>
+    <p class="t-callout t-2">Google 下 .field 是 outlined 文本框 + 浮动标签（标签写在输入框前面）；Apple 是灰底圆角输入框，标签在上方。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-col" data-v=".field · 空（占位文字）">
+        <label class="field"><span class="field-label">邮箱</span><input class="field-input" type="email" placeholder="name@example.com"></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field · 已填写">
+        <label class="field"><span class="field-label">邮箱</span><input class="field-input" type="email" value="lin.zhixia@icloud.com" placeholder=" "></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field · 聚焦（静态模拟）">
+        <label class="field cat-focus"><span class="field-label">收货地址</span><input class="field-input" value="上海市徐汇区漕溪北路 88 号" placeholder=" "></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field.is-error · .field-help">
+        <label class="field is-error"><span class="field-label">密码</span><input class="field-input" type="password" value="abc123" placeholder=" "><span class="field-help">至少 8 位，需同时包含字母和数字</span></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field · 帮助文字">
+        <label class="field"><span class="field-label">手机号</span><input class="field-input" type="tel" value="138 1234 5678" placeholder=" "><span class="field-help">仅用于接收验证码，不会公开</span></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field.filled（仅 Google 是 filled 文本框，Apple 同默认）">
+        <label class="field filled"><span class="field-label">昵称</span><input class="field-input" value="知夏" placeholder=" "></label>
+        <label class="field filled"><span class="field-label">个性签名</span><input class="field-input" placeholder="一句话介绍自己"></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field · textarea">
+        <label class="field"><span class="field-label">备注</span><textarea placeholder=" ">带上 v2.3 的原型和上周的埋点数据，会后发纪要。</textarea></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field-affix · .affix · .affix-end">
+        <div class="field-affix"><svg class="i"><use href="#i-search"/></svg><input class="field-input" placeholder="搜索城市或机场"><button class="icon-btn sm affix-end" aria-label="清除"><svg class="i"><use href="#i-close"/></svg></button></div>
+        <div class="field-affix"><span class="affix">¥</span><input class="field-input" value="1,280.00" placeholder=" "></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".field-row">
+        <div class="field-row">
+          <label class="field"><span class="field-label">开始</span><input class="field-input" value="10月24日 14:00" placeholder=" "></label>
+          <label class="field"><span class="field-label">结束</span><input class="field-input" value="15:30" placeholder=" "></label>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".select · .field 里的 select">
+        <select class="select" aria-label="国家或地区"><option>中国大陆 +86</option><option>中国香港 +852</option><option>新加坡 +65</option></select>
+        <label class="field"><span class="field-label">发票类型</span><select><option>电子普通发票</option><option>增值税专用发票</option></select></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".otp">
+        <div class="otp"><input maxlength="1" value="4" aria-label="第 1 位"><input maxlength="1" value="8" aria-label="第 2 位"><input maxlength="1" value="2" aria-label="第 3 位"><input maxlength="1" aria-label="第 4 位"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-selection">
+    <h2 class="t-title2">选择控件</h2>
+    <p class="t-callout t-2">开关、复选、单选、滑块与步进器都是原生 input，ui.js 负责滑块填充色。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen" data-v=".switch · 开 / 关 / 禁用">
+        <input type="checkbox" class="switch" checked aria-label="开"><input type="checkbox" class="switch" aria-label="关"><input type="checkbox" class="switch" checked disabled aria-label="开（禁用）"><input type="checkbox" class="switch" disabled aria-label="关（禁用）">
+      </div>
+      <div class="cat-specimen" data-v=".check · .check.round">
+        <label class="hstack gap-2"><input type="checkbox" class="check" checked>记住我</label>
+        <label class="hstack gap-2"><input type="checkbox" class="check">订阅周报</label>
+        <label class="hstack gap-2"><input type="checkbox" class="check round" checked>已完成</label>
+        <label class="hstack gap-2"><input type="checkbox" class="check round">待办</label>
+      </div>
+      <div class="cat-specimen" data-v=".radio">
+        <label class="hstack gap-2"><input type="radio" class="radio" name="cat-ship" checked>顺丰次日达</label>
+        <label class="hstack gap-2"><input type="radio" class="radio" name="cat-ship">京东标准</label>
+        <label class="hstack gap-2"><input type="radio" class="radio" name="cat-ship">门店自提</label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".range · 15 / 50 / 85">
+        <input type="range" class="range" value="15" aria-label="滑块 15"><input type="range" class="range" value="50" aria-label="滑块 50"><input type="range" class="range" value="85" aria-label="滑块 85">
+      </div>
+      <div class="cat-specimen cat-col" data-v=".range-row">
+        <div class="range-row"><svg class="i sm"><use href="#i-volume-off"/></svg><input type="range" class="range grow" value="62" aria-label="音量"><svg class="i"><use href="#i-volume"/></svg></div>
+        <div class="range-row"><svg class="i sm"><use href="#i-sun"/></svg><input type="range" class="range grow" value="38" aria-label="亮度"><svg class="i"><use href="#i-sun"/></svg></div>
+      </div>
+      <div class="cat-specimen" data-v=".stepper">
+        <span class="t-body grow">成人</span>
+        <div class="stepper"><button aria-label="减少"><svg class="i"><use href="#i-minus"/></svg></button><output>2</output><button aria-label="增加"><svg class="i"><use href="#i-plus"/></svg></button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-search">
+    <h2 class="t-title2">搜索</h2>
+    <p class="t-callout t-2">.searchbar 是 label 包住图标和 input。Apple 可加 .glass 放在内容上方；Google 没有玻璃材质。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col" data-v=".searchbar">
+        <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索"><svg class="i only-apple"><use href="#i-mic"/></svg></label>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".searchbar · 带头像">
+        <label class="searchbar"><svg class="i"><use href="#i-menu"/></svg><input type="search" placeholder="在邮件中搜索"><span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span></label>
+      </div>
+      <div class="cat-specimen cat-col cat-wide" data-v=".searchbar.glass（Apple 玻璃，放在图片或地图上）">
+        <div class="art map cat-backdrop"><label class="searchbar glass w-full" style="max-width:420px"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索地点或地址"><svg class="i only-apple"><use href="#i-mic"/></svg></label></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-feedback">
+    <h2 class="t-title2">标记与进度</h2>
+    <p class="t-callout t-2">徽章、标签、进度条、加载指示、圆环、骨架屏、分页点、步骤与键帽。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen" data-v=".badge · .badge.dot">
+        <span class="badge">3</span><span class="badge">12</span><span class="badge">99+</span><span class="badge dot"></span>
+        <span class="relative"><svg class="i lg"><use href="#i-bell"/></svg><span class="badge" style="position:absolute;top:-4px;right:-8px">5</span></span>
+        <span class="relative"><svg class="i lg"><use href="#i-mail"/></svg><span class="badge dot" style="position:absolute;top:0;right:0"></span></span>
+      </div>
+      <div class="cat-specimen" data-v=".tag · .accent .success .warning .danger .solid .new">
+        <span class="tag">默认</span><span class="tag accent">新品</span><span class="tag success">已完成</span><span class="tag warning">待付款</span><span class="tag danger">已取消</span><span class="tag solid">热卖</span><span class="tag new">新</span><span class="tag accent"><svg class="i"><use href="#i-sparkles"/></svg>智能摘要</span>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".progress · --value 25% / 60% / 90%">
+        <div class="progress" style="--value:25%"></div><div class="progress" style="--value:60%"></div><div class="progress" style="--value:90%"></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".progress.thick · .indeterminate · .wavy（Google 波浪）">
+        <div class="progress thick" style="--value:72%"></div><div class="progress indeterminate"></div><div class="progress wavy" style="--value:64%"></div>
+      </div>
+      <div class="cat-specimen" data-v=".spinner · .loader（Google 形状加载器）">
+        <span class="spinner"></span><span class="spinner" style="--size:36px"></span><span class="loader"></span><span class="loader" style="--size:32px"></span>
+      </div>
+      <div class="cat-specimen" data-v=".ring · .ring-wrap · .rings">
+        <span class="ring" style="--value:40;--size:48px;--stroke:6px;--ring-color:var(--c-orange)"></span>
+        <div class="ring-wrap"><span class="ring" style="--value:72;--size:88px;--stroke:9px"></span><span><span class="t-headline t-num">72%</span><br><span class="t-caption2 t-2">已完成</span></span></div>
+        <div class="rings"><span class="ring" style="--value:82;--size:96px;--stroke:12px;--ring-color:var(--c-red)"></span><span class="ring" style="--value:64;--size:68px;--stroke:12px;--ring-color:var(--c-green)"></span><span class="ring" style="--value:45;--size:40px;--stroke:12px;--ring-color:var(--c-cyan)"></span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".skeleton · .circle .title .text">
+        <div class="hstack gap-3"><div class="skeleton circle" style="width:44px;height:44px"></div><div class="stack gap-2 grow"><div class="skeleton title"></div><div class="skeleton text"></div><div class="skeleton text" style="width:70%"></div></div></div>
+        <div class="skeleton" style="height:96px"></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".dots · .steps">
+        <div class="dots"><span></span><span class="is-active"></span><span></span><span></span><span></span></div>
+        <div class="steps"><span class="is-done"></span><span class="is-done"></span><span></span><span></span></div>
+        <span class="t-footnote t-2">第 2 步，共 4 步 · 填写收货地址</span>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".divider · .divider.label · .kbd">
+        <div class="divider label">或</div>
+        <div class="hstack wrap gap-2 t-footnote t-2"><span class="kbd">⌘</span><span class="kbd">K</span>打开命令面板 <span class="kbd">Ctrl</span><span class="kbd">Shift</span><span class="kbd">P</span></div>
+        <hr class="divider">
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-callouts">
+    <h2 class="t-title2">提示</h2>
+    <p class="t-callout t-2">.callout 是文内提示块；.toast 默认固定在底部，这里加 .inline 放回文档流；.empty 是空状态。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col cat-tall" data-v=".callout · 默认 .success .warning .danger .neutral">
+        <div class="callout"><svg class="i"><use href="#i-info"/></svg><div><div class="callout-title">新功能：共享相簿</div><p class="t-subhead">邀请家人一起添加照片，最多 100 人。</p></div></div>
+        <div class="callout success"><svg class="i"><use href="#i-circle-check"/></svg><div><div class="callout-title">付款成功</div><p class="t-subhead">¥1,280.00 已从招商银行储蓄卡（尾号 6627）扣款。</p></div></div>
+        <div class="callout warning"><svg class="i"><use href="#i-warning"/></svg><div><div class="callout-title">存储空间即将用完</div><p class="t-subhead">已用 48.6 GB / 50 GB，备份可能会暂停。</p></div></div>
+        <div class="callout danger"><svg class="i"><use href="#i-alert"/></svg><div><div class="callout-title">登录异常</div><p class="t-subhead">10 月 22 日 23:14 有一次来自深圳的登录尝试。</p></div></div>
+        <div class="callout neutral"><svg class="i"><use href="#i-clock"/></svg><div><div class="callout-title">维护通知</div><p class="t-subhead">10 月 25 日 02:00 – 04:00 暂停转账服务。</p></div></div>
+      </div>
+      <div class="cat-specimen cat-col center" data-v=".toast.inline · 图标 + 关闭 · 文字 + 操作">
+        <div class="toast inline" role="status"><svg class="i sm"><use href="#i-link"/></svg><span>已拷贝链接</span><button class="icon-btn sm" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button></div>
+        <div class="toast inline" role="status"><span>已归档 3 封邮件</span><button class="btn">撤销</button></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".empty">
+        <div class="empty"><svg class="i"><use href="#i-inbox"/></svg><h3 class="t-title3">没有新邮件</h3><p class="t-callout t-2">收到的邮件会显示在这里。</p><button class="btn tonal">刷新</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-overlays">
+    <h2 class="t-title2">浮层</h2>
+    <p class="t-callout t-2">浮层默认 position: fixed；加 .inline 放进文档流展示静态效果。最后一格的按钮用 data-open 打开真实浮层。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen center" data-v=".dialog.inline · 两个按钮">
+        <div class="dialog inline" role="dialog" aria-label="无法连接"><h3 class="dialog-title">无法连接到服务器</h3><p class="dialog-body">请检查网络后重试。草稿“周末去莫干山”已保存在本机。</p><div class="dialog-actions"><button class="btn">好</button><button class="btn filled">重试</button></div></div>
+      </div>
+      <div class="cat-specimen center" data-v=".dialog.inline · .dialog-icon">
+        <div class="dialog inline" role="dialog" aria-label="删除照片"><svg class="i lg dialog-icon"><use href="#i-trash"/></svg><h3 class="dialog-title">删除 3 张照片？</h3><p class="dialog-body">照片将从所有设备上移除，并在“最近删除”中保留 30 天。</p><div class="dialog-actions"><button class="btn">取消</button><button class="btn filled danger">删除</button></div></div>
+      </div>
+      <div class="cat-specimen center" data-v=".dialog-actions.stack · 竖排按钮">
+        <div class="dialog inline" role="dialog" aria-label="位置权限"><h3 class="dialog-title">允许“地图”使用你的位置？</h3><p class="dialog-body">用于显示你附近的地点和到达时间。</p><div class="dialog-actions stack"><button class="btn filled">使用 App 时允许</button><button class="btn">允许一次</button><button class="btn">不允许</button></div></div>
+      </div>
+      <div class="cat-specimen center" data-v=".menu.inline · .menu-label · .menu-sep · .destructive">
+        <div class="menu inline">
+          <div class="menu-label">排序方式</div>
+          <button class="menu-item is-active"><svg class="i"><use href="#i-check"/></svg><span>修改日期</span></button>
+          <button class="menu-item"><svg class="i"><use href="#i-type"/></svg><span>名称</span></button>
+          <div class="menu-sep"></div>
+          <button class="menu-item"><svg class="i"><use href="#i-share"/></svg><span>共享…</span></button>
+          <button class="menu-item"><svg class="i"><use href="#i-link"/></svg><span>拷贝链接</span></button>
+          <div class="menu-sep"></div>
+          <button class="menu-item destructive"><svg class="i"><use href="#i-trash"/></svg><span>删除</span></button>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".sheet.inline（放在固定高度的容器里）">
+        <div class="cat-stage art map">
+          <span class="map-pin" style="left:34%;top:26%;--c:var(--c-orange)"><svg class="i"><use href="#i-coffee"/></svg></span>
+          <span class="map-me" style="left:60%;top:18%"></span>
+          <div class="sheet inline">
+            <div class="sheet-grabber"></div>
+            <div class="sheet-head"><button class="bar-btn" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button><div class="sheet-title">附近的咖啡</div><button class="bar-btn prominent">筛选</button></div>
+            <div class="sheet-body"><ul class="list has-icons">
+              <li><a class="row" href="#"><span class="row-icon" style="--tint:var(--c-brown)"><svg class="i"><use href="#i-coffee"/></svg></span><span class="row-body"><span class="row-title">Manner 武康路店</span><span class="row-sub">营业至 19:00 · 人均 ¥22</span></span><span class="row-value">350 米</span></a></li>
+              <li><a class="row" href="#"><span class="row-icon" style="--tint:var(--c-brown)"><svg class="i"><use href="#i-coffee"/></svg></span><span class="row-body"><span class="row-title">Seesaw 愚园路店</span><span class="row-sub">营业至 21:00 · 人均 ¥38</span></span><span class="row-value">1.2 公里</span></a></li>
+            </ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".action-sheet.inline">
+        <div class="cat-stage art a7">
+          <div class="action-sheet inline">
+            <div class="sheet-grabber only-google"></div>
+            <ul class="list">
+              <li><button class="row"><span class="row-icon plain only-google"><svg class="i"><use href="#i-camera"/></svg></span>拍照</button></li>
+              <li><button class="row"><span class="row-icon plain only-google"><svg class="i"><use href="#i-image"/></svg></span>从相册选择</button></li>
+              <li><button class="row destructive"><span class="row-icon plain only-google"><svg class="i"><use href="#i-trash"/></svg></span>移除当前头像</button></li>
+            </ul>
+            <ul class="list only-apple"><li><button class="row t-semibold">取消</button></li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="cat-specimen cat-wide" data-v="data-open · 打开真实浮层（默认 hidden，点遮罩或按钮关闭）">
+        <button class="btn tonal" data-open="cat-dlg">对话框</button>
+        <button class="btn tonal" data-open="cat-sheet">底部面板</button>
+        <button class="btn tonal" data-open="cat-as">操作表</button>
+        <button class="btn tonal" data-open="cat-toast">提示条</button>
+        <div class="relative">
+          <button class="btn tonal" data-open="cat-menu">菜单</button>
+          <div class="menu" id="cat-menu" style="top:calc(100% + 8px);left:0" hidden>
+            <button class="menu-item" data-close><svg class="i"><use href="#i-copy"/></svg><span>拷贝</span></button>
+            <button class="menu-item" data-close><svg class="i"><use href="#i-pin"/></svg><span>置顶</span></button>
+            <div class="menu-sep"></div>
+            <button class="menu-item destructive" data-close><svg class="i"><use href="#i-trash"/></svg><span>删除</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-nav">
+    <h2 class="t-title2">导航栏</h2>
+    <p class="t-callout t-2">顶栏用 .static 放进样张；标签栏、工具栏和 FAB 加 .inline。Apple 的 FAB 是玻璃圆钮，真实页面里多数只在 Google 下显示。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col" data-v=".topbar.static · 返回 · 副标题 · .bar-group">
+        <header class="topbar static">
+          <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg><span>邮箱</span></a></div>
+          <div class="topbar-title">收件箱<span class="topbar-sub">12 封未读</span></div>
+          <div class="topbar-trail"><div class="bar-group"><button class="bar-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button><button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div></div>
+        </header>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".topbar.static.has-large · .page-title（滚动后小标题淡入）">
+        <header class="topbar static has-large">
+          <div class="topbar-lead"></div>
+          <div class="topbar-title">资料库</div>
+          <div class="topbar-trail"><button class="bar-btn" aria-label="添加"><svg class="i"><use href="#i-plus"/></svg></button></div>
+        </header>
+        <h3 class="page-title">资料库</h3>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".topbar.static · .bar-btn.prominent">
+        <header class="topbar static">
+          <div class="topbar-lead"><button class="bar-btn">取消</button></div>
+          <div class="topbar-title">新建日程</div>
+          <div class="topbar-trail"><button class="bar-btn prominent">添加</button></div>
+        </header>
+      </div>
+      <div class="cat-specimen" data-v=".toolbar.floating.inline · .vibrant（仅 Google）">
+        <div class="toolbar floating inline">
+          <button class="icon-btn toggle is-active" aria-label="粗体"><svg class="i"><use href="#i-bold"/></svg></button>
+          <button class="icon-btn toggle" aria-label="斜体"><svg class="i"><use href="#i-italic"/></svg></button>
+          <button class="icon-btn" aria-label="清单"><svg class="i"><use href="#i-checklist"/></svg></button>
+          <button class="icon-btn" aria-label="附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+          <button class="icon-btn" aria-label="撤销"><svg class="i"><use href="#i-undo"/></svg></button>
+        </div>
+        <div class="toolbar floating vibrant inline">
+          <button class="icon-btn" aria-label="裁剪"><svg class="i"><use href="#i-shrink"/></svg></button>
+          <button class="icon-btn" aria-label="调整"><svg class="i"><use href="#i-sliders"/></svg></button>
+          <button class="icon-btn" aria-label="滤镜"><svg class="i"><use href="#i-palette"/></svg></button>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".tabbar.inline · 4 项 · .badge">
+        <nav class="tabbar inline">
+          <a class="tab is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>首页</span></a>
+          <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+          <a class="tab" href="#"><svg class="i"><use href="#i-message"/></svg><span>消息</span><span class="badge">3</span></a>
+          <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我的</span></a>
+        </nav>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".tabbar.inline · .tab-group + .tab.search（iOS 26 独立搜索钮）">
+        <nav class="tabbar inline">
+          <div class="tab-group">
+            <a class="tab is-active" href="#"><svg class="i"><use href="#i-play-circle"/></svg><span>主页</span></a>
+            <a class="tab" href="#"><svg class="i"><use href="#i-grid"/></svg><span>新发现</span></a>
+            <a class="tab" href="#"><svg class="i"><use href="#i-radio"/></svg><span>广播</span></a>
+            <a class="tab" href="#"><svg class="i"><use href="#i-library"/></svg><span>资料库</span></a>
+          </div>
+          <a class="tab search" href="#"><svg class="i"><use href="#i-search"/></svg><span>搜索</span></a>
+        </nav>
+      </div>
+      <div class="cat-specimen cat-wide" data-v=".fab.inline · 默认 .md .lg .extended · .prominent .tertiary">
+        <button class="fab inline" aria-label="撰写"><svg class="i"><use href="#i-edit"/></svg></button>
+        <button class="fab md inline" aria-label="撰写"><svg class="i"><use href="#i-edit"/></svg></button>
+        <button class="fab lg inline" aria-label="撰写"><svg class="i"><use href="#i-edit"/></svg></button>
+        <button class="fab extended inline"><svg class="i"><use href="#i-edit"/></svg>撰写</button>
+        <button class="fab prominent inline" aria-label="新建"><svg class="i"><use href="#i-plus"/></svg></button>
+        <button class="fab tertiary inline" aria-label="导航"><svg class="i"><use href="#i-navigation"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-sidebar">
+    <h2 class="t-title2">侧栏</h2>
+    <p class="t-callout t-2">平板与桌面用的 .sidebar（Google 是导航抽屉）和 .rail 导航轨。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen" data-v=".sidebar · .sidebar-title · .side-item.is-active · .count · .sidebar-section">
+        <nav class="sidebar cat-side">
+          <div class="sidebar-title t-title2">邮件</div>
+          <a class="side-item is-active" href="#"><svg class="i"><use href="#i-inbox"/></svg><span>收件箱</span><span class="count">12</span></a>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-star"/></svg><span>已加星标</span><span class="count">3</span></a>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-send"/></svg><span>已发送</span></a>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-doc"/></svg><span>草稿</span><span class="count">2</span></a>
+          <div class="sidebar-section">文件夹</div>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-folder"/></svg><span>工作</span><span class="count">48</span></a>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-plane"/></svg><span>旅行</span></a>
+          <a class="side-item" href="#"><svg class="i"><use href="#i-receipt"/></svg><span>账单</span><span class="count">6</span></a>
+        </nav>
+      </div>
+      <div class="cat-specimen" data-v=".rail · .rail-item（Google 顶部可放 .fab）">
+        <nav class="rail">
+          <button class="fab only-google" aria-label="撰写"><svg class="i"><use href="#i-edit"/></svg></button>
+          <a class="rail-item is-active" href="#"><svg class="i"><use href="#i-inbox-fill"/></svg><span>邮件</span></a>
+          <a class="rail-item" href="#"><svg class="i"><use href="#i-message"/></svg><span>聊天</span></a>
+          <a class="rail-item" href="#"><svg class="i"><use href="#i-video"/></svg><span>会议</span></a>
+          <a class="rail-item" href="#"><svg class="i"><use href="#i-users"/></svg><span>空间</span></a>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-data">
+    <h2 class="t-title2">数据展示</h2>
+    <p class="t-callout t-2">头像、统计数字、柱状图、折线图、表格、键值、时间线、日历与日程。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-wide" data-v=".avatar · .xs .sm 默认 .lg .xl .xxl · 默认底色（无 --c）· .square · .presence">
+        <span class="avatar xs" style="--c:var(--c-teal);--c-fg:#fff">周</span>
+        <span class="avatar sm" style="--c:var(--c-indigo);--c-fg:#fff">许</span>
+        <span class="avatar">林</span>
+        <span class="avatar lg" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林<span class="presence"></span></span>
+        <span class="avatar xl" style="--c:linear-gradient(135deg,#5ee7df,#3a7bd5);--c-fg:#fff">陈</span>
+        <span class="avatar xxl" style="--c:linear-gradient(135deg,#f6d365,#fda085);--c-fg:#fff">夏</span>
+        <span class="avatar lg square" style="--c:var(--c-orange);--c-fg:#fff">设</span>
+        <span class="avatar square" style="--c:var(--c-green);--c-fg:#fff"><svg class="i"><use href="#i-leaf"/></svg></span>
+      </div>
+      <div class="cat-specimen" data-v=".avatar-stack">
+        <div class="avatar-stack"><span class="avatar sm" style="--c:var(--c-pink);--c-fg:#fff">许</span><span class="avatar sm" style="--c:var(--c-teal);--c-fg:#fff">周</span><span class="avatar sm" style="--c:var(--c-indigo);--c-fg:#fff">陈</span><span class="avatar sm" style="--c:var(--c-orange);--c-fg:#fff">王</span></div>
+        <span class="t-footnote t-2">许念、周屿等 6 人已加入</span>
+      </div>
+      <div class="cat-specimen" data-v=".stat · .stat-delta · .down">
+        <div class="stat grow"><span class="stat-label">本月营收</span><span class="stat-value">¥486,320</span><span class="stat-delta">↑ 12.4% 较上月</span></div>
+        <div class="stat grow"><span class="stat-label">退款率</span><span class="stat-value">1.8%</span><span class="stat-delta down">↑ 0.3 个百分点</span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".bars · .is-active · .bars-labels">
+        <div><div class="bars"><span style="--h:42%"></span><span style="--h:66%"></span><span style="--h:54%"></span><span style="--h:80%"></span><span class="is-active" style="--h:92%"></span><span style="--h:36%"></span><span style="--h:28%"></span></div>
+        <div class="bars-labels"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".chart · .line .area .grid · .legend">
+        <svg class="chart" viewBox="0 0 320 140" role="img" aria-label="近 7 日访问量折线图">
+          <line class="grid" x1="0" y1="20" x2="320" y2="20"/><line class="grid" x1="0" y1="60" x2="320" y2="60"/><line class="grid" x1="0" y1="100" x2="320" y2="100"/>
+          <path class="area" d="M0 96 L53 80 L107 88 L160 56 L213 64 L267 34 L320 44 L320 120 L0 120 Z"/>
+          <polyline class="line" points="0,96 53,80 107,88 160,56 213,64 267,34 320,44"/>
+          <text x="0" y="136">10/17</text><text x="160" y="136" text-anchor="middle">10/20</text><text x="320" y="136" text-anchor="end">10/23</text>
+        </svg>
+        <div class="legend"><span style="--c:var(--ui-accent)">访问量 1.28 万</span><span style="--c:var(--c-orange)">下单 846</span></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".kv">
+        <dl class="kv"><dt>型号</dt><dd>Aurora Watch 3</dd><dt>序列号</dt><dd class="t-mono">F2LXK9Q1M</dd><dt>电池健康</dt><dd>96%</dd><dt>保修到期</dt><dd>2027年3月14日</dd></dl>
+      </div>
+      <div class="cat-specimen cat-col cat-wide" data-v=".table-wrap · table.table · .num">
+        <div class="table-wrap"><table class="table">
+          <thead><tr><th>订单号</th><th>客户</th><th>下单时间</th><th>状态</th><th class="num">金额</th></tr></thead>
+          <tbody>
+            <tr><td class="t-mono">20261023-0412</td><td>周屿</td><td>10月23日 09:41</td><td><span class="tag success">已完成</span></td><td class="num">¥1,280.00</td></tr>
+            <tr><td class="t-mono">20261023-0388</td><td>许念</td><td>10月23日 08:57</td><td><span class="tag warning">待发货</span></td><td class="num">¥326.50</td></tr>
+            <tr><td class="t-mono">20261022-2716</td><td>陈一鸣</td><td>10月22日 21:13</td><td><span class="tag danger">已退款</span></td><td class="num">¥89.00</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".timeline · .is-done · .is-current">
+        <ol class="timeline">
+          <li class="is-done"><div class="t-subhead t-semibold">已下单</div><div class="t-footnote t-2">10月21日 09:12</div></li>
+          <li class="is-done"><div class="t-subhead t-semibold">已发货</div><div class="t-footnote t-2">顺丰速运 · 10月21日 17:40</div></li>
+          <li class="is-current"><div class="t-subhead t-semibold">运输中</div><div class="t-footnote t-2">已到达上海浦东转运中心</div></li>
+          <li><div class="t-subhead t-3">派送</div></li>
+        </ol>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".calendar · .is-today .is-selected .in-range .has-dot .is-muted">
+        <div class="calendar">
+          <div class="cal-head"><span class="t-headline">2026 年 10 月</span><span class="hstack gap-1"><button class="icon-btn sm" aria-label="上个月"><svg class="i"><use href="#i-chevron-left"/></svg></button><button class="icon-btn sm" aria-label="下个月"><svg class="i"><use href="#i-chevron-right"/></svg></button></span></div>
+          <div class="cal-grid" id="cat-cal"></div>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".event · --c">
+        <div class="event" style="--c:var(--c-orange)"><div><div class="t-subhead t-semibold">产品评审会</div><div class="t-footnote t-2">14:00 – 15:30 · 漕河泾 3 号楼 12F</div></div></div>
+        <div class="event" style="--c:var(--c-blue)"><div><div class="t-subhead t-semibold">和林知夏 1:1</div><div class="t-footnote t-2">16:00 – 16:30 · 腾讯会议</div></div></div>
+        <div class="event" style="--c:var(--c-green)"><div><div class="t-subhead t-semibold">羽毛球</div><div class="t-footnote t-2">19:30 – 21:00 · 徐汇体育馆</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-chat">
+    <h2 class="t-title2">消息</h2>
+    <p class="t-callout t-2">.bubble-list 里放 .bubble 和 .bubble.out；.composer 在真实页面固定在底部，这里放回样张里。</p>
+    <div class="cat-grid cat-2">
+      <div class="cat-specimen cat-col cat-chat" data-v=".bubble-list · .bubble-meta · .bubble · .bubble.out · .composer">
+        <div class="bubble-list">
+          <span class="bubble-meta">今天 18:42</span>
+          <div class="bubble">周六莫干山的民宿订好了</div>
+          <div class="bubble">两晚含早餐，一共 ¥1,280</div>
+          <div class="bubble out">太好了！几点出发？</div>
+          <div class="bubble out">想早点走，避开高速晚高峰</div>
+          <div class="bubble">7:30 在徐家汇地铁站 3 号口碰头？</div>
+          <span class="bubble-meta">已读 18:45</span>
+          <div class="bubble out">好，我带咖啡</div>
+        </div>
+        <div class="composer">
+          <button class="icon-btn" aria-label="添加"><svg class="i"><use href="#i-plus"/></svg></button>
+          <div class="composer-input">发消息</div>
+          <button class="icon-btn" aria-label="语音"><svg class="i"><use href="#i-mic"/></svg></button>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col cat-chat" data-v=".composer · 内放 .searchbar">
+        <div class="bubble-list"><div class="bubble">会议纪要发你邮箱了，第 3 页是排期</div><div class="bubble out">收到，晚上看</div></div>
+        <div class="composer">
+          <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索聊天记录"></label>
+          <button class="icon-btn" aria-label="发送"><svg class="i"><use href="#i-send"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-media">
+    <h2 class="t-title2">媒体</h2>
+    <p class="t-callout t-2">不加载外部图片：照片用 .art 渐变占位，地图用 .art.map，形状遮罩来自 generated.css。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-wide" data-v=".art.a1 – .a12"><div class="cat-arts" id="cat-arts"></div></div>
+      <div class="cat-specimen cat-col" data-v=".art.map · .map-pin · .map-me">
+        <div class="art map cat-map">
+          <span class="map-pin" style="left:30%;top:42%;--c:var(--c-red)"><svg class="i"><use href="#i-food"/></svg></span>
+          <span class="map-pin" style="left:72%;top:34%;--c:var(--c-blue)"><svg class="i"><use href="#i-hotel"/></svg></span>
+          <span class="map-me" style="left:52%;top:66%"></span>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".media-grid · --cols:3 --gap:2px">
+        <div class="media-grid rounded overflow-hidden" style="--cols:3;--gap:2px"><div class="art a1 ratio-1"></div><div class="art a3 ratio-1"></div><div class="art a5 ratio-1"></div><div class="art a7 ratio-1"></div><div class="art a8 ratio-1"></div><div class="art a10 ratio-1"></div></div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".carousel · --item:78%">
+        <div class="carousel" style="--item:78%"><div class="art a2 ratio-16x9 round"><svg class="i"><use href="#i-mountain"/></svg></div><div class="art a5 ratio-16x9 round"><svg class="i"><use href="#i-sun"/></svg></div><div class="art a11 ratio-16x9 round"><svg class="i"><use href="#i-music"/></svg></div></div>
+      </div>
+      <div class="cat-specimen cat-wide" data-v=".ratio-1 .ratio-4x3 .ratio-3x4 .ratio-16x9 .ratio-9x16 .ratio-21x9 .ratio-2x1">
+        <div class="art a6 ratio-1 cat-ratio"><code>1</code></div><div class="art a6 ratio-4x3 cat-ratio"><code>4x3</code></div><div class="art a6 ratio-3x4 cat-ratio"><code>3x4</code></div><div class="art a6 ratio-16x9 cat-ratio"><code>16x9</code></div><div class="art a6 ratio-9x16 cat-ratio"><code>9x16</code></div><div class="art a6 ratio-21x9 cat-ratio"><code>21x9</code></div><div class="art a6 ratio-2x1 cat-ratio"><code>2x1</code></div>
+      </div>
+      <div class="cat-specimen cat-wide" data-v="形状遮罩 · .shape-*"><div class="cat-masks" id="cat-masks"></div></div>
+    </div>
+  </section>
+
+  <section class="cat" id="c-web">
+    <h2 class="t-title2">网页区块</h2>
+    <p class="t-callout t-2">官网与营销页的内容块，这里缩小放进样张；完整用法见 web/ 下的模板。</p>
+    <div class="cat-grid">
+      <div class="cat-specimen cat-col" data-v=".feature · .feature-icon">
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-battery"/></svg></span><h3 class="t-title3">36 小时续航</h3><p class="t-body t-2">低电量模式下最长 72 小时，充电 15 分钟可用一整天。</p></article>
+      </div>
+      <div class="cat-specimen cat-col cat-tall" data-v=".price-card.is-featured · .price · .check-list">
+        <div class="price-card is-featured">
+          <span class="tag solid" style="align-self:flex-start">最受欢迎</span>
+          <h3 class="t-title3">家庭版</h3>
+          <div class="price"><span class="price-amount">¥68</span><span class="price-unit">/ 月</span></div>
+          <ul class="check-list"><li>最多 6 位成员共享</li><li>2 TB 云存储</li><li>自定义邮件域名</li><li class="off">专属客户经理</li></ul>
+          <a class="btn filled block" href="#">免费试用 1 个月</a>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".faq · details / summary">
+        <div class="faq">
+          <details open><summary>可以随时取消订阅吗？</summary><p>可以。取消后当前计费周期结束前仍可使用全部功能。</p></details>
+          <details><summary>家人能看到我的文件吗？</summary><p>不能。只有你主动共享的相簿和文件夹对他人可见。</p></details>
+          <details><summary>支持开具发票吗？</summary><p>支持电子普通发票和增值税专用发票。</p></details>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".swatches · .swatch · .option-list · .option">
+        <div class="t-headline">颜色 · <span class="t-2">午夜色</span></div>
+        <div class="swatches"><button class="swatch is-active" style="--c:#2e3641" aria-label="午夜色"></button><button class="swatch" style="--c:#f0e4d3" aria-label="星光色"></button><button class="swatch" style="--c:#a9c3dc" aria-label="天蓝色"></button><button class="swatch" style="--c:#c8102e" aria-label="红色"></button><button class="swatch" style="--c:#b7c9a8" aria-label="鼠尾草绿"></button></div>
+        <div class="option-list">
+          <button class="option is-active"><span>256GB</span><span class="t-num">¥5,999</span></button>
+          <button class="option"><span>512GB</span><span class="t-num">¥7,499</span></button>
+          <button class="option"><span>1TB</span><span class="t-num">¥8,999</span></button>
+        </div>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".quote">
+        <figure class="quote"><blockquote>“搬家后第一次把全家照片整理清楚，三代人的相册终于在一个地方了。”</blockquote><figcaption class="hstack gap-3"><span class="avatar sm" style="--c:var(--c-pink);--c-fg:#fff">许</span><span><span class="t-subhead t-semibold">许念</span><br><span class="t-footnote t-2">杭州 · 家庭版用户</span></span></figcaption></figure>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".check-list · li.off">
+        <ul class="check-list"><li>30 天无理由退换</li><li>次日达，覆盖 286 个城市</li><li>官方保修 2 年</li><li class="off">不含延长保修</li></ul>
+      </div>
+      <div class="cat-specimen cat-col" data-v=".breadcrumb">
+        <nav class="breadcrumb" aria-label="面包屑"><a href="#">首页</a><a href="#">支持</a><a href="#">手表</a><span>电池与充电</span></nav>
+      </div>
+      <div class="cat-specimen cat-col cat-wide" data-v=".logo-row">
+        <div class="logo-row"><span>云栖科技</span><span>NORTHWIND</span><span>青禾</span><span>Atlas</span><span>北岸</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 真实浮层：默认隐藏，由上面的 data-open 按钮打开 -->
+<div class="scrim" data-for="cat-dlg" hidden></div>
+<div class="dialog" id="cat-dlg" role="alertdialog" aria-label="退出账户" hidden>
+  <h2 class="dialog-title">退出当前账户？</h2>
+  <p class="dialog-body">退出后，本机上的离线歌曲和下载内容会被移除。</p>
+  <div class="dialog-actions"><button class="btn" data-close>取消</button><button class="btn filled danger" data-close>退出</button></div>
+</div>
+<div class="scrim" data-for="cat-sheet" hidden></div>
+<div class="sheet" id="cat-sheet" hidden>
+  <div class="sheet-grabber"></div>
+  <div class="sheet-head"><button class="bar-btn" data-close aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button><div class="sheet-title">添加到歌单</div><button class="bar-btn prominent" data-close>完成</button></div>
+  <div class="sheet-body"><ul class="list has-icons">
+    <li><label class="row"><span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-heart"/></svg></span><span class="row-body"><span class="row-title">我喜欢的音乐</span><span class="row-sub">286 首</span></span><input type="checkbox" class="check round" checked></label></li>
+    <li><label class="row"><span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span><span class="row-body"><span class="row-title">睡前</span><span class="row-sub">42 首</span></span><input type="checkbox" class="check round"></label></li>
+  </ul></div>
+</div>
+<div class="scrim" data-for="cat-as" hidden></div>
+<div class="action-sheet" id="cat-as" hidden>
+  <ul class="list">
+    <li><button class="row" data-close>拍照</button></li>
+    <li><button class="row" data-close>从相册选择</button></li>
+    <li><button class="row destructive" data-close>移除当前头像</button></li>
+  </ul>
+  <ul class="list only-apple"><li><button class="row t-semibold" data-close>取消</button></li></ul>
+</div>
+<div class="toast" id="cat-toast" role="status" hidden><span>已添加到“稍后阅读”</span><button class="btn" data-close>撤销</button></div>
+
+<script>
+(function () {
+  function fill(id, list, fn) { document.getElementById(id).innerHTML = list.map(fn).join(''); }
+  fill('cat-type', [
+    ['display', '48 Bold', 'display-medium 45', '秋日'],
+    ['large-title', 'Large Title 34 Bold', 'headline-large 32', '资料库'],
+    ['title1', 'Title 1 · 28 Bold', 'headline-medium 28', '本周回顾'],
+    ['title2', 'Title 2 · 22 Bold', 'headline-small 24', '为你推荐'],
+    ['title3', 'Title 3 · 20 Semibold', 'title-large 22', '外滩夜景徒步路线'],
+    ['headline', 'Headline · 17 Semibold', 'title-medium 16/500', '周六 10:00 · 徐汇滨江集合'],
+    ['body', 'Body · 17', 'body-large 16', '全程约 6.4 公里，沿黄浦江西岸步行，途经龙美术馆和油罐艺术中心。'],
+    ['callout', 'Callout · 16', 'body-medium 14', '预计用时 1 小时 40 分钟，沿途有 3 处补给点。'],
+    ['subhead', 'Subheadline · 15', 'title-small 14/500', '已有 128 人报名'],
+    ['footnote', 'Footnote · 13', 'body-small 12', '报名截止至 10 月 24 日 20:00'],
+    ['caption', 'Caption 1 · 12', 'label-medium 12', '更新于 2 分钟前'],
+    ['caption2', 'Caption 2 · 11', 'label-small 11', '活动由城市徒步俱乐部发起'],
+    ['hero', '网页首屏 · 40–80', '网页首屏 · 44–96', '轻装出发。'],
+    ['lead', '网页导语 · 19–28', '网页导语 · 18–22', '更轻的背包，更远的路。'],
+    ['eyebrow', '眉标 · 17 Semibold', '眉标 · 14/500', '新品']
+  ], function (r) {
+    return "<div class='cat-type'><span><code>.t-" + r[0] + "</code><span class='t-caption2 t-3'><span class='only-apple'>" + r[1] +
+      "</span><span class='only-google'>" + r[2] + "</span></span></span><span class='t-" + r[0] + "'>" + r[3] + "</span></div>";
+  });
+  fill('cat-tokens', ('bg surface surface-2 fill text text-2 line accent/on-accent accent-soft/on-accent-soft accent-2-soft/on-accent-2-soft ' +
+    'accent-3-soft/on-accent-3-soft danger success warning inverse/on-inverse').split(' '), function (t) {
+    t = t.split('/');
+    return "<div><b style='--c:var(--ui-" + t[0] + ")" + (t[1] ? ";--on:var(--ui-" + t[1] + ")" : "") + "'>Aa</b><code>--ui-" + t[0] + "</code></div>";
+  });
+  fill('cat-pal', 'red orange yellow green mint teal cyan blue indigo purple pink brown gray'.split(' '), function (c) {
+    return "<div><b style='--c:var(--c-" + c + ")'></b><code>--c-" + c + "</code></div>";
+  });
+  fill('cat-icons', window.UIIcons ? UIIcons.names : [], function (n) {
+    return "<div><svg class='i'><use href='#i-" + n + "'/></svg><code>" + n + "</code></div>";
+  });
+  fill('cat-arts', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], function (i) { return "<div class='art a" + i + "'><code>.a" + i + "</code></div>"; });
+  fill('cat-masks', 'squircle cookie-4 cookie-6 cookie-9 cookie-12 clover flower burst soft-burst gem arch pill circle leaf ticket'.split(' '), function (s, i) {
+    return "<div><span class='art a" + (i % 12 + 1) + " shape-" + s + "'></span><code>.shape-" + s + "</code></div>";
+  });
+  // 2026 年 10 月：1 日是周四，按周一开头，前面补 9 月 28–30 日
+  var cal = '一二三四五六日'.split('').map(function (d) { return "<span class='cal-dow'>" + d + "</span>"; });
+  for (var i = 0; i < 35; i++) {
+    var d = i - 2, c = 'cal-day';
+    if (d < 1) { c += ' is-muted'; d += 30; } else if (d > 31) { c += ' is-muted'; d -= 31; }
+    else {
+      if (d === 23) c += ' is-today';
+      if (d === 26 || d === 30) c += ' is-selected';
+      if (d > 26 && d < 30) c += ' in-range';
+      if (d === 9 || d === 15 || d === 23 || d === 24) c += ' has-dot';
+    }
+    cal.push("<span class='" + c + "'>" + d + "</span>");
+  }
+  document.getElementById('cat-cal').innerHTML = cal.join('');
+})();
+</script>
+</body>
+</html>

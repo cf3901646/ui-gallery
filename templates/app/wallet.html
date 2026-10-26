@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>钱包</title>
+<meta name="ui:title" content="钱包与卡片">
+<meta name="ui:desc" content="钱包首页：层叠的银行卡、信用卡、会员卡和交通卡，最上面的交通卡展开显示余额，下方是最近交易与“添加到钱包”。">
+<meta name="ui:category" content="金融与支付">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="卡片堆叠,交通卡,交易列表,大标题,FAB">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .wa-stack { display: flex; flex-direction: column; margin-top: 4px; }
+  .wa-card { aspect-ratio: 1.586; display: flex; flex-direction: column; justify-content: space-between; place-items: stretch;
+    padding: 16px 18px; border-radius: 14px; color: #fff; box-shadow: 0 -2px 12px rgb(0 0 0 / 16%), inset 0 1px 0 rgb(255 255 255 / 18%); }
+  html[data-lang="google"] .wa-card { border-radius: 20px; }
+  /* 卡高 = 宽 / 1.586 ≈ 63.05% 宽；margin 百分比按宽度算，所以每张只露出顶部 54px */
+  .wa-card + .wa-card { margin-top: calc(54px - 63.05%); }
+  .wa-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .wa-name { font-weight: 600; font-size: calc(var(--fs-headline) * var(--ts)); text-shadow: 0 1px 2px rgb(0 0 0 / 20%); }
+  .wa-net { font: italic 800 calc(15px * var(--ts)) / 1 var(--ui-font-display); letter-spacing: .5px; opacity: .92; }
+  .wa-no { font-size: calc(var(--fs-footnote) * var(--ts)); opacity: .85; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
+  .wa-bal { font: 700 calc(40px * var(--ts)) / 1.05 var(--ui-font-display); font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
+  html[data-lang="google"] .wa-bal { font-weight: 400; }
+  .wa-bot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: calc(var(--fs-footnote) * var(--ts)); }
+  .wa-express { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px 3px 6px; border-radius: 99px; background: rgb(255 255 255 / 22%); font-weight: 600; }
+  .wa-amt { color: var(--ui-text); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .wa-content { padding-bottom: calc(var(--safe-bottom) + 104px); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">钱包</div>
+    <div class="topbar-trail">
+      <button class="bar-btn only-apple" aria-label="添加卡片"><svg class="i"><use href="#i-plus"/></svg></button>
+      <button class="bar-btn only-google" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+      <button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content wa-content">
+    <h1 class="page-title">钱包</h1>
+
+    <div class="wa-stack">
+      <a class="art a9 wa-card" href="#">
+        <div class="wa-top"><span class="wa-name">招商银行 · 一卡通</span><span class="wa-net">UnionPay</span></div>
+        <span class="wa-no">储蓄卡 •••• 6215</span>
+      </a>
+      <a class="art a11 wa-card" href="#">
+        <div class="wa-top"><span class="wa-name">中信银行 · 颜卡</span><span class="wa-net">Mastercard</span></div>
+        <span class="wa-no">信用卡 •••• 3308</span>
+      </a>
+      <a class="art a3 wa-card" href="#">
+        <div class="wa-top"><span class="wa-name">星巴克 · 星享卡</span><span class="wa-net">金星级</span></div>
+        <span class="wa-no">已积 42 颗星 · 会员号 •••• 7781</span>
+      </a>
+      <a class="art a2 wa-card" href="#">
+        <div class="wa-top"><span class="wa-name">上海公共交通卡</span><span class="wa-net">交通联合</span></div>
+        <div>
+          <div class="t-footnote" style="opacity:.85">余额</div>
+          <div class="wa-bal">¥86.50</div>
+        </div>
+        <div class="wa-bot">
+          <span class="wa-express"><svg class="i sm"><use href="#i-zap"/></svg>快捷交通 · 已开启</span>
+          <span class="wa-no">•••• 0927</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="btn-row stretch mt-4">
+      <button class="btn tonal"><svg class="i"><use href="#i-plus"/></svg>充值</button>
+      <button class="btn neutral"><svg class="i"><use href="#i-info"/></svg>卡片详情</button>
+    </div>
+
+    <section class="group">
+      <h2 class="group-header">最近交易 <a href="#">全部</a></h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-train"/></svg></span>
+          <span class="row-body"><span class="row-title">上海地铁 2 号线</span><span class="row-sub">今天 08:15 · 南京西路 → 陆家嘴</span></span>
+          <span class="row-value"><span class="wa-amt">¥4.00</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-brown)"><svg class="i"><use href="#i-coffee"/></svg></span>
+          <span class="row-body"><span class="row-title">瑞幸咖啡（世纪大道店）</span><span class="row-sub">今天 08:42 · 一卡通</span></span>
+          <span class="row-value"><span class="wa-amt">¥18.90</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-cart"/></svg></span>
+          <span class="row-body"><span class="row-title">盒马鲜生</span><span class="row-sub">昨天 19:36 · 颜卡</span></span>
+          <span class="row-value"><span class="wa-amt">¥126.40</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-package"/></svg></span>
+          <span class="row-body"><span class="row-title">京东 · 退款</span><span class="row-sub">昨天 14:02 · 罗技无线鼠标</span></span>
+          <span class="row-value"><span class="t-success t-semibold">+¥39.00</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-store"/></svg></span>
+          <span class="row-body"><span class="row-title">星巴克（来福士店）</span><span class="row-sub">10月21日 15:20 · 星享卡</span></span>
+          <span class="row-value"><span class="wa-amt">¥36.00</span></span>
+        </a></li>
+      </ul>
+    </section>
+
+    <button class="btn tonal lg block mt-6 only-apple"><svg class="i"><use href="#i-wallet"/></svg>添加到钱包</button>
+    <p class="t-footnote t-2 t-center mt-3">支持银联卡、交通卡、门禁卡和会员卡</p>
+  </main>
+
+  <button class="fab extended only-google"><svg class="i"><use href="#i-add-circle"/></svg>添加到钱包</button>
+</div>
+</body>
+</html>

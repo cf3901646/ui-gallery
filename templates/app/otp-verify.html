@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>输入验证码</title>
+<meta name="ui:title" content="短信验证码">
+<meta name="ui:desc" content="短信验证页：脱敏手机号、6 格验证码（已填 3 格、第 4 格聚焦）、重新发送倒计时、验证按钮、帮助链接和数字键盘。">
+<meta name="ui:category" content="引导与账户">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="验证码,OTP,倒计时,两步验证,数字键盘">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ov { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 8px; padding-bottom: calc(var(--safe-bottom) + 236px); }
+  .ov-badge { width: 64px; height: 64px; display: grid; place-items: center; margin-bottom: 16px; border-radius: 50%;
+    background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
+  .ov-badge .i { --ui-icon: 30px; }
+  html[data-lang="google"] .ov-badge { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
+  .ov-lead { margin-top: 8px; }
+  .ov-lead strong { color: var(--ui-text); font-weight: 600; }
+  .ov-otp { margin-top: 28px; width: 100%; }
+  .ov-otp > input { color: var(--ui-text); font-variant-numeric: tabular-nums; }
+  .ov-otp > .ov-focus { box-shadow: 0 0 0 2px var(--ui-accent);
+    background: linear-gradient(var(--ui-accent), var(--ui-accent)) center / 2px 26px no-repeat, var(--ui-bg-plain); }
+  html[data-lang="google"] .ov-otp > .ov-focus { box-shadow: inset 0 0 0 2px var(--md-primary);
+    background: linear-gradient(var(--md-primary), var(--md-primary)) center / 2px 26px no-repeat, var(--md-surface-container-highest); }
+  .ov-timer { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; }
+  .ov-btn { margin-top: 24px; }
+  .ov-help { margin-top: 20px; display: flex; gap: 20px; justify-content: center; }
+  /* 系统数字键盘（示意） */
+  .ov-pad { position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+    padding: 8px 6px calc(var(--safe-bottom) + 6px); }
+  .ov-key { height: 47px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px;
+    color: var(--ui-text); font-size: 25px; line-height: 1; font-weight: 400; }
+  .ov-key small { font-size: 10px; font-weight: 600; letter-spacing: 2px; margin-top: 2px; }
+  .ov-key.fn { background: transparent !important; box-shadow: none !important; }
+  .ov-key .i { --ui-icon: 26px; }
+  html[data-lang="apple"] .ov-pad { background: var(--ios-gray4); }
+  html[data-lang="apple"] .ov-key { background: var(--ui-bg-plain); box-shadow: 0 1px 0 rgb(0 0 0 / 28%); }
+  html[data-lang="apple"][data-scheme="dark"] .ov-pad { background: var(--ios-gray5); }
+  html[data-lang="apple"][data-scheme="dark"] .ov-key { background: var(--ios-gray2); }
+  html[data-lang="google"] .ov-pad { background: var(--md-surface-container-high); gap: 8px; padding-inline: 8px; }
+  html[data-lang="google"] .ov-key { border-radius: 14px; background: var(--md-surface-bright); font-size: 22px; height: 46px; }
+  html[data-lang="google"] .ov-key small { display: none; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>返回</span></a></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content ov">
+    <span class="ov-badge"><svg class="i"><use href="#i-message"/></svg></span>
+    <h1 class="t-title1">输入验证码</h1>
+    <p class="t-callout t-2 ov-lead">验证码已发送至 <strong class="t-num">138 **** 5620</strong><br><a class="t-accent" href="#">更换手机号</a></p>
+
+    <div class="otp ov-otp" role="group" aria-label="6 位短信验证码">
+      <input maxlength="1" inputmode="numeric" value="4" aria-label="第 1 位">
+      <input maxlength="1" inputmode="numeric" value="7" aria-label="第 2 位">
+      <input maxlength="1" inputmode="numeric" value="1" aria-label="第 3 位">
+      <input maxlength="1" inputmode="numeric" class="ov-focus" aria-label="第 4 位">
+      <input maxlength="1" inputmode="numeric" aria-label="第 5 位">
+      <input maxlength="1" inputmode="numeric" aria-label="第 6 位">
+    </div>
+
+    <p class="ov-timer t-footnote t-2"><svg class="i sm"><use href="#i-clock"/></svg><span><span class="t-num">52</span> 秒后重新发送 · 10 分钟内有效</span></p>
+
+    <button class="btn filled lg block ov-btn">验证</button>
+
+    <p class="ov-help t-subhead">
+      <a class="t-accent" href="#">收不到验证码？</a>
+      <a class="t-accent" href="#">改用语音验证</a>
+    </p>
+  </main>
+
+  <div class="ov-pad" aria-hidden="true">
+    <span class="ov-key">1<small>&nbsp;</small></span><span class="ov-key">2<small>ABC</small></span><span class="ov-key">3<small>DEF</small></span>
+    <span class="ov-key">4<small>GHI</small></span><span class="ov-key">5<small>JKL</small></span><span class="ov-key">6<small>MNO</small></span>
+    <span class="ov-key">7<small>PQRS</small></span><span class="ov-key">8<small>TUV</small></span><span class="ov-key">9<small>WXYZ</small></span>
+    <span class="ov-key fn"></span><span class="ov-key">0</span><span class="ov-key fn"><svg class="i"><use href="#i-arrow-left"/></svg></span>
+  </div>
+</div>
+</body>
+</html>

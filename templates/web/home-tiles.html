@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora</title>
+<meta name="ui:title" content="官网首页（磁贴）">
+<meta name="ui:desc" content="品牌官网首页：细导航、促销横条、一深一浅两块满宽产品磁贴、双列磁贴网格、横滑娱乐内容卡和多栏页脚。">
+<meta name="ui:category" content="营销与产品">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="首页,磁贴,促销横条,横滑,页脚">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ht-promo { padding: 14px var(--ui-margin-web); text-align: center; background: var(--ui-tile-bg); font-size: calc(14px * var(--ts)); line-height: 1.5; }
+  .ht-promo .link-arrow { font-size: inherit; margin-left: 4px; }
+  html[data-lang="google"] .ht-promo { margin: 4px var(--ui-margin-web) 0; border-radius: 999px; background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+  .ht-stack { display: grid; gap: 12px; padding: 12px 0; }
+  html[data-lang="google"] .ht-stack { gap: 16px; padding: 16px var(--ui-margin-web); max-width: 1440px; margin-inline: auto; }
+  html[data-lang="apple"] .ht-stack { --ui-btn-outlined-bd: var(--ui-accent); }
+  .ht-grid { --gap: 12px; padding-inline: 12px; }
+  html[data-lang="google"] .ht-grid { --gap: 16px; padding-inline: 0; }
+  .ht-copy { display: flex; flex-direction: column; align-items: inherit; gap: 8px; }
+  .ht-hero { min-height: 640px; }
+  .ht-hero .t-title1 { font-size: calc(clamp(40px, 4.4vw, 56px) * var(--ts)); line-height: 1.07; }
+  .ht-hero .tile-actions { margin-top: 12px; }
+  .ht-media { display: flex; justify-content: center; align-items: flex-end; gap: 22px; }
+  html[data-lang="apple"] .ht-media { width: min(100%, 760px); }
+  html[data-lang="apple"] .ht-grid .tile-media { width: 86%; }
+  .ht-phone { position: relative; width: clamp(120px, 15vw, 168px); aspect-ratio: 9 / 19.5; border-radius: 34px; translate: 0 16%;
+    background: linear-gradient(155deg, color-mix(in srgb, var(--p) 62%, #fff), var(--p) 60%); box-shadow: inset 0 0 0 4px rgb(255 255 255 / 22%), 0 30px 60px rgb(0 0 0 / 40%); }
+  .ht-phone::before { content: ""; position: absolute; top: 12px; left: 12px; width: 46%; aspect-ratio: 1; border-radius: 24px; background: rgb(0 0 0 / 16%); box-shadow: inset 0 0 0 2px rgb(255 255 255 / 18%); }
+  .ht-phone + .ht-phone { translate: 0 26%; }
+  .ht-on-dark { --ui-link: var(--c-blue); }
+  html[data-lang="google"] .ht-on-dark { --ui-link: var(--md-inverse-primary); --ui-accent: var(--md-inverse-primary); --ui-on-accent: var(--md-inverse-surface); --ui-eyebrow: var(--md-inverse-primary); --ui-text-2: color-mix(in srgb, currentColor 72%, transparent);
+    --ui-btn-outlined-fg: var(--md-inverse-on-surface); --ui-btn-outlined-bd: var(--md-outline); }
+  @media (min-width: 861px) {
+    html[data-lang="google"] .ht-hero { flex-direction: row; align-items: center; gap: 40px; padding: 0 0 0 56px; min-height: 560px; }
+    html[data-lang="google"] .ht-hero .ht-copy { flex: 1; align-items: flex-start; }
+    html[data-lang="google"] .ht-hero .tile-media { flex: 1.25; align-self: stretch; margin: 16px; border-radius: 20px; }
+  }
+  .ht-carousel { --item: 86%; --gap: 16px; --ui-margin: var(--ui-margin-web); }
+  @media (min-width: 861px) { .ht-carousel { --item: 46%; } }
+  .ht-show { aspect-ratio: 16 / 9; }
+  .ht-show .btn { align-self: flex-start; margin-top: 8px; }
+  .ht-notes { display: flex; flex-direction: column; gap: 8px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid var(--ui-line); }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-sparkles"/></svg></span>Aurora</a>
+      <nav class="nav-links">
+        <a href="#">商店</a><a href="#">手机</a><a href="#">平板</a><a href="#">电脑</a><a href="#">手表</a><a href="#">耳机</a><a href="#">家居</a><a href="#">娱乐</a><a href="#">配件</a><a href="#">支持</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" aria-label="购物袋"><svg class="i"><use href="#i-bag"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <p class="ht-promo">以旧换新，购买 Aurora Phone 17 系列最高可抵 ¥4,800。<a class="link-arrow" href="#">立即选购</a></p>
+
+  <main class="ht-stack">
+    <section class="tile dark ht-hero ht-on-dark">
+      <div class="ht-copy">
+        <span class="t-eyebrow">全新</span>
+        <h2 class="t-title1">Aurora Phone 17 Pro</h2>
+        <p class="t-lead">钛金属机身，A19 Pro 芯片，<br>4 倍长焦三摄。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+      </div>
+      <div class="tile-media art a9 ht-media" role="img" aria-label="宇宙橙色与深蓝色机身"><span class="ht-phone" style="--p:#f77e2d"></span><span class="ht-phone" style="--p:#2e3a4f"></span></div>
+    </section>
+
+    <section class="tile ht-hero">
+      <div class="ht-copy">
+        <h2 class="t-title1">Aurora Phone 17</h2>
+        <p class="t-lead">五种新配色，6.3 英寸 ProMotion 屏。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+      </div>
+      <div class="tile-media art a8 ht-media" role="img" aria-label="薰衣草紫、鼠尾草绿与雾蓝机身"><span class="ht-phone" style="--p:#9d86c9"></span><span class="ht-phone" style="--p:#8fa77c"></span><span class="ht-phone hide-sm" style="--p:#7f9fc4"></span></div>
+    </section>
+
+    <div class="grid c2 ht-grid">
+      <article class="tile">
+        <h3 class="t-title1">Aurora Watch 3</h3>
+        <p class="t-title3 t-regular">更亮的屏幕，更长的续航。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+        <div class="tile-media art a4"><svg class="i xxl"><use href="#i-clock"/></svg></div>
+      </article>
+      <article class="tile">
+        <h3 class="t-title1">Aurora Book Air</h3>
+        <p class="t-title3 t-regular">M5 芯片，18 小时续航，1.24 千克。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+        <div class="tile-media art a2"><svg class="i xxl"><use href="#i-laptop"/></svg></div>
+      </article>
+      <article class="tile">
+        <h3 class="t-title1">Aurora Buds Pro 2</h3>
+        <p class="t-title3 t-regular">降噪加倍，心率也能听见。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+        <div class="tile-media art a7"><svg class="i xxl"><use href="#i-headphones"/></svg></div>
+      </article>
+      <article class="tile dark ht-on-dark">
+        <h3 class="t-title1">Aurora Home mini</h3>
+        <p class="t-title3 t-regular">一句话，让全屋听你的。</p>
+        <div class="tile-actions"><a class="btn filled" href="#">进一步了解</a><a class="btn outlined" href="#">购买</a></div>
+        <div class="tile-media art a11"><svg class="i xxl"><use href="#i-speaker"/></svg></div>
+      </article>
+    </div>
+  </main>
+
+  <section class="section tight">
+    <div class="wrap">
+      <div class="section-head row">
+        <h2 class="t-title1">娱乐 · Aurora TV+ 本周推荐</h2>
+        <a class="link-arrow" href="#">免费试用 3 个月</a>
+      </div>
+      <div class="carousel ht-carousel">
+        <a class="card media-fill ht-show" href="#"><div class="art a9"></div><div class="card-body"><span class="card-title">长夜将尽</span><span class="card-sub">剧情 · 第 2 季 · 每周五更新</span><span class="btn xs on-media">立即观看</span></div></a>
+        <a class="card media-fill ht-show" href="#"><div class="art a2"></div><div class="card-body"><span class="card-title">深海回声</span><span class="card-sub">纪录片 · 4K 杜比视界 · 全 6 集</span><span class="btn xs on-media">立即观看</span></div></a>
+        <a class="card media-fill ht-show" href="#"><div class="art a5"></div><div class="card-body"><span class="card-title">向南的风</span><span class="card-sub">喜剧 · 全 10 集</span><span class="btn xs on-media">立即观看</span></div></a>
+        <a class="card media-fill ht-show" href="#"><div class="art a11"></div><div class="card-body"><span class="card-title">沙丘之上</span><span class="card-sub">惊悚 · 10 月 31 日首播</span><span class="btn xs on-media">设置提醒</span></div></a>
+        <a class="card media-fill ht-show" href="#"><div class="art a3"></div><div class="card-body"><span class="card-title">小镇球队</span><span class="card-sub">体育 · 全 8 集</span><span class="btn xs on-media">立即观看</span></div></a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="ht-notes">
+        <p>* 以旧换新抵扣金额取决于设备的型号、状况和购买时间，需在 Aurora Store 完成评估。活动截至 2026 年 11 月 30 日。</p>
+        <p>Aurora TV+ 免费试用适用于购买新款 Aurora 设备的用户，试用期结束后每月 ¥25，自动续订，可随时取消。</p>
+      </div>
+      <div class="footer-cols">
+        <div><h4>选购与了解</h4><ul><li><a href="#">商店</a></li><li><a href="#">手机</a></li><li><a href="#">电脑</a></li><li><a href="#">手表</a></li></ul></div>
+        <div><h4>服务</h4><ul><li><a href="#">Aurora TV+</a></li><li><a href="#">云存储</a></li><li><a href="#">音乐</a></li></ul></div>
+        <div><h4>账户</h4><ul><li><a href="#">管理账户</a></li><li><a href="#">订单状态</a></li><li><a href="#">购物帮助</a></li></ul></div>
+        <div><h4>Aurora Store</h4><ul><li><a href="#">零售店</a></li><li><a href="#">以旧换新</a></li><li><a href="#">分期付款</a></li></ul></div>
+        <div><h4>关于</h4><ul><li><a href="#">新闻中心</a></li><li><a href="#">工作机会</a></li><li><a href="#">联系我们</a></li></ul></div>
+      </div>
+      <div class="footer-legal">
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。沪ICP备 18032217 号</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">销售政策</a><a href="#">网站地图</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

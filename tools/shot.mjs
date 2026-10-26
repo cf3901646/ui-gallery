@@ -4,25 +4,32 @@
 //   node tools/shot.mjs audit <模板相对路径...>      （每个模板 × 两种语言，输出 JSON 行）
 // 每次调用都有 40 秒硬超时，超时直接 kill。
 import { spawn } from 'node:child_process';
-import { readdirSync, existsSync, mkdirSync } from 'node:fs';
+import { readdirSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const root = path.join(process.env.LOCALAPPDATA, 'ms-playwright');
 const dir = readdirSync(root).filter((d) => d.startsWith('chromium_headless_shell')).sort().pop();
 const exe = path.join(root, dir, 'chrome-headless-shell-win64', 'chrome-headless-shell.exe');
-const tmpProfile = path.join(process.env.TEMP, 'uig', 'chs-profile');
-if (!existsSync(tmpProfile)) mkdirSync(tmpProfile, { recursive: true });
+const base = path.join(process.env.TEMP, 'uig');
+mkdirSync(base, { recursive: true });
 
+// 每次调用用独立的临时配置目录，多个进程同时截图不会互相锁住
 function run(args, ms = 40000) {
+  const profile = mkdtempSync(path.join(base, 'chs-'));
   return new Promise((resolve) => {
     const p = spawn(exe, ['--no-first-run', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
-      `--user-data-dir=${tmpProfile}`, '--allow-file-access-from-files', ...args], { windowsHide: true });
+      `--user-data-dir=${profile}`, '--allow-file-access-from-files', ...args], { windowsHide: true });
     let out = '';
     p.stdout.on('data', (b) => (out += b));
     p.stderr.on('data', () => {});
-    const t = setTimeout(() => { p.kill(); resolve({ out, timeout: true }); }, ms);
-    p.on('close', () => { clearTimeout(t); resolve({ out, timeout: false }); });
+    const done = (timeout) => {
+      clearTimeout(t);
+      setTimeout(() => { try { rmSync(profile, { recursive: true, force: true, maxRetries: 3 }); } catch {} }, 300);
+      resolve({ out, timeout });
+    };
+    const t = setTimeout(() => { p.kill(); done(true); }, ms);
+    p.on('close', () => done(false));
   });
 }
 const url = (rel, query) => pathToFileURL(path.resolve(rel)).href + (query ? '?' + query : '');

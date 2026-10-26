@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>显示与亮度</title>
+<meta name="ui:title" content="平板设置">
+<meta name="ui:desc" content="平板双栏设置：左侧主列表（账户卡、带彩色图标的分组，“显示与亮度”选中），右侧详情页（浅色/深色外观预览、亮度滑块、原彩显示开关、文字大小与粗体、自动锁定）。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="tablet">
+<meta name="ui:tags" content="双栏,设置,分组列表,滑块,开关,单选">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .st-split { height: 100dvh; --split-cols: 380px 1fr; }
+  .st-split > .pane { height: 100dvh; min-height: 0; }
+  .st-nav .searchbar { margin: 0 4px 8px; }
+  .st-nav .list { margin: 0 2px 14px; }
+  .st-acct .row-title { font-weight: 600; }
+  html[data-lang="apple"] .st-nav { --ui-list-bg: transparent; }
+  html[data-lang="apple"] .st-nav .list > li { border-radius: 12px; }
+  .st-nav .list > li.is-active { background: var(--ui-accent); color: var(--ui-on-accent); --ui-text-2: color-mix(in srgb, var(--ui-on-accent) 80%, transparent); }
+  html[data-lang="google"] .st-nav .list > li.is-active { background: var(--md-secondary-container); color: var(--md-on-secondary-container);
+    --ui-text-2: var(--md-on-secondary-container); border-radius: 20px; }
+
+  .st-detail { max-width: 640px; margin: 0 auto; padding: 4px 28px 48px; }
+  html[data-lang="google"] .st-detail { max-width: none; padding-inline: 16px; }
+  .st-modes { display: flex; justify-content: center; gap: 64px; padding: 22px 16px 18px; }
+  .st-mode { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; }
+  .st-prev { width: 112px; aspect-ratio: 3 / 4; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    padding: 14px 14px 12px; align-content: start; box-shadow: 0 0 0 1px var(--ui-line), var(--ui-shadow-1); }
+  .st-prev > b { grid-column: 1 / -1; font: 600 20px/1.1 var(--ui-font-display); color: #fff; text-align: center; margin: 4px 0 6px; }
+  .st-prev > i { aspect-ratio: 1; border-radius: 6px; background: rgb(255 255 255 / 72%); }
+  .st-prev.st-dark > i { background: rgb(255 255 255 / 22%); }
+  .st-mode:has(:checked) .st-prev { box-shadow: 0 0 0 3px var(--ui-accent), var(--ui-shadow-1); }
+  .st-sun-sm { --ui-icon: 16px; } .st-sun-lg { --ui-icon: 24px; }
+  .st-aa { font-weight: 600; color: var(--ui-text-2); }
+</style>
+</head>
+<body class="app">
+<div class="split st-split">
+  <aside class="pane st-nav">
+    <nav class="sidebar floating">
+      <div class="sidebar-title t-large-title">设置</div>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索"><svg class="i only-apple"><use href="#i-mic"/></svg></label>
+
+      <ul class="list no-sep has-avatars st-acct">
+        <li><a class="row" href="#">
+          <span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</span>
+          <span class="row-body"><span class="row-title">林知夏</span>
+            <span class="row-sub only-apple">Apple 账户、iCloud 及更多</span><span class="row-sub only-google">zhixia.lin@gmail.com</span></span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+
+      <ul class="list no-sep has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-plane"/></svg></span>
+          <span class="row-body"><span class="row-title">飞行模式</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-wifi"/></svg></span>
+          <span class="row-body"><span class="row-title">无线局域网</span><span class="row-sub only-google">Home-5G</span></span>
+          <span class="row-value only-apple">Home-5G</span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-bluetooth"/></svg></span>
+          <span class="row-body"><span class="row-title">蓝牙</span><span class="row-sub only-google">已连接 AirPods Pro</span></span>
+          <span class="row-value only-apple">打开</span>
+        </a></li>
+      </ul>
+
+      <ul class="list no-sep has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-settings"/></svg></span>
+          <span class="row-body"><span class="row-title">通用</span><span class="row-sub only-google">关于本机、软件更新、存储</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-users"/></svg></span>
+          <span class="row-body"><span class="row-title">辅助功能</span><span class="row-sub only-google">读屏、显示、交互</span></span>
+        </a></li>
+        <li class="is-active"><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-sun"/></svg></span>
+          <span class="row-body"><span class="row-title">显示与亮度</span><span class="row-sub only-google">深色主题、字体大小、亮度</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-grid"/></svg></span>
+          <span class="row-body"><span class="row-title">主屏幕与多任务</span><span class="row-sub only-google">小组件、台前调度</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-cyan)"><svg class="i"><use href="#i-image"/></svg></span>
+          <span class="row-body"><span class="row-title">墙纸</span><span class="row-sub only-google">样式与颜色</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-battery"/></svg></span>
+          <span class="row-body"><span class="row-title">电池</span><span class="row-sub only-google">86% · 约剩 9 小时</span></span>
+          <span class="row-value only-apple">86%</span>
+        </a></li>
+      </ul>
+
+      <ul class="list no-sep has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-bell"/></svg></span>
+          <span class="row-body"><span class="row-title">通知</span><span class="row-sub only-google">应用通知、通知历史</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-volume"/></svg></span>
+          <span class="row-body"><span class="row-title">声音</span><span class="row-sub only-google">音量、勿扰</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span>
+          <span class="row-body"><span class="row-title">专注模式</span><span class="row-sub only-google">睡眠、工作中</span></span>
+        </a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <section class="pane">
+    <header class="topbar">
+      <div class="topbar-lead"></div>
+      <div class="topbar-title">显示与亮度</div>
+      <div class="topbar-trail"></div>
+    </header>
+    <div class="st-detail">
+      <section class="group">
+        <h2 class="group-header">外观</h2>
+        <ul class="list">
+          <li>
+            <div class="st-modes">
+              <label class="st-mode">
+                <span class="art a8 st-prev"><b>9:41</b><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="t-subhead">浅色</span>
+                <input type="radio" class="radio" name="st-appearance" checked>
+              </label>
+              <label class="st-mode">
+                <span class="art a9 st-prev st-dark"><b>9:41</b><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="t-subhead">深色</span>
+                <input type="radio" class="radio" name="st-appearance">
+              </label>
+            </div>
+          </li>
+          <li><label class="row">
+            <span class="row-body"><span class="row-title">自动</span><span class="row-sub only-google">日落时切换为深色</span></span>
+            <input type="checkbox" class="switch">
+          </label></li>
+        </ul>
+      </section>
+
+      <section class="group">
+        <h2 class="group-header only-google">文字</h2>
+        <ul class="list">
+          <li><a class="row" href="#">
+            <span class="row-body"><span class="row-title">文字大小</span><span class="row-sub only-google">默认</span></span>
+            <span class="st-aa t-footnote">Aa</span>
+            <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+          </a></li>
+          <li><label class="row">
+            <span class="row-body"><span class="row-title">粗体文本</span></span>
+            <input type="checkbox" class="switch">
+          </label></li>
+        </ul>
+      </section>
+
+      <section class="group">
+        <h2 class="group-header">亮度</h2>
+        <ul class="list">
+          <li><div class="row range-row">
+            <svg class="i st-sun-sm"><use href="#i-sun"/></svg>
+            <input type="range" class="range grow" value="68" aria-label="亮度">
+            <svg class="i st-sun-lg"><use href="#i-sun"/></svg>
+          </div></li>
+          <li><label class="row">
+            <span class="row-body"><span class="row-title">原彩显示</span><span class="row-sub only-google">根据环境光调整色温</span></span>
+            <input type="checkbox" class="switch" checked>
+          </label></li>
+        </ul>
+        <p class="group-footer">根据环境光照条件自动调整 iPad 显示屏，使颜色在不同环境中保持一致。</p>
+      </section>
+
+      <section class="group">
+        <ul class="list">
+          <li><a class="row" href="#">
+            <span class="row-body"><span class="row-title">夜览</span><span class="row-sub only-google">22:00 至 7:00 开启</span></span>
+            <span class="row-value only-apple">22:00 至 7:00</span>
+            <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+          </a></li>
+          <li><a class="row" href="#">
+            <span class="row-body"><span class="row-title">自动锁定</span><span class="row-sub only-google">闲置 5 分钟后</span></span>
+            <span class="row-value only-apple">5 分钟</span>
+            <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+          </a></li>
+          <li><label class="row">
+            <span class="row-body"><span class="row-title">锁定 / 解锁</span><span class="row-sub only-google">合上保护套时自动锁定</span></span>
+            <input type="checkbox" class="switch" checked>
+          </label></li>
+        </ul>
+      </section>
+
+      <section class="group">
+        <h2 class="group-header">显示</h2>
+        <ul class="list">
+          <li><a class="row" href="#">
+            <span class="row-body"><span class="row-title">显示缩放</span><span class="row-sub only-google">默认</span></span>
+            <span class="row-value only-apple">默认</span>
+            <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+          </a></li>
+        </ul>
+        <p class="group-footer">选择“更多空间”可在屏幕上同时显示更多内容。</p>
+      </section>
+    </div>
+  </section>
+</div>
+</body>
+</html>

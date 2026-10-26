@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>摘要</title>
+<meta name="ui:title" content="健康摘要">
+<meta name="ui:desc" content="健康 App 摘要页：活动三环、步数/心率/睡眠/体重小组件、健康要点卡片和标签栏。">
+<meta name="ui:category" content="健康与运动">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="活动圆环,小组件,迷你图表,标签栏,大标题">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .hs-rings-card { flex-direction: row; align-items: center; gap: 24px; padding-block: 20px;
+    --hs-move: var(--c-red); --hs-ex: var(--c-green); --hs-stand: var(--c-cyan); }
+  html[data-lang="google"][data-scheme="dark"] .hs-rings-card { --hs-move: color-mix(in srgb, var(--c-red) 72%, white);
+    --hs-ex: color-mix(in srgb, var(--c-green) 62%, white); --hs-stand: color-mix(in srgb, var(--c-cyan) 65%, white); }
+  .hs-ring-stats { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .hs-ring-stats .t-caption { font-weight: 600; }
+  .hs-ring-stats b { display: block; font: 600 calc(22px * var(--ts)) / 1.15 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  .hs-ring-stats b small { font-size: calc(var(--fs-subhead) * var(--ts)); font-weight: 500; }
+  html[data-lang="google"] .hs-ring-stats b { font-weight: 400; }
+  .hs-move { color: var(--hs-move); } .hs-ex { color: var(--hs-ex); } .hs-stand { color: var(--hs-stand); }
+  .hs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .hs-grid .widget { min-height: 164px; }
+  .hs-unit { font-size: calc(var(--fs-subhead) * var(--ts)); font-weight: 500; color: var(--ui-text-2); margin-left: 3px; letter-spacing: 0; }
+  .hs-foot { margin-top: auto; }
+  .hs-steps .bars { --bars-h: 34px; --bars-gap: 3px; --bars-radius: 2px; }
+  .hs-steps .bars > span { --bar-color: color-mix(in srgb, var(--c-orange) 28%, transparent); }
+  .hs-steps .bars > span.hi { background: var(--c-orange); }
+  .hs-hr .chart .line { stroke: var(--c-red); stroke-width: 2; }
+  .hs-hr .chart circle { fill: var(--c-red); }
+  .hs-wt .chart .line { stroke: var(--c-purple); stroke-width: 2; }
+  .hs-wt .chart .area { fill: color-mix(in srgb, var(--c-purple) 14%, transparent); }
+  .hs-sleepbar { display: flex; gap: 2px; height: 10px; }
+  .hs-sleepbar > span { flex: var(--f); border-radius: 3px; background: var(--c); }
+  .hs-hl { gap: 10px; }
+  .hs-hl .widget-label { justify-content: space-between; }
+  .hs-hl .widget-label > span { display: inline-flex; align-items: center; gap: 6px; }
+  .hs-cmp { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: baseline; }
+  .hs-track { grid-column: 1 / -1; height: 8px; border-radius: 99px; background: var(--ui-fill); margin-bottom: 6px; }
+  .hs-track > span { display: block; width: var(--w); height: 100%; border-radius: inherit; background: var(--c, var(--ui-text-3)); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">摘要</div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content">
+    <div class="page-head">
+      <h1 class="t-large-title">摘要</h1>
+      <a class="avatar sm" href="#" aria-label="个人资料" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e);--c-fg:#fff">林</a>
+    </div>
+
+    <section class="group">
+      <h2 class="group-header large">置顶 <a class="t-callout" href="#">编辑</a></h2>
+      <a class="card pad hs-rings-card" href="#">
+        <div class="rings" aria-label="活动圆环">
+          <div class="ring" style="--value:85;--size:132px;--stroke:15px;--ring-color:var(--hs-move)"></div>
+          <div class="ring" style="--value:93;--size:100px;--stroke:15px;--ring-color:var(--hs-ex)"></div>
+          <div class="ring" style="--value:75;--size:68px;--stroke:15px;--ring-color:var(--hs-stand)"></div>
+        </div>
+        <div class="hs-ring-stats">
+          <div><span class="t-caption hs-move">活动</span><b class="hs-move">426/500<small>千卡</small></b></div>
+          <div><span class="t-caption hs-ex">锻炼</span><b class="hs-ex">28/30<small>分钟</small></b></div>
+          <div><span class="t-caption hs-stand">站立</span><b class="hs-stand">9/12<small>小时</small></b></div>
+        </div>
+      </a>
+    </section>
+
+    <section class="group">
+      <div class="hs-grid">
+        <a class="widget hs-steps" href="#" style="--tint:var(--c-orange)">
+          <span class="widget-label"><svg class="i sm"><use href="#i-walk"/></svg>步数</span>
+          <span class="widget-value">8,642<span class="hs-unit">步</span></span>
+          <div class="hs-foot">
+            <div class="bars"><span style="--h:8%"></span><span style="--h:30%"></span><span class="hi" style="--h:72%"></span><span style="--h:46%"></span><span style="--h:22%"></span><span style="--h:38%"></span><span class="hi" style="--h:100%"></span><span style="--h:54%"></span><span style="--h:26%"></span><span style="--h:12%"></span></div>
+            <span class="t-caption2 t-3">06:00–16:00 · 目标 10,000</span>
+          </div>
+        </a>
+        <a class="widget hs-hr" href="#" style="--tint:var(--c-red)">
+          <span class="widget-label"><svg class="i sm"><use href="#i-heart-pulse"/></svg>心率</span>
+          <span class="widget-value">72<span class="hs-unit">次/分</span></span>
+          <div class="hs-foot">
+            <svg class="chart" viewBox="0 0 150 40" aria-hidden="true"><polyline class="line" points="0,28 10,26 20,30 30,22 40,24 50,14 60,18 70,26 80,24 90,30 100,20 110,22 120,12 130,18 140,15 147,20"/><circle cx="147" cy="20" r="3"/></svg>
+            <span class="t-caption2 t-3">最新 · 3 分钟前</span>
+          </div>
+        </a>
+        <a class="widget" href="#" style="--tint:var(--c-indigo)">
+          <span class="widget-label"><svg class="i sm"><use href="#i-bed"/></svg>睡眠</span>
+          <span class="widget-value">7<span class="hs-unit">小时</span>13<span class="hs-unit">分</span></span>
+          <div class="hs-foot stack gap-2">
+            <div class="hs-sleepbar"><span style="--f:7;--c:var(--c-orange)"></span><span style="--f:17;--c:var(--c-cyan)"></span><span style="--f:55;--c:var(--c-blue)"></span><span style="--f:18;--c:var(--c-indigo)"></span></div>
+            <span class="t-caption2 t-3">23:12 – 06:36 · 得分 86</span>
+          </div>
+        </a>
+        <a class="widget hs-wt" href="#" style="--tint:var(--c-purple)">
+          <span class="widget-label"><svg class="i sm"><use href="#i-gauge"/></svg>体重</span>
+          <span class="widget-value">62.4<span class="hs-unit">公斤</span></span>
+          <div class="hs-foot">
+            <svg class="chart" viewBox="0 0 150 36" aria-hidden="true"><path class="area" d="M0,8 L15,10 30,9 45,14 60,13 75,17 90,19 105,18 120,23 135,25 150,27 L150,36 L0,36 Z"/><polyline class="line" points="0,8 15,10 30,9 45,14 60,13 75,17 90,19 105,18 120,23 135,25 150,27"/></svg>
+            <span class="t-caption2 t-3">30 天 <span class="t-success">−1.2 公斤</span></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header large">健康要点 <a class="t-callout" href="#">全部</a></h2>
+      <div class="stack gap-3">
+        <a class="card pad hs-hl" href="#">
+          <span class="widget-label" style="--tint:var(--c-orange)"><span><svg class="i sm"><use href="#i-flame"/></svg>步数</span><svg class="i sm row-chevron"><use href="#i-chevron-right"/></svg></span>
+          <p class="t-headline">过去 7 天，你平均每天走了 9,214 步，比前一周多 1,380 步。</p>
+          <div class="hs-cmp">
+            <span class="t-footnote t-2">本周日均</span><span class="t-subhead t-semibold t-num">9,214 步</span>
+            <span class="hs-track"><span style="--w:100%;--c:var(--c-orange)"></span></span>
+            <span class="t-footnote t-2">上周日均</span><span class="t-subhead t-2 t-num">7,834 步</span>
+            <span class="hs-track"><span style="--w:85%"></span></span>
+          </div>
+        </a>
+        <a class="card pad hs-hl" href="#">
+          <span class="widget-label" style="--tint:var(--c-indigo)"><span><svg class="i sm"><use href="#i-moon"/></svg>睡眠</span><svg class="i sm row-chevron"><use href="#i-chevron-right"/></svg></span>
+          <p class="t-headline">本周你平均每晚睡 7 小时 18 分，入睡时间比上周提前了 18 分钟。</p>
+        </a>
+        <a class="card pad hs-hl" href="#">
+          <span class="widget-label" style="--tint:var(--c-red)"><span><svg class="i sm"><use href="#i-heart"/></svg>静息心率</span><svg class="i sm row-chevron"><use href="#i-chevron-right"/></svg></span>
+          <p class="t-headline">本月静息心率平均 58 次/分，处在你过去一年的常见范围内。</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-heart-fill"/></svg><span>摘要</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-users"/></svg><span>共享</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-grid"/></svg><span>浏览</span></a>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora 特别活动 - 2026 年 9 月</title>
+<meta name="ui:title" content="发布会活动页">
+<meta name="ui:desc" content="线上发布会活动页：深色首屏（倒计时、添加到日历、观看直播）、议程时间线、讲者网格、直播入口卡和常见问题。">
+<meta name="ui:category" content="营销与产品">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="活动,倒计时,时间线,讲者,直播">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ek-hero { --ui-link: var(--c-blue); --ui-hero-pad: 112px; }
+  html[data-lang="google"] .ek-hero { --ui-link: var(--md-inverse-primary); --ui-accent: var(--md-inverse-primary); --ui-on-accent: var(--md-inverse-surface);
+    --ui-eyebrow: var(--md-inverse-primary); --ui-text-2: color-mix(in srgb, currentColor 72%, transparent); }
+  .ek-hero .wrap { position: relative; z-index: 1; }
+  .ek-glow { position: absolute; left: 50%; top: 58%; width: min(900px, 120%); aspect-ratio: 2; translate: -50% -50%; border-radius: 50%; filter: blur(90px); opacity: .55; }
+  html[data-lang="google"] .ek-glow { opacity: .4; }
+  .ek-title { background: linear-gradient(90deg, #ff9f6b, #ff5e7e 40%, #a78bfa 75%, #60a5fa); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .06em; }
+  .ek-count { display: flex; gap: 12px; margin-top: 16px; }
+  .ek-count > div { width: 84px; padding: 14px 0 12px; border-radius: var(--ui-radius-l); text-align: center; background: color-mix(in srgb, currentColor 9%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 14%, transparent); }
+  .ek-count b { display: block; font: 600 calc(36px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .ek-count b { font-weight: 400; }
+  html[data-lang="google"] .ek-count > div:nth-child(odd) { border-radius: 28px; }
+  .ek-count span { display: block; margin-top: 6px; font-size: calc(12px * var(--ts)); color: var(--ui-text-2); }
+  .ek-agenda { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; align-items: start; }
+  .ek-agenda .timeline { gap: 28px; }
+  .ek-agenda li { display: grid; grid-template-columns: 64px 1fr; gap: 4px 16px; }
+  .ek-agenda li > time { grid-row: span 2; padding-top: 1px; }
+  .ek-speakers { --gap: 32px 24px; }
+  .ek-speakers > div { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+  .ek-speakers .avatar { margin-bottom: 10px; font-size: 34px; }
+  .ek-live { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .ek-live > .art { min-height: 100%; }
+  .ek-live .card-body { padding: 32px; gap: 12px; justify-content: center; }
+  .ek-live .tag { align-self: flex-start; }
+  .ek-live .chips { padding-inline: 0; margin-inline: 0; }
+  @media (max-width: 860px) {
+    .ek-agenda, .ek-live { grid-template-columns: 1fr; gap: 24px; }
+    .ek-live .card-body { padding: 24px; }
+  }
+  @media (max-width: 560px) {
+    .ek-hero { --ui-hero-pad: 72px; }
+    .ek-count { gap: 8px; } .ek-count > div { width: 72px; } .ek-count b { font-size: calc(30px * var(--ts)); }
+    .ek-speakers { --cols: 2; } .ek-speakers .avatar { --size: 80px; }
+  }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-sparkles"/></svg></span>Aurora</a>
+      <nav class="nav-links"><a href="#">商店</a><a href="#">手机</a><a href="#">电脑</a><a href="#">手表</a><a href="#">耳机</a><a href="#" class="is-active">活动</a><a href="#">支持</a></nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" aria-label="购物袋"><svg class="i"><use href="#i-bag"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero dark center ek-hero">
+    <div class="ek-glow art a4" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="t-eyebrow">特别活动</span>
+      <h1 class="t-hero ek-title">灵感，一触即发。</h1>
+      <p class="t-lead t-2">2026 年 9 月 9 日 · 北京时间 01:00 · 线上直播</p>
+      <div class="ek-count" aria-label="距离开始还有 12 天 08 小时 45 分 30 秒">
+        <div><b>12</b><span>天</span></div><div><b>08</b><span>时</span></div><div><b>45</b><span>分</span></div><div><b>30</b><span>秒</span></div>
+      </div>
+      <div class="hero-actions mt-4">
+        <a class="btn filled" href="#"><svg class="i"><use href="#i-calendar"/></svg>添加到日历</a>
+        <a class="link-arrow" href="#">观看直播</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap ek-agenda">
+      <div class="section-head mb-0">
+        <span class="t-eyebrow">议程</span>
+        <h2 class="t-large-title">100 分钟，六个篇章。</h2>
+        <p class="t-body t-2">时间均为北京时间。直播结束后可在官网与 Aurora TV 观看回放。</p>
+      </div>
+      <ol class="timeline">
+        <li><time class="t-subhead t-2 t-num">01:00</time><span class="t-headline">开场与主题演讲</span><span class="t-callout t-2">陈思远 · 首席执行官</span></li>
+        <li><time class="t-subhead t-2 t-num">01:15</time><span class="t-headline">Aurora Phone 17 系列</span><span class="t-callout t-2">林若溪 · 硬件工程高级副总裁</span></li>
+        <li><time class="t-subhead t-2 t-num">01:40</time><span class="t-headline">Aurora Watch 3 与健康研究</span><span class="t-callout t-2">周明哲博士 · 健康技术副总裁</span></li>
+        <li><time class="t-subhead t-2 t-num">02:00</time><span class="t-headline">AuroraOS 27 与智能助理</span><span class="t-callout t-2">许嘉宁 · 软件工程高级副总裁</span></li>
+        <li><time class="t-subhead t-2 t-num">02:20</time><span class="t-headline">2030 碳中和进展</span><span class="t-callout t-2">王一帆 · 环境与社会事务副总裁</span></li>
+        <li><time class="t-subhead t-2 t-num">02:30</time><span class="t-headline">发售信息与结语</span><span class="t-callout t-2">陈思远 · 首席执行官</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head center"><h2 class="t-large-title">本场讲者</h2></div>
+      <div class="grid c4 ek-speakers">
+        <div><span class="avatar xl" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">陈</span><b class="t-headline">陈思远</b><span class="t-footnote t-2">首席执行官</span></div>
+        <div><span class="avatar xl" style="--c:linear-gradient(135deg,#60a5fa,#6366f1)">林</span><b class="t-headline">林若溪</b><span class="t-footnote t-2">硬件工程高级副总裁</span></div>
+        <div><span class="avatar xl" style="--c:linear-gradient(135deg,#34d399,#0d9488)">周</span><b class="t-headline">周明哲博士</b><span class="t-footnote t-2">健康技术副总裁</span></div>
+        <div><span class="avatar xl" style="--c:linear-gradient(135deg,#c084fc,#7e22ce)">许</span><b class="t-headline">许嘉宁</b><span class="t-footnote t-2">软件工程高级副总裁</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <article class="card elevated ek-live">
+        <div class="art a9 ratio-16x9" role="img" aria-label="直播画面预览">
+          <button class="icon-btn xl on-media" aria-label="播放预告片"><svg class="i solid"><use href="#i-play"/></svg></button>
+        </div>
+        <div class="card-body">
+          <span class="tag danger"><svg class="i"><use href="#i-dot"/></svg>9 月 9 日 01:00 开播</span>
+          <h2 class="t-title2">在这里观看直播</h2>
+          <p class="t-callout t-2">支持 4K HDR 画质，提供中文同声传译、手语翻译和实时字幕。现在可以先看 2 分钟预告片。</p>
+          <div class="chips wrap"><span class="chip">中文同传</span><span class="chip">手语翻译</span><span class="chip">实时字幕</span></div>
+          <div class="btn-row mt-2"><a class="btn filled sm" href="#">设置开播提醒</a><a class="link-arrow" href="#">在 Aurora TV 观看</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap narrow">
+      <div class="section-head"><h2 class="t-title1">常见问题</h2></div>
+      <div class="faq">
+        <details open><summary>在哪里可以观看直播？</summary><p>官网本页、Aurora TV App、哔哩哔哩官方账号同步直播，无需登录。</p></details>
+        <details><summary>错过了还能看回放吗？</summary><p>可以。直播结束约 30 分钟后上线完整回放，各产品篇章也会单独剪辑发布。</p></details>
+        <details><summary>新品什么时候可以预购？</summary><p>预计 9 月 12 日 20:00 开始预购，9 月 19 日起陆续发售，以发布会公布为准。</p></details>
+        <details><summary>添加到日历支持哪些应用？</summary><p>支持 Aurora 日历、Google 日历、Outlook 和飞书日历，开播前 15 分钟提醒。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-cols" style="--cols:4">
+        <div><h4>活动</h4><ul><li><a href="#">往期发布会</a></li><li><a href="#">开发者大会</a></li></ul></div>
+        <div><h4>新闻中心</h4><ul><li><a href="#">新闻稿</a></li><li><a href="#">媒体素材</a></li></ul></div>
+        <div><h4>选购</h4><ul><li><a href="#">商店</a></li><li><a href="#">以旧换新</a></li></ul></div>
+        <div><h4>关于</h4><ul><li><a href="#">工作机会</a></li><li><a href="#">联系我们</a></li></ul></div>
+      </div>
+      <div class="footer-legal">
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">网站地图</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

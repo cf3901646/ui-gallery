@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>通知</title>
+<meta name="ui:title" content="通知设置（二级页）">
+<meta name="ui:desc" content="设置二级页：显示预览分段控件、定时摘要开关与推送时间、按应用分组的通知开关列表，以及勿扰时段与重复日期。">
+<meta name="ui:category" content="系统与设置">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="设置,通知,开关,分段控件,勿扰,分组列表">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ns-days { flex-wrap: wrap; row-gap: 10px; }
+  .ns-days .chips { flex: 1 1 100%; justify-content: space-between; gap: 4px; overflow: visible; padding-bottom: 4px;
+    margin-left: calc(var(--ui-row-icon-size, 30px) + var(--ui-row-gap)); }
+  .ns-days .chip { width: 34px; height: 34px; padding: 0; justify-content: center; border-radius: 50%; }
+  html[data-lang="google"] .ns-days .chip.is-active::before { display: none; }
+  html[data-lang="google"] .ns-days .chip { border-radius: 12px; }
+  html[data-lang="google"] .ns-days .chip.is-active { border-radius: 50%; background: var(--md-primary); color: var(--md-on-primary); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>设置</span></a></div>
+    <div class="topbar-title">通知</div>
+    <div class="topbar-trail"></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">通知</h1>
+
+    <section class="group">
+      <h2 class="group-header">显示预览</h2>
+      <div class="segmented" role="radiogroup" aria-label="显示预览">
+        <button>始终</button><button class="is-active">解锁时</button><button>从不</button>
+      </div>
+      <p class="group-footer">锁定时只显示 App 名称，用<span class="only-apple">面容 ID</span><span class="only-google">指纹</span>解锁后才显示消息内容。</p>
+    </section>
+
+    <section class="group">
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-inbox"/></svg></span>
+          <span class="row-body"><span class="row-title">定时摘要</span><span class="row-sub">不紧急的通知集中推送</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-clock"/></svg></span>
+          <span class="row-body"><span class="row-title">推送时间</span></span>
+          <span class="row-value t-num">8:00、21:30</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">应用通知 <a href="#">最近使用</a></h2>
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-book"/></svg></span>
+          <span class="row-body"><span class="row-title">拾光日记</span><span class="row-sub">横幅、声音、标记</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-message"/></svg></span>
+          <span class="row-body"><span class="row-title">信息</span><span class="row-sub">横幅、声音、标记</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-calendar"/></svg></span>
+          <span class="row-body"><span class="row-title">日历</span><span class="row-sub">横幅、声音</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-mail"/></svg></span>
+          <span class="row-body"><span class="row-title">邮件</span><span class="row-sub">标记 · 定时摘要</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-heart-pulse"/></svg></span>
+          <span class="row-body"><span class="row-title">健康</span><span class="row-sub">横幅、声音、标记</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-map"/></svg></span>
+          <span class="row-body"><span class="row-title">地图</span><span class="row-sub">已关闭</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-music"/></svg></span>
+          <span class="row-body"><span class="row-title">音乐</span><span class="row-sub">横幅、声音、标记</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">勿扰时段</h2>
+      <ul class="list has-icons">
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span>
+          <span class="row-body"><span class="row-title">按时间段开启</span><span class="row-sub">每天 22:30 至次日 07:00</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-bed"/></svg></span>
+          <span class="row-body"><span class="row-title">开始</span></span>
+          <span class="row-value t-num">22:30</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-sun"/></svg></span>
+          <span class="row-body"><span class="row-title">结束</span></span>
+          <span class="row-value t-num">次日 07:00</span>
+          <svg class="i row-chevron"><use href="#i-chevron-right"/></svg>
+        </a></li>
+        <li><div class="row ns-days">
+          <span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-repeat"/></svg></span>
+          <span class="row-body"><span class="row-title">重复</span></span>
+          <span class="row-value">工作日</span>
+          <div class="chips" aria-label="重复日期">
+            <button class="chip is-active">一</button><button class="chip is-active">二</button><button class="chip is-active">三</button>
+            <button class="chip is-active">四</button><button class="chip is-active">五</button><button class="chip">六</button><button class="chip">日</button>
+          </div>
+        </div></li>
+        <li><label class="row">
+          <span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-phone"/></svg></span>
+          <span class="row-body"><span class="row-title">允许重复来电</span><span class="row-sub">3 分钟内同一号码再次来电时响铃</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+      </ul>
+      <p class="group-footer">勿扰期间，通知会静默送达通知中心，不亮屏、不响铃。</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>评论</title>
+<meta name="ui:title" content="评论面板">
+<meta name="ui:desc" content="视频动态详情上打开的评论底部面板：遮罩、标题与关闭、最热/最新排序、评论列表（点赞数、回复、作者标记、楼中楼缩进回复、展开更多）和面板底部输入栏。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="评论,底部面板,遮罩,分段控件,输入栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  body.app { overflow: hidden; }
+  .avatar { --c-fg: #fff; }
+  .cm-media { position: relative; }
+  .cm-media .progress { position: absolute; left: 16px; right: 16px; bottom: 14px; --progress-fill: #fff; --progress-rest: rgb(255 255 255 / 30%); }
+  .cm-info { padding-top: 16px; }
+  .cm-by { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+  .cm-by .grow > * { display: block; }
+
+  .cm-sheet { height: 58dvh; }
+  .cm-sheet .sheet-body { flex: 1; min-height: 0; padding-bottom: 8px; }
+  .cm-sort { padding: 0 var(--ui-margin) 6px; }
+  .cm-sort .segmented { width: 168px; }
+  .cm-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 10px; padding: 10px 0; }
+  .cm-item .cm-item { padding: 10px 0 2px; }
+  .cm-meta { display: flex; align-items: center; gap: 6px; color: var(--ui-text-2); }
+  .cm-meta .tag { height: 18px; padding: 0 6px; }
+  .cm-text { margin-top: 2px; }
+  .cm-acts { display: flex; gap: 16px; margin-top: 6px; color: var(--ui-text-2); }
+  .cm-acts button { color: inherit; font-weight: 600; }
+  .cm-like { display: flex; flex-direction: column; align-items: center; gap: 2px; padding-top: 4px; color: var(--ui-text-2); min-width: 36px; }
+  .cm-like .i { --ui-icon: 18px; }
+  .cm-like.is-on { color: var(--c-red); }
+  .cm-more { display: inline-flex; align-items: center; gap: 2px; margin-top: 6px; color: var(--ui-accent); font-weight: 600; }
+  .cm-more .i { --ui-icon: 16px; }
+  .cm-item + .cm-item { border-top: .5px solid var(--ui-line); }
+  .cm-item .cm-item { border-top: 0; }
+
+  .cm-composer .composer-input { justify-content: space-between; gap: 8px; padding-right: 8px; }
+  .cm-composer .composer-input .i { --ui-icon: 22px; color: var(--ui-text-2); }
+  .cm-composer .composer-input > span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cm-composer { align-items: center; }
+  .cm-composer .avatar { --size: 32px; }
+  html[data-lang="apple"] .cm-composer { position: relative; left: auto; right: auto; bottom: auto; flex: none; padding: 6px 8px;
+    margin: 0 10px max(10px, calc(var(--safe-bottom) - 14px)); }
+  html[data-lang="google"] .cm-composer { position: relative; flex: none; background: var(--md-surface-container-low); border-top: 1px solid var(--md-outline-variant); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar transparent">
+    <div class="topbar-lead"><a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail"><button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div>
+  </header>
+
+  <div class="cm-media art a9 ratio-16x9" role="img" aria-label="视频：雨后的武康路">
+    <svg class="i xl solid"><use href="#i-play"/></svg>
+    <div class="progress" style="--value:36%"></div>
+  </div>
+  <main class="content cm-info">
+    <h1 class="t-title3">雨后的武康路 · 60 秒延时</h1>
+    <p class="t-footnote t-2 mt-1">1.2 万次播放 · 2 天前 · 上海徐汇</p>
+    <div class="cm-by">
+      <span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span>
+      <div class="grow"><span class="t-headline">许嘉禾</span><span class="t-footnote t-2">2.8 万粉丝</span></div>
+      <button class="btn sm filled">关注</button>
+    </div>
+  </main>
+</div>
+
+<div class="scrim" data-for="cm-sheet"></div>
+<div class="sheet cm-sheet" id="cm-sheet" role="dialog" aria-label="评论">
+  <div class="sheet-grabber"></div>
+  <div class="sheet-head">
+    <span></span>
+    <div class="sheet-title">328 条评论</div>
+    <button class="bar-btn" data-close aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+  </div>
+  <div class="cm-sort"><div class="segmented"><button class="is-active">最热</button><button>最新</button></div></div>
+  <div class="sheet-body">
+    <ul>
+      <li class="cm-item">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span>
+        <div>
+          <div class="cm-meta"><span class="t-footnote t-semibold">林知夏</span><span class="t-caption t-3">2 小时前 · 上海</span></div>
+          <p class="cm-text t-subhead t-regular">这个转场太丝滑了！是用三脚架定点拍的吗？雨刚停那会儿的路面反光拍得特别好。</p>
+          <div class="cm-acts t-footnote"><button>回复</button><button>分享</button></div>
+          <ul>
+            <li class="cm-item">
+              <span class="avatar xs" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span>
+              <div>
+                <div class="cm-meta"><span class="t-footnote t-semibold">许嘉禾</span><span class="tag accent">作者</span><span class="t-caption t-3">1 小时前</span></div>
+                <p class="cm-text t-subhead t-regular">对，三脚架加 ND 镜，间隔 2 秒拍了 40 分钟，后期只调了一点白平衡。</p>
+                <div class="cm-acts t-footnote"><button>回复</button></div>
+              </div>
+              <button class="cm-like is-on" aria-label="已赞"><svg class="i solid"><use href="#i-heart-fill"/></svg><span class="t-caption t-num">286</span></button>
+            </li>
+          </ul>
+          <a class="cm-more t-footnote" href="#">展开 12 条回复<svg class="i"><use href="#i-chevron-down"/></svg></a>
+        </div>
+        <button class="cm-like" aria-label="点赞"><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">1,024</span></button>
+      </li>
+      <li class="cm-item">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span>
+        <div>
+          <div class="cm-meta"><span class="t-footnote t-semibold">陈一舟</span><span class="t-caption t-3">3 小时前 · 杭州</span></div>
+          <p class="cm-text t-subhead t-regular">武康大楼那个角度我也蹲过，下雨天人少的时候真的绝。</p>
+          <div class="cm-acts t-footnote"><button>回复</button><button>分享</button></div>
+        </div>
+        <button class="cm-like" aria-label="点赞"><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">412</span></button>
+      </li>
+      <li class="cm-item">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">何</span>
+        <div>
+          <div class="cm-meta"><span class="t-footnote t-semibold">何田田</span><span class="t-caption t-3">5 小时前 · 南京</span></div>
+          <p class="cm-text t-subhead t-regular">求背景音乐！钢琴那段听了好多遍。</p>
+          <div class="cm-acts t-footnote"><button>回复</button><button>分享</button></div>
+        </div>
+        <button class="cm-like" aria-label="点赞"><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">96</span></button>
+      </li>
+      <li class="cm-item">
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">周</span>
+        <div>
+          <div class="cm-meta"><span class="t-footnote t-semibold">周以安</span><span class="t-caption t-3">昨天 · 上海</span></div>
+          <p class="cm-text t-subhead t-regular">收藏了，这周末就去安福路那头试试。</p>
+          <div class="cm-acts t-footnote"><button>回复</button><button>分享</button></div>
+        </div>
+        <button class="cm-like" aria-label="点赞"><svg class="i"><use href="#i-heart"/></svg><span class="t-caption t-num">31</span></button>
+      </li>
+    </ul>
+  </div>
+  <div class="composer cm-composer">
+    <span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span>
+    <div class="composer-input"><span>友善评论，说点什么…</span><svg class="i"><use href="#i-at"/></svg><svg class="i"><use href="#i-smile"/></svg></div>
+    <button class="icon-btn" aria-label="发送" disabled><svg class="i"><use href="#i-send"/></svg></button>
+  </div>
+</div>
+</body>
+</html>

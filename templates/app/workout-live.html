@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>户外跑步</title>
+<meta name="ui:title" content="运动进行中">
+<meta name="ui:desc" content="跑步进行中的深色实时页：GPS 信号、大号计时、心率区间条、配速/距离/千卡、迷你路线地图和暂停/结束/锁定控制。">
+<meta name="ui:category" content="健康与运动">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="深色背景,计时,心率区间,地图,大按钮">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  /* 页面专用：运动中固定深色，不随明暗切换（与“正在播放”同理） */
+  body.app { background: #000; color: #fff; }
+  html[data-lang="google"] body.app { background: #101114; }
+  .wl { --ui-text: #fff; --ui-text-2: rgb(255 255 255 / 62%); --ui-text-3: rgb(255 255 255 / 40%); --ui-fill: rgb(255 255 255 / 12%);
+    --wl-card: rgb(255 255 255 / 9%); min-height: 100dvh; display: flex; flex-direction: column; gap: 14px;
+    padding: calc(var(--safe-top) + 6px) 20px calc(var(--safe-bottom) + 14px); }
+  .wl-dim { color: var(--ui-text-2); }
+  .wl-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .wl-sport { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--c-green) 26%, transparent); color: var(--c-green); }
+  .wl-gps { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 99px; background: var(--wl-card);
+    font-size: calc(var(--fs-caption) * var(--ts)); font-weight: 600; color: var(--c-green); }
+  .wl-sig { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .wl-sig > span { width: 3px; border-radius: 1px; background: currentColor; }
+  .wl-sig > span:nth-child(1) { height: 4px; } .wl-sig > span:nth-child(2) { height: 7px; }
+  .wl-sig > span:nth-child(3) { height: 10px; } .wl-sig > span:nth-child(4) { height: 12px; opacity: .3; }
+  .wl-timer { text-align: center; padding: 4px 0 2px; }
+  .wl-time { font: 600 calc(72px * var(--ts)) / 1 var(--ui-font-display); letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+  html[data-lang="apple"] .wl-time { color: var(--c-yellow); }
+  html[data-lang="google"] .wl-time { font-weight: 400; }
+  .wl-card { background: var(--wl-card); border-radius: var(--ui-radius-l); padding: 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .wl-label { display: flex; align-items: center; gap: 5px; font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 600; color: var(--c); }
+  .wl-val { font: 600 calc(26px * var(--ts)) / 1.1 var(--ui-font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .wl-val.big { font-size: calc(40px * var(--ts)); }
+  html[data-lang="google"] .wl-val { font-weight: 400; }
+  .wl-unit { font-size: calc(var(--fs-footnote) * var(--ts)); color: var(--ui-text-2); margin-left: 3px; font-weight: 500; }
+  .wl-zone { background: color-mix(in srgb, var(--c-orange) 24%, transparent); color: var(--c-orange); }
+  .wl-zones { display: flex; gap: 3px; align-items: center; height: 12px; margin-top: 4px; }
+  .wl-zones > span { flex: 1; height: 6px; border-radius: 99px; background: var(--c); opacity: .35; }
+  .wl-zones > .is-active { height: 12px; opacity: 1; box-shadow: 0 0 12px var(--c); }
+  .wl-zl { display: flex; color: var(--ui-text-3); } .wl-zl > span { flex: 1; text-align: center; }
+  .wl-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .wl-map { flex: 1; min-height: 128px; max-height: 220px; border-radius: var(--ui-radius-l); }
+  .wl-route { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .wl-route polyline { fill: none; stroke: var(--c-green); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .wl-start { position: absolute; width: 12px; height: 12px; translate: -50% -50%; border-radius: 50%; background: #fff; border: 3px solid var(--c-green); }
+  .wl-maptag { position: absolute; left: 10px; top: 10px; background: rgb(0 0 0 / 62%); color: #fff; }
+  .wl-ctrl { margin-top: auto; display: flex; justify-content: space-around; align-items: flex-end; padding-top: 6px; }
+  .wl-c { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 600; }
+  .wl-c .icon-btn { --b-bg: color-mix(in srgb, var(--c) 26%, transparent); --b-fg: var(--c); }
+  html[data-lang="google"] .wl-pause { --b-bg: var(--c); --b-fg: #000; }
+</style>
+</head>
+<body class="app" data-scheme-hint="dark">
+<main class="wl">
+  <header class="wl-top">
+    <div class="hstack gap-3">
+      <span class="wl-sport"><svg class="i"><use href="#i-walk"/></svg></span>
+      <div>
+        <div class="t-headline">户外跑步</div>
+        <div class="t-footnote wl-dim">开放目标 · 07:12 开始 · 滨江大道</div>
+      </div>
+    </div>
+    <span class="wl-gps" aria-label="GPS 信号良好"><span class="wl-sig"><span></span><span></span><span></span><span></span></span>GPS</span>
+  </header>
+
+  <section class="wl-timer">
+    <div class="wl-time">00:32:18</div>
+    <div class="t-footnote wl-dim mt-2">用时 · 第 6 公里</div>
+  </section>
+
+  <section class="wl-card">
+    <div class="hstack between">
+      <span class="wl-label" style="--c:var(--c-red)"><svg class="i sm solid"><use href="#i-heart-fill"/></svg>心率</span>
+      <span class="tag wl-zone">区间 4 · 有氧耐力 · 12:46</span>
+    </div>
+    <div><span class="wl-val big">152</span><span class="wl-unit">次/分 · 平均 146</span></div>
+    <div class="wl-zones" aria-label="心率区间">
+      <span style="--c:var(--c-blue)"></span><span style="--c:var(--c-teal)"></span><span style="--c:var(--c-green)"></span><span class="is-active" style="--c:var(--c-orange)"></span><span style="--c:var(--c-red)"></span>
+    </div>
+    <div class="wl-zl t-caption2"><span>&lt;118</span><span>118–133</span><span>134–148</span><span>149–163</span><span>164+</span></div>
+  </section>
+
+  <section class="wl-three">
+    <div class="wl-card">
+      <span class="wl-label" style="--c:var(--c-cyan)"><svg class="i sm"><use href="#i-gauge"/></svg>配速</span>
+      <span class="wl-val">5'42"</span>
+      <span class="t-caption2 wl-dim">平均 5'48" /公里</span>
+    </div>
+    <div class="wl-card">
+      <span class="wl-label" style="--c:var(--c-mint)"><svg class="i sm"><use href="#i-map-pin"/></svg>距离</span>
+      <span class="wl-val">5.64</span>
+      <span class="t-caption2 wl-dim">公里</span>
+    </div>
+    <div class="wl-card">
+      <span class="wl-label" style="--c:var(--c-pink)"><svg class="i sm"><use href="#i-flame"/></svg>千卡</span>
+      <span class="wl-val">386</span>
+      <span class="t-caption2 wl-dim">活动千卡</span>
+    </div>
+  </section>
+
+  <div class="art map wl-map" role="img" aria-label="跑步路线">
+    <svg class="wl-route" viewBox="0 0 362 128" preserveAspectRatio="none" aria-hidden="true">
+      <polyline points="34,104 58,90 92,88 120,70 150,68 170,50 198,42 224,56 252,46 284,52"/>
+    </svg>
+    <span class="wl-start" style="left:9.4%;top:81.25%"></span>
+    <span class="map-me" style="left:78.5%;top:40.5%"></span>
+    <span class="tag wl-maptag">第 5 公里 · 5'39"</span>
+  </div>
+
+  <footer class="wl-ctrl">
+    <div class="wl-c" style="--c:var(--c-cyan)"><button class="icon-btn lg" aria-label="锁定屏幕"><svg class="i"><use href="#i-lock"/></svg></button>锁定</div>
+    <div class="wl-c" style="--c:var(--c-yellow)"><button class="icon-btn xl wl-pause" aria-label="暂停"><svg class="i solid"><use href="#i-pause"/></svg></button>暂停</div>
+    <div class="wl-c" style="--c:var(--c-red)"><button class="icon-btn lg" aria-label="结束"><svg class="i"><use href="#i-close"/></svg></button>结束</div>
+  </footer>
+</main>
+</body>
+</html>

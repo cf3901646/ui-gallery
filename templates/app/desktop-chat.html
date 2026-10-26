@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title># 设计评审 · 云杉科技</title>
+<meta name="ui:title" content="团队协作聊天">
+<meta name="ui:desc" content="桌面团队聊天：工作区窄栏、频道与私信侧栏（在线、未读计数），消息区（代码块、文件卡片、表情回应、帖子回复）、格式化输入框和帖子窗格。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="desktop">
+<meta name="ui:tags" content="四栏,聊天,频道,代码块,帖子,输入框">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ch-split { height: 100dvh; --split-cols: 72px 248px minmax(0, 1fr) 340px; }
+  .ch-split > .pane { height: 100dvh; min-height: 0; }
+  .ch-split .avatar { --c-fg: #fff; font-style: normal; }
+  .ch-ws { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 0; }
+  .ch-ws .avatar { --size: 42px; border-radius: 12px; font-size: 17px; }
+  .ch-ws .is-active { box-shadow: 0 0 0 2px var(--ui-bg), 0 0 0 4px var(--ui-text); }
+  .ch-ws .icon-btn { border: 1px dashed var(--ui-line-strong); }
+  .ch-ws > :last-child { margin-top: auto; border-radius: 50%; }
+  .ch-head-ws { display: flex; align-items: center; gap: 6px; padding: 4px 6px 12px 12px; }
+  .ch-side .side-item .avatar { --size: 24px; font-size: 11px; }
+  .ch-side .ch-unread > span:first-of-type { font-weight: 700; color: var(--ui-text); }
+  .ch-side .avatar .presence { box-shadow: 0 0 0 2px var(--ui-surface); }
+  .ch-away .presence { background: var(--ui-text-4); }
+  .ch-main { background: var(--ui-bg-plain); display: flex; flex-direction: column; }
+  .ch-main > * { flex: none; }
+  .ch-bar { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 12px; padding: 14px 24px; background: var(--ui-bg-plain); border-bottom: 1px solid var(--ui-line); }
+  .ch-bar .avatar-stack .avatar { --size: 26px; font-size: 11px; }
+  .ch-bar .searchbar { width: 200px; height: 36px; }
+  .ch-feed { flex: 1 0 auto; padding: 8px 0 16px; }
+  .ch-day { margin: 8px 24px; }
+  .ch-msg { display: flex; gap: 12px; padding: 8px 24px; }
+  .ch-msg:hover { background: var(--ui-fill); }
+  .ch-msg .avatar { --size: 38px; font-size: 15px; }
+  .ch-msg > .grow { display: flex; flex-direction: column; gap: 4px; }
+  .ch-who { display: flex; align-items: baseline; gap: 8px; }
+  .ch-at { color: var(--ui-accent); background: var(--ui-accent-soft); border-radius: 4px; padding: 0 3px; }
+  .ch-msg pre { margin: 4px 0 0; max-width: 620px; font-size: 13px; }
+  .ch-file { flex-direction: row; align-items: center; gap: 12px; padding: 10px 12px; max-width: 380px; margin-top: 4px; }
+  .ch-file .art { width: 52px; height: 40px; border-radius: 8px; flex: none; }
+  .ch-file .grow { display: flex; flex-direction: column; }
+  .ch-react .chip { height: 26px; padding: 0 8px; gap: 4px; font-size: 12px; }
+  .ch-react .chip .i { --ui-icon: 14px; }
+  .ch-react .chip.is-active { background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); border-color: var(--ui-accent); }
+  .ch-thread { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 3px 8px 3px 3px; border-radius: 8px; }
+  .ch-thread .avatar { --size: 22px; font-size: 10px; }
+  .ch-compose { position: sticky; bottom: 0; margin-top: auto; padding: 0 24px 20px; background: var(--ui-bg-plain); }
+  .ch-box { border: 1px solid var(--ui-line-strong); border-radius: var(--ui-radius-m); background: var(--ui-surface); }
+  .ch-tools { display: flex; align-items: center; gap: 2px; padding: 4px 6px; }
+  .ch-tools .icon-btn { --ui-icon-btn: 32px; --b-fg: var(--ui-text-2); }
+  .ch-tools .icon-btn .i { --ui-icon: 18px; }
+  .ch-tools .ch-vsep { width: 1px; height: 18px; background: var(--ui-line); margin: 0 4px; }
+  .ch-input { width: 100%; border: 0; outline: 0; resize: none; background: none; color: var(--ui-text); padding: 4px 14px; min-height: 44px; font-size: calc(var(--fs-callout) * var(--ts)); }
+  .ch-input::placeholder { color: var(--ui-text-3); }
+  .ch-thr { border-left: 1px solid var(--ui-line); background: var(--ui-bg-plain); display: flex; flex-direction: column; }
+  .ch-thr > * { flex: none; }
+  .ch-thr .ch-bar { padding: 14px 16px; }
+  .ch-thr .ch-msg { padding: 8px 16px; }
+  .ch-thr .ch-msg .avatar { --size: 32px; font-size: 13px; }
+  .ch-thr .ch-compose { padding: 0 16px 16px; }
+  .ch-thr .divider.label { margin: 8px 16px; }
+</style>
+</head>
+<body class="app">
+<div class="split ch-split">
+  <nav class="pane ch-ws" aria-label="工作区">
+    <span class="avatar is-active" style="--c:linear-gradient(135deg,#34c47c,#0f9b8e)">云</span>
+    <span class="avatar" style="--c:linear-gradient(135deg,#b36bff,#5a5cf0)">设</span>
+    <button class="icon-btn sm" aria-label="添加工作区"><svg class="i"><use href="#i-plus"/></svg></button>
+    <span class="avatar sm" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">林<span class="presence"></span></span>
+  </nav>
+
+  <aside class="pane ch-side">
+    <nav class="sidebar floating">
+      <div class="ch-head-ws"><span class="t-headline grow">云杉科技</span><button class="icon-btn sm" aria-label="新消息"><svg class="i"><use href="#i-edit"/></svg></button></div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-message"/></svg><span>帖子</span></a>
+      <a class="side-item ch-unread" href="#"><svg class="i"><use href="#i-at"/></svg><span>提及与回应</span><span class="badge">2</span></a>
+      <div class="sidebar-section">频道</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-hash"/></svg><span>公告</span></a>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-hash"/></svg><span>设计评审</span></a>
+      <a class="side-item ch-unread" href="#"><svg class="i"><use href="#i-hash"/></svg><span>前端</span><span class="badge">5</span></a>
+      <a class="side-item ch-unread" href="#"><svg class="i"><use href="#i-hash"/></svg><span>产品需求</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-lock"/></svg><span>云杉计划-核心组</span></a>
+      <div class="sidebar-section">私信</div>
+      <a class="side-item" href="#"><i class="avatar" style="--c:#ff7a59">周<span class="presence"></span></i><span>周以宁</span></a>
+      <a class="side-item ch-unread" href="#"><i class="avatar" style="--c:#4f8dff">陈<span class="presence"></span></i><span>陈默</span><span class="badge">1</span></a>
+      <a class="side-item ch-away" href="#"><i class="avatar" style="--c:#34c47c">许<span class="presence"></span></i><span>许嘉禾</span></a>
+      <a class="side-item" href="#"><i class="avatar" style="--c:#ffb33c">何<span class="presence"></span></i><span>何嘉</span></a>
+    </nav>
+  </aside>
+
+  <main class="pane ch-main">
+    <header class="ch-bar">
+      <div class="grow"><div class="t-headline"># 设计评审</div><div class="t-footnote t-2 ellipsis">日历 2.0 设计讨论 · 每周四 14:00 评审</div></div>
+      <span class="avatar-stack"><span class="avatar" style="--c:#ff7a59">周</span><span class="avatar" style="--c:#4f8dff">陈</span><span class="avatar" style="--c:#34c47c">许</span><span class="avatar" style="--c:#b36bff">苏</span></span>
+      <span class="t-footnote t-2">16</span>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索频道"></label>
+      <button class="icon-btn" aria-label="频道详情"><svg class="i"><use href="#i-info"/></svg></button>
+    </header>
+
+    <div class="ch-feed">
+      <div class="divider label ch-day">今天 · 10 月 21 日</div>
+      <div class="ch-msg">
+        <span class="avatar" style="--c:#b36bff">苏</span>
+        <div class="grow">
+          <div class="ch-who"><span class="t-subhead t-semibold">苏晴</span><span class="t-caption t-2">10:02</span></div>
+          <p class="t-callout">日历 2.0 的空状态插画改好了，两版配色都放在下面这个文件里，大家看下更喜欢 A 还是 B。</p>
+          <a class="card outlined ch-file" href="#"><span class="art a8"></span><span class="grow"><span class="t-subhead t-semibold ellipsis">空状态插画-v3.fig</span><span class="t-caption t-2">设计文件 · 12.6 MB</span></span><svg class="i sm t-2"><use href="#i-external"/></svg></a>
+          <div class="chips ch-react"><button class="chip is-active"><svg class="i"><use href="#i-heart"/></svg>4</button><button class="chip"><svg class="i"><use href="#i-circle-check"/></svg>2</button><button class="chip" aria-label="添加回应"><svg class="i"><use href="#i-smile"/></svg></button></div>
+          <a class="ch-thread" href="#"><span class="avatar-stack"><span class="avatar" style="--c:#ff7a59">周</span><span class="avatar" style="--c:#ffb33c">何</span></span><span class="t-footnote t-semibold t-accent">3 条回复</span><span class="t-caption t-2">最后回复 10:31</span></a>
+        </div>
+      </div>
+      <div class="ch-msg">
+        <span class="avatar" style="--c:#4f8dff">陈</span>
+        <div class="grow">
+          <div class="ch-who"><span class="t-subhead t-semibold">陈默</span><span class="t-caption t-2">10:15</span></div>
+          <p class="t-callout">日历同步接口的超时我调成 8 秒了，客户端重试逻辑改成了指数退避：</p>
+<pre class="code-block"><code>const res = await syncCalendar(userId, {
+  timeout: 8000,
+  retry: { times: 3, backoff: 'exponential' },
+});</code></pre>
+          <div class="chips ch-react"><button class="chip"><svg class="i"><use href="#i-zap"/></svg>3</button></div>
+        </div>
+      </div>
+      <div class="ch-msg">
+        <span class="avatar" style="--c:#34c47c">许</span>
+        <div class="grow">
+          <div class="ch-who"><span class="t-subhead t-semibold">许嘉禾</span><span class="t-caption t-2">10:28</span></div>
+          <p class="t-callout"><span class="ch-at">@陈默</span> 收到，我下午用 iPad 和 Pixel Tablet 各回归一遍，有问题直接在这条下面回复。</p>
+        </div>
+      </div>
+      <div class="ch-msg">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">林</span>
+        <div class="grow">
+          <div class="ch-who"><span class="t-subhead t-semibold">林知夏</span><span class="t-caption t-2">10:40</span></div>
+          <p class="t-callout">提醒：周四 14:00 的评审改到西溪园区 3F 西湖厅，线上同步开腾讯会议 618-204-993。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ch-compose">
+      <div class="ch-box">
+        <div class="ch-tools">
+          <button class="icon-btn" aria-label="粗体"><svg class="i"><use href="#i-bold"/></svg></button>
+          <button class="icon-btn" aria-label="斜体"><svg class="i"><use href="#i-italic"/></svg></button>
+          <button class="icon-btn" aria-label="链接"><svg class="i"><use href="#i-link"/></svg></button>
+          <span class="ch-vsep"></span>
+          <button class="icon-btn" aria-label="列表"><svg class="i"><use href="#i-list"/></svg></button>
+          <button class="icon-btn" aria-label="代码块"><svg class="i"><use href="#i-code"/></svg></button>
+        </div>
+        <textarea class="ch-input" rows="1" placeholder="发消息到 # 设计评审"></textarea>
+        <div class="ch-tools">
+          <button class="icon-btn" aria-label="附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+          <button class="icon-btn" aria-label="提及"><svg class="i"><use href="#i-at"/></svg></button>
+          <button class="icon-btn" aria-label="表情"><svg class="i"><use href="#i-smile"/></svg></button>
+          <span class="grow"></span>
+          <button class="btn filled xs"><svg class="i"><use href="#i-send"/></svg>发送</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="pane ch-thr">
+    <header class="ch-bar">
+      <div class="grow"><div class="t-headline">帖子</div><div class="t-footnote t-2"># 设计评审</div></div>
+      <button class="icon-btn sm" aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button>
+    </header>
+    <div class="ch-msg">
+      <span class="avatar" style="--c:#b36bff">苏</span>
+      <div class="grow"><div class="ch-who"><span class="t-subhead t-semibold">苏晴</span><span class="t-caption t-2">10:02</span></div>
+        <p class="t-subhead">日历 2.0 的空状态插画改好了，大家看下更喜欢 A 还是 B。</p></div>
+    </div>
+    <div class="divider label">3 条回复</div>
+    <div class="ch-msg">
+      <span class="avatar" style="--c:#ff7a59">周</span>
+      <div class="grow"><div class="ch-who"><span class="t-subhead t-semibold">周以宁</span><span class="t-caption t-2">10:12</span></div>
+        <p class="t-subhead">投 B，橙色和品牌主色更统一，暗色模式下也不刺眼。</p></div>
+    </div>
+    <div class="ch-msg">
+      <span class="avatar" style="--c:#ffb33c">何</span>
+      <div class="grow"><div class="ch-who"><span class="t-subhead t-semibold">何嘉</span><span class="t-caption t-2">10:20</span></div>
+        <p class="t-subhead">B +1。不过插画里日历图标的线条有点细，缩到 64px 会糊。</p></div>
+    </div>
+    <div class="ch-msg">
+      <span class="avatar" style="--c:#b36bff">苏</span>
+      <div class="grow"><div class="ch-who"><span class="t-subhead t-semibold">苏晴</span><span class="t-caption t-2">10:31</span></div>
+        <p class="t-subhead">好，线条加粗到 2px，下午 3 点前再出一版。</p></div>
+    </div>
+    <div class="ch-compose">
+      <div class="ch-box">
+        <textarea class="ch-input" rows="2" placeholder="回复…"></textarea>
+        <div class="ch-tools">
+          <label class="hstack gap-2 t-footnote t-2 px-4"><input type="checkbox" class="check">同时发到频道</label>
+          <span class="grow"></span>
+          <button class="btn filled xs" aria-label="发送"><svg class="i"><use href="#i-send"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

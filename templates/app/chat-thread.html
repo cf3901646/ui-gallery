@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>陈一舟</title>
+<meta name="ui:title" content="聊天会话">
+<meta name="ui:desc" content="一对一聊天：顶栏头像、名字与在线状态、语音和视频通话；日期分隔、来回气泡、图片气泡、语音消息（播放、波形、时长）、表情回应、已读状态和“正在输入”动画，底部输入栏。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="聊天,气泡,语音消息,输入栏,在线状态">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html { --ui-bg: var(--ui-bg-plain); }
+  .avatar { --c-fg: #fff; }
+  .bar-group { border-radius: var(--ui-radius-full); }
+  .ct-who { display: inline-flex; align-items: center; gap: 10px; text-align: left; }
+  .ct-who .avatar { --size: 36px; }
+  .ct-who > span:last-child { display: flex; flex-direction: column; line-height: 1.25; }
+  .ct-who .topbar-sub { display: flex; align-items: center; gap: 5px; text-align: left; }
+  .ct-who .topbar-sub::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ui-success); }
+  html[data-lang="google"] .ct-name { font-size: calc(18px * var(--ts)); }
+  html[data-lang="google"] .ct-who .topbar-sub { font-size: calc(var(--fs-footnote) * var(--ts)); }
+
+  .ct { padding-top: 4px; }
+  .ct-pic { padding: 0; width: 54%; overflow: hidden; background: none; }
+  .ct-pic > .art > .i { --ui-icon: 32px; }
+  .ct-gap { margin-bottom: 18px; }
+  .bubble.ct-gap { position: relative; }
+  .ct-tap { position: absolute; right: -4px; bottom: -18px; display: inline-flex; align-items: center; gap: 2px; padding: 2px 7px;
+    border-radius: 99px; background: var(--ui-surface); color: var(--ui-text-2); font-size: 13px; line-height: 20px;
+    box-shadow: 0 0 0 2px var(--ui-bg-plain), var(--ui-shadow-1); }
+  html[data-lang="apple"] .ct-tap { background: var(--ui-surface-3); }
+  .ct-tap .i { --ui-icon: 14px; color: var(--c-red); }
+  .ct-status { align-self: flex-end; color: var(--ui-text-3); margin: 2px 4px 0; }
+
+  .ct-voice { display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; }
+  .ct-play { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none;
+    background: color-mix(in srgb, currentColor 22%, transparent); }
+  .ct-play .i { --ui-icon: 16px; }
+  .ct-wave { display: flex; align-items: center; gap: 2px; height: 26px; }
+  .ct-wave i { width: 3px; height: var(--h); border-radius: 2px; background: currentColor; }
+  .ct-wave i.ct-rest { opacity: .42; }
+
+  .ct-typing-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .ct-typing { display: flex; gap: 4px; padding: 14px 16px; }
+  .ct-typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--ui-text-3); animation: ct-dot 1.2s ease-in-out infinite; }
+  .ct-typing i:nth-child(2) { animation-delay: .15s; } .ct-typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes ct-dot { 0%, 60%, 100% { opacity: .35; translate: 0 0; } 30% { opacity: 1; translate: 0 -3px; } }
+
+  .composer-input { justify-content: space-between; padding-right: 8px; }
+  .composer-input .i { --ui-icon: 22px; color: var(--ui-text-2); }
+  .composer .icon-btn { --b-fg: var(--ui-text-2); }
+  html[data-lang="apple"] .composer .icon-btn { --ui-icon-btn: 40px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead">
+      <a class="bar-btn back" href="#" aria-label="返回"><svg class="i"><use href="#i-back"/></svg></a>
+    </div>
+    <div class="topbar-title">
+      <span class="ct-who">
+        <span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span>
+        <span><span class="ct-name">陈一舟</span><span class="topbar-sub">在线</span></span>
+      </span>
+    </div>
+    <div class="topbar-trail">
+      <div class="bar-group">
+        <button class="bar-btn" aria-label="语音通话"><svg class="i"><use href="#i-phone"/></svg></button>
+        <button class="bar-btn" aria-label="视频通话"><svg class="i"><use href="#i-video"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="content ct">
+    <div class="bubble-list">
+      <span class="bubble-meta">今天 09:12</span>
+      <div class="bubble">早！周五评审会的材料你看了吗？</div>
+      <div class="bubble out ct-gap">看了，第 12 页的 7 日留存应该是 38%，不是 83%，录的时候写反了<span class="ct-tap"><svg class="i solid"><use href="#i-heart-fill"/></svg>1</span></div>
+      <div class="bubble">哈哈被你发现了，我马上改</div>
+      <div class="bubble ct-pic"><div class="art a5 ratio-4x3" role="img" aria-label="西溪湿地的照片"><svg class="i"><use href="#i-image"/></svg></div></div>
+      <div class="bubble">昨天傍晚在西溪拍的</div>
+
+      <span class="bubble-meta">09:41</span>
+      <div class="bubble out">光线太好了！周五开完会一起去拍？</div>
+      <div class="bubble out ct-voice" aria-label="语音消息 18 秒">
+        <span class="ct-play"><svg class="i solid"><use href="#i-play"/></svg></span>
+        <span class="ct-wave" aria-hidden="true"><i style="--h:30%"></i><i style="--h:55%"></i><i style="--h:80%"></i><i style="--h:45%"></i><i style="--h:95%"></i><i style="--h:60%"></i><i style="--h:35%"></i><i style="--h:70%"></i><i style="--h:50%"></i><i class="ct-rest" style="--h:85%"></i><i class="ct-rest" style="--h:40%"></i><i class="ct-rest" style="--h:65%"></i><i class="ct-rest" style="--h:30%"></i><i class="ct-rest" style="--h:75%"></i><i class="ct-rest" style="--h:55%"></i><i class="ct-rest" style="--h:25%"></i><i class="ct-rest" style="--h:45%"></i><i class="ct-rest" style="--h:60%"></i><i class="ct-rest" style="--h:35%"></i><i class="ct-rest" style="--h:20%"></i></span>
+        <span class="t-caption t-num">0:18</span>
+      </div>
+      <span class="ct-status t-caption">已读 09:42</span>
+      <div class="ct-typing-row">
+        <div class="bubble ct-typing" aria-label="对方正在输入"><i></i><i></i><i></i></div>
+        <span class="t-caption t-3">对方正在输入…</span>
+      </div>
+    </div>
+  </main>
+
+  <div class="composer">
+    <button class="icon-btn" aria-label="更多"><svg class="i"><use href="#i-plus"/></svg></button>
+    <div class="composer-input"><span>发消息</span><svg class="i"><use href="#i-smile"/></svg></div>
+    <button class="icon-btn" aria-label="按住说话"><svg class="i"><use href="#i-mic"/></svg></button>
+  </div>
+</div>
+</body>
+</html>

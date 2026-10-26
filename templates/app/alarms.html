@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>闹钟</title>
+<meta name="ui:title" content="闹钟与计时器">
+<meta name="ui:desc" content="时钟应用的闹钟页：睡眠|起床卡片、大号细字重时间的闹钟列表与开关、正在倒计时的计时器卡片（进度环 + 暂停/取消）。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="闹钟,开关,进度环,计时器,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .al-sleep { gap: 10px; }
+  .al-sleep .al-sleep-head { display: flex; align-items: center; gap: 6px; color: var(--c-orange); font-weight: 600; }
+  .al-sleep .al-sleep-head .i { --ui-icon: 18px; }
+  .al-sleep .hstack { align-items: flex-end; }
+  .al-range { font-weight: 300; font-variant-numeric: tabular-nums; }
+  .al-list .row { padding-block: 10px; }
+  .al-time { display: flex; align-items: baseline; gap: 4px; font: 300 calc(48px * var(--ts)) / 1.05 var(--ui-font-display); letter-spacing: -1px;
+    font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .al-time { font-weight: 400; font-size: calc(44px * var(--ts)); letter-spacing: 0; }
+  .al-time small { font-size: calc(var(--fs-title3) * var(--ts)); font-weight: 400; letter-spacing: 0; }
+  .al-off .al-time, .al-off .row-sub { color: var(--ui-text-3); }
+  .al-timer { flex-direction: row; align-items: center; gap: 16px; }
+  .al-timer .ring-wrap strong { font: 500 calc(22px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  .al-timer .ring-wrap span { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .al-timer .btn-row { gap: 8px; margin-top: 10px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><button class="bar-btn only-apple">编辑</button></div>
+    <div class="topbar-title">闹钟</div>
+    <div class="topbar-trail">
+      <button class="bar-btn only-apple" aria-label="添加闹钟"><svg class="i"><use href="#i-plus"/></svg></button>
+      <button class="bar-btn only-google" aria-label="更多"><svg class="i"><use href="#i-more-vert"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">闹钟</h1>
+
+    <div class="card pad al-sleep">
+      <span class="al-sleep-head t-subhead"><svg class="i"><use href="#i-bed"/></svg>睡眠 | 起床</span>
+      <div class="hstack between">
+        <div class="stack gap-1">
+          <span class="t-title1 al-range">23:30 – 07:00</span>
+          <span class="t-footnote t-2">工作日 · 睡眠目标 7 小时 30 分钟 · 就寝提醒提前 30 分钟</span>
+        </div>
+        <button class="btn tonal sm">更改</button>
+      </div>
+    </div>
+
+    <section class="group">
+      <h2 class="group-header">正在计时</h2>
+      <div class="card pad al-timer">
+        <div class="ring-wrap">
+          <div class="ring" style="--value:62;--size:108px;--stroke:8px;--ring-color:var(--c-orange)"></div>
+          <span><strong>11:24</strong><span class="t-caption t-2">剩余</span></span>
+        </div>
+        <div class="grow">
+          <strong class="t-headline">炖牛腩</strong>
+          <p class="t-footnote t-2">共 30 分钟 · 14:58 结束</p>
+          <div class="btn-row">
+            <button class="btn tonal sm"><svg class="i"><use href="#i-pause"/></svg>暂停</button>
+            <button class="btn neutral sm">取消</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">其他闹钟</h2>
+      <ul class="list al-list">
+        <li><label class="row">
+          <span class="row-body"><span class="al-time"><small>上午</small>06:30</span><span class="row-sub">起床，工作日</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li><label class="row">
+          <span class="row-body"><span class="al-time"><small>上午</small>07:15</span><span class="row-sub">晨跑，每周二、周四</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li class="al-off"><label class="row">
+          <span class="row-body"><span class="al-time"><small>上午</small>08:30</span><span class="row-sub">周末，每周六、周日</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><label class="row">
+          <span class="row-body"><span class="al-time"><small>下午</small>01:50</span><span class="row-sub">午休结束，工作日</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+        <li class="al-off"><label class="row">
+          <span class="row-body"><span class="al-time"><small>下午</small>06:00</span><span class="row-sub">健身房，每周一、周三</span></span>
+          <input type="checkbox" class="switch">
+        </label></li>
+        <li><label class="row">
+          <span class="row-body"><span class="al-time"><small>下午</small>09:45</span><span class="row-sub">吃药（维生素 D），每天</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label></li>
+      </ul>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab" href="#"><svg class="i"><use href="#i-globe"/></svg><span>世界时钟</span></a>
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-bell-fill"/></svg><span>闹钟</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-clock"/></svg><span>秒表</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-history"/></svg><span>计时器</span><span class="badge dot"></span></a>
+  </nav>
+  <button class="fab only-google" aria-label="添加闹钟"><svg class="i"><use href="#i-plus"/></svg></button>
+</div>
+</body>
+</html>

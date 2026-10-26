@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>备忘录</title>
+<meta name="ui:title" content="平板笔记">
+<meta name="ui:desc" content="平板双栏笔记：左栏文件夹与按时间分组的笔记列表（缩略图、选中态），右侧编辑区（标题、正文、清单、配图）、右上工具按钮和底部浮动格式工具栏。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="tablet">
+<meta name="ui:tags" content="双栏,侧栏,笔记,清单,浮动工具栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .nt-split { height: 100dvh; --split-cols: 350px 1fr; }
+  .nt-split > .pane { height: 100dvh; min-height: 0; }
+  .nt-editor { background: var(--ui-bg-plain); }
+  .nt-side .searchbar { margin: 0 4px 6px; }
+  .nt-side .group-header { padding: 18px 12px 8px; }
+  .nt-side .list { margin: 0 4px; }
+  .nt-note { align-items: center; gap: 12px; }
+  .nt-note .row-body { gap: 2px; }
+  .nt-note .row-sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .nt-note .row-sub b { font-weight: 400; color: var(--ui-text); margin-right: 6px; }
+  .nt-folder { display: flex; align-items: center; gap: 4px; }
+  .nt-folder .i { --ui-icon: 13px; }
+  .nt-thumb { width: 48px; height: 48px; border-radius: 10px; flex: none; }
+  .nt-list > li.is-active { background: color-mix(in srgb, var(--c-yellow) 32%, var(--ui-surface)); }
+  .nt-list > li.is-active::before, .nt-list > li.is-active + li::before { opacity: 0; }
+  html[data-lang="google"] .nt-list > li.is-active { background: var(--md-secondary-container); color: var(--md-on-secondary-container); }
+
+  .nt-top { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; gap: 8px; padding: 12px 16px; }
+  .nt-top .bar-group { border-radius: var(--ui-radius-full); }
+  .nt-doc { max-width: 680px; margin: 0 auto; padding: 0 40px 140px; display: flex; flex-direction: column; gap: 14px; }
+  .nt-date { text-align: center; color: var(--ui-text-3); }
+  .nt-doc h1 { margin-bottom: 2px; }
+  .nt-doc h2 { margin-top: 10px; }
+  .nt-todos { display: flex; flex-direction: column; gap: 10px; }
+  .nt-todo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .nt-todo:has(:checked) > span { text-decoration: line-through; color: var(--ui-text-2); }
+  .nt-days { padding-left: 1.3em; list-style: disc; display: flex; flex-direction: column; gap: 6px; }
+  .nt-days b { font-weight: 600; margin-right: 6px; }
+  .nt-photo { border-radius: var(--ui-radius-l); aspect-ratio: 16 / 9; }
+  .nt-cap { text-align: center; color: var(--ui-text-3); margin-top: -4px; }
+  .nt-hl { background: color-mix(in srgb, var(--c-yellow) 38%, transparent); border-radius: 4px; padding: 0 2px; }
+  .nt-dock { position: sticky; bottom: 20px; z-index: 3; display: flex; justify-content: center; align-items: center; gap: 12px; pointer-events: none; }
+  .nt-dock > * { pointer-events: auto; }
+  .nt-sep { width: 1px; height: 24px; background: var(--ui-line); margin: 0 4px; }
+</style>
+</head>
+<body class="app">
+<div class="split nt-split">
+  <aside class="pane nt-side">
+    <nav class="sidebar floating">
+      <div class="sidebar-title t-title1">备忘录</div>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索"><svg class="i only-apple"><use href="#i-mic"/></svg></label>
+      <div class="sidebar-section">文件夹</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-folder"/></svg><span>全部笔记</span><span class="count">128</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-folder"/></svg><span>工作</span><span class="count">42</span></a>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-folder-fill"/></svg><span>旅行</span><span class="count">18</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-users"/></svg><span>家庭共享</span><span class="count">9</span></a>
+
+      <h2 class="group-header">置顶</h2>
+      <ul class="list nt-list">
+        <li class="is-active"><a class="row nt-note" href="#">
+          <span class="row-body">
+            <span class="row-title t-headline">京都 · 秋日五日行程</span>
+            <span class="row-sub t-subhead"><b class="t-num">21:36</b>红叶季住岚山，第 3 天去伏见稻荷</span>
+            <span class="row-overline nt-folder"><svg class="i"><use href="#i-folder"/></svg>旅行</span>
+          </span>
+          <span class="art a11 nt-thumb"></span>
+        </a></li>
+      </ul>
+      <h2 class="group-header">过去 7 天</h2>
+      <ul class="list nt-list">
+        <li><a class="row nt-note" href="#">
+          <span class="row-body">
+            <span class="row-title t-headline">行李清单（10 月 28 日出差）</span>
+            <span class="row-sub t-subhead"><b>星期一</b>充电器、转换插头、西装外套</span>
+            <span class="row-overline nt-folder"><svg class="i"><use href="#i-checklist"/></svg>已完成 9/14</span>
+          </span>
+        </a></li>
+        <li><a class="row nt-note" href="#">
+          <span class="row-body">
+            <span class="row-title t-headline">大理民宿备选</span>
+            <span class="row-sub t-subhead"><b>星期日</b>喜洲古镇 · 苍逸，¥680/晚含早</span>
+            <span class="row-overline nt-folder"><svg class="i"><use href="#i-folder"/></svg>旅行</span>
+          </span>
+          <span class="art a10 nt-thumb"></span>
+        </a></li>
+        <li><a class="row nt-note" href="#">
+          <span class="row-body">
+            <span class="row-title t-headline">日本签证材料</span>
+            <span class="row-sub t-subhead"><b>10/17</b>在职证明、近 6 个月银行流水</span>
+            <span class="row-overline nt-folder"><svg class="i"><use href="#i-lock"/></svg>已锁定</span>
+          </span>
+        </a></li>
+        <li><a class="row nt-note" href="#">
+          <span class="row-body">
+            <span class="row-title t-headline">西湖环湖骑行路线</span>
+            <span class="row-sub t-subhead"><b>10/15</b>断桥 → 苏堤 → 杨公堤，全程 17 km</span>
+            <span class="row-overline nt-folder"><svg class="i"><use href="#i-map-pin"/></svg>杭州</span>
+          </span>
+          <span class="art map nt-thumb"></span>
+        </a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <section class="pane nt-editor">
+    <div class="nt-top">
+      <button class="bar-btn glass" aria-label="显示边栏"><svg class="i"><use href="#i-sidebar"/></svg></button>
+      <span class="grow"></span>
+      <div class="bar-group">
+        <button class="bar-btn" aria-label="撤销"><svg class="i"><use href="#i-undo"/></svg></button>
+        <button class="bar-btn" aria-label="共享"><svg class="i"><use href="#i-share"/></svg></button>
+        <button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </div>
+      <button class="bar-btn glass only-apple" aria-label="新建笔记"><svg class="i"><use href="#i-edit"/></svg></button>
+    </div>
+
+    <article class="nt-doc">
+      <p class="nt-date t-footnote">2026 年 10 月 21 日 21:36 · 与许嘉禾共享</p>
+      <h1 class="t-large-title">京都 · 秋日五日行程</h1>
+      <p class="t-body">11 月 14 日—18 日，正好是<span class="nt-hl">红叶最佳观赏期</span>。住岚山附近，早上 7 点前去竹林，能避开大部分旅行团。</p>
+
+      <h2 class="t-title3">出发前</h2>
+      <div class="nt-todos t-body">
+        <label class="nt-todo"><input type="checkbox" class="check" checked><span>订关西机场 → 京都 HARUKA 车票（¥3,600 / 人）</span></label>
+        <label class="nt-todo"><input type="checkbox" class="check" checked><span>岚山 · 星野屋 2 晚，已付定金 ¥4,200</span></label>
+        <label class="nt-todo"><input type="checkbox" class="check"><span>换 5 万日元现金，ICOCA 卡加进钱包</span></label>
+        <label class="nt-todo"><input type="checkbox" class="check"><span>确认清水寺夜间特别参拜时间（17:30–21:00）</span></label>
+      </div>
+
+      <h2 class="t-title3">每日安排</h2>
+      <ul class="nt-days t-body">
+        <li><b>第 1 天</b>关西机场 → 京都站，晚上逛锦市场</li>
+        <li><b>第 2 天</b>岚山竹林、天龙寺、嵯峨野小火车</li>
+        <li><b>第 3 天</b>伏见稻荷大社（6:30 出发）→ 东福寺通天桥</li>
+        <li><b>第 4 天</b>哲学之道、南禅寺水路阁，晚上永观堂夜枫</li>
+      </ul>
+      <div class="art a11 nt-photo"><svg class="i xl"><use href="#i-leaf"/></svg></div>
+      <p class="nt-cap t-footnote">东福寺通天桥 · 去年 11 月 20 日拍的，人比现在多三倍</p>
+      <p class="t-body">预算：每人约 ¥9,800（不含机票），餐饮按每天 ¥450 算。</p>
+    </article>
+
+    <div class="nt-dock">
+      <div class="toolbar floating inline">
+        <button class="icon-btn" aria-label="文本格式"><svg class="i"><use href="#i-type"/></svg></button>
+        <button class="icon-btn" aria-label="清单"><svg class="i"><use href="#i-checklist"/></svg></button>
+        <button class="icon-btn" aria-label="表格"><svg class="i"><use href="#i-grid"/></svg></button>
+        <button class="icon-btn" aria-label="附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+        <button class="icon-btn" aria-label="拍照"><svg class="i"><use href="#i-camera"/></svg></button>
+        <span class="nt-sep"></span>
+        <button class="icon-btn" aria-label="标记"><svg class="i"><use href="#i-edit"/></svg></button>
+      </div>
+      <button class="fab static only-google" aria-label="新建笔记"><svg class="i"><use href="#i-plus"/></svg></button>
+    </div>
+  </section>
+</div>
+</body>
+</html>

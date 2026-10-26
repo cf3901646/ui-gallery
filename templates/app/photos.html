@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>图库</title>
+<meta name="ui:title" content="相册">
+<meta name="ui:desc" content="照片图库：回忆大卡片横滑、按日期与地点分组的三列照片网格（视频时长、收藏标记），底部浮动玻璃分段控件切换年/月/全部。">
+<meta name="ui:category" content="媒体与娱乐">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="照片,网格,横滑,玻璃,分段控件">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .content { padding-bottom: calc(var(--safe-bottom) + 88px); }
+  .ph-count { margin: -6px 0 4px; }
+  html[data-lang="google"] .ph-count { margin-top: -14px; }
+  .ph-mem { aspect-ratio: 1.12; min-height: 0; }
+  .ph-mem .card-body { gap: 2px; }
+  .ph-mem .t-caption { opacity: .85; font-weight: 600; }
+  .ph-day-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 22px 0 8px; }
+  .ph-day-head .icon-btn { margin-right: -8px; }
+  .ph-grid > a { position: relative; }
+  .ph-dur { position: absolute; right: 6px; bottom: 4px; color: #fff; font-size: 12px; font-weight: 600; text-shadow: 0 1px 3px rgb(0 0 0 / 50%);
+    font-variant-numeric: tabular-nums; }
+  .ph-fav { position: absolute; left: 6px; bottom: 6px; --ui-icon: 16px; color: #fff; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 45%)); }
+  .ph-seg { position: fixed; z-index: 30; left: 50%; translate: -50% 0; bottom: calc(var(--safe-bottom) + 10px); width: 272px; padding: 4px;
+    border-radius: var(--ui-radius-full); }
+  .ph-seg .segmented { --ui-seg-h: 36px; }
+  html[data-lang="apple"] .ph-seg .segmented { background: transparent; }
+  html[data-lang="google"] .ph-seg { background: var(--md-surface-container-high); box-shadow: var(--ui-shadow-2); }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">图库</div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+      <button class="bar-btn only-apple">选择</button>
+      <span class="avatar sm only-google" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">林</span>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">图库</h1>
+    <p class="ph-count t-footnote t-2">12,486 张照片 · 842 个视频 · 已同步到云端</p>
+
+    <section class="group">
+      <h2 class="group-header large">回忆 <a class="t-subhead" href="#">查看全部</a></h2>
+      <div class="carousel" style="--item:80%">
+        <a class="card media-fill ph-mem" href="#"><div class="art a5"></div><div class="card-body"><span class="t-caption">本周</span><span class="card-title">西湖的秋天</span><span class="card-sub">10 月 14 日 · 38 项</span></div></a>
+        <a class="card media-fill ph-mem" href="#"><div class="art a3"></div><div class="card-body"><span class="t-caption">新回忆</span><span class="card-title">莫干山的周末</span><span class="card-sub">10 月 10 日 – 11 日 · 64 项</span></div></a>
+        <a class="card media-fill ph-mem" href="#"><div class="art a4"></div><div class="card-body"><span class="t-caption">去年今日</span><span class="card-title">外滩夜景</span><span class="card-sub">2025 年 10 月 16 日 · 21 项</span></div></a>
+      </div>
+    </section>
+
+    <section>
+      <div class="ph-day-head">
+        <div><h2 class="t-headline">10 月 14 日 星期三</h2><span class="t-footnote t-2">杭州 · 西湖区</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </div>
+      <div class="media-grid bleed ph-grid" style="--cols:3;--gap:2px">
+        <a class="art a2 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a10 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a5 ratio-1" href="#" aria-label="视频"><span class="ph-dur">0:42</span></a>
+        <a class="art a3 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a8 ratio-1" href="#" aria-label="已收藏的照片"><svg class="i solid ph-fav"><use href="#i-heart-fill"/></svg></a>
+        <a class="art a1 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a7 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a12 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a9 ratio-1" href="#" aria-label="照片"></a>
+      </div>
+    </section>
+
+    <section>
+      <div class="ph-day-head">
+        <div><h2 class="t-headline">10 月 11 日 星期日</h2><span class="t-footnote t-2">湖州 · 莫干山</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </div>
+      <div class="media-grid bleed ph-grid" style="--cols:3;--gap:2px">
+        <a class="art a3 ratio-1" href="#" aria-label="已收藏的照片"><svg class="i solid ph-fav"><use href="#i-heart-fill"/></svg></a>
+        <a class="art a10 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a6 ratio-1" href="#" aria-label="视频"><span class="ph-dur">1:12</span></a>
+        <a class="art a5 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a7 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a11 ratio-1" href="#" aria-label="照片"></a>
+      </div>
+    </section>
+
+    <section>
+      <div class="ph-day-head">
+        <div><h2 class="t-headline">10 月 3 日 星期六</h2><span class="t-footnote t-2">上海 · 外滩</span></div>
+        <button class="icon-btn sm" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+      </div>
+      <div class="media-grid bleed ph-grid" style="--cols:3;--gap:2px">
+        <a class="art a9 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a4 ratio-1" href="#" aria-label="已收藏的照片"><svg class="i solid ph-fav"><use href="#i-heart-fill"/></svg></a>
+        <a class="art a1 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a2 ratio-1" href="#" aria-label="视频"><span class="ph-dur">0:18</span></a>
+        <a class="art a11 ratio-1" href="#" aria-label="照片"></a>
+        <a class="art a6 ratio-1" href="#" aria-label="照片"></a>
+      </div>
+    </section>
+  </main>
+
+  <div class="ph-seg glass">
+    <div class="segmented"><button>年</button><button>月</button><button class="is-active">全部照片</button></div>
+  </div>
+</div>
+</body>
+</html>

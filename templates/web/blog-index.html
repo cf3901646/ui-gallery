@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>设计笔记 · Lumen</title>
+<meta name="ui:title" content="博客列表">
+<meta name="ui:desc" content="设计团队博客首页：页头简介、左图右文的精选文章、可横滑分类、三列文章卡片、分页和邮件订阅。">
+<meta name="ui:category" content="内容与博客">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="博客,文章卡片,分类标签,分页,订阅">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .bl-head { padding: 64px 0 40px; }
+  .bl-head .wrap { display: flex; flex-direction: column; gap: 12px; }
+  .bl-intro { max-width: 34em; }
+  .bl-stats { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 8px; color: var(--ui-text-2); font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .bl-stats strong { color: var(--ui-text); font-weight: 600; }
+  .bl-feat { display: grid; grid-template-columns: 1.15fr 1fr; }
+  html[data-lang="apple"] .bl-feat { background: var(--ui-tile-bg); }
+  html[data-lang="google"] .bl-feat { border-radius: 28px; }
+  .bl-feat > .art { min-height: 360px; }
+  .bl-feat-body { padding: 40px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+  .bl-tags { display: flex; gap: 8px; }
+  .bl-meta { display: flex; align-items: center; gap: 10px; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); }
+  .bl-meta b { display: block; color: var(--ui-text); font-weight: 500; }
+  .bl-p1 { --c: linear-gradient(135deg, #ffb36b, #ff5e7e); --c-fg: #fff; }
+  .bl-p2 { --c: linear-gradient(135deg, #5eead4, #0ea5e9); --c-fg: #fff; }
+  .bl-p3 { --c: linear-gradient(135deg, #a78bfa, #6366f1); --c-fg: #fff; }
+  .bl-p4 { --c: linear-gradient(135deg, #a3e635, #10b981); --c-fg: #fff; }
+  html[data-lang="apple"] .bl-cats { width: fit-content; max-width: 100%; }
+  .bl-cats { margin-bottom: 32px; }
+  .bl-post .card-body { flex: 1; gap: 8px; padding: 18px 20px 20px; }
+  .bl-post .tag { align-self: flex-start; }
+  html[data-lang="apple"] .bl-post .card-title { font-size: calc(19px * var(--ts)); line-height: 1.35; }
+  .bl-post .bl-meta { margin-top: auto; padding-top: 10px; }
+  .bl-post, .bl-feat { transition: transform var(--ui-dur) var(--ui-ease), box-shadow var(--ui-dur); }
+  .bl-post:hover { transform: translateY(-4px); box-shadow: var(--ui-shadow-2); }
+  .bl-pager { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 48px; }
+  .bl-pager .icon-btn { --ui-icon-btn: 40px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .bl-pager .icon-btn:not(.is-active) { --b-fg: var(--ui-text); }
+  .bl-pager a.icon-btn:not(.is-active):hover { --b-bg: var(--ui-fill); }
+  .bl-gap { width: 32px; text-align: center; color: var(--ui-text-3); }
+  html[data-lang="apple"] .bl-sub { background: var(--ui-tile-bg); border-radius: var(--ui-radius-xl); }
+  html[data-lang="apple"] .bl-sub .field-input { background: var(--ui-bg-plain); }
+  .bl-sub { --ui-field-label-bg: var(--ui-accent-soft); }
+  .bl-sub > p { max-width: 30em; }
+  .bl-form { display: flex; gap: 12px; width: 100%; max-width: 480px; margin-top: 8px; text-align: left; }
+  .bl-form .field { flex: 1; }
+  .footer-cols { --cols: 4; }
+  @media (max-width: 860px) { .footer-cols { --cols: 2; } }
+  @media (max-width: 860px) {
+    .bl-feat { grid-template-columns: 1fr; }
+    .bl-feat > .art { min-height: 0; aspect-ratio: 16 / 9; }
+    .bl-feat-body { padding: 24px; }
+  }
+  @media (max-width: 560px) { .bl-head { padding-top: 40px; } .bl-form { flex-direction: column; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-palette"/></svg></span>Lumen</a>
+      <nav class="nav-links">
+        <a href="#">作品</a><a href="#">服务</a><a href="#" class="is-active">设计笔记</a><a href="#">播客</a><a href="#">关于</a><a href="#">联系</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <a class="btn filled sm hide-sm" href="#">订阅</a>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <header class="bl-head">
+    <div class="wrap">
+      <span class="t-eyebrow">Lumen 设计工作室</span>
+      <h1 class="t-hero">设计笔记</h1>
+      <p class="t-lead t-2 bl-intro">我们做 App、网站和设计系统时踩过的坑、做过的取舍，以及值得反复读的细节。每周四更新。</p>
+      <div class="bl-stats"><span><strong>126</strong> 篇文章</span><span><strong>14</strong> 位作者</span><span><strong>1.8 万</strong> 位订阅者</span></div>
+    </div>
+  </header>
+
+  <section class="wrap">
+    <a class="card bl-feat" href="#">
+      <div class="art a4" role="img" aria-label="文章头图"><svg class="i xxl"><use href="#i-layers"/></svg></div>
+      <div class="bl-feat-body">
+        <div class="bl-tags"><span class="tag accent">精选</span><span class="tag">设计系统</span></div>
+        <h2 class="t-title1">把 412 个组件收敛到 64 个：我们重建设计系统的一年</h2>
+        <p class="t-body t-2 t-clamp-3">旧系统里有 23 种按钮、9 套间距。我们没有推倒重来，而是先盘点、再定令牌，最后让设计稿和代码从同一份源文件生成。这里记录了每一步的取舍和数据。</p>
+        <div class="bl-meta"><span class="avatar sm bl-p1">何</span><span><b>何一舟</b>2026年5月21日 · 18 分钟阅读</span></div>
+      </div>
+    </a>
+  </section>
+
+  <section class="section alt" style="margin-top:64px">
+    <div class="wrap">
+      <nav class="tabs scroll bl-cats">
+        <a class="is-active" href="#">全部</a><a href="#">设计系统</a><a href="#">动效</a><a href="#">无障碍</a><a href="#">字体排印</a><a href="#">用户研究</a><a href="#">工具与流程</a><a href="#">团队文化</a>
+      </nav>
+      <div class="grid c3">
+        <a class="card bl-post" href="#">
+          <div class="card-media art a2" style="--ratio:16/10"><svg class="i xl"><use href="#i-activity"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">动效</span>
+            <h3 class="card-title">弹簧动画参数怎么调：SwiftUI 与 Compose 对照表</h3>
+            <p class="t-subhead t-2 t-clamp-2">阻尼比和响应时间两个数字，就能描述 90% 的界面动效。附 12 个常用场景的推荐值。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p2">许</span><span><b>许沐阳</b>5月14日 · 9 分钟</span></div>
+          </div>
+        </a>
+        <a class="card bl-post" href="#">
+          <div class="card-media art a3" style="--ratio:16/10"><svg class="i xl"><use href="#i-eye"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">无障碍</span>
+            <h3 class="card-title">给色弱用户做图表：数据看板里踩过的 7 个坑</h3>
+            <p class="t-subhead t-2 t-clamp-2">只靠红绿区分涨跌，大约 5% 的男性用户会看错。我们换成了形状加颜色的双重编码。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p3">宋</span><span><b>宋晚晴</b>5月7日 · 11 分钟</span></div>
+          </div>
+        </a>
+        <a class="card bl-post" href="#">
+          <div class="card-media art a5" style="--ratio:16/10"><svg class="i xl"><use href="#i-type"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">字体排印</span>
+            <h3 class="card-title">中文界面的行高与字距：为什么 1.5 不是万能答案</h3>
+            <p class="t-subhead t-2 t-clamp-2">标题、正文、表格数字各有各的节奏。我们用 3 款常见字体做了 40 组对比。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p1">何</span><span><b>何一舟</b>4月30日 · 14 分钟</span></div>
+          </div>
+        </a>
+        <a class="card bl-post" href="#">
+          <div class="card-media art a9" style="--ratio:16/10"><svg class="i xl"><use href="#i-bike"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">用户研究</span>
+            <h3 class="card-title">跟访 32 位外卖骑手之后，我们删掉了一半功能</h3>
+            <p class="t-subhead t-2 t-clamp-2">骑手平均每单只有 4 秒看屏幕。真正需要的是更大的按钮和语音播报，而不是更多入口。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p4">陈</span><span><b>陈牧</b>4月23日 · 16 分钟</span></div>
+          </div>
+        </a>
+        <a class="card bl-post" href="#">
+          <div class="card-media art a7" style="--ratio:16/10"><svg class="i xl"><use href="#i-palette"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">设计系统</span>
+            <h3 class="card-title">设计令牌命名指南：从 blue-500 到 accent-soft</h3>
+            <p class="t-subhead t-2 t-clamp-2">按用途命名而不是按色值命名，换主题时只改一层映射。附我们现在用的三层结构。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p2">许</span><span><b>许沐阳</b>4月16日 · 8 分钟</span></div>
+          </div>
+        </a>
+        <a class="card bl-post" href="#">
+          <div class="card-media art a11" style="--ratio:16/10"><svg class="i xl"><use href="#i-code"/></svg></div>
+          <div class="card-body">
+            <span class="tag accent">工具与流程</span>
+            <h3 class="card-title">Figma 变量加代码生成：一次改色，三端同步</h3>
+            <p class="t-subhead t-2 t-clamp-2">导出脚本只有 180 行，每次发版前跑一遍，iOS、Android 和 Web 的颜色再也没有对不上过。</p>
+            <div class="bl-meta"><span class="avatar sm bl-p3">宋</span><span><b>宋晚晴</b>4月9日 · 7 分钟</span></div>
+          </div>
+        </a>
+      </div>
+      <nav class="bl-pager" aria-label="分页">
+        <button class="icon-btn outlined" aria-label="上一页" disabled><svg class="i"><use href="#i-chevron-left"/></svg></button>
+        <a class="icon-btn is-active" href="#" aria-current="page">1</a>
+        <a class="icon-btn" href="#">2</a>
+        <a class="icon-btn" href="#">3</a>
+        <span class="bl-gap">…</span>
+        <a class="icon-btn" href="#">21</a>
+        <a class="icon-btn outlined" href="#" aria-label="下一页"><svg class="i"><use href="#i-chevron-right"/></svg></a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="cta-band bl-sub">
+        <h2 class="t-title1">每周四，一封关于设计的信</h2>
+        <p class="t-body t-2">3 篇新文章，加 1 个我们正在用的工具。已有 18,240 位设计师订阅，不发广告，随时退订。</p>
+        <form class="bl-form" onsubmit="return false">
+          <label class="field"><span class="field-label only-google">邮箱地址</span><input class="field-input" type="email" placeholder="name@example.com"></label>
+          <button class="btn filled lg" type="submit">订阅</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-cols">
+        <div><h4>内容</h4><ul><li><a href="#">设计笔记</a></li><li><a href="#">播客</a></li><li><a href="#">案例研究</a></li><li><a href="#">RSS 订阅</a></li></ul></div>
+        <div><h4>工作室</h4><ul><li><a href="#">服务</a></li><li><a href="#">作品</a></li><li><a href="#">团队</a></li><li><a href="#">加入我们</a></li></ul></div>
+        <div><h4>关注</h4><ul><li><a href="#">微信公众号</a></li><li><a href="#">小红书</a></li><li><a href="#">即刻</a></li></ul></div>
+        <div><h4>联系</h4><ul><li><a href="#">hello@lumen.design</a></li><li>上海市静安区北京西路 1068 号</li></ul></div>
+      </div>
+      <div class="footer-legal">
+        <span>© 2026 Lumen Design Studio</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">沪ICP备2021038812号</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

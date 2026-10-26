@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>消息</title>
+<meta name="ui:title" content="消息列表">
+<meta name="ui:desc" content="即时通讯会话列表：大标题与新建按钮、搜索、置顶联系人圆形头像（在线点）、会话行（在线状态、最后一条消息、时间、未读数、免打扰、群聊叠放头像）与标签栏。">
+<meta name="ui:category" content="社交与消息">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="聊天,会话列表,头像,未读,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html[data-lang="apple"] { --ui-bg: var(--ui-bg-plain); }
+  .avatar { --c-fg: #fff; }
+  .cl-pins { display: flex; justify-content: space-between; padding: 16px 2px 8px; }
+  .cl-pin { position: relative; width: 66px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--ui-text-2); }
+  .cl-pin > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cl-pin .avatar { --size: 60px; }
+  .cl-pin > .badge { position: absolute; top: -2px; right: 0; box-shadow: 0 0 0 2px var(--ui-bg); }
+  .cl-list .row { padding-block: 10px; }
+  .cl-list .row-body { gap: 2px; }
+  .cl-name { display: flex; align-items: center; gap: 4px; font-weight: 600; }
+  html[data-lang="google"] .cl-name { font-weight: 500; }
+  .cl-name .i { --ui-icon: 15px; color: var(--ui-text-3); flex: none; }
+  .cl-list .row-meta { align-self: stretch; justify-content: flex-start; padding-top: 2px; gap: 6px; min-height: 40px; }
+  .cl-new .row-meta > :first-child { color: var(--ui-accent); font-weight: 600; }
+  .cl-new .row-sub { color: var(--ui-text); }
+  .cl-muted .badge { --ui-badge-bg: var(--ui-text-3); }
+  html[data-lang="google"] .cl-muted .badge { background: var(--md-outline); }
+  .cl-stack { position: relative; width: var(--cl-av, 44px); height: var(--cl-av, 44px); flex: none; }
+  html[data-lang="google"] .cl-stack { --cl-av: 40px; }
+  .cl-stack > .avatar { --size: 30px; position: absolute; font-size: 12px; }
+  .cl-stack > .avatar:first-child { top: 0; left: 0; }
+  .cl-stack > .avatar + .avatar { margin-left: 0; right: 0; bottom: 0; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><button class="bar-btn only-apple">编辑</button></div>
+    <div class="topbar-title">消息</div>
+    <div class="topbar-trail">
+      <button class="bar-btn only-apple" aria-label="新建会话"><svg class="i"><use href="#i-edit"/></svg></button>
+      <button class="bar-btn only-google" aria-label="更多"><svg class="i"><use href="#i-more-vert"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">消息</h1>
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="搜索联系人和聊天记录">
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+    </label>
+
+    <div class="cl-pins" aria-label="置顶联系人">
+      <a class="cl-pin" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈<span class="presence"></span></span><span class="t-caption">陈一舟</span><span class="badge">2</span></a>
+      <a class="cl-pin" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林<span class="presence"></span></span><span class="t-caption">林知夏</span></a>
+      <a class="cl-pin" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#ff8a5b,#d9465f)">妈</span><span class="t-caption">妈妈</span><span class="badge">1</span></a>
+      <a class="cl-pin" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏<span class="presence"></span></span><span class="t-caption">苏沐</span></a>
+      <a class="cl-pin" href="#"><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span><span class="t-caption">许嘉禾</span></a>
+    </div>
+
+    <ul class="list plain has-avatars bleed cl-list">
+      <li class="cl-new"><a class="row" href="#">
+        <span class="cl-stack avatar-stack"><span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span><span class="avatar" style="--c:linear-gradient(135deg,#a78bfa,#6366f1)">沈</span></span>
+        <span class="row-body"><span class="row-title cl-name">设计组 · 秋季改版</span><span class="row-sub t-clamp-1">许嘉禾：首页卡片我又调了一版，大家看下</span></span>
+        <span class="row-meta"><span>09:52</span><span class="badge">12</span></span>
+      </a></li>
+      <li class="cl-new"><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈<span class="presence"></span></span>
+        <span class="row-body"><span class="row-title cl-name">陈一舟</span><span class="row-sub t-clamp-1">好的，那就周五下午三点，B 会议室见</span></span>
+        <span class="row-meta"><span>09:41</span><span class="badge">2</span></span>
+      </a></li>
+      <li class="cl-new"><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ff8a5b,#d9465f)">妈</span>
+        <span class="row-body"><span class="row-title cl-name">妈妈</span><span class="row-sub t-clamp-1">周末回来吃饭吗？给你炖了排骨莲藕汤</span></span>
+        <span class="row-meta"><span>08:20</span><span class="badge">1</span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林<span class="presence"></span></span>
+        <span class="row-body"><span class="row-title cl-name">林知夏</span><span class="row-sub t-clamp-1">[图片] 莫干山那张日落真的绝了</span></span>
+        <span class="row-meta"><span>昨天</span></span>
+      </a></li>
+      <li class="cl-muted"><a class="row" href="#">
+        <span class="cl-stack avatar-stack"><span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">王</span><span class="avatar" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">李</span></span>
+        <span class="row-body"><span class="row-title cl-name">愚园路 126 弄业主群<svg class="i"><use href="#i-volume-off"/></svg></span><span class="row-sub t-clamp-1">王阿姨：明天上午 9 点到 11 点停水，大家提前储水</span></span>
+        <span class="row-meta"><span>昨天</span><span class="badge">99+</span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏<span class="presence"></span></span>
+        <span class="row-body"><span class="row-title cl-name">苏沐</span><span class="row-sub t-clamp-1">语音通话 · 12 分钟</span></span>
+        <span class="row-meta"><span>星期三</span></span>
+      </a></li>
+      <li class="cl-muted"><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#94a3b8,#475569)">读</span>
+        <span class="row-body"><span class="row-title cl-name">周六读书会<svg class="i"><use href="#i-volume-off"/></svg></span><span class="row-sub t-clamp-1">周以安：第 24 期书单已发，大家记得接龙</span></span>
+        <span class="row-meta"><span>星期二</span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">何</span>
+        <span class="row-body"><span class="row-title cl-name">何田田</span><span class="row-sub t-clamp-1">哈哈哈好，那我们下周见</span></span>
+        <span class="row-meta"><span>10月21日</span></span>
+      </a></li>
+    </ul>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-message-fill"/></svg><span>消息</span><span class="badge">15</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-users"/></svg><span>通讯录</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我</span></a>
+  </nav>
+  <button class="fab extended only-google"><svg class="i"><use href="#i-message"/></svg>开始聊天</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>收件箱</title>
+<meta name="ui:title" content="平板邮件（三栏）">
+<meta name="ui:desc" content="平板三栏邮件：浮动侧栏（邮箱计数、文件夹、彩色标签）、带搜索与筛选的邮件列表、阅读窗格（发件人、正文、附件卡片、底部浮动工具栏）。">
+<meta name="ui:category" content="平板与桌面">
+<meta name="ui:platform" content="tablet">
+<meta name="ui:tags" content="三栏,侧栏,邮件,阅读窗格,浮动工具栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ml-split { height: 100dvh; }
+  .ml-split > .pane { height: 100dvh; min-height: 0; }
+  .ml-list, .ml-read { background: var(--ui-bg-plain); }
+  .ml-split .avatar { --c-fg: #fff; }
+  .ml-side-top { display: flex; align-items: center; justify-content: space-between; padding: 0 2px 2px; }
+  .ml-swatch { width: 12px; height: 12px; border-radius: 50%; background: var(--c); margin: 0 5px; flex: none; }
+  .ml-compose { margin: 0 4px 12px; align-self: flex-start; box-shadow: var(--ui-shadow-1); }
+  .ml-head { position: sticky; top: 0; z-index: 3; background: var(--ui-bg-plain); padding: 14px 16px 10px; display: flex; flex-direction: column; gap: 10px; }
+  .ml-msgs { padding: 0 8px 24px; }
+  .ml-msgs > li { border-radius: 14px; }
+  .ml-msg { align-items: flex-start; padding: 12px 12px 12px 22px; gap: 10px; }
+  .ml-msg .avatar { margin-top: 2px; }
+  .ml-top { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+  .ml-top .row-title { flex: 1; white-space: nowrap; }
+  .ml-top > :last-child { flex: none; color: var(--ui-text-2); }
+  .ml-dot { position: absolute; left: 8px; top: 22px; background: var(--ui-accent); }
+  .ml-flags { display: inline-flex; gap: 4px; color: var(--ui-text-3); margin-left: auto; padding-left: 6px; }
+  .ml-flags .i { --ui-icon: 14px; }
+  .ml-flag { color: var(--c-orange); }
+  .ml-msgs > li.is-active { background: var(--ui-accent); color: var(--ui-on-accent); --ui-text: var(--ui-on-accent);
+    --ui-text-2: color-mix(in srgb, var(--ui-on-accent) 80%, transparent); --ui-text-3: var(--ui-text-2); }
+  .ml-msgs > li.is-active .ml-dot { background: var(--ui-on-accent); }
+  .ml-msgs > li.is-active .ml-flag { color: inherit; }
+  .ml-msgs > li.is-active::before, .ml-msgs > li.is-active + li::before { opacity: 0; }
+  html[data-lang="google"] .ml-msgs > li { border-radius: 16px; }
+  html[data-lang="google"] .ml-msgs > li.is-active { background: var(--md-secondary-container); color: var(--md-on-secondary-container);
+    --ui-text: currentColor; --ui-text-2: currentColor; }
+  html[data-lang="google"] .ml-msgs > li.is-active .ml-dot { background: var(--md-primary); }
+  .ml-read-top { position: sticky; top: 0; z-index: 3; display: flex; gap: 8px; padding: 12px 16px; }
+  .ml-article { padding: 4px 40px 120px; max-width: 760px; display: flex; flex-direction: column; gap: 16px; }
+  .ml-from { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--ui-line); }
+  .ml-from .grow, .ml-file .grow { display: flex; flex-direction: column; gap: 2px; }
+  .ml-body { max-width: none; --fs-prose: 16px; line-height: 1.6; }
+  html[data-lang="google"] .ml-body { --fs-prose: 15px; }
+  .ml-sign { color: var(--ui-text-2); }
+  .ml-files { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ml-file { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+  .ml-file > .i { color: var(--ui-text-2); }
+  .ml-ficon { width: 40px; height: 48px; border-radius: 8px; display: grid; place-items: center; flex: none;
+    background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
+  .ml-actions { position: sticky; bottom: 20px; display: flex; justify-content: center; z-index: 3; }
+  .ml-sep { width: 1px; height: 24px; background: var(--ui-line); margin: 0 4px; }
+  html[data-lang="google"] .ml-tb .icon-btn { --b-fg: var(--md-on-primary-container); }
+</style>
+</head>
+<body class="app">
+<div class="split three ml-split">
+  <aside class="pane">
+    <nav class="sidebar floating">
+      <div class="ml-side-top only-apple">
+        <button class="icon-btn sm" aria-label="隐藏边栏"><svg class="i"><use href="#i-sidebar"/></svg></button>
+        <button class="btn text sm">编辑</button>
+      </div>
+      <div class="sidebar-title t-title2"><span class="only-apple">邮箱</span><span class="only-google">邮件</span></div>
+      <button class="fab extended static only-google ml-compose"><svg class="i"><use href="#i-edit"/></svg><span>写邮件</span></button>
+      <a class="side-item is-active" href="#"><svg class="i"><use href="#i-inbox-fill"/></svg><span>收件箱</span><span class="count">12</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-star"/></svg><span>VIP</span><span class="count">3</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-flag"/></svg><span>已标记</span><span class="count">5</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-doc"/></svg><span>草稿</span><span class="count">2</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-send"/></svg><span>已发送</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-trash"/></svg><span>废纸篓</span></a>
+      <div class="sidebar-section">文件夹</div>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-folder"/></svg><span>云杉计划</span><span class="count">8</span></a>
+      <a class="side-item" href="#"><svg class="i"><use href="#i-folder"/></svg><span>财务与报销</span></a>
+      <div class="sidebar-section">标签</div>
+      <a class="side-item" href="#"><i class="ml-swatch" style="--c:var(--c-red)"></i><span>重要</span><span class="count">4</span></a>
+      <a class="side-item" href="#"><i class="ml-swatch" style="--c:var(--c-blue)"></i><span>工作</span><span class="count">9</span></a>
+      <a class="side-item" href="#"><i class="ml-swatch" style="--c:var(--c-green)"></i><span>家庭</span></a>
+    </nav>
+  </aside>
+
+  <section class="pane divided ml-list">
+    <header class="ml-head">
+      <div class="hstack between">
+        <div><h1 class="t-title1">收件箱</h1><span class="t-footnote t-2">12 封未读 · 刚刚更新</span></div>
+        <button class="icon-btn" aria-label="筛选"><svg class="i"><use href="#i-filter"/></svg></button>
+      </div>
+      <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="搜索邮件"><svg class="i only-apple"><use href="#i-mic"/></svg></label>
+      <div class="segmented"><button class="is-active">全部</button><button>未读</button></div>
+    </header>
+    <ul class="list plain ml-msgs">
+      <li class="is-active"><a class="row ml-msg" href="#">
+        <span class="badge dot ml-dot"></span>
+        <span class="avatar sm" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">周</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">周以宁</span><span class="t-footnote">09:42</span></span>
+          <span class="ml-top t-subhead"><span class="ellipsis">云杉计划 · 第三季度评审材料</span><span class="ml-flags"><svg class="i"><use href="#i-paperclip"/></svg><svg class="i solid ml-flag"><use href="#i-flag"/></svg></span></span>
+          <span class="row-sub t-clamp-2">附件是周四评审要用的演示文稿和预算明细，麻烦你在周三下班前过一遍，重点看三处。</span>
+        </span>
+      </a></li>
+      <li><a class="row ml-msg" href="#">
+        <span class="badge dot ml-dot"></span>
+        <span class="avatar sm" style="--c:#d6203a">招</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">招商银行信用卡</span><span class="t-footnote">08:15</span></span>
+          <span class="t-subhead ellipsis">您的 10 月账单已出</span>
+          <span class="row-sub t-clamp-2">尾号 6021 本期应还 ¥3,826.40，到期还款日 11 月 8 日，可设置自动还款。</span>
+        </span>
+      </a></li>
+      <li><a class="row ml-msg" href="#">
+        <span class="avatar sm" style="--c:#4f8dff">陈</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">陈默</span><span class="t-footnote">昨天</span></span>
+          <span class="t-subhead ellipsis">回复：杭州仓上线排期</span>
+          <span class="row-sub t-clamp-2">我跟仓储那边确认了，11 月 18 日可以完成系统切换，前提是 WMS 接口在 11 月 10 日前联调完。</span>
+        </span>
+      </a></li>
+      <li><a class="row ml-msg" href="#">
+        <span class="avatar sm" style="--c:#2f7cf6">携</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">携程旅行</span><span class="t-footnote">昨天</span></span>
+          <span class="t-subhead ellipsis">出票成功：10 月 28 日 G2 上海虹桥 → 北京南</span>
+          <span class="row-sub t-clamp-2">订单 2310288841 已出票，06 车 12F，07:00 发车，请提前 30 分钟到站检票。</span>
+        </span>
+      </a></li>
+      <li><a class="row ml-msg" href="#">
+        <span class="avatar sm" style="--c:#34c47c">许</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">许嘉禾</span><span class="t-footnote">星期六</span></span>
+          <span class="ml-top t-subhead"><span class="ellipsis">九溪徒步的照片</span><span class="ml-flags"><svg class="i"><use href="#i-paperclip"/></svg></span></span>
+          <span class="row-sub t-clamp-2">一共 46 张，我挑了 6 张先发你，剩下的都传到“周末徒步”共享相簿里了。</span>
+        </span>
+      </a></li>
+      <li><a class="row ml-msg" href="#">
+        <span class="avatar sm" style="--c:#a259ff">F</span>
+        <span class="row-body">
+          <span class="ml-top"><span class="row-title t-headline">Figma</span><span class="t-footnote">星期五</span></span>
+          <span class="t-subhead ellipsis">苏晴在“日历 2.0”中提到了你</span>
+          <span class="row-sub t-clamp-2">@林知夏 空状态插画我又改了一版，颜色换成品牌橙了，你看下还要再调吗？</span>
+        </span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="pane ml-read">
+    <div class="ml-read-top">
+      <button class="icon-btn glass" aria-label="上一封"><svg class="i"><use href="#i-chevron-up"/></svg></button>
+      <button class="icon-btn glass" aria-label="下一封"><svg class="i"><use href="#i-chevron-down"/></svg></button>
+      <span class="grow"></span>
+      <button class="icon-btn glass" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button>
+    </div>
+    <article class="ml-article">
+      <div class="stack gap-2">
+        <h1 class="t-title2">云杉计划 · 第三季度评审材料</h1>
+        <div class="hstack gap-2"><span class="tag danger">重要</span><span class="tag accent">工作</span></div>
+      </div>
+      <div class="ml-from">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">周</span>
+        <div class="grow">
+          <span class="t-headline">周以宁 <span class="t-footnote t-2 t-regular">zhou.yining@yunshan.cn</span></span>
+          <span class="t-footnote t-2 ellipsis">收件人：林知夏　抄送：陈默、许嘉禾</span>
+        </div>
+        <span class="t-footnote t-2">今天 09:42</span>
+      </div>
+      <div class="prose ml-body">
+        <p>嗨，知夏：</p>
+        <p>附件是周四（10 月 22 日）第三季度评审要用的演示文稿和预算明细，麻烦你在周三下班前过一遍，重点看下面三处：</p>
+        <ul>
+          <li>第 12 页的用户增长曲线，9 月数据已经按财务口径更新；</li>
+          <li>预算表“市场投放”一栏比上季度多了 18 万，需要你确认渠道拆分；</li>
+          <li>第 20 页的里程碑：杭州仓 11 月 18 日上线是否还来得及。</li>
+        </ul>
+        <p>评审在西溪园区 3F 西湖厅，14:00 开始，大约两小时。如果你那天还在上海，我把线上会议链接发你。</p>
+        <p class="ml-sign">谢谢！<br>周以宁 · 云杉计划产品负责人<br>138 0571 2468</p>
+      </div>
+      <div class="ml-files">
+        <a class="card outlined ml-file" href="#">
+          <span class="ml-ficon" style="--c:var(--c-orange)"><svg class="i"><use href="#i-file"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold ellipsis">Q3 评审-云杉计划.key</span><span class="t-footnote t-2">18.4 MB · 演示文稿</span></span>
+          <svg class="i sm"><use href="#i-download"/></svg>
+        </a>
+        <a class="card outlined ml-file" href="#">
+          <span class="ml-ficon" style="--c:var(--c-green)"><svg class="i"><use href="#i-grid"/></svg></span>
+          <span class="grow"><span class="t-subhead t-semibold ellipsis">预算明细-2026Q4.xlsx</span><span class="t-footnote t-2">326 KB · 表格</span></span>
+          <svg class="i sm"><use href="#i-download"/></svg>
+        </a>
+      </div>
+    </article>
+    <div class="ml-actions">
+      <div class="toolbar floating inline vibrant ml-tb">
+        <button class="icon-btn" aria-label="回复"><svg class="i"><use href="#i-reply"/></svg></button>
+        <button class="icon-btn" aria-label="转发"><svg class="i"><use href="#i-forward"/></svg></button>
+        <span class="ml-sep"></span>
+        <button class="icon-btn" aria-label="归档"><svg class="i"><use href="#i-archive"/></svg></button>
+        <button class="icon-btn" aria-label="移到文件夹"><svg class="i"><use href="#i-folder"/></svg></button>
+        <button class="icon-btn" aria-label="删除"><svg class="i"><use href="#i-trash"/></svg></button>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

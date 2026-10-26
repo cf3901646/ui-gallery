@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>收件箱</title>
+<meta name="ui:title" content="邮件收件箱">
+<meta name="ui:desc" content="邮件收件箱：大标题、编辑与筛选、搜索、分类分段控件、带头像的邮件行（未读加粗与圆点、主题、两行预览、时间与星标附件）；iOS 贴底工具栏显示更新状态，Android 用扩展 FAB 与导航栏。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="邮件,收件箱,分段控件,列表,工具栏,FAB">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html[data-lang="apple"] { --ui-bg: var(--ui-bg-plain); }
+  .avatar { --c-fg: #fff; }
+  .ib-seg { margin: 12px 0 6px; }
+  .ib-seg .i { --ui-icon: 17px; }
+  .ib-list .row { align-items: flex-start; padding-block: 12px; }
+  .ib-list .avatar { margin-top: 2px; }
+  .ib-list .row-body { gap: 2px; }
+  .ib-from { font-size: calc(var(--fs-headline) * var(--ts)); line-height: var(--lh-headline); font-weight: 500; white-space: nowrap; }
+  .ib-subj { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ib-new .ib-from { font-weight: 700; }
+  .ib-new .ib-subj { font-weight: 600; }
+  .ib-dot { position: absolute; left: 4px; top: 22px; width: 9px; height: 9px; border-radius: 50%; background: var(--ui-accent); }
+  .ib-list .row-meta { padding-top: 2px; }
+  .ib-new .row-meta > :first-child { color: var(--ui-accent); font-weight: 600; }
+  .ib-flags { display: flex; gap: 4px; color: var(--ui-text-3); }
+  .ib-flags .i { --ui-icon: 16px; }
+  .ib-flags .ib-star { color: var(--c-yellow); }
+  .ib-dock { justify-content: space-between; }
+  .ib-dock .ib-gap { width: 44px; }
+  .ib-status { text-align: center; color: var(--ui-text-2); }
+  .ib-status b { color: var(--ui-text); font-weight: 600; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><button class="bar-btn">编辑</button></div>
+    <div class="topbar-title">收件箱</div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="筛选"><svg class="i"><use href="#i-filter"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">收件箱</h1>
+    <label class="searchbar">
+      <svg class="i"><use href="#i-search"/></svg>
+      <input type="search" placeholder="在邮件中搜索">
+      <svg class="i only-apple"><use href="#i-mic"/></svg>
+    </label>
+
+    <div class="segmented ib-seg">
+      <button class="is-active"><svg class="i"><use href="#i-user"/></svg>主要</button>
+      <button><svg class="i"><use href="#i-cart"/></svg>交易</button>
+      <button><svg class="i"><use href="#i-news"/></svg>更新</button>
+      <button><svg class="i"><use href="#i-tag"/></svg>推广</button>
+    </div>
+
+    <ul class="list plain has-avatars bleed ib-list">
+      <li class="ib-new"><a class="row" href="#">
+        <span class="ib-dot"></span>
+        <span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">陈一舟</span>
+          <span class="ib-subj t-subhead">周五评审会材料</span>
+          <span class="row-sub t-clamp-2">附件是第三季度用户调研的初稿，麻烦先看一下第 12 到 18 页的结论部分，周四下班前给我反馈就行。</span>
+        </span>
+        <span class="row-meta"><span>09:41</span><span class="ib-flags"><svg class="i"><use href="#i-paperclip"/></svg><svg class="i solid ib-star"><use href="#i-star-fill"/></svg></span></span>
+      </a></li>
+      <li class="ib-new"><a class="row" href="#">
+        <span class="ib-dot"></span>
+        <span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">林知夏</span>
+          <span class="ib-subj t-subhead">Re: 十一月杭州团建行程</span>
+          <span class="row-sub t-clamp-2">酒店订好了，西溪湿地旁边那家，两晚含早餐，人均 ¥680。高铁大家自己买，推荐周五 G7311，18:05 从虹桥出发。</span>
+        </span>
+        <span class="row-meta"><span>08:15</span></span>
+      </a></li>
+      <li class="ib-new"><a class="row" href="#">
+        <span class="ib-dot"></span>
+        <span class="avatar" style="--c:linear-gradient(135deg,#34c47c,#0ea5e9)">许</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">许嘉禾</span>
+          <span class="ib-subj t-subhead">设计稿 v3 已更新</span>
+          <span class="row-sub t-clamp-2">按昨天会上的意见改了首页卡片间距和深色模式下的对比度，标注已经同步，链接在下面。</span>
+        </span>
+        <span class="row-meta"><span>昨天</span><span class="ib-flags"><svg class="i"><use href="#i-paperclip"/></svg></span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#f472b6,#b36bff)">苏</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">苏沐</span>
+          <span class="ib-subj t-subhead">下周二能约个咖啡吗？</span>
+          <span class="row-sub t-clamp-2">我下周二下午在静安寺附近，想聊聊你上次提到的那个城市散步播客，大概一小时就够。</span>
+        </span>
+        <span class="row-meta"><span>昨天</span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#ffc93c,#f97316)">周</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">周以安</span>
+          <span class="ib-subj t-subhead">读书会 · 第 24 期书单</span>
+          <span class="row-sub t-clamp-2">这期读《置身事内》，11 月 9 日周六下午两点，还是在愚园路那家书店的二楼。</span>
+        </span>
+        <span class="row-meta"><span>星期三</span><span class="ib-flags"><svg class="i solid ib-star"><use href="#i-star-fill"/></svg></span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#5eead4,#0f766e)">何</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">何田田</span>
+          <span class="ib-subj t-subhead">莫干山的照片发你啦</span>
+          <span class="row-sub t-clamp-2">一共 86 张，原图放在网盘里了，提取码 7k2m，有几张逆光的你挑挑看要不要修。</span>
+        </span>
+        <span class="row-meta"><span>星期二</span><span class="ib-flags"><svg class="i"><use href="#i-paperclip"/></svg></span></span>
+      </a></li>
+      <li><a class="row" href="#">
+        <span class="avatar" style="--c:linear-gradient(135deg,#a78bfa,#6366f1)">唐</span>
+        <span class="row-body">
+          <span class="ib-from ellipsis">唐棠</span>
+          <span class="ib-subj t-subhead">合同第二版，请确认</span>
+          <span class="row-sub t-clamp-2">付款节点按你说的改成了 4:3:3，第 7 条交付时间顺延到 12 月 20 日，其他条款没有变化。</span>
+        </span>
+        <span class="row-meta"><span>10月21日</span></span>
+      </a></li>
+    </ul>
+  </main>
+
+  <div class="toolbar docked only-apple ib-dock">
+    <span class="ib-gap"></span>
+    <span class="t-caption ib-status">刚刚更新 · <b>3 封未读</b></span>
+    <button class="icon-btn" aria-label="写邮件"><svg class="i"><use href="#i-edit"/></svg></button>
+  </div>
+
+  <button class="fab extended only-google"><svg class="i"><use href="#i-edit"/></svg>写邮件</button>
+  <nav class="tabbar only-google">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-mail-fill"/></svg><span>邮件</span><span class="badge">3</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-video"/></svg><span>会议</span></a>
+  </nav>
+</div>
+</body>
+</html>

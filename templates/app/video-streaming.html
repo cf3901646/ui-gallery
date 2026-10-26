@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>光影 · 推荐</title>
+<meta name="ui:title" content="视频流媒体首页">
+<meta name="ui:desc" content="视频平台首页：频道标签页、首屏大海报（播放与加入片单）、继续观看进度卡片、Top 10 大号排名横滑、为你推荐竖版海报。">
+<meta name="ui:category" content="媒体与娱乐">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="视频,海报,横滑,排行榜,标签页">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .vs-brand { display: inline-flex; align-items: center; gap: 8px; padding-left: 4px; font: 700 calc(22px * var(--ts)) / 1 var(--ui-font-display); }
+  .vs-brand .brand-mark .i { --ui-icon: 16px; }
+  .topbar-lead:has(.vs-brand) { padding-left: 4px; }
+  .vs-tabs { margin-bottom: 14px; }
+  .vs-hero { min-height: 430px; }
+  .vs-hero .card-body { gap: 8px; padding: 64px 18px 18px; background: linear-gradient(transparent, rgb(0 0 0 / 72%) 55%); }
+  .vs-hero .vs-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .vs-hero .tag { background: rgb(255 255 255 / 20%); color: #fff; }
+  .vs-hero .tag.solid { background: var(--ui-accent); color: var(--ui-on-accent); }
+  .vs-hero .btn-row { margin-top: 6px; gap: 10px; }
+  .vs-hero .btn-row .btn { flex: 1; }
+  .vs-sec { margin-top: 26px; }
+  .vs-sec .group-header { padding-bottom: 10px; }
+  .vs-cw .card-media { border-radius: var(--ui-radius-m); overflow: hidden; }
+  .vs-cw .card { background: transparent; border-radius: 0; overflow: visible; }
+  .vs-cw .progress { position: absolute; left: 10px; right: 10px; bottom: 8px; --progress-rest: rgb(255 255 255 / 35%); }
+  .vs-cw .card-body, .vs-rec .card-body { padding: 8px 2px 0; gap: 2px; }
+  .vs-poster { aspect-ratio: 2 / 3; border-radius: var(--ui-radius-m); }
+  .vs-top > a { display: flex; align-items: flex-end; }
+  .vs-rank { flex: none; width: 60px; text-align: right; margin-right: -14px; font: 800 calc(104px * var(--ts)) / .78 var(--ui-font-display); letter-spacing: -6px;
+    color: var(--ui-bg); -webkit-text-stroke: 2px var(--ui-text-3); position: relative; z-index: 1; }
+  .vs-top .vs-poster { flex: 1; min-width: 0; }
+  .vs-badge { position: absolute; top: 8px; left: 8px; }
+  .vs-rec .t-caption { color: var(--c-orange); font-weight: 600; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><span class="vs-brand"><span class="brand-mark"><svg class="i"><use href="#i-play"/></svg></span>光影</span></div>
+    <div class="topbar-title"></div>
+    <div class="topbar-trail">
+      <button class="bar-btn" aria-label="投屏"><svg class="i"><use href="#i-cast"/></svg></button>
+      <button class="bar-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+    </div>
+  </header>
+
+  <main class="content">
+    <nav class="tabs vs-tabs"><a class="is-active" href="#">推荐</a><a href="#">电视剧</a><a href="#">电影</a><a href="#">综艺</a><a href="#">纪录片</a></nav>
+
+    <a class="card media-fill vs-hero" href="#">
+      <div class="art a9"></div>
+      <div class="card-body">
+        <div class="vs-tags"><span class="tag solid">独播</span><span class="tag">悬疑</span><span class="tag">2026</span><span class="tag">全 24 集</span></div>
+        <h1 class="t-large-title">长夜将尽</h1>
+        <p class="t-subhead card-sub t-clamp-2">刑警队长秦川重返二十年前的旧案现场，一张泛黄的车票，把他带回 2006 年那个下着暴雨的江城。</p>
+        <div class="btn-row">
+          <button class="btn filled"><svg class="i solid"><use href="#i-play"/></svg>播放 第 1 集</button>
+          <button class="btn on-media"><svg class="i"><use href="#i-plus"/></svg>加入片单</button>
+        </div>
+      </div>
+    </a>
+
+    <section class="vs-sec vs-cw">
+      <h2 class="group-header large">继续观看 <a class="t-subhead" href="#">全部</a></h2>
+      <div class="carousel" style="--item:64%">
+        <a class="card" href="#"><div class="card-media art a4"><span class="progress" style="--value:72%"></span></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">山海之间 第 18 集</span><span class="card-sub t-footnote">剩余 13 分钟</span></div></a>
+        <a class="card" href="#"><div class="card-media art a10"><span class="progress" style="--value:35%"></span></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">深海之下：南海纪行</span><span class="card-sub t-footnote">剩余 31 分钟</span></div></a>
+        <a class="card" href="#"><div class="card-media art a5"><span class="progress" style="--value:90%"></span></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">周末去哪儿 第 6 期</span><span class="card-sub t-footnote">剩余 8 分钟</span></div></a>
+      </div>
+    </section>
+
+    <section class="vs-sec">
+      <h2 class="group-header large">本周热播 Top 10 <a class="t-subhead" href="#">榜单</a></h2>
+      <div class="carousel vs-top" style="--item:46%">
+        <a href="#"><span class="vs-rank">1</span><div class="art a9 vs-poster"></div></a>
+        <a href="#"><span class="vs-rank">2</span><div class="art a1 vs-poster"><span class="tag solid vs-badge">新剧</span></div></a>
+        <a href="#"><span class="vs-rank">3</span><div class="art a7 vs-poster"></div></a>
+        <a href="#"><span class="vs-rank">4</span><div class="art a11 vs-poster"></div></a>
+      </div>
+    </section>
+
+    <section class="vs-sec vs-rec">
+      <h2 class="group-header large">为你推荐 <a class="t-subhead" href="#">更多</a></h2>
+      <div class="carousel" style="--item:31%">
+        <a href="#"><div class="art a2 vs-poster"></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">雪国列车站</span><span class="t-caption">9.1 分 · 电影</span></div></a>
+        <a href="#"><div class="art a3 vs-poster"></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">云上的村庄</span><span class="t-caption">8.7 分 · 纪录片</span></div></a>
+        <a href="#"><div class="art a6 vs-poster"></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">无声告白</span><span class="t-caption">8.9 分 · 剧集</span></div></a>
+        <a href="#"><div class="art a8 vs-poster"></div><div class="card-body"><span class="t-subhead t-semibold ellipsis">夏日厨房</span><span class="t-caption">8.2 分 · 综艺</span></div></a>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-compass"/></svg><span>发现</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-download"/></svg><span>下载</span><span class="badge">3</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我的</span></a>
+  </nav>
+</div>
+</body>
+</html>

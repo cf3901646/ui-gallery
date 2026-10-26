@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>联系我们 · Lumen</title>
+<meta name="ui:title" content="联系我们">
+<meta name="ui:desc" content="项目咨询页：左侧完整表单（并排字段、下拉、单选预算、留言、同意条款、错误状态），右侧联系方式卡片与地图，底部常见问题。">
+<meta name="ui:category" content="账户与表单">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="表单,联系,地图,错误状态,常见问题">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ct-main { --ui-section-pad: 64px; }
+  .ct-head { max-width: 640px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 48px; }
+  .ct-title { font-size: calc(clamp(34px, 5vw, 56px) * var(--ts)); line-height: 1.1; }
+  .ct-layout { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+  .ct-form { --ui-field-label-bg: var(--ui-bg-plain); gap: 20px; }
+  .ct-select { width: 100%; padding-right: 40px; background-repeat: no-repeat; background-position: right 12px center; background-size: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E"); }
+  .ct-agree { display: flex; align-items: flex-start; gap: 10px; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); line-height: 1.5; }
+  .ct-agree a { color: var(--ui-accent); }
+  .ct-info { padding: 28px; gap: 4px; background: var(--ui-tile-bg); }
+  .ct-rows > li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--ui-line); }
+  .ct-rows > li > .i { color: var(--ui-accent); margin-top: 2px; }
+  .ct-rows > li > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ct-map { aspect-ratio: 4 / 3; border-radius: var(--ui-radius-l); margin-top: 20px; }
+  .ct-label { position: absolute; left: 52%; top: 52%; translate: -50% 0; padding: 4px 10px; border-radius: 99px; white-space: nowrap;
+    background: var(--ui-bg-plain); color: var(--ui-text); box-shadow: var(--ui-shadow-1); font-size: calc(var(--fs-caption) * var(--ts)); font-weight: 600; }
+  .ct-faq { max-width: 760px; }
+  @media (max-width: 860px) { .ct-layout { grid-template-columns: 1fr; gap: 40px; } }
+  @media (max-width: 560px) { .ct-form .field-row { grid-template-columns: 1fr; gap: 20px; } .ct-info { padding: 20px; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-palette"/></svg></span>Lumen</a>
+      <nav class="nav-links">
+        <a href="#">作品</a><a href="#">服务</a><a href="#">设计笔记</a><a href="#">播客</a><a href="#">关于</a><a href="#" class="is-active">联系</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="section ct-main">
+    <div class="wrap">
+      <header class="ct-head">
+        <span class="t-eyebrow">联系我们</span>
+        <h1 class="t-large-title ct-title">聊聊你的项目</h1>
+        <p class="t-lead t-2">无论是新 App 从零开始，还是现有产品的体验改版，我们都会在 1 个工作日内回复。</p>
+      </header>
+
+      <div class="ct-layout">
+        <form class="form ct-form" onsubmit="return false">
+          <div class="field-row">
+            <label class="field"><span class="field-label">姓名</span><input class="field-input" value="宋晚晴" placeholder="你的名字"></label>
+            <label class="field is-error"><span class="field-label">工作邮箱</span><input class="field-input" type="email" value="wanqing@qinghe" placeholder="name@company.com"><span class="field-help">邮箱缺少域名后缀，例如 .com</span></label>
+          </div>
+          <label class="field"><span class="field-label">公司或团队</span><input class="field-input" placeholder="例如：青禾生鲜"></label>
+          <label class="field"><span class="field-label">咨询类型</span>
+            <select class="select ct-select"><option>现有产品体验改版</option><option>新产品设计（从 0 到 1）</option><option>设计系统搭建</option><option>设计咨询与培训</option></select>
+          </label>
+          <div class="field"><span class="field-label">预算范围</span>
+            <div class="chips single wrap"><button type="button" class="chip">10 万以下</button><button type="button" class="chip is-active">10–30 万</button><button type="button" class="chip">30–80 万</button><button type="button" class="chip">80 万以上</button></div>
+          </div>
+          <label class="field"><span class="field-label">项目简介</span><textarea rows="4" placeholder=" ">我们是一家生鲜电商，小程序日活 12 万。希望 9 月前完成下单流程改版，降低结算页的流失。</textarea><span class="field-help">200 字左右即可，可以附上产品链接或参考案例。</span></label>
+          <label class="ct-agree"><input type="checkbox" class="check" checked><span>我已阅读并同意<a href="#">隐私政策</a>。Lumen 只会用这些信息回复本次咨询，不会发送营销邮件。</span></label>
+          <div><button class="btn filled lg" type="submit">提交咨询</button></div>
+        </form>
+
+        <aside class="card ct-info">
+          <h2 class="t-title3 mb-2">直接联系</h2>
+          <ul class="ct-rows">
+            <li><svg class="i"><use href="#i-mail"/></svg><span><span class="t-footnote t-2">邮箱</span><a href="#">hello@lumen.design</a></span></li>
+            <li><svg class="i"><use href="#i-phone"/></svg><span><span class="t-footnote t-2">电话</span><span class="t-num">021-6418 2090</span></span></li>
+            <li><svg class="i"><use href="#i-map-pin"/></svg><span><span class="t-footnote t-2">地址</span>上海市静安区北京西路 1068 号 银发大厦 7 楼</span></li>
+            <li><svg class="i"><use href="#i-clock"/></svg><span><span class="t-footnote t-2">工作时间</span>周一至周五 9:30–18:30</span></li>
+          </ul>
+          <div class="art map ct-map" role="img" aria-label="工作室位置地图">
+            <span class="map-pin" style="left:52%;top:48%"><svg class="i"><use href="#i-palette"/></svg></span>
+            <span class="ct-label">Lumen · 7F</span>
+          </div>
+          <a class="link-arrow mt-4" href="#">在地图应用中打开</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <section class="section tight" style="padding-top:0">
+    <div class="wrap">
+      <div class="ct-faq">
+        <h2 class="t-title1 mb-4">合作前常被问到的</h2>
+        <div class="faq">
+          <details open><summary>一个项目通常需要多久？</summary><p>新产品从调研到交付设计稿一般 10–14 周，体验改版 4–8 周。签约前我们会给出按周拆分的计划。</p></details>
+          <details><summary>预算有限，也可以合作吗？</summary><p>可以。10 万以下的需求我们推荐“体验诊断”：2 周内给出问题清单和改版优先级，费用 ¥48,000。</p></details>
+          <details><summary>可以远程合作吗？</summary><p>可以，目前六成客户在上海以外。每周线上同步一次进度，关键节点到现场开工作坊。</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>© 2026 Lumen Design Studio</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">沪ICP备2021038812号</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

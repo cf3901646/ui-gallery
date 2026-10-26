@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>周屿 · 独立产品设计师</title>
+<meta name="ui:title" content="个人作品集">
+<meta name="ui:desc" content="独立设计师个人站：简洁导航、头像与可约档期首屏、双列精选作品、服务项目、工作经历时间线、客户评价和邮箱联系区。">
+<meta name="ui:category" content="营销与产品">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="作品集,个人站,时间线,评价,悬停效果">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .pf-hero { --ui-hero-pad: 88px; }
+  .pf-hero .t-hero { font-size: calc(clamp(36px, 5.6vw, 64px) * var(--ts)); max-width: 15em; }
+  .pf-me { --size: 112px; --c: linear-gradient(135deg, #fda4af, #f59e0b 55%, #7c3aed); --c-fg: #fff; font-size: 44px; }
+  .pf-works { --gap: 48px 32px; }
+  .pf-work { display: flex; flex-direction: column; gap: 16px; }
+  .pf-cover { aspect-ratio: 4 / 3; border-radius: var(--ui-radius-xl); overflow: hidden; }
+  .pf-cover > .art { width: 100%; height: 100%; transition: transform .6s var(--ui-ease); }
+  .pf-work:hover .pf-cover > .art { transform: scale(1.04); }
+  .pf-work:hover h3 { color: var(--ui-accent); }
+  .pf-cap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .pf-cap h3 { transition: color var(--ui-dur-fast); }
+  .pf-rate { margin-top: 4px; color: var(--ui-text); font-weight: 600; }
+  .pf-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 64px; align-items: start; }
+  .pf-split .section-head { margin-bottom: 0; }
+  .pf-tl { gap: 28px; }
+  .pf-tl li { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 24px; }
+  .pf-tl .t-footnote { padding-top: 2px; font-variant-numeric: tabular-nums; }
+  .pf-tl p { grid-column: 2; }
+  .pf-quote { max-width: 760px; margin-inline: auto; text-align: center; align-items: center; }
+  .pf-quote blockquote { font-size: calc(clamp(22px, 2.6vw, 30px) * var(--ts)); line-height: 1.45; }
+  .pf-quote figcaption { display: flex; align-items: center; gap: 12px; text-align: left; }
+  .pf-quote b { display: block; font-weight: 600; }
+  html[data-lang="apple"] .pf-cta { background: var(--ui-tile-bg); border-radius: var(--ui-radius-xl); }
+  .pf-mail { font-size: calc(clamp(28px, 5.4vw, 60px) * var(--ts)); line-height: 1.1; font-weight: 600; letter-spacing: -.02em; overflow-wrap: anywhere; }
+  html[data-lang="google"] .pf-mail { font-family: var(--ui-font-display); font-weight: 400; }
+  @media (max-width: 860px) { .pf-split { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 560px) { .pf-tl li { grid-template-columns: 1fr; } .pf-tl p { grid-column: auto; } .pf-me { --size: 88px; font-size: 34px; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#">周屿</a>
+      <nav class="nav-links"><a href="#work">作品</a><a href="#about">关于</a><a href="#contact">联系</a></nav>
+      <div class="nav-actions">
+        <a class="btn filled sm hide-sm" href="#contact">预约沟通</a>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero pf-hero">
+    <div class="wrap">
+      <span class="avatar pf-me only-apple">周</span>
+      <span class="avatar pf-me shape-cookie-12 only-google">周</span>
+      <span class="tag success mt-2"><svg class="i"><use href="#i-calendar"/></svg>2026 年 7 月起可约</span>
+      <h1 class="t-hero">你好，我是周屿，一名独立产品设计师。</h1>
+      <p class="t-lead t-2 hero-sub">过去 9 年，我为 30 多家公司设计过 App、SaaS 后台和设计系统。现在住在杭州，远程接项目。</p>
+      <div class="hero-actions"><a class="btn filled" href="#work">看看作品</a><a class="link-arrow" href="#">下载简历（PDF）</a></div>
+    </div>
+  </section>
+
+  <section class="section" id="work" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head row"><h2 class="t-large-title">精选作品</h2><span class="t-subhead t-2">2022–2025 · 共 14 个项目</span></div>
+      <div class="grid c2 pf-works">
+        <a class="pf-work" href="#">
+          <div class="pf-cover"><div class="art a2"><svg class="i xxl"><use href="#i-wallet"/></svg></div></div>
+          <div class="pf-cap"><div><h3 class="t-title2">潮汐记账</h3><p class="t-subhead t-2">iOS 与 Android App · 从 0 到 1</p></div><span class="t-footnote t-3">2025</span></div>
+        </a>
+        <a class="pf-work" href="#">
+          <div class="pf-cover"><div class="art a7"><svg class="i xxl"><use href="#i-grid"/></svg></div></div>
+          <div class="pf-cap"><div><h3 class="t-title2">Kite 控制台</h3><p class="t-subhead t-2">SaaS 后台 · 设计系统</p></div><span class="t-footnote t-3">2025</span></div>
+        </a>
+        <a class="pf-work" href="#">
+          <div class="pf-cover"><div class="art a3"><svg class="i xxl"><use href="#i-leaf"/></svg></div></div>
+          <div class="pf-cap"><div><h3 class="t-title2">青禾生鲜小程序</h3><p class="t-subhead t-2">下单流程改版 · 结算转化 +18%</p></div><span class="t-footnote t-3">2024</span></div>
+        </a>
+        <a class="pf-work" href="#">
+          <div class="pf-cover"><div class="art a4"><svg class="i xxl"><use href="#i-sparkles"/></svg></div></div>
+          <div class="pf-cap"><div><h3 class="t-title2">漫游 AI 行程助手</h3><p class="t-subhead t-2">对话式交互 · 6 周上线</p></div><span class="t-footnote t-3">2024</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head"><h2 class="t-large-title">我能帮你做什么</h2></div>
+      <div class="grid c3 gap-8">
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-smartphone"/></svg></span><h3 class="t-title3">产品设计</h3><p class="t-body t-2">从用户访谈、信息架构到高保真界面和可交互原型，一个人跟到上线。</p><p class="pf-rate">8–12 周 · ¥18 万起</p></article>
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-layers"/></svg></span><h3 class="t-title3">设计系统</h3><p class="t-body t-2">梳理现有组件、建立令牌和文档，让设计稿和代码用同一套规则。</p><p class="pf-rate">6–10 周 · ¥15 万起</p></article>
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-search"/></svg></span><h3 class="t-title3">体验诊断</h3><p class="t-body t-2">两周时间走查核心流程，交付问题清单、优先级和改版草图。</p><p class="pf-rate">2 周 · ¥4.8 万</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap pf-split">
+      <div class="section-head">
+        <h2 class="t-large-title">经历</h2>
+        <p class="t-body t-2">中国美术学院工业设计专业毕业。做过出行、金融和开发者工具，最喜欢把复杂的东西做简单。</p>
+      </div>
+      <ol class="timeline pf-tl">
+        <li class="is-current"><span class="t-footnote t-2">2023 — 至今</span><span class="t-headline">独立产品设计师</span><p class="t-subhead t-2">为 11 家初创公司和 2 家上市公司提供产品设计与设计系统服务。</p></li>
+        <li class="is-done"><span class="t-footnote t-2">2019 — 2023</span><span class="t-headline">云栖数据 · 设计负责人</span><p class="t-subhead t-2">从 2 人带到 9 人的设计团队，主导数据平台 3.0 改版。</p></li>
+        <li class="is-done"><span class="t-footnote t-2">2016 — 2019</span><span class="t-headline">漫游 · 高级交互设计师</span><p class="t-subhead t-2">负责酒店预订和订单中心，下单步骤从 7 步减到 4 步。</p></li>
+        <li class="is-done"><span class="t-footnote t-2">2012 — 2016</span><span class="t-headline">中国美术学院 · 工业设计学士</span><p class="t-subhead t-2">毕业设计获当年院级优秀作品。</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <figure class="quote pf-quote">
+        <blockquote>“周屿是少有的能同时跟工程师和老板讲清楚的设计师。AI 行程助手从第一张草图到上线只用了 6 周。”</blockquote>
+        <figcaption><span class="avatar" style="--c:var(--c-orange);--c-fg:#fff">沈</span><span><b>沈知远</b><span class="t-footnote t-2">漫游 联合创始人 · CEO</span></span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="cta-band pf-cta">
+        <span class="t-eyebrow">有项目想聊聊？</span>
+        <a class="pf-mail" href="#">hi@zhouyu.design</a>
+        <p class="t-body t-2">通常 24 小时内回复。也可以直接预约一次 30 分钟的免费视频沟通。</p>
+        <div class="btn-row center"><button class="btn tonal"><svg class="i"><use href="#i-copy"/></svg>复制邮箱</button><a class="link-arrow" href="#">预约沟通</a></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>© 2026 周屿 · 杭州</span>
+        <nav><a href="#">Dribbble</a><a href="#">即刻</a><a href="#">小红书</a><a href="#">浙ICP备2023017745号</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

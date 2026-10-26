@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>比较 Aurora Phone 机型</title>
+<meta name="ui:title" content="机型对比">
+<meta name="ui:desc" content="三款机型并排对比：机型选择、产品图、颜色点、起售价与购买按钮，下方是逐项对比表（窄屏可横向滑动）和购买权益。">
+<meta name="ui:category" content="定价与购买">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="对比,机型,表格,横向滚动,色板">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .local-nav-links > a.cm-cur { color: var(--ui-text); }
+  .cm-models { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .cm-model { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+  .cm-model .select { width: 100%; }
+  .cm-shot { width: 100%; aspect-ratio: 4 / 5; border-radius: var(--ui-radius-l); margin: 8px 0 6px; }
+  html[data-lang="google"] .cm-shot { aspect-ratio: 1; border-radius: 28px; }
+  .cm-phone { position: relative; width: 38%; aspect-ratio: 9 / 19.5; border-radius: 22% / 10%;
+    background: linear-gradient(155deg, color-mix(in srgb, var(--p) 60%, #fff), var(--p) 62%); box-shadow: inset 0 0 0 3px rgb(255 255 255 / 22%), 0 24px 44px rgb(0 0 0 / 30%); }
+  .cm-phone::before { content: ""; position: absolute; top: 5%; left: 8%; width: var(--cam, 48%); aspect-ratio: 1; border-radius: 26%; background: rgb(0 0 0 / 16%); }
+  .cm-dots { gap: 8px; justify-content: center; }
+  .cm-dots .swatch { width: 12px; height: 12px; cursor: default; }
+  .cm-model .btn-row { margin-top: 6px; }
+  .cm-price { font-variant-numeric: tabular-nums; }
+  .cm-table { margin-top: 64px; }
+  .cm-table table { min-width: 720px; table-layout: fixed; }
+  .cm-table thead th { font-weight: 600; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .cm-table tbody th { font-weight: 500; font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .cm-table th:first-child { width: 19%; }
+  .cm-table td b { display: block; font-weight: 600; font-size: calc(var(--fs-headline) * var(--ts)); }
+  html[data-lang="google"] .cm-table td b { font-weight: 500; }
+  .cm-table td span { display: block; margin-top: 2px; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); }
+  .cm-yes { margin-inline: auto; color: var(--ui-accent); }
+  .cm-no { color: var(--ui-text-3); font-size: 20px; line-height: 1; }
+  @media (max-width: 860px) {
+    .cm-table { margin-inline: calc(-1 * var(--ui-margin-web)); padding-inline: var(--ui-margin-web); margin-top: 48px; }
+  }
+  @media (max-width: 560px) {
+    .cm-models { grid-template-columns: repeat(3, 78%); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      margin-inline: calc(-1 * var(--ui-margin-web)); padding-inline: var(--ui-margin-web); scroll-padding-inline: var(--ui-margin-web); }
+    .cm-model { scroll-snap-align: start; }
+  }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-sparkles"/></svg></span>Aurora</a>
+      <nav class="nav-links"><a href="#">商店</a><a href="#" class="is-active">手机</a><a href="#">平板</a><a href="#">电脑</a><a href="#">手表</a><a href="#">耳机</a><a href="#">支持</a></nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" aria-label="购物袋"><svg class="i"><use href="#i-bag"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <nav class="local-nav">
+    <div class="wrap">
+      <span class="local-nav-title">Aurora Phone</span>
+      <div class="local-nav-links"><a href="#">概览</a><a href="#" class="cm-cur" aria-current="page">比较</a><a href="#">配件</a><a class="btn filled xs" href="#">购买</a></div>
+    </div>
+  </nav>
+
+  <main class="section tight">
+    <div class="wrap">
+      <div class="section-head center">
+        <h1 class="t-large-title">哪款手机适合你？</h1>
+        <p class="t-lead t-2 t-balance">三款机型都搭载 AuroraOS 27。按屏幕、影像和续航，挑出最适合你的那一款。</p>
+      </div>
+
+      <div class="cm-models">
+        <article class="cm-model">
+          <select class="select" aria-label="选择机型"><option>Aurora Phone 17 Pro</option><option>Aurora Phone 17 Pro Max</option></select>
+          <div class="art a9 cm-shot" role="img" aria-label="宇宙橙色背面"><span class="cm-phone" style="--p:#f77e2d;--cam:58%"></span></div>
+          <div class="swatches cm-dots"><span class="swatch" style="--c:#f77e2d"></span><span class="swatch" style="--c:#2e3a4f"></span><span class="swatch" style="--c:#e3e4e5"></span></div>
+          <span class="tag new">全新</span>
+          <h2 class="t-title2">Aurora Phone 17 Pro</h2>
+          <p class="t-callout t-2">迄今最强的影像与续航</p>
+          <p class="t-headline cm-price">¥8,999 起</p>
+          <div class="btn-row center"><a class="btn filled sm" href="#">购买</a><a class="link-arrow" href="#">进一步了解</a></div>
+        </article>
+        <article class="cm-model">
+          <select class="select" aria-label="选择机型"><option>Aurora Phone 17</option><option>Aurora Phone 17 Plus</option></select>
+          <div class="art a8 cm-shot" role="img" aria-label="薰衣草紫背面"><span class="cm-phone" style="--p:#9d86c9"></span></div>
+          <div class="swatches cm-dots"><span class="swatch" style="--c:#c8b6e2"></span><span class="swatch" style="--c:#b8c9a8"></span><span class="swatch" style="--c:#a9c1d9"></span><span class="swatch" style="--c:#f5f5f0"></span><span class="swatch" style="--c:#2b2b2d"></span></div>
+          <span class="tag new">全新</span>
+          <h2 class="t-title2">Aurora Phone 17</h2>
+          <p class="t-callout t-2">五种配色，高刷屏标配</p>
+          <p class="t-headline cm-price">¥5,999 起</p>
+          <div class="btn-row center"><a class="btn filled sm" href="#">购买</a><a class="link-arrow" href="#">进一步了解</a></div>
+        </article>
+        <article class="cm-model">
+          <select class="select" aria-label="选择机型"><option>Aurora Phone 16e</option><option>Aurora Phone 16</option></select>
+          <div class="art a6 cm-shot" role="img" aria-label="白色背面"><span class="cm-phone" style="--p:#e8e6e1;--cam:24%"></span></div>
+          <div class="swatches cm-dots"><span class="swatch" style="--c:#2b2b2d"></span><span class="swatch" style="--c:#f2f1ed"></span></div>
+          <span class="tag new">限时立减 ¥300</span>
+          <h2 class="t-title2">Aurora Phone 16e</h2>
+          <p class="t-callout t-2">核心体验，入门价格</p>
+          <p class="t-headline cm-price">¥4,499 起</p>
+          <div class="btn-row center"><a class="btn filled sm" href="#">购买</a><a class="link-arrow" href="#">进一步了解</a></div>
+        </article>
+      </div>
+
+      <div class="scroll-x cm-table">
+        <table class="compare">
+          <thead><tr><th scope="col"><span class="sr-only">对比项目</span></th><th scope="col">17 Pro</th><th scope="col">17</th><th scope="col">16e</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">屏幕尺寸</th><td><b>6.3 英寸</b><span>ProMotion 最高 120Hz</span></td><td><b>6.3 英寸</b><span>ProMotion 最高 120Hz</span></td><td><b>6.1 英寸</b><span>60Hz</span></td></tr>
+            <tr><th scope="row">芯片</th><td><b>A19 Pro</b><span>6 核 GPU</span></td><td><b>A19</b><span>5 核 GPU</span></td><td><b>A18</b><span>4 核 GPU</span></td></tr>
+            <tr><th scope="row">摄像头</th><td><b>4800 万像素三摄</b><span>4 倍光学变焦</span></td><td><b>4800 万像素双摄</b><span>2 倍光学品质变焦</span></td><td><b>4800 万像素单摄</b><span>2 倍光学品质变焦</span></td></tr>
+            <tr><th scope="row">续航</th><td><b>最长 31 小时</b><span>视频播放</span></td><td><b>最长 30 小时</b><span>视频播放</span></td><td><b>最长 26 小时</b><span>视频播放</span></td></tr>
+            <tr><th scope="row">存储</th><td><b>256GB – 2TB</b><span>4 档可选</span></td><td><b>256GB – 512GB</b><span>2 档可选</span></td><td><b>128GB – 512GB</b><span>3 档可选</span></td></tr>
+            <tr><th scope="row">卫星通信</th><td><svg class="i cm-yes" aria-label="支持"><use href="#i-check"/></svg></td><td><svg class="i cm-yes" aria-label="支持"><use href="#i-check"/></svg></td><td><span class="cm-no" aria-label="不支持">—</span></td></tr>
+            <tr><th scope="row">灵动岛</th><td><svg class="i cm-yes" aria-label="支持"><use href="#i-check"/></svg></td><td><svg class="i cm-yes" aria-label="支持"><use href="#i-check"/></svg></td><td><span class="cm-no" aria-label="不支持">—</span></td></tr>
+            <tr><th scope="row">起售价</th><td><b>¥8,999</b></td><td><b>¥5,999</b></td><td><b>¥4,499</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="t-footnote t-3 show-md mt-3">左右滑动查看全部对比项</p>
+    </div>
+  </main>
+
+  <section class="section alt">
+    <div class="wrap">
+      <div class="section-head center"><h2 class="t-large-title">在 Aurora Store 购买的理由。</h2></div>
+      <div class="grid c3 gap-8">
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-refresh"/></svg></span><h3 class="t-title3">以旧换新</h3><p class="t-body t-2">用符合条件的手机换购，最高抵扣 ¥4,800，评估只需 2 分钟。</p></article>
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-card"/></svg></span><h3 class="t-title3">24 期免息</h3><p class="t-body t-2">使用招商银行、工商银行等 12 家银行信用卡，享 24 期免息分期。</p></article>
+        <article class="feature"><span class="feature-icon"><svg class="i"><use href="#i-truck"/></svg></span><h3 class="t-title3">免费送货</h3><p class="t-body t-2">现货今天 17:00 前下单，上海、北京等 40 城次日送达。</p></article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">销售政策</a><a href="#">网站地图</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>睡眠</title>
+<meta name="ui:title" content="睡眠">
+<meta name="ui:desc" content="睡眠详情：睡眠得分圆环、入睡与醒来时间、四阶段睡眠时间轴、近 7 晚时长柱状图、作息安排开关和改善建议。">
+<meta name="ui:category" content="健康与运动">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="圆环,时间轴,柱状图,开关,提示">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .sl { --sl-awake: var(--c-orange); --sl-rem: var(--c-cyan); --sl-core: var(--c-blue); --sl-deep: var(--c-indigo); }
+  html[data-lang="google"][data-scheme="dark"] .sl { --sl-awake: color-mix(in srgb, var(--c-orange) 75%, white); --sl-rem: color-mix(in srgb, var(--c-cyan) 70%, white);
+    --sl-core: color-mix(in srgb, var(--c-blue) 75%, white); --sl-deep: color-mix(in srgb, var(--c-indigo) 70%, white); }
+  .sl-score { flex-direction: row; align-items: center; gap: 18px; }
+  .sl-score-n { font: 700 calc(40px * var(--ts)) / 1 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .sl-score-n { font-weight: 400; }
+  .sl-times { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sl-times span { display: flex; align-items: center; gap: 4px; }
+  .sl-times b { display: block; font: 600 calc(22px * var(--ts)) / 1.2 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .sl-times b { font-weight: 400; }
+  .sl-stages { display: grid; grid-template-columns: 34px 1fr; gap: 6px 10px; align-items: center; }
+  .sl-track { position: relative; height: 22px; border-radius: 6px; background: var(--ui-fill); }
+  .sl-track > span { position: absolute; top: 0; bottom: 0; left: var(--l); width: var(--w); border-radius: 4px; background: var(--c); }
+  .sl-axis { display: flex; justify-content: space-between; color: var(--ui-text-3); font-size: calc(var(--fs-caption2) * var(--ts)); font-variant-numeric: tabular-nums; }
+  .sl-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; }
+  .sl-legend b { color: var(--ui-text); font-weight: 600; margin-left: 4px; font-variant-numeric: tabular-nums; }
+  .sl-week .bars { --bars-h: 112px; --bars-gap: 10px; position: relative; }
+  .sl-week .bars-labels { --bars-gap: 10px; }
+  .sl-week .bars > span { --bar-color: color-mix(in srgb, var(--sl-deep) 32%, transparent); }
+  .sl-week .bars > span.is-active { background: var(--sl-deep); }
+  .sl-goal { position: absolute; left: 0; right: 0; bottom: var(--at); border-top: 1.5px dashed var(--ui-text-3); font-style: normal; }
+  .sl-goal::after { content: "目标 8 小时"; position: absolute; right: 0; bottom: 3px; font-size: calc(var(--fs-caption2) * var(--ts)); color: var(--ui-text-2);
+    background: var(--ui-card-bg); padding-left: 4px; }
+  .sl-plan { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sl-plan > div { padding: 12px; border-radius: var(--ui-radius-m); background: var(--ui-fill); }
+  .sl-plan b { display: block; font: 600 calc(28px * var(--ts)) / 1.15 var(--ui-font-display); font-variant-numeric: tabular-nums; }
+  html[data-lang="google"] .sl-plan b { font-weight: 400; }
+  .sl-moon { color: var(--sl-deep); } .sl-sun { color: var(--sl-awake); }
+</style>
+</head>
+<body class="app">
+<div class="screen sl">
+  <header class="topbar has-large">
+    <div class="topbar-lead"><a class="bar-btn back" href="#"><svg class="i"><use href="#i-back"/></svg><span>浏览</span></a></div>
+    <div class="topbar-title">睡眠</div>
+    <div class="topbar-trail"><button class="bar-btn" aria-label="添加数据"><svg class="i"><use href="#i-plus"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">睡眠</h1>
+    <div class="segmented"><button class="is-active">日</button><button>周</button><button>月</button><button>6 个月</button></div>
+
+    <section class="card pad sl-score mt-4">
+      <div class="ring-wrap">
+        <div class="ring" style="--value:86;--size:112px;--stroke:11px;--ring-color:var(--sl-deep)"></div>
+        <div><div class="sl-score-n">86</div><div class="t-caption2 t-2">睡眠得分</div></div>
+      </div>
+      <div class="grow stack gap-3">
+        <div>
+          <div class="t-title3">优秀</div>
+          <div class="t-footnote t-2">10月22日 周三晚 · 睡眠 7 小时 13 分</div>
+        </div>
+        <div class="sl-times">
+          <div><span class="t-caption t-2"><svg class="i sm sl-moon"><use href="#i-moon"/></svg>入睡</span><b>23:12</b></div>
+          <div><span class="t-caption t-2"><svg class="i sm sl-sun"><use href="#i-sun"/></svg>醒来</span><b>06:36</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">睡眠阶段 <span>卧床 7 小时 48 分</span></h2>
+      <div class="card pad stack gap-4">
+        <div class="sl-stages" role="img" aria-label="睡眠阶段时间轴">
+          <span class="t-caption t-2">清醒</span>
+          <div class="sl-track" style="--c:var(--sl-awake)"><span style="--l:0%;--w:2.5%"></span><span style="--l:38%;--w:1.2%"></span><span style="--l:61%;--w:1%"></span><span style="--l:95%;--w:2.5%"></span></div>
+          <span class="t-caption t-2">REM</span>
+          <div class="sl-track" style="--c:var(--sl-rem)"><span style="--l:33%;--w:5%"></span><span style="--l:70%;--w:6%"></span><span style="--l:84%;--w:6%"></span></div>
+          <span class="t-caption t-2">核心</span>
+          <div class="sl-track" style="--c:var(--sl-core)"><span style="--l:2.5%;--w:5.5%"></span><span style="--l:14%;--w:6%"></span><span style="--l:26%;--w:7%"></span><span style="--l:39.2%;--w:6.8%"></span><span style="--l:52%;--w:9%"></span><span style="--l:62%;--w:8%"></span><span style="--l:76%;--w:8%"></span><span style="--l:90%;--w:5%"></span></div>
+          <span class="t-caption t-2">深度</span>
+          <div class="sl-track" style="--c:var(--sl-deep)"><span style="--l:8%;--w:6%"></span><span style="--l:20%;--w:6%"></span><span style="--l:46%;--w:6%"></span></div>
+          <span></span>
+          <div class="sl-axis"><span>23:00</span><span>01:00</span><span>03:00</span><span>05:00</span><span>07:00</span></div>
+        </div>
+        <div class="legend sl-legend">
+          <span style="--c:var(--sl-awake)">清醒<b>35 分</b></span>
+          <span style="--c:var(--sl-rem)">REM<b>1 小时 22 分</b></span>
+          <span style="--c:var(--sl-core)">核心<b>4 小时 25 分</b></span>
+          <span style="--c:var(--sl-deep)">深度<b>1 小时 26 分</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">近 7 晚 <span>平均 7 小时 18 分</span></h2>
+      <div class="card pad sl-week">
+        <div class="bars">
+          <span style="--h:75.6%"></span><span style="--h:84.3%"></span><span style="--h:91.1%"></span><span style="--h:88.1%"></span>
+          <span style="--h:70.6%"></span><span style="--h:77.4%"></span><span class="is-active" style="--h:80.2%"></span>
+          <i class="sl-goal" style="--at:88.9%"></i>
+        </div>
+        <div class="bars-labels"><span>四</span><span>五</span><span>六</span><span>日</span><span>一</span><span>二</span><span>三</span></div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">作息安排 <a href="#">编辑</a></h2>
+      <div class="card pad stack gap-3">
+        <label class="hstack between">
+          <span><span class="t-headline">睡眠计划</span><span class="t-footnote t-2"> · 工作日（周一至周五）</span></span>
+          <input type="checkbox" class="switch" checked>
+        </label>
+        <div class="sl-plan">
+          <div><span class="t-caption t-2">就寝</span><b>23:00</b></div>
+          <div><span class="t-caption t-2">起床闹钟</span><b>07:00</b></div>
+        </div>
+        <span class="t-footnote t-2">睡眠目标 8 小时 · 就寝前 30 分钟开启“睡眠”专注模式</span>
+      </div>
+    </section>
+
+    <div class="callout mt-6">
+      <svg class="i"><use href="#i-lightbulb"/></svg>
+      <div>
+        <div class="callout-title">试试提前 15 分钟上床</div>
+        <div class="t-subhead">过去 14 天里，你在 23:00 前入睡的晚上，深度睡眠平均多 21 分钟，第二天静息心率也更低。</div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新邮件</title>
+<meta name="ui:title" content="写邮件">
+<meta name="ui:desc" content="写邮件页：取消、标题与强调发送按钮，收件人联系人筛选片、抄送密送与主题输入行，多段正文与签名，附件卡片，以及贴底的格式工具栏。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="邮件,表单,输入行,附件,工具栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  html { --ui-bg: var(--ui-bg-plain); }
+  .avatar { --c-fg: #fff; }
+  .bar-group { border-radius: var(--ui-radius-full); }
+  .content.mc { padding-bottom: calc(var(--safe-bottom) + 100px); }
+  .mc-fields { --ui-list-sep: var(--ui-line); --ui-row-input-align: left; }
+  .mc-fields::after { content: ""; height: 1px; margin-left: var(--ui-row-px); background: var(--ui-line); transform: scaleY(.5); }
+  html[data-lang="google"] .mc-fields::after { transform: none; }
+  .mc-fields .row { min-height: 50px; }
+  .mc-label { flex: none; color: var(--ui-text-2); }
+  .mc-to { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .mc-to .chip { padding-left: 12px; }
+  .mc-fields .icon-btn { margin-block: -6px; }
+  .mc-body { padding: 16px var(--ui-margin) 4px; }
+  .mc-body p + p { margin-top: .9em; }
+  .mc-sign { margin-top: 1.4em; }
+  .mc-att { margin: 16px var(--ui-margin) 0; }
+  .mc-att .row { --ui-row-px: 12px; }
+  .mc-att .icon-btn { --b-bg: var(--ui-fill); --b-fg: var(--ui-text-2); }
+  .mc-tools { justify-content: space-between; }
+  html[data-lang="apple"] .mc-tools .bar-group .bar-btn { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar">
+    <div class="topbar-lead"><button class="bar-btn">取消</button></div>
+    <div class="topbar-title">新邮件</div>
+    <div class="topbar-trail">
+      <button class="bar-btn prominent only-apple" aria-label="发送"><svg class="i"><use href="#i-send"/></svg></button>
+      <button class="bar-btn prominent only-google">发送</button>
+    </div>
+  </header>
+
+  <main class="content flush mc">
+    <ul class="list plain mc-fields">
+      <li><div class="row">
+        <span class="mc-label">收件人：</span>
+        <span class="mc-to">
+          <span class="chip"><span class="avatar" style="--c:linear-gradient(135deg,#4f8dff,#8a5cff)">陈</span>陈一舟</span>
+          <span class="chip"><span class="avatar" style="--c:linear-gradient(135deg,#ffb36b,#ff5e7e)">林</span>林知夏</span>
+        </span>
+        <button class="icon-btn sm" aria-label="添加联系人"><svg class="i"><use href="#i-add-circle"/></svg></button>
+      </div></li>
+      <li><label class="row">
+        <span class="mc-label">抄送/密送：</span>
+        <input class="row-input" aria-label="抄送或密送">
+      </label></li>
+      <li><div class="row">
+        <span class="mc-label">发件人：</span>
+        <span class="grow ellipsis">zhou.yian@foxmail.com</span>
+        <svg class="i sm t-3"><use href="#i-chevron-down"/></svg>
+      </div></li>
+      <li><label class="row">
+        <span class="mc-label">主题：</span>
+        <input class="row-input" value="周五评审会材料 · 第三季度用户调研" aria-label="主题">
+      </label></li>
+    </ul>
+
+    <div class="mc-body t-body">
+      <p>一舟、知夏：</p>
+      <p>附件是第三季度用户调研报告的初稿，共 42 页。重点请看第 12 到 18 页：7 日留存从 31% 提升到 38%，新用户里有 64% 来自“城市漫步”专题。</p>
+      <p>周五下午三点在 B 会议室过一遍，大概一个小时。如果时间冲突回我一下，我们改到周四晚上线上开。</p>
+      <p>谢谢！<br>以安</p>
+      <p class="mc-sign t-subhead t-regular t-2"><span class="only-apple">发自我的 iPhone</span><span class="only-google">发自我的 Pixel</span></p>
+    </div>
+
+    <div class="card outlined mc-att">
+      <div class="row">
+        <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-file"/></svg></span>
+        <span class="row-body"><span class="row-title nowrap">2026Q3 用户调研报告.pdf</span><span class="row-sub">4.2 MB · PDF 文稿</span></span>
+        <button class="icon-btn sm" aria-label="移除附件"><svg class="i"><use href="#i-close"/></svg></button>
+      </div>
+    </div>
+  </main>
+
+  <div class="toolbar docked mc-tools">
+    <div class="bar-group">
+      <button class="bar-btn" aria-label="字体"><svg class="i"><use href="#i-type"/></svg></button>
+      <button class="bar-btn" aria-label="粗体"><svg class="i"><use href="#i-bold"/></svg></button>
+      <button class="bar-btn" aria-label="斜体"><svg class="i"><use href="#i-italic"/></svg></button>
+      <button class="bar-btn" aria-label="列表"><svg class="i"><use href="#i-list"/></svg></button>
+    </div>
+    <div class="bar-group">
+      <button class="bar-btn" aria-label="添加附件"><svg class="i"><use href="#i-paperclip"/></svg></button>
+      <button class="bar-btn" aria-label="插入图片"><svg class="i"><use href="#i-image"/></svg></button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

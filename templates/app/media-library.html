@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>资料库</title>
+<meta name="ui:title" content="音乐资料库">
+<meta name="ui:desc" content="音乐资料库：分类列表（播放列表、艺人、专辑、歌曲、已下载）、最近添加专辑网格、标签栏上方的玻璃迷你播放条。">
+<meta name="ui:category" content="媒体与娱乐">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="音乐,列表,专辑网格,迷你播放器,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  :root { --ui-bg: var(--ui-bg-plain); }
+  body:has(.tabbar) .content { padding-bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 104px); }
+  html[data-lang="apple"] .ml-cats > li + li::before { left: calc(var(--ui-row-px) + 30px + var(--ui-row-gap)); }
+  .ml-cats .row-title { font-size: calc(var(--fs-title3) * var(--ts)); line-height: 1.25; }
+  html[data-lang="google"] .ml-cats .row-title { font-size: calc(var(--fs-body) * var(--ts)); }
+  .ml-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 14px; }
+  .ml-album { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ml-album .art { border-radius: var(--ui-radius-s); margin-bottom: 6px; box-shadow: var(--ui-shadow-1); }
+  html[data-lang="google"] .ml-album .art { border-radius: var(--ui-radius-l); box-shadow: none; }
+  .ml-mini { position: fixed; z-index: 39; left: 20px; right: 20px; display: flex; align-items: center; gap: 10px;
+    height: 56px; padding: 0 6px 0 8px; border-radius: var(--ui-radius-full);
+    bottom: calc(max(10px, calc(var(--safe-bottom) - 12px)) + var(--ui-tabbar-h) + 8px); }
+  .ml-mini .art { width: 40px; height: 40px; border-radius: 50%; flex: none; }
+  .ml-mini .art .i { --ui-icon: 18px; }
+  .ml-mini .grow { display: flex; flex-direction: column; }
+  .ml-mini .icon-btn { --b-fg: var(--ui-text); }
+  html[data-lang="google"] .ml-mini { left: 8px; right: 8px; bottom: calc(var(--safe-bottom) + var(--ui-tabbar-h) + 8px);
+    border-radius: var(--ui-radius-l); background: var(--md-surface-container-highest); box-shadow: var(--ui-shadow-1); height: 64px; }
+  html[data-lang="google"] .ml-mini .art { border-radius: var(--ui-radius-s); width: 48px; height: 48px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">资料库</div>
+    <div class="topbar-trail">
+      <button class="bar-btn only-apple">编辑</button>
+      <button class="bar-btn only-google" aria-label="历史记录"><svg class="i"><use href="#i-history"/></svg></button>
+      <span class="avatar sm" style="--c:linear-gradient(135deg,#ff9f6b,#ff5e7e)">林</span>
+    </div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">资料库</h1>
+
+    <ul class="list plain bleed has-icons ml-cats">
+      <li><a class="row" href="#"><span class="row-icon plain" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-list-music"/></svg></span><span class="row-body"><span class="row-title">播放列表</span><span class="row-sub only-google">24 个</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><a class="row" href="#"><span class="row-icon plain" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-mic"/></svg></span><span class="row-body"><span class="row-title">艺人</span><span class="row-sub only-google">186 位</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><a class="row" href="#"><span class="row-icon plain" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-layers"/></svg></span><span class="row-body"><span class="row-title">专辑</span><span class="row-sub only-google">312 张</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><a class="row" href="#"><span class="row-icon plain" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-music"/></svg></span><span class="row-body"><span class="row-title">歌曲</span><span class="row-sub only-google">2,941 首</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+      <li><a class="row" href="#"><span class="row-icon plain" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-download"/></svg></span><span class="row-body"><span class="row-title">已下载</span><span class="row-sub only-google">1,204 首 · 8.6 GB</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></a></li>
+    </ul>
+
+    <section class="group">
+      <h2 class="group-header large">最近添加 <a class="t-subhead" href="#">查看全部</a></h2>
+      <div class="ml-grid">
+        <a class="ml-album" href="#"><div class="art a4 ratio-1"></div><span class="t-subhead t-semibold ellipsis">远处的海</span><span class="t-subhead t-2 ellipsis">北岸灯塔乐队</span></a>
+        <a class="ml-album" href="#"><div class="art a5 ratio-1"></div><span class="t-subhead t-semibold ellipsis">慢慢喜欢</span><span class="t-subhead t-2 ellipsis">苏曼</span></a>
+        <a class="ml-album" href="#"><div class="art a7 ratio-1"></div><span class="t-subhead t-semibold ellipsis">一万次日落</span><span class="t-subhead t-2 ellipsis">陈默与光年</span></a>
+        <a class="ml-album" href="#"><div class="art a11 ratio-1"></div><span class="t-subhead t-semibold ellipsis">城市夜跑 Vol.2</span><span class="t-subhead t-2 ellipsis">群星 · 2026</span></a>
+        <a class="ml-album" href="#"><div class="art a2 ratio-1"></div><span class="t-subhead t-semibold ellipsis">月光边境</span><span class="t-subhead t-2 ellipsis">林晚</span></a>
+        <a class="ml-album" href="#"><div class="art a8 ratio-1"></div><span class="t-subhead t-semibold ellipsis">雨季不再来（重制版）</span><span class="t-subhead t-2 ellipsis">许星河</span></a>
+      </div>
+    </section>
+  </main>
+
+  <div class="ml-mini glass">
+    <div class="art a4"><svg class="i"><use href="#i-music"/></svg></div>
+    <div class="grow"><strong class="t-subhead t-semibold ellipsis">夜航星图</strong><span class="t-footnote t-2 ellipsis">北岸灯塔乐队</span></div>
+    <button class="icon-btn" aria-label="暂停"><svg class="i solid"><use href="#i-pause"/></svg></button>
+    <button class="icon-btn" aria-label="下一首"><svg class="i solid"><use href="#i-skip-forward"/></svg></button>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab-group">
+      <a class="tab" href="#"><svg class="i"><use href="#i-play-circle"/></svg><span>现在就听</span></a>
+      <a class="tab" href="#"><svg class="i"><use href="#i-grid"/></svg><span>浏览</span></a>
+      <a class="tab" href="#"><svg class="i"><use href="#i-radio"/></svg><span>广播</span></a>
+      <a class="tab is-active" href="#"><svg class="i"><use href="#i-library-fill"/></svg><span>资料库</span></a>
+    </div>
+    <a class="tab search" href="#"><svg class="i"><use href="#i-search"/></svg><span>搜索</span></a>
+  </nav>
+</div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora Phone 17 Pro - 技术规格</title>
+<meta name="ui:title" content="技术规格">
+<meta name="ui:desc" content="产品技术规格页：全局与局部导航、机型切换、颜色色板、尺寸示意图、按节排列的规格清单和脚注。">
+<meta name="ui:category" content="营销与产品">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="规格,局部导航,色板,示意图,脚注">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .local-nav-links > a.ps-cur { color: var(--ui-text); }
+  .ps-seg { align-self: flex-start; min-width: 280px; margin-top: 8px; }
+  .ps-sw { gap: 44px; padding: 4px 0 30px 6px; }
+  .ps-sw .swatch::after { content: attr(data-name); position: absolute; top: calc(100% + 10px); left: 50%; translate: -50% 0; white-space: nowrap;
+    font-size: calc(12px * var(--ts)); color: var(--ui-text-2); }
+  .ps-sw .swatch.is-active::after { color: var(--ui-text); font-weight: 600; }
+  .ps-dim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+  .ps-diagram { display: flex; justify-content: center; align-items: center; gap: 44px; padding: 40px 24px 56px 56px; min-height: 320px; border-radius: var(--ui-radius-l); }
+  html[data-scheme="dark"] .ps-diagram { background: var(--ui-surface-2); color: var(--ui-text-2); }
+  .ps-front { position: relative; width: 104px; aspect-ratio: 71.9 / 150; border: 2.5px solid currentColor; border-radius: 20px; }
+  .ps-front::before { content: ""; position: absolute; top: 8px; left: 35%; width: 30%; height: 8px; border-radius: 9px; background: currentColor; }
+  .ps-side { position: relative; width: 12px; height: 217px; border: 2.5px solid currentColor; border-radius: 6px; }
+  .ps-diagram span { position: absolute; white-space: nowrap; font-size: calc(11px * var(--ts)); font-weight: 600; }
+  .ps-w, .ps-d { top: calc(100% + 12px); left: 50%; translate: -50% 0; }
+  .ps-h { right: calc(100% + 16px); top: 50%; transform: translate(50%, -50%) rotate(-90deg); }
+  .ps-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .ps-stats .stat-value { color: var(--ui-text); }
+  .ps-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; }
+  @media (min-width: 1100px) { html[data-lang="google"] .ps-cols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .ps-cols > div { display: flex; flex-direction: column; gap: 4px; font-size: calc(var(--fs-callout) * var(--ts)); line-height: 1.45; }
+  .ps-cols b { color: var(--ui-text); font-size: calc(var(--fs-title3) * var(--ts)); font-weight: 600; line-height: 1.25; }
+  html[data-lang="google"] .ps-cols b { font-weight: 400; font-family: var(--ui-font-display); }
+  .ps-last { border-bottom: 1px solid var(--ui-line); }
+  .ps-notes { list-style: decimal; padding-left: 1.4em; display: flex; flex-direction: column; gap: 8px; max-width: 72ch; }
+  @media (max-width: 560px) { .ps-dim { grid-template-columns: 1fr; } .ps-cols { gap: 20px; } }
+</style>
+</head>
+<body class="site">
+  <header class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="#"><span class="brand-mark"><svg class="i"><use href="#i-sparkles"/></svg></span>Aurora</a>
+      <nav class="nav-links"><a href="#">商店</a><a href="#" class="is-active">手机</a><a href="#">平板</a><a href="#">电脑</a><a href="#">手表</a><a href="#">耳机</a><a href="#">支持</a></nav>
+      <div class="nav-actions">
+        <button class="icon-btn" aria-label="搜索"><svg class="i"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" aria-label="购物袋"><svg class="i"><use href="#i-bag"/></svg></button>
+        <button class="icon-btn nav-menu-btn" aria-label="菜单"><svg class="i"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+  <nav class="local-nav">
+    <div class="wrap">
+      <span class="local-nav-title">Aurora Phone 17 Pro</span>
+      <div class="local-nav-links"><a href="#">概览</a><a href="#">为何选择</a><a href="#" class="ps-cur" aria-current="page">技术规格</a><a class="btn filled xs" href="#">购买</a></div>
+    </div>
+  </nav>
+
+  <main class="section tight">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="t-eyebrow">技术规格</span>
+        <h1 class="t-large-title">Aurora Phone 17 Pro</h1>
+        <p class="t-lead t-2">256GB 起，¥8,999 起。<a class="link-arrow" href="#">比较所有机型</a></p>
+        <div class="segmented ps-seg"><button class="is-active">17 Pro · 6.3 英寸</button><button>17 Pro Max · 6.9 英寸</button></div>
+      </div>
+
+      <dl class="spec">
+        <dt>颜色</dt>
+        <dd>
+          <div class="swatches ps-sw">
+            <button class="swatch is-active" style="--c:#f77e2d" data-name="宇宙橙色" aria-label="宇宙橙色"></button>
+            <button class="swatch" style="--c:#2e3a4f" data-name="深蓝色" aria-label="深蓝色"></button>
+            <button class="swatch" style="--c:#e3e4e5" data-name="银色" aria-label="银色"></button>
+          </div>
+          <p class="t-callout">一体成型铝金属机身，背面为超瓷晶玻璃，亚光质感。</p>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>外观尺寸与重量</dt>
+        <dd class="ps-dim">
+          <div class="art a12 ps-diagram" role="img" aria-label="正面与侧面尺寸示意图">
+            <div class="ps-front"><span class="ps-h">150.0 毫米</span><span class="ps-w">71.9 毫米</span></div>
+            <div class="ps-side"><span class="ps-d">8.75 毫米</span></div>
+          </div>
+          <div class="ps-stats">
+            <div class="stat"><span class="stat-value">150.0</span><span class="stat-label">高度（毫米）</span></div>
+            <div class="stat"><span class="stat-value">71.9</span><span class="stat-label">宽度（毫米）</span></div>
+            <div class="stat"><span class="stat-value">8.75</span><span class="stat-label">厚度（毫米）</span></div>
+            <div class="stat"><span class="stat-value">204</span><span class="stat-label">重量（克）<sup>5</sup></span></div>
+          </div>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>显示屏</dt>
+        <dd class="ps-cols">
+          <div><b>6.3 英寸<sup>1</sup></b>超视网膜 XDR 显示屏，OLED 全面屏</div>
+          <div><b>2622 × 1206</b>像素分辨率，460 ppi</div>
+          <div><b>1–120Hz</b>ProMotion 自适应刷新率，支持全天候显示</div>
+          <div><b>3000 尼特</b>户外峰值亮度，最低亮度 1 尼特</div>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>芯片</dt>
+        <dd class="ps-cols">
+          <div><b>A19 Pro</b>第三代 3 纳米工艺</div>
+          <div><b>6 核 CPU</b>2 个性能核心和 4 个能效核心</div>
+          <div><b>6 核 GPU</b>硬件加速光线追踪，每核心配备神经网络加速器</div>
+          <div><b>16 核神经网络引擎</b>每秒 38 万亿次运算</div>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>摄像头</dt>
+        <dd class="ps-cols">
+          <div><b>4800 万像素主摄</b>ƒ/1.78 光圈，第二代传感器位移式光学图像防抖</div>
+          <div><b>4800 万像素超广角</b>ƒ/2.2 光圈，120° 视角，2 厘米微距</div>
+          <div><b>4800 万像素长焦</b>4 倍光学变焦，100 毫米焦距，ƒ/2.8</div>
+          <div><b>1800 万像素前置</b>ƒ/1.9 光圈，人物居中，自动对焦</div>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>视频拍摄</dt>
+        <dd class="ps-cols">
+          <div><b>4K 杜比视界</b>24 fps、25 fps、30 fps、60 fps 或 120 fps</div>
+          <div><b>电影效果模式</b>最高 4K HDR，30 fps</div>
+          <div><b>ProRes RAW</b>支持 Log 编码与外接 SSD 录制</div>
+          <div><b>空间音频</b>4 麦克风阵列，录音降噪</div>
+        </dd>
+      </dl>
+
+      <dl class="spec">
+        <dt>电池与充电</dt>
+        <dd class="ps-cols">
+          <div><b>31 小时</b><span>视频播放最长时间<sup>2</sup></span></div>
+          <div><b>20 分钟 50%</b><span>使用 40 瓦或更大功率适配器快充<sup>3</sup></span></div>
+          <div><b>25 瓦</b>MagSafe 与 Qi2.2 无线充电</div>
+          <div><b>USB-C</b>USB 3，最高 10Gb/s 传输速率</div>
+        </dd>
+      </dl>
+
+      <dl class="spec ps-last">
+        <dt>连接</dt>
+        <dd class="ps-cols">
+          <div><b>5G</b>sub-6 GHz，双卡双待（nano-SIM 与 eSIM）</div>
+          <div><b>Wi-Fi 7</b>802.11be，2×2 MIMO</div>
+          <div><b>蓝牙 6</b>第二代超宽频芯片，支持精确查找</div>
+          <div><b>卫星通信</b><span>紧急求救与短信<sup>4</sup></span></div>
+        </dd>
+      </dl>
+    </div>
+  </main>
+
+  <section class="section tight">
+    <div class="wrap">
+      <ol class="ps-notes t-caption t-2">
+        <li>显示屏为圆角设计，以标准矩形测量时，对角线长度为 6.27 英寸，实际可视区域较小。</li>
+        <li>电池续航因使用方式和配置而异。测试于 2026 年 8 月使用预生产机型和软件进行。</li>
+        <li>测试使用 40 瓦 USB-C 电源适配器，适配器需另行购买。</li>
+        <li>卫星通信需要 AuroraOS 27 或更高版本，中国大陆服务由天通卫星系统提供。</li>
+        <li>实际尺寸和重量因配置和制造工艺而异。</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-legal">
+        <span>Copyright © 2026 Aurora Inc. 保留所有权利。</span>
+        <nav><a href="#">隐私政策</a><a href="#">使用条款</a><a href="#">销售政策</a><a href="#">网站地图</a></nav>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

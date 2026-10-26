@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>天气 · 杭州</title>
+<meta name="ui:title" content="天气">
+<meta name="ui:desc" content="天气首页：深蓝渐变背景、超大细字温度、逐小时预报横滑、10 日预报温度区间条、空气质量/紫外线/风/湿度/日出/体感小组件。">
+<meta name="ui:category" content="效率工具">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="天气,深色背景,玻璃卡片,小组件,横滑">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  /* 页面专用：天空背景是“内容”，整页文字固定为白色，不随明暗切换 */
+  body.app { background: #0b2a5b; color: #fff; }
+  .wx-bg { position: fixed; inset: 0; }
+  .wx-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgb(6 22 60 / 0%) 25%, rgb(6 22 60 / 55%)); }
+  .wx { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px;
+    padding-top: calc(var(--safe-top) + 20px); padding-bottom: calc(var(--safe-bottom) + 84px); }
+  .wx .t-2 { color: rgb(255 255 255 / 70%); }
+  .wx-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding-bottom: 20px; text-shadow: 0 1px 8px rgb(0 0 0 / 15%); }
+  .wx-loc { display: flex; align-items: center; gap: 4px; font-weight: 600; }
+  .wx-loc .i { --ui-icon: 13px; }
+  .wx-city { font-weight: 400; }
+  .wx-temp { --fs: 96px; --lh: 1; --fw: 200; --ls: -2px; margin: 0 0 4px 22px; }
+  .wx-card { background: rgb(10 34 84 / 26%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+    border-radius: var(--ui-radius-l); padding: 12px 16px; overflow: hidden; }
+  .wx-cap { display: flex; align-items: center; gap: 6px; padding-bottom: 10px; margin-bottom: 4px; color: rgb(255 255 255 / 62%);
+    font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 600; border-bottom: 1px solid rgb(255 255 255 / 16%); }
+  .wx-cap .i { --ui-icon: 15px; }
+  .wx-hours { display: flex; gap: 2px; margin: 0 -16px; padding: 6px 12px 2px; }
+  .wx-hours > div { flex: none; min-width: 54px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .wx-hours small { font-size: 11px; color: color-mix(in srgb, var(--c-cyan) 45%, white); font-weight: 600; margin-top: -6px; }
+  .wx-days > li { display: grid; grid-template-columns: 44px 36px 32px 1fr 32px; align-items: center; gap: 10px; min-height: 46px; }
+  .wx-days > li + li { border-top: 1px solid rgb(255 255 255 / 14%); }
+  .wx-ic { display: flex; flex-direction: column; align-items: center; }
+  .wx-ic small { font-size: 11px; line-height: 1; margin-top: 2px; color: color-mix(in srgb, var(--c-cyan) 45%, white); font-weight: 600; }
+  .wx-ic .i, .wx-hours .i { --ui-icon: 22px; }
+  .wx-lo { color: rgb(255 255 255 / 60%); text-align: right; }
+  .wx-hi { text-align: right; }
+  .wx-range { position: relative; height: 5px; border-radius: 99px; background: rgb(0 0 0 / 22%); }
+  .wx-range::before { content: ""; position: absolute; inset: 0 auto 0 var(--l); width: var(--w); border-radius: inherit;
+    background: linear-gradient(90deg, var(--c-cyan), var(--c-green), var(--c-yellow)); }
+  .wx-now { position: absolute; top: 50%; left: calc(var(--l) + var(--w) * .71); width: 7px; height: 7px; translate: -50% -50%;
+    border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgb(0 0 0 / 30%); }
+  .wx-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wx .widget { background: rgb(10 34 84 / 26%); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); color: #fff; min-height: 156px; }
+  .wx .widget-label { color: rgb(255 255 255 / 62%); }
+  .wx .widget .t-footnote { margin-top: auto; }
+  .wx-scale { position: relative; height: 5px; border-radius: 99px; margin: 4px 0;
+    background: linear-gradient(90deg, var(--c-green), var(--c-yellow), var(--c-orange), var(--c-red), var(--c-purple)); }
+  .wx-scale::after { content: ""; position: absolute; left: var(--x); top: 50%; width: 8px; height: 8px; translate: -50% -50%;
+    border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgb(0 0 0 / 30%); }
+  .wx-unit { font-size: calc(var(--fs-subhead) * var(--ts)); font-weight: 500; margin-left: 4px; }
+  .wx-arc { width: 100%; height: auto; color: #fff; }
+  .wx-bar { justify-content: space-between; align-items: center; background: linear-gradient(transparent, rgb(6 22 52 / 80%)); }
+  .wx-bar .icon-btn { --b-fg: #fff; color: #fff; background: rgb(255 255 255 / 16%); box-shadow: none; }
+  .wx-bar .dots > span { background: rgb(255 255 255 / 35%); }
+  .wx-bar .dots > .is-active { background: #fff; }
+</style>
+</head>
+<body class="app" data-scheme-hint="dark">
+  <div class="wx-bg art a2" aria-hidden="true"></div>
+  <div class="screen">
+    <main class="content wx">
+      <header class="wx-hero">
+        <span class="wx-loc t-footnote"><svg class="i solid"><use href="#i-navigation"/></svg>我的位置</span>
+        <h1 class="t-large-title wx-city">杭州</h1>
+        <div class="t-display wx-temp t-num">22°</div>
+        <p class="t-title3">多云</p>
+        <p class="t-headline">最高 24° 最低 17°</p>
+      </header>
+
+      <section class="wx-card">
+        <p class="wx-cap">预计 20:00 左右开始下小雨，阵风最高 18 公里/时。</p>
+        <div class="wx-hours scroll-x t-footnote">
+          <div><b>现在</b><svg class="i solid"><use href="#i-cloud"/></svg><strong class="t-headline">22°</strong></div>
+          <div><b>15时</b><svg class="i solid"><use href="#i-cloud"/></svg><strong class="t-headline">23°</strong></div>
+          <div><b>16时</b><svg class="i solid"><use href="#i-sun"/></svg><strong class="t-headline">22°</strong></div>
+          <div><b>17时</b><svg class="i solid"><use href="#i-sun"/></svg><strong class="t-headline">21°</strong></div>
+          <div><b>17:29</b><svg class="i solid"><use href="#i-sun"/></svg><strong class="t-headline">日落</strong></div>
+          <div><b>18时</b><svg class="i solid"><use href="#i-moon"/></svg><strong class="t-headline">20°</strong></div>
+          <div><b>19时</b><svg class="i solid"><use href="#i-cloud"/></svg><strong class="t-headline">19°</strong></div>
+          <div><b>20时</b><svg class="i solid"><use href="#i-rain"/></svg><small>60%</small><strong class="t-headline">18°</strong></div>
+          <div><b>21时</b><svg class="i solid"><use href="#i-rain"/></svg><small>40%</small><strong class="t-headline">18°</strong></div>
+          <div><b>22时</b><svg class="i solid"><use href="#i-cloud"/></svg><strong class="t-headline">17°</strong></div>
+        </div>
+      </section>
+
+      <section class="wx-card">
+        <h2 class="wx-cap"><svg class="i"><use href="#i-calendar"/></svg>10 日天气预报</h2>
+        <ul class="wx-days t-headline t-num">
+          <li><span>今天</span><span class="wx-ic"><svg class="i solid"><use href="#i-cloud"/></svg></span><span class="wx-lo">17°</span><span class="wx-range" style="--l:33%;--w:47%"><i class="wx-now"></i></span><span class="wx-hi">24°</span></li>
+          <li><span>周六</span><span class="wx-ic"><svg class="i solid"><use href="#i-sun"/></svg></span><span class="wx-lo">16°</span><span class="wx-range" style="--l:27%;--w:60%"></span><span class="wx-hi">25°</span></li>
+          <li><span>周日</span><span class="wx-ic"><svg class="i solid"><use href="#i-rain"/></svg><small>70%</small></span><span class="wx-lo">15°</span><span class="wx-range" style="--l:20%;--w:33%"></span><span class="wx-hi">20°</span></li>
+          <li><span>周一</span><span class="wx-ic"><svg class="i solid"><use href="#i-rain"/></svg><small>40%</small></span><span class="wx-lo">14°</span><span class="wx-range" style="--l:13%;--w:33%"></span><span class="wx-hi">19°</span></li>
+          <li><span>周二</span><span class="wx-ic"><svg class="i solid"><use href="#i-cloud"/></svg></span><span class="wx-lo">14°</span><span class="wx-range" style="--l:13%;--w:53%"></span><span class="wx-hi">22°</span></li>
+          <li><span>周三</span><span class="wx-ic"><svg class="i solid"><use href="#i-sun"/></svg></span><span class="wx-lo">15°</span><span class="wx-range" style="--l:20%;--w:60%"></span><span class="wx-hi">24°</span></li>
+          <li><span>周四</span><span class="wx-ic"><svg class="i solid"><use href="#i-sun"/></svg></span><span class="wx-lo">16°</span><span class="wx-range" style="--l:27%;--w:60%"></span><span class="wx-hi">25°</span></li>
+          <li><span>周五</span><span class="wx-ic"><svg class="i solid"><use href="#i-cloud"/></svg></span><span class="wx-lo">17°</span><span class="wx-range" style="--l:33%;--w:47%"></span><span class="wx-hi">24°</span></li>
+          <li><span>周六</span><span class="wx-ic"><svg class="i solid"><use href="#i-rain"/></svg><small>60%</small></span><span class="wx-lo">13°</span><span class="wx-range" style="--l:7%;--w:33%"></span><span class="wx-hi">18°</span></li>
+          <li><span>周日</span><span class="wx-ic"><svg class="i solid"><use href="#i-cloud"/></svg></span><span class="wx-lo">12°</span><span class="wx-range" style="--l:0%;--w:47%"></span><span class="wx-hi">19°</span></li>
+        </ul>
+      </section>
+
+      <div class="wx-widgets">
+        <div class="widget wide">
+          <span class="widget-label"><svg class="i sm"><use href="#i-leaf"/></svg>空气质量</span>
+          <span class="widget-value">42 <span class="wx-unit">优</span></span>
+          <div class="wx-scale" style="--x:14%"></div>
+          <span class="t-footnote t-2">当前 AQI 为 42，首要污染物 PM2.5，适合开窗通风和户外运动。</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-sun"/></svg>紫外线指数</span>
+          <span class="widget-value">3 <span class="wx-unit">中等</span></span>
+          <div class="wx-scale" style="--x:27%"></div>
+          <span class="t-footnote t-2">17:00 前外出建议防晒。</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-sun"/></svg>日出</span>
+          <span class="widget-value">06:04</span>
+          <svg class="wx-arc" viewBox="0 0 120 40" aria-hidden="true"><line x1="0" y1="30" x2="120" y2="30" stroke="currentColor" stroke-opacity=".3"/><path d="M4 36 Q60 -12 116 36" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="2"/><circle cx="87" cy="17.5" r="4.5" fill="currentColor"/></svg>
+          <span class="t-footnote t-2">日落 17:29</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-wind"/></svg>风</span>
+          <span class="widget-value">12<span class="wx-unit">公里/时</span></span>
+          <span class="t-subhead">东北风 3 级</span>
+          <span class="t-footnote t-2">阵风 18 公里/时</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-droplet"/></svg>湿度</span>
+          <span class="widget-value">68%</span>
+          <span class="t-footnote t-2">目前露点温度为 16°。</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-thermometer"/></svg>体感温度</span>
+          <span class="widget-value">21°</span>
+          <span class="t-footnote t-2">风使体感温度略低于实际温度。</span>
+        </div>
+        <div class="widget">
+          <span class="widget-label"><svg class="i sm"><use href="#i-umbrella"/></svg>降水量</span>
+          <span class="widget-value">0<span class="wx-unit">毫米</span></span>
+          <span class="t-footnote t-2">过去 24 小时。预计今晚还有 3 毫米。</span>
+        </div>
+      </div>
+      <p class="t-footnote t-2 t-center">杭州天气 · 数据更新于 14:30</p>
+    </main>
+
+    <div class="toolbar docked wx-bar">
+      <button class="icon-btn" aria-label="地图"><svg class="i"><use href="#i-map"/></svg></button>
+      <div class="dots"><span class="is-active"></span><span></span><span></span></div>
+      <button class="icon-btn" aria-label="城市列表"><svg class="i"><use href="#i-list"/></svg></button>
+    </div>
+  </div>
+</body>
+</html>

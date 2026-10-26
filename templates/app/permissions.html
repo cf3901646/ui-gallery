@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>开启权限</title>
+<meta name="ui:title" content="权限请求">
+<meta name="ui:desc" content="权限前置说明页：通知、位置、健康数据三张带开关的说明卡片，上面叠加系统通知权限对话框。">
+<meta name="ui:category" content="引导与账户">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="权限,对话框,遮罩,开关,卡片,引导">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .pm { display: flex; flex-direction: column; padding-top: calc(var(--safe-top) + 24px); }
+  .pm-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; margin-bottom: 28px; }
+  .pm-badge { width: 76px; height: 76px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 22px;
+    background: linear-gradient(150deg, var(--c-blue), var(--c-indigo)); color: #fff; }
+  html[data-lang="google"] .pm-badge { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+  .pm-badge .i { --ui-icon: 38px; }
+  .pm-card { flex-direction: row; align-items: center; gap: 14px; cursor: pointer; }
+  html[data-lang="apple"] .pm-card .row-icon { width: 40px; height: 40px; border-radius: 11px; }
+  html[data-lang="apple"] .pm-card .row-icon .i { --ui-icon: 22px; }
+  .pm-card .grow { display: flex; flex-direction: column; gap: 2px; }
+  .pm-note { margin-top: 16px; }
+  #pm-alert .dialog-title { text-wrap: balance; }
+  .pm-foot { margin-top: auto; padding-top: 20px; display: flex; flex-direction: column; gap: 6px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <main class="content pm">
+    <div class="pm-head">
+      <span class="pm-badge"><svg class="i"><use href="#i-shield"/></svg></span>
+      <h1 class="t-title1 t-balance">开启这些权限，体验更完整</h1>
+      <p class="t-callout t-2 t-balance">拾光日记只在需要时使用它们，数据默认只保存在你的设备上。</p>
+    </div>
+
+    <div class="stack gap-3">
+      <label class="card pad pm-card">
+        <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-bell"/></svg></span>
+        <span class="grow"><span class="t-headline">通知</span><span class="t-footnote t-2">每晚 21:30 提醒你写日记，并推送“那年今日”的回忆。</span></span>
+        <input type="checkbox" class="switch" checked aria-label="通知">
+      </label>
+      <label class="card pad pm-card">
+        <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-map-pin"/></svg></span>
+        <span class="grow"><span class="t-headline">位置</span><span class="t-footnote t-2">为日记自动标注地点，例如“上海 · 武康路”。仅在使用 App 期间。</span></span>
+        <input type="checkbox" class="switch" aria-label="位置">
+      </label>
+      <label class="card pad pm-card">
+        <span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-heart-pulse"/></svg></span>
+        <span class="grow"><span class="t-headline">健康数据</span><span class="t-footnote t-2">读取步数和睡眠，在每周回顾里对照心情与作息。</span></span>
+        <input type="checkbox" class="switch" checked aria-label="健康数据">
+      </label>
+    </div>
+    <p class="t-footnote t-2 t-center pm-note">之后可随时在“设置 › 隐私与安全性”中更改。</p>
+
+    <div class="pm-foot">
+      <button class="btn filled lg block">继续</button>
+      <button class="btn text block">暂不开启</button>
+    </div>
+  </main>
+</div>
+
+<div class="scrim" data-for="pm-alert"></div>
+<div class="dialog" id="pm-alert" role="alertdialog" aria-labelledby="pm-alert-title">
+  <svg class="i lg dialog-icon only-google"><use href="#i-bell"/></svg>
+  <h2 class="dialog-title" id="pm-alert-title">允许“拾光日记”向你发送通知？</h2>
+  <p class="dialog-body">通知可能包括提醒、声音和图标标记。你可以在“设置”中随时更改。</p>
+  <div class="dialog-actions">
+    <button class="btn" data-close>不允许</button>
+    <button class="btn filled" data-close>允许</button>
+  </div>
+</div>
+</body>
+</html>

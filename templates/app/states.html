@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>状态与反馈</title>
+<meta name="ui:title" content="空状态与错误">
+<meta name="ui:desc" content="常见状态合集：空收件箱、离线错误与重试、搜索无结果、骨架屏加载、操作成功提示条、上传进度（含 Google 波浪进度条）。">
+<meta name="ui:category" content="状态与反馈">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="空状态,错误,离线,骨架屏,提示条,进度条,搜索">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .st-box, .st-skel-card { background: var(--ui-list-bg); }
+  .st-box .empty { padding: 32px 20px 28px; }
+  .st-box .empty > .i { --ui-icon: 48px; }
+  .st-empty-art { width: 76px; height: 76px; display: grid; place-items: center; margin-bottom: 8px; border-radius: 50%;
+    background: var(--ui-accent-soft); color: var(--ui-on-accent-soft); }
+  .st-empty-art .i { --ui-icon: 36px; }
+  html[data-lang="google"] .st-empty-art { background: var(--md-tertiary-container); color: var(--md-on-tertiary-container); }
+  .st-search { padding: 12px 12px 0; }
+  .st-search .empty { padding: 24px 12px 20px; }
+  .st-search .chips { justify-content: center; margin-top: 8px; }
+  .st-offline .stack { --gap: 4px; flex: 1; }
+  .st-offline .btn-row { margin-top: 8px; gap: 8px; }
+  html[data-lang="google"] .st-offline .btn.filled { --b-fg: var(--md-on-error); }
+  .st-skel .row-body { gap: 8px; }
+  .st-av { width: 44px; height: 44px; flex: none; }
+  .st-media { height: 132px; border-radius: 0; }
+  .st-skel-card { margin-top: 12px; }
+  .st-skel-card .card-body { gap: 10px; }
+  .st-toast { display: flex; justify-content: center; padding: 8px 0; }
+  .st-ok { color: var(--ui-success); }
+  html[data-lang="google"] .st-ok { color: var(--md-inverse-primary); }
+  .st-up { display: flex; align-items: center; gap: 12px; }
+  .st-up .stack { --gap: 6px; flex: 1; min-width: 0; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">状态与反馈</div>
+    <div class="topbar-trail"><button class="bar-btn" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">状态与反馈</h1>
+    <div class="segmented"><button class="is-active">全部</button><button>空状态</button><button>错误</button><button>加载</button></div>
+
+    <section class="group">
+      <h2 class="group-header">空收件箱</h2>
+      <div class="card st-box">
+        <div class="empty">
+          <span class="st-empty-art"><svg class="i"><use href="#i-inbox"/></svg></span>
+          <h3 class="t-title3">收件箱已清空</h3>
+          <p class="t-callout t-2">新邮件会显示在这里。趁现在去喝杯咖啡吧。</p>
+          <button class="btn tonal"><svg class="i"><use href="#i-edit"/></svg>写邮件</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">离线</h2>
+      <div class="callout danger st-offline" role="alert">
+        <svg class="i"><use href="#i-wifi"/></svg>
+        <div class="stack">
+          <span class="callout-title">网络连接已断开</span>
+          <span class="t-footnote">离线时写的 2 篇日记已保存在本机，恢复连接后会自动同步。</span>
+          <div class="btn-row">
+            <button class="btn filled danger sm"><svg class="i"><use href="#i-refresh"/></svg>重试</button>
+            <button class="btn text danger sm">网络设置</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">搜索无结果</h2>
+      <div class="card st-box st-search">
+        <label class="searchbar"><svg class="i"><use href="#i-search"/></svg><input type="search" value="武康路 咖啡 2019" aria-label="搜索"></label>
+        <div class="empty">
+          <svg class="i"><use href="#i-search"/></svg>
+          <h3 class="t-headline">没有找到“武康路 咖啡 2019”</h3>
+          <p class="t-footnote t-2">检查一下拼写，或者换个关键词试试。</p>
+          <div class="chips wrap"><button class="chip">武康路</button><button class="chip">咖啡</button><button class="chip">2019 年夏天</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" aria-busy="true">
+      <h2 class="group-header">加载中</h2>
+      <ul class="list has-avatars st-skel">
+        <li><div class="row"><span class="skeleton circle st-av"></span><span class="row-body"><span class="skeleton title" style="width:46%"></span><span class="skeleton text" style="width:82%"></span></span></div></li>
+        <li><div class="row"><span class="skeleton circle st-av"></span><span class="row-body"><span class="skeleton title" style="width:38%"></span><span class="skeleton text" style="width:70%"></span></span></div></li>
+        <li><div class="row"><span class="skeleton circle st-av"></span><span class="row-body"><span class="skeleton title" style="width:52%"></span><span class="skeleton text" style="width:76%"></span></span></div></li>
+      </ul>
+      <div class="card st-skel-card">
+        <div class="skeleton st-media"></div>
+        <div class="card-body"><span class="skeleton title"></span><span class="skeleton text"></span><span class="skeleton text" style="width:55%"></span></div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">操作成功</h2>
+      <div class="st-toast">
+        <div class="toast inline" role="status"><svg class="i st-ok"><use href="#i-circle-check"/></svg><span class="grow">已归档 3 封邮件</span><button class="btn">撤销</button></div>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">上传中</h2>
+      <div class="card pad stack gap-5">
+        <div class="st-up">
+          <span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-image"/></svg></span>
+          <div class="stack">
+            <div class="hstack between"><span class="t-subhead t-semibold ellipsis">武康路散步 · 24 张照片</span><span class="t-footnote t-2 t-num">62%</span></div>
+            <div class="progress" style="--value:62%" role="progressbar" aria-valuenow="62"></div>
+            <span class="t-footnote t-2">15 / 24 张 · 剩余约 20 秒</span>
+          </div>
+          <button class="icon-btn sm" aria-label="取消上传"><svg class="i"><use href="#i-close"/></svg></button>
+        </div>
+        <div class="st-up">
+          <span class="row-icon" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-video"/></svg></span>
+          <div class="stack">
+            <div class="hstack between"><span class="t-subhead t-semibold ellipsis">2026 夏日旅行.mov</span><span class="t-footnote t-2 t-num">37%</span></div>
+            <div class="progress wavy" style="--value:37%" role="progressbar" aria-valuenow="37"></div>
+            <span class="t-footnote t-2">128 MB / 342 MB · 剩余约 1 分钟</span>
+          </div>
+          <button class="icon-btn sm" aria-label="暂停上传"><svg class="i"><use href="#i-pause"/></svg></button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>首页 · 招商银行</title>
+<meta name="ui:title" content="银行首页">
+<meta name="ui:desc" content="手机银行首页：问候与通知、总资产卡片（可隐藏金额、今日收益）、快捷入口、账户横滑卡片、本月支出柱状图与分类排行、最近交易和标签栏。">
+<meta name="ui:category" content="金融与支付">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="资产卡片,快捷入口,横滑卡片,柱状图,进度条,标签栏">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .bh-head { display: flex; align-items: center; gap: 12px; padding: 8px 0 14px; }
+  .bh-badge { position: absolute; top: 6px; right: 6px; }
+  .bh-total { font: 700 calc(34px * var(--ts)) / 1.15 var(--ui-font-display); font-variant-numeric: tabular-nums; letter-spacing: -.3px; margin: 2px 0 6px; }
+  html[data-lang="google"] .bh-total { font-weight: 400; }
+  .bh-total small { font-size: .55em; font-weight: 600; margin-right: 2px; }
+  .bh-asset .stat-delta { color: var(--c-red); font-size: calc(var(--fs-subhead) * var(--ts)); }
+  .bh-asset .divider { margin: 14px 0 12px; }
+  .bh-split { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .bh-split .stat-value { font-size: calc(var(--fs-subhead) * var(--ts)); font-family: var(--ui-font); }
+  .bh-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 20px; }
+  .bh-quick a { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 500; }
+  .bh-ic { width: 52px; height: 52px; border-radius: var(--ui-radius-l); display: grid; place-items: center;
+    background: color-mix(in srgb, var(--tint) 14%, transparent); color: var(--tint); }
+  html[data-scheme="dark"] .bh-ic { background: color-mix(in srgb, var(--tint) 26%, transparent); color: color-mix(in srgb, var(--tint) 70%, white); }
+  .bh-acct { gap: 2px; min-height: 128px; }
+  .bh-chip { width: 34px; height: 22px; border-radius: 5px; flex: none; }
+  .bh-spend .bars { --bars-h: 92px; --bars-gap: 14px; position: relative; }
+  .bh-spend .bars-labels { --bars-gap: 14px; }
+  .bh-budget { position: absolute; left: 0; right: 0; bottom: var(--at); border-top: 1.5px dashed var(--c-orange); }
+  .bh-rank { display: flex; flex-direction: column; gap: 14px; }
+  .bh-rank li { display: grid; grid-template-columns: 32px 1fr auto; gap: 4px 12px; align-items: center; }
+  .bh-rank .row-icon { grid-row: span 2; width: 32px; height: 32px; }
+  .bh-rank .progress { --progress-fill: var(--c); }
+  .bh-amt { color: var(--ui-text); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <div class="status-spacer"></div>
+  <main class="content">
+    <header class="bh-head">
+      <span class="avatar" style="--c:linear-gradient(135deg,#5ac8fa,#1e6ef4);--c-fg:#fff">陈</span>
+      <div class="grow">
+        <div class="t-headline">下午好，陈思远</div>
+        <div class="t-footnote t-2">金葵花客户 · 上次登录 今天 09:12</div>
+      </div>
+      <button class="icon-btn" aria-label="扫一扫"><svg class="i"><use href="#i-scan"/></svg></button>
+      <span class="relative"><button class="icon-btn" aria-label="消息"><svg class="i"><use href="#i-bell"/></svg></button><span class="badge bh-badge">3</span></span>
+    </header>
+
+    <section class="card pad bh-asset">
+      <div class="hstack gap-1 t-subhead t-2">总资产（元）<button class="icon-btn sm" aria-label="隐藏金额"><svg class="i"><use href="#i-eye"/></svg></button></div>
+      <div class="bh-total"><small>¥</small>286,413.52</div>
+      <div class="hstack gap-2 t-footnote t-2"><span>今日收益</span><span class="stat-delta">+126.38</span><span>· 累计 +18,624.90</span></div>
+      <div class="divider"></div>
+      <div class="bh-split">
+        <div class="stat"><span class="stat-label">活期</span><span class="stat-value">48,260.17</span></div>
+        <div class="stat"><span class="stat-label">理财</span><span class="stat-value">198,000.00</span></div>
+        <div class="stat"><span class="stat-label">基金</span><span class="stat-value">40,153.35</span></div>
+      </div>
+    </section>
+
+    <nav class="bh-quick">
+      <a href="#"><span class="bh-ic" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-send"/></svg></span>转账</a>
+      <a href="#"><span class="bh-ic" style="--tint:var(--c-green)"><svg class="i"><use href="#i-qr"/></svg></span>收款</a>
+      <a href="#"><span class="bh-ic" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-card"/></svg></span>信用卡</a>
+      <a href="#"><span class="bh-ic" style="--tint:var(--c-red)"><svg class="i"><use href="#i-trending-up"/></svg></span>理财</a>
+    </nav>
+
+    <section class="group">
+      <h2 class="group-header">我的账户 <a href="#">管理</a></h2>
+      <div class="carousel" style="--item:70%">
+        <a class="card pad bh-acct" href="#">
+          <div class="hstack between"><span class="t-subhead t-semibold">一卡通 · 储蓄卡</span><span class="art a9 bh-chip"></span></div>
+          <span class="t-caption t-2">尾号 6215</span>
+          <span class="t-caption t-2 mt-3">活期余额（元）</span>
+          <span class="t-title3 t-num">48,260.17</span>
+        </a>
+        <a class="card pad bh-acct" href="#">
+          <div class="hstack between"><span class="t-subhead t-semibold">经典白 · 信用卡</span><span class="art a6 bh-chip"></span></div>
+          <span class="t-caption t-2">尾号 3308 · 还款日 11月8日</span>
+          <span class="t-caption t-2 mt-3">本期应还（元）</span>
+          <span class="t-title3 t-num">3,286.40</span>
+        </a>
+        <a class="card pad bh-acct" href="#">
+          <div class="hstack between"><span class="t-subhead t-semibold">朝朝宝</span><span class="tag accent">七日年化 1.82%</span></div>
+          <span class="t-caption t-2">随用随取 · 昨日收益 1.49</span>
+          <span class="t-caption t-2 mt-3">持有金额（元）</span>
+          <span class="t-title3 t-num">30,000.00</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">本月支出 <a href="#">账单</a></h2>
+      <div class="card pad bh-spend">
+        <div class="hstack between base">
+          <span class="t-title2 t-num">¥8,426.30</span>
+          <span class="t-footnote t-2">较上月 −12.4%</span>
+        </div>
+        <div class="bars mt-4">
+          <span style="--h:80%"></span><span style="--h:65%"></span><span style="--h:94%"></span><span style="--h:74%"></span><span style="--h:80%"></span><span class="is-active" style="--h:70%"></span>
+          <i class="bh-budget" style="--at:83.3%"></i>
+        </div>
+        <div class="bars-labels"><span>5月</span><span>6月</span><span>7月</span><span>8月</span><span>9月</span><span>10月</span></div>
+        <div class="legend mt-3"><span>本月</span><span style="--c:color-mix(in srgb, var(--ui-accent) 35%, transparent)">往月</span><span style="--c:var(--c-orange)">月预算 ¥10,000</span></div>
+        <div class="divider"></div>
+        <ul class="bh-rank">
+          <li style="--c:var(--c-indigo)"><span class="row-icon" style="--tint:var(--c)"><svg class="i"><use href="#i-home"/></svg></span><span class="t-subhead">住房</span><span class="t-subhead bh-amt">¥2,600.00</span><span class="progress" style="--value:100%"></span><span class="t-caption t-2">30.9%</span></li>
+          <li style="--c:var(--c-orange)"><span class="row-icon" style="--tint:var(--c)"><svg class="i"><use href="#i-food"/></svg></span><span class="t-subhead">餐饮</span><span class="t-subhead bh-amt">¥2,318.60</span><span class="progress" style="--value:89%"></span><span class="t-caption t-2">27.5%</span></li>
+          <li style="--c:var(--c-pink)"><span class="row-icon" style="--tint:var(--c)"><svg class="i"><use href="#i-bag"/></svg></span><span class="t-subhead">购物</span><span class="t-subhead bh-amt">¥1,964.20</span><span class="progress" style="--value:76%"></span><span class="t-caption t-2">23.3%</span></li>
+          <li style="--c:var(--c-teal)"><span class="row-icon" style="--tint:var(--c)"><svg class="i"><use href="#i-car"/></svg></span><span class="t-subhead">交通</span><span class="t-subhead bh-amt">¥842.00</span><span class="progress" style="--value:32%"></span><span class="t-caption t-2">10.0%</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">最近交易 <a href="#">全部</a></h2>
+      <ul class="list has-icons">
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-home"/></svg></span>
+          <span class="row-body"><span class="row-title">转账给 王雨桐</span><span class="row-sub">今天 13:20 · 10月房租</span></span>
+          <span class="row-value"><span class="bh-amt">−3,200.00</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-briefcase"/></svg></span>
+          <span class="row-body"><span class="row-title">工资 · 云帆科技</span><span class="row-sub">10月15日 10:02 · 代发工资</span></span>
+          <span class="row-value"><span class="t-semibold" style="color:var(--c-red)">+21,580.00</span></span>
+        </a></li>
+        <li><a class="row" href="#">
+          <span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-food"/></svg></span>
+          <span class="row-body"><span class="row-title">美团 · 外婆家（静安寺店）</span><span class="row-sub">10月14日 19:46 · 信用卡</span></span>
+          <span class="row-value"><span class="bh-amt">−186.00</span></span>
+        </a></li>
+      </ul>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <a class="tab is-active" href="#"><svg class="i"><use href="#i-home-fill"/></svg><span>首页</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-trending-up"/></svg><span>理财</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-store"/></svg><span>生活</span></a>
+    <a class="tab" href="#"><svg class="i"><use href="#i-user"/></svg><span>我的</span></a>
+  </nav>
+</div>
+</body>
+</html>
