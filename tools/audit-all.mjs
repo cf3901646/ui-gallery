@@ -31,7 +31,7 @@ await pool(jobs, conc, async (j) => {
   results.push(res);
   done++;
   const bad = res.error || res.overflowX > 0 || (res.missingIcons && res.missingIcons.length) || jsErrors.length;
-  if (bad) console.log('✗', j.rel, j.lang, j.w, JSON.stringify({ error: res.error, overflowX: res.overflowX, offenders: res.offenders, missing: res.missingIcons, js: jsErrors }));
+  if (bad) console.log('✗', j.rel, j.lang, j.w, JSON.stringify({ error: res.error, overflowX: res.overflowX, offenders: res.offenders, culprit: res.culprit, missing: res.missingIcons, js: jsErrors }));
   if (done % 25 === 0) console.log('progress', done, '/', jobs.length);
 });
 await mkdir(path.join(ROOT, 'tools', '.cache'), { recursive: true });

@@ -148,6 +148,24 @@
         out.offenders.push((el.tagName.toLowerCase() + '.' + String(el.className && el.className.baseVal != null ? el.className.baseVal : el.className).trim().split(/\s+/).join('.')) + ' right=' + Math.round(r.right));
       }
     });
+    // 找不到越界元素时（多半是伪元素），逐层隐藏子元素，定位是谁撑宽了页面
+    if (out.overflowX > 0 && !out.offenders.length) {
+      var node = document.body, path = [];
+      for (var depth = 0; depth < 12 && node; depth++) {
+        var hit = null;
+        for (var c = node.firstElementChild; c; c = c.nextElementSibling) {
+          var old = c.style.display;
+          c.style.display = 'none';
+          var ok = d.scrollWidth <= W;
+          c.style.display = old;
+          if (ok) { hit = c; break; }
+        }
+        if (!hit) break;
+        path.push(hit.tagName.toLowerCase() + (hit.id ? '#' + hit.id : '') + (typeof hit.className === 'string' && hit.className ? '.' + hit.className.trim().split(/\s+/).join('.') : ''));
+        node = hit;
+      }
+      out.culprit = path.join(' > ');
+    }
     var sprite = document.getElementById('ui-icon-sprite');
     document.querySelectorAll('use').forEach(function (u) {
       var h = (u.getAttribute('href') || u.getAttribute('xlink:href') || '').replace('#', '');
