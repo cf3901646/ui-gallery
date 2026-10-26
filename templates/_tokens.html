@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>规范样张</title>
+<meta name="ui:title" content="规范样张">
+<meta name="ui:desc" content="当前设计语言的颜色角色（含实际色值）、字号阶梯、形状、阴影、材质、动效曲线、间距和图标，全部实时读取 kit 的 token。">
+<meta name="ui:category" content="系统页面">
+<meta name="ui:platform" content="web">
+<meta name="ui:tags" content="token,颜色,字号,动效,材质">
+<link rel="stylesheet" href="../kit/ui.css">
+<script src="../kit/icons.js"></script>
+<script src="../kit/ui.js"></script>
+<style>
+  body.site { background: var(--ui-bg-plain); }
+  .tk { padding-block: 28px 56px; }
+  .tk-sec { padding: 28px 0; border-top: 1px solid var(--ui-line); }
+  .tk-sec:first-child { border-top: 0; padding-top: 0; }
+  .tk-sec > p { margin: 6px 0 18px; max-width: 46em; }
+  .tk-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px 12px; }
+  .tk-sw > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .tk-chip { height: 54px; border-radius: var(--ui-radius-m); box-shadow: inset 0 0 0 1px var(--ui-line); margin-bottom: 4px; }
+  .tk-sw code, .tk-row code, .tk-mo code { font: 11.5px/1.35 var(--ui-font-mono); color: var(--ui-text-2); overflow-wrap: anywhere; }
+  .tk-sw .tk-hex { color: var(--ui-text-3); }
+  .tk-h3 { margin: 22px 0 10px; }
+  .tk-row { display: grid; grid-template-columns: 150px minmax(0, 1fr) 150px; gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--ui-line); }
+  .tk-row > :last-child { text-align: right; }
+  .tk-radii { display: flex; flex-wrap: wrap; gap: 18px; }
+  .tk-radii > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .tk-radii span { width: 84px; height: 84px; background: var(--ui-accent-soft); border: 2px solid var(--ui-accent); }
+  .tk-shadows { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; }
+  .tk-shadows > div { height: 96px; border-radius: var(--ui-radius-l); background: var(--ui-surface); display: grid; place-items: center; }
+  .tk-shapes { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 16px 10px; }
+  .tk-shapes > div { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .tk-shapes .art { width: 64px; height: 64px; }
+  .tk-mat { position: relative; height: 300px; border-radius: var(--ui-radius-xl); overflow: hidden; }
+  .tk-mat > .art { position: absolute; inset: -10% -10%; transform: translateX(var(--mx, 0%)); }
+  .tk-mat-big { position: absolute; left: 6%; top: 8%; font: 800 120px/1 var(--ui-font-display); color: rgb(255 255 255 / 85%); letter-spacing: -.04em; }
+  .tk-mat-layer { position: absolute; inset: auto 0 24px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; padding: 0 16px; }
+  .tk-pill { display: flex; align-items: center; gap: 4px; height: 54px; padding: 0 8px; border-radius: 999px; color: var(--ui-text); }
+  .tk-pill .icon-btn { --b-fg: currentColor; }
+  .tk-lbl { position: absolute; top: 14px; right: 16px; padding: 3px 9px; border-radius: 8px; background: rgb(0 0 0 / 45%); color: #fff; font-size: 12px; }
+  .tk-tonal { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .tk-tonal > div { height: 84px; border-radius: 16px; padding: 12px; display: flex; align-items: flex-end; box-shadow: inset 0 0 0 1px var(--ui-line); }
+  .tk-mo { display: grid; grid-template-columns: 190px 80px 120px minmax(0, 1fr); gap: 14px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--ui-line); }
+  .tk-curve { width: 120px; height: 56px; overflow: visible; }
+  .tk-curve polyline { fill: none; stroke: var(--ui-accent); stroke-width: 2; }
+  .tk-curve line { stroke: var(--ui-line); stroke-dasharray: 3 3; }
+  .tk-track { position: relative; height: 28px; border-radius: 99px; background: var(--ui-fill); }
+  .tk-dot { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--ui-accent); }
+  .tk-go .tk-dot { left: calc(100% - 24px); }
+  .tk-space { display: flex; flex-direction: column; gap: 6px; }
+  .tk-space > div { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 12px; }
+  .tk-space span { height: 12px; border-radius: 3px; background: var(--ui-accent-soft); box-shadow: inset 0 0 0 1px var(--ui-accent); }
+  .tk-icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 4px; color: var(--ui-text); }
+  .tk-icons > div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; }
+  @media (max-width: 640px) {
+    .tk-row { grid-template-columns: minmax(0, 1fr); gap: 4px; } .tk-row > :last-child { text-align: left; }
+    .tk-mo { grid-template-columns: 1fr 1fr; } .tk-mo .tk-track { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body class="site">
+<main class="wrap tk">
+  <section class="tk-sec" id="t-color">
+    <h2 class="t-title2">颜色角色</h2>
+    <p class="t-callout t-2 only-apple">iOS 系统色和语义色。每种颜色都有浅色、深色和增强对比度的值；强调色就是 tint，按钮、链接、开关、选中态都跟随它。下方色值是当前设置下实际渲染的结果。</p>
+    <p class="t-callout t-2 only-google">由一个种子色推导出整套色彩角色：primary、secondary、tertiary 三组主色与容器色，再加五级 surface container。kit 用 OKLCH 近似推导，和 Material Theme Builder 的 HCT 结果会有出入。</p>
+    <div class="tk-sw" data-tokens="--ui-bg --ui-bg-plain --ui-surface --ui-surface-2 --ui-fill --ui-fill-2 --ui-text --ui-text-2 --ui-text-3 --ui-line --ui-line-strong --ui-accent --ui-on-accent --ui-accent-soft --ui-on-accent-soft --ui-accent-2-soft --ui-accent-3-soft --ui-danger --ui-success --ui-warning --ui-inverse --ui-glass-bg"></div>
+    <h3 class="t-headline tk-h3 only-google">Material 色彩角色</h3>
+    <div class="tk-sw only-google" data-tokens="--md-primary --md-on-primary --md-primary-container --md-on-primary-container --md-secondary --md-secondary-container --md-tertiary --md-tertiary-container --md-error --md-error-container --md-surface --md-surface-container-lowest --md-surface-container-low --md-surface-container --md-surface-container-high --md-surface-container-highest --md-on-surface --md-on-surface-variant --md-outline --md-outline-variant --md-inverse-surface --md-inverse-primary"></div>
+    <h3 class="t-headline tk-h3 only-apple">iOS 系统色</h3>
+    <div class="tk-sw only-apple" data-tokens="--ios-red --ios-orange --ios-yellow --ios-green --ios-mint --ios-teal --ios-cyan --ios-blue --ios-indigo --ios-purple --ios-pink --ios-brown --ios-gray --ios-gray2 --ios-gray3 --ios-gray4 --ios-gray5 --ios-gray6"></div>
+    <h3 class="t-headline tk-h3">命名色板（两种语言通用）</h3>
+    <div class="tk-sw" data-tokens="--c-red --c-orange --c-yellow --c-green --c-mint --c-teal --c-cyan --c-blue --c-indigo --c-purple --c-pink --c-brown --c-gray"></div>
+  </section>
+
+  <section class="tk-sec" id="t-type">
+    <h2 class="t-title2">字号阶梯</h2>
+    <p class="t-callout t-2 only-apple">iOS Dynamic Type 默认档（Large）。右侧是当前文字缩放下的实际字号 / 行高 / 字重。</p>
+    <p class="t-callout t-2 only-google">Material 3 type scale，同名角色映射：large-title → headline-large，title1 → headline-medium，body → body-large，以此类推。</p>
+    <div id="tk-type"></div>
+  </section>
+
+  <section class="tk-sec" id="t-shape">
+    <h2 class="t-title2">形状</h2>
+    <p class="t-callout t-2">圆角档位。<span class="only-apple">按钮默认是胶囊，分组列表和卡片 22–24px，sheet 36px。</span><span class="only-google">按钮按下时圆角变小；卡片 16px，大容器 28px，首屏媒体 48px。</span></p>
+    <div class="tk-radii" id="tk-radii"></div>
+    <h3 class="t-headline tk-h3">装饰形状（M3 Expressive 形状库的近似 + iOS 图标超椭圆）</h3>
+    <div class="tk-shapes" id="tk-shapes"></div>
+  </section>
+
+  <section class="tk-sec" id="t-elev">
+    <h2 class="t-title2">阴影与层级</h2>
+    <div class="tk-shadows"><div style="box-shadow:var(--ui-shadow-1)"><code>--ui-shadow-1</code></div><div style="box-shadow:var(--ui-shadow-2)"><code>--ui-shadow-2</code></div><div style="box-shadow:var(--ui-shadow-3)"><code>--ui-shadow-3</code></div></div>
+  </section>
+
+  <section class="tk-sec" id="t-material">
+    <h2 class="t-title2">材质</h2>
+    <p class="t-callout t-2 only-apple">Liquid Glass：浮在内容上方的功能层。拖动下方滑块移动背景，看玻璃如何随内容变化。左边是 regular，右边加了 <code>.clear</code>；顶栏“显示选项”里的玻璃设置会改变全部玻璃。</p>
+    <p class="t-callout t-2 only-google">Material 不用模糊，靠 surface container 的色调分层。下方是五级容器色，以及浮在图片上的工具栏。</p>
+    <div class="tk-mat" id="tk-mat">
+      <div class="art a1"></div><span class="tk-mat-big" aria-hidden="true">Aa 玻璃</span>
+      <span class="tk-lbl only-apple">regular · clear</span>
+      <div class="tk-mat-layer">
+        <div class="tk-pill glass"><button class="icon-btn"><svg class="i"><use href="#i-home-fill"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-search"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-heart"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-user"/></svg></button></div>
+        <div class="tk-pill glass clear only-apple"><button class="icon-btn"><svg class="i"><use href="#i-play"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-share"/></svg></button></div>
+        <button class="btn glass only-apple">玻璃按钮</button>
+        <div class="toolbar floating inline vibrant only-google"><button class="icon-btn is-active"><svg class="i"><use href="#i-edit"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-image"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-share"/></svg></button></div>
+      </div>
+    </div>
+    <div class="range-row mt-3"><span class="t-footnote">移动背景</span><input class="range grow" type="range" min="-10" max="10" value="0" id="tk-mx" aria-label="移动背景"></div>
+    <div class="tk-tonal mt-4 only-google">
+      <div style="background:var(--md-surface-container-lowest)"><code>lowest</code></div><div style="background:var(--md-surface-container-low)"><code>low</code></div>
+      <div style="background:var(--md-surface-container)"><code>container</code></div><div style="background:var(--md-surface-container-high)"><code>high</code></div>
+      <div style="background:var(--md-surface-container-highest)"><code>highest</code></div>
+    </div>
+  </section>
+
+  <section class="tk-sec" id="t-motion">
+    <h2 class="t-title2">动效</h2>
+    <p class="t-callout t-2 only-apple">SwiftUI 弹簧：smooth（无回弹）、snappy（轻微回弹）、bouncy（明显回弹），时长 0.5 秒。曲线由物理参数积分得到，写成 CSS <code>linear()</code>。</p>
+    <p class="t-callout t-2 only-google">M3 motion scheme：standard 用于工具类界面，expressive 用于更活泼的界面；spatial 用于位置和大小，effects 用于颜色和透明度。</p>
+    <div class="btn-row mb-4"><button class="btn filled sm" id="tk-play">播放全部</button><span class="t-footnote t-2">kit 里的组件默认用 <code>--ui-ease</code> / <code>--ui-ease-spatial</code>，它们指向当前语言的弹簧。</span></div>
+    <div id="tk-motion"></div>
+  </section>
+
+  <section class="tk-sec" id="t-space">
+    <h2 class="t-title2">间距</h2>
+    <p class="t-callout t-2">4 的倍数。手机页面左右边距 <code>--ui-margin</code>，网页左右边距 <code>--ui-margin-web</code>，控件最小高度 <code>--ui-ctl-h</code>（<span class="only-apple">44pt</span><span class="only-google">48dp</span>）。</p>
+    <div class="tk-space" id="tk-space"></div>
+  </section>
+
+  <section class="tk-sec" id="t-icons">
+    <h2 class="t-title2">图标</h2>
+    <p class="t-callout t-2"><span class="only-apple">Apple 模式用 Lucide（ISC 许可）的线条图标，接近 SF Symbols 的风格；不能打包 SF Symbols。</span><span class="only-google">Google 模式用 Material Symbols Outlined（Apache 2.0），选中态用实心版本。</span>同一个 id 在两种语言下自动换成对应图标。</p>
+    <div class="tk-icons" id="tk-icons"></div>
+  </section>
+</main>
+<script>
+  (function () {
+    var d = document.documentElement;
+    var TYPE = ['t-display', 't-large-title', 't-title1', 't-title2', 't-title3', 't-headline', 't-body', 't-callout', 't-subhead', 't-footnote', 't-caption', 't-caption2'];
+    var RADII = ['--ui-radius-xs', '--ui-radius-s', '--ui-radius-m', '--ui-radius-l', '--ui-radius-xl', '--ui-radius-full'];
+    var SHAPES = ['squircle', 'cookie-4', 'cookie-6', 'cookie-9', 'cookie-12', 'clover', 'flower', 'burst', 'soft-burst', 'gem', 'arch', 'pill', 'leaf', 'ticket', 'circle'];
+    var SPRINGS = { apple: ['apple-smooth', 'apple-snappy', 'apple-bouncy'], google: ['md-std-fast-spatial', 'md-std-spatial', 'md-std-slow-spatial', 'md-exp-fast-spatial', 'md-exp-spatial', 'md-exp-slow-spatial', 'md-fast-effects', 'md-effects', 'md-slow-effects'] };
+    var ICONS = ['home', 'search', 'settings', 'user', 'bell', 'heart', 'star', 'bookmark', 'share', 'plus', 'close', 'check', 'back', 'overflow', 'edit', 'trash', 'copy', 'download',
+      'mail', 'message', 'phone', 'camera', 'image', 'play', 'pause', 'music', 'calendar', 'clock', 'map-pin', 'lock', 'cart', 'card', 'chart', 'sun', 'moon', 'wifi'];
+    var $ = function (s) { return document.querySelector(s); };
+    function hex(v) { return window.UITokens ? window.UITokens.hex(v) : ''; }
+    function fill() {
+      document.querySelectorAll('.tk-sw').forEach(function (box) {
+        box.innerHTML = box.getAttribute('data-tokens').split(' ').map(function (n) {
+          return '<div><span class="tk-chip" style="background:var(' + n + ')"></span><code>' + n + '</code><code class="tk-hex">' + hex('var(' + n + ')') + '</code></div>';
+        }).join('');
+      });
+      $('#tk-type').innerHTML = TYPE.map(function (c) {
+        return '<div class="tk-row"><code>.' + c + '</code><span class="' + c + ' ellipsis">设计语言 Aa 123</span><code class="tk-m" data-c="' + c + '"></code></div>';
+      }).join('');
+      document.querySelectorAll('.tk-m').forEach(function (m) {
+        var cs = getComputedStyle(m.previousElementSibling);
+        m.textContent = parseFloat(cs.fontSize).toFixed(0) + ' / ' + (parseFloat(cs.lineHeight) || 0).toFixed(0) + ' · ' + cs.fontWeight;
+      });
+      var root = getComputedStyle(d);
+      $('#tk-radii').innerHTML = RADII.map(function (r) { return '<div><span style="border-radius:var(' + r + ')"></span><code>' + r.replace('--ui-radius-', '') + ' · ' + root.getPropertyValue(r).trim() + '</code></div>'; }).join('');
+      $('#tk-shapes').innerHTML = SHAPES.map(function (s) { return '<div><span class="art a4 shape-' + s + '"></span><code>.shape-' + s + '</code></div>'; }).join('');
+      $('#tk-space').innerHTML = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24].map(function (n) { return '<div><code>--sp-' + n + '</code><span style="width:var(--sp-' + n + ')"></span></div>'; }).join('');
+      $('#tk-icons').innerHTML = ICONS.map(function (n) { return '<div><svg class="i"><use href="#i-' + n + '"/></svg><code>' + n + '</code></div>'; }).join('');
+      var lang = d.getAttribute('data-lang') === 'google' ? 'google' : 'apple';
+      $('#tk-motion').innerHTML = SPRINGS[lang].map(function (n) {
+        var v = root.getPropertyValue('--spring-' + n).trim(), ms = root.getPropertyValue('--spring-' + n + '-ms').trim();
+        var pts = (v.match(/linear\(([^)]*)\)/) || [, ''])[1].split(',').map(parseFloat).filter(function (x) { return !isNaN(x); });
+        var poly = pts.map(function (y, i) { return (i / (pts.length - 1) * 120).toFixed(1) + ',' + (48 - y * 40).toFixed(1); }).join(' ');
+        return '<div class="tk-mo"><code>--spring-' + n + '</code><code>' + ms + '</code><svg class="tk-curve" viewBox="0 0 120 56"><line x1="0" y1="8" x2="120" y2="8"/><polyline points="' + poly + '"/></svg>' +
+          '<div class="tk-track"><span class="tk-dot" style="transition:left var(--spring-' + n + '-ms) var(--spring-' + n + ')"></span></div></div>';
+      }).join('');
+    }
+    function ready() {
+      fill();
+      $('#tk-play').onclick = function () { var m = $('#tk-motion'); m.classList.toggle('tk-go'); };
+      $('#tk-mx').oninput = function () { $('#tk-mat').style.setProperty('--mx', this.value + '%'); };
+      new MutationObserver(function () { setTimeout(fill, 30); }).observe(d, { attributes: true, attributeFilter: ['data-lang', 'data-scheme', 'data-contrast', 'style'] });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
+  })();
+</script>
+</body>
+</html>

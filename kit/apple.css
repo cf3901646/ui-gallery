@@ -184,6 +184,9 @@ html[data-lang="apple"] {
   .bar-btn .i { --ui-icon: 22px; }
   .bar-btn.back .i { --ui-icon: 24px; stroke-width: 2.2; }
   .topbar.transparent .bar-btn { --ui-glass-bg: rgb(255 255 255 / 20%); color: #fff; }
+  /* 透明顶栏滚过大图后：恢复滚动边缘效果和常规玻璃按钮 */
+  &.title-in .topbar.transparent::before { opacity: 1; }
+  &.title-in .topbar.transparent .bar-btn:not(.prominent) { --ui-glass-bg: inherit; color: var(--ui-text); }
   .page-title { font: var(--fw-large-title) calc(var(--fs-large-title) * var(--ts)) / var(--lh-large-title) var(--ui-font-display);
     letter-spacing: var(--ls-large-title); padding: 2px 0 10px; }
 
@@ -210,6 +213,7 @@ html[data-lang="apple"] {
   .fab { width: 54px; height: 54px; border-radius: 999px; color: var(--ui-accent); }
   .fab .i { --ui-icon: 26px; stroke-width: 2.2; }
   .fab.extended { width: auto; padding: 0 20px; font-weight: 600; }
+  .fab.md { width: 64px; height: 64px; } .fab.lg { width: 76px; height: 76px; } .fab.lg .i { --ui-icon: 32px; }
   .fab.prominent { background: var(--ui-accent); color: #fff; }
   .toolbar.floating { height: 52px; padding: 4px; border-radius: 999px; }
   .toolbar.floating .icon-btn:not(.is-active, .filled, .tonal), .toolbar.floating .bar-btn:not(.prominent) { --b-fg: var(--ui-text); color: var(--ui-text); }
@@ -300,7 +304,9 @@ html[data-lang="apple"] {
   .dialog-actions > .btn { flex: 1; --b-bg: var(--ui-fill); --b-fg: var(--ui-text); font-weight: 600; }
   .dialog-actions > .btn.filled { --b-bg: var(--ui-accent); --b-fg: #fff; }
   .dialog-actions > .btn.danger { --b-fg: var(--ui-danger); }
+  .dialog-actions > .btn.filled.danger { --b-bg: var(--ui-danger); --b-fg: #fff; }
   .dialog-actions.stack { flex-direction: column; }
+  .dialog-actions.stack > .btn { flex: none; }
   .menu { border-radius: 26px; padding: 8px; --ui-glass-bg: var(--ui-glass-thick); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); }
   .menu-item { font-size: calc(var(--fs-body) * var(--ts)); }
   .menu-item .i { order: 2; }
@@ -334,7 +340,7 @@ html[data-lang="apple"] {
   .table th { font-weight: 600; }
   .timeline > li.is-done::before { background: var(--ui-success); border-color: var(--ui-success); }
   .cal-day.is-today:not(.is-selected) { color: var(--ios-red); }
-  .cal-day.is-selected { background: var(--ios-red); color: #fff; }
+  .cal-day.is-selected { background: var(--ui-accent); color: #fff; }
   .cal-day.is-today.is-selected { background: var(--ios-red); }
 
   /* ======================= 网页（apple.com 风格）======================= */
@@ -352,7 +358,9 @@ html[data-lang="apple"] {
   .site .btn { font-weight: 400; font-size: calc(17px * var(--ts)); --ui-btn-px: 22px; }
   .site .btn.sm, .site .btn.xs { font-size: calc(12px * var(--ts)); --ui-btn-px: 12px; }
   .site .btn.xs { --ui-btn-h: 26px; }
-  .site .btn:not(.filled, .tonal, .text, .outlined, .neutral) { --b-bg: transparent; --b-bd: var(--ui-accent); --b-fg: var(--ui-accent); }
+  /* apple.com 的默认按钮是描边胶囊；只作用于“没有指定变体、也不在组合控件里”的按钮 */
+  .site .btn:not(.filled, .tonal, .text, .outlined, .neutral, .danger, .inverse, .elevated, .glass, .on-media,
+    .btn-group > *, .split-btn > *, .dialog-actions > *, .toast *, .menu *, .sheet *, .action-sheet *) { --b-bg: transparent; --b-bd: var(--ui-accent); --b-fg: var(--ui-accent); }
   .site .link-arrow { font-size: calc(17px * var(--ts)); }
   .hero-actions .link-arrow { font-size: calc(19px * var(--ts)); }
   .hero-sub { max-width: 24em; }
@@ -368,5 +376,5 @@ html[data-lang="apple"] {
   .faq summary { font-size: calc(19px * var(--ts)); }
   .prose { --fs-prose: 17px; letter-spacing: -.01em; }
   .option { border-radius: 14px; border-color: rgb(134 134 139); }
-  .option.is-active { border-color: rgb(0 113 227); }
+  .option.is-active { border-color: var(--ui-accent); }
 }

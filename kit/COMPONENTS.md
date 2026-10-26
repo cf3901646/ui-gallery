@@ -82,7 +82,7 @@
 - 文字：`--ui-text`、`--ui-text-2`、`--ui-text-3`、`--ui-text-4`；线：`--ui-line`、`--ui-line-strong`
 - 强调：`--ui-accent` / `--ui-on-accent`、`--ui-accent-soft` / `--ui-on-accent-soft`、`--ui-accent-2-soft` / `--ui-on-accent-2-soft`、`--ui-accent-3` / `--ui-accent-3-soft` / `--ui-on-accent-3-soft`
 - 状态：`--ui-danger` `--ui-success` `--ui-warning`，各有 `-soft` 与 `--ui-on-*-soft`；反色：`--ui-inverse` / `--ui-on-inverse`
-- 命名色板：`--c-red` `--c-orange` `--c-yellow` `--c-green` `--c-mint` `--c-teal` `--c-cyan` `--c-blue` `--c-indigo` `--c-purple` `--c-pink` `--c-brown` `--c-gray`
+- 命名色板：`--c-red` `--c-orange` `--c-yellow` `--c-green` `--c-mint` `--c-teal` `--c-cyan` `--c-blue` `--c-indigo` `--c-purple` `--c-pink` `--c-brown` `--c-gray`。Google 深色下会自动提亮；放在实心命名色上的文字用 `color: var(--c-on)`（通常是白色，Google 深色下变成深色）
 - 形状：`--ui-radius-xs/s/m/l/xl/full`；阴影：`--ui-shadow-1/2/3`；玻璃底色：`--ui-glass-bg`
 - 间距：`--sp-1`(4)…`--sp-24`(96)；页面边距 `--ui-margin`；安全区 `--safe-top` `--safe-bottom`；文字缩放 `--ts`
 - 动效：`--ui-dur` `--ui-ease` `--ui-ease-spatial`，以及 `generated.css` 里的 `--spring-apple-*`、`--spring-md-*`

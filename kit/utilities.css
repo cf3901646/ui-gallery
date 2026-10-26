@@ -31,3 +31,18 @@
   transform: none !important; translate: none !important; z-index: auto !important; margin: 0; max-height: none; }
 .inline.dialog, .inline.toast { width: min(var(--ui-dialog-w, 320px), 100%); }
 .inline.toolbar.floating { display: inline-flex; }
+/* ---- 组件之间的冲突修正（放在 util 层，压过语言层） ---- */
+.hstack { flex-direction: row; }
+/* .section-head.row 是“标题行”，不是列表行 .row */
+.section-head.row { padding: 0; min-height: 0; width: auto; font-size: inherit; gap: 16px; }
+/* 中文标题少出现单字成行 */
+h1, h2, h3, .t-hero, .t-large-title, .t-title1, .t-title2, .t-lead, .hero-sub, .section-head > p { text-wrap: balance; }
+p, li, dd, blockquote, .card-sub, .row-sub { text-wrap: pretty; }
+/* 网页里的横滑与 .wrap 左右对齐 */
+.site .carousel { padding-inline: var(--ui-margin-web); scroll-padding-inline: var(--ui-margin-web); margin-inline: calc(-1 * var(--ui-margin-web)); }
+/* 宽屏（平板、桌面）上的底部面板居中，不铺满整屏 */
+@media (min-width: 720px) {
+  .sheet:not(.full):not(.inline), .action-sheet:not(.inline) { left: 50%; right: auto; width: min(560px, calc(100% - 32px)); translate: -50% 0; }
+}
+/* 页脚在窄屏强制降栏（模板里常用行内 --cols，媒体查询改变量覆盖不了） */
+@media (max-width: 860px) { .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

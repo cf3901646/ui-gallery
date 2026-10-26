@@ -44,7 +44,8 @@ for (const f of files) {
   if (!/<html lang="zh-CN" data-lang="apple">/.test(html)) errs.push('<html> 必须是 lang="zh-CN" data-lang="apple"');
   const local = classesIn([...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n'));
   const unknown = new Set();
-  for (const m of html.matchAll(/\sclass="([^"]*)"/g)) for (const c of m[1].split(/\s+/).filter(Boolean)) if (!KNOWN.has(c) && !local.has(c)) unknown.add(c);
+  const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
+  for (const m of markup.matchAll(/\sclass="([^"]*)"/g)) for (const c of m[1].split(/\s+/).filter(Boolean)) if (!KNOWN.has(c) && !local.has(c)) unknown.add(c);
   if (unknown.size) errs.push('未定义的 class: ' + [...unknown].join(' '));
   const missing = new Set();
   for (const m of html.matchAll(/href="#i-([\w-]+)"/g)) if (!ICONS.has(m[1])) missing.add(m[1]);
