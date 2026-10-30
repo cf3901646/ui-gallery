@@ -33,6 +33,8 @@ const SPRINGS = {
   // Apple：SwiftUI .smooth / .snappy / .bouncy（duration 0.5）
   'apple-smooth': apple(0.5, 0), 'apple-snappy': apple(0.5, 0.15), 'apple-bouncy': apple(0.5, 0.3),
   // Material 3 motion scheme：standard 与 expressive，空间（spatial）与效果（effects）
+  // 数值核对自 androidx-main compose/material3 tokens：StandardMotionTokens.kt、ExpressiveMotionTokens.kt（均为 VERSION v0_14_0）。
+  // 两套方案的 effects 弹簧完全相同（damping 1.0，stiffness 3800 / 1600 / 800），所以只生成一组 md-*-effects。
   'md-std-fast-spatial': { damping: 0.9, stiffness: 1400 }, 'md-std-spatial': { damping: 0.9, stiffness: 700 },
   'md-std-slow-spatial': { damping: 0.9, stiffness: 300 },
   'md-exp-fast-spatial': { damping: 0.6, stiffness: 800 }, 'md-exp-spatial': { damping: 0.8, stiffness: 380 },

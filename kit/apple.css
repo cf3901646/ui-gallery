@@ -1,7 +1,8 @@
 /* ==========================================================================
-   UI Kit · apple.css —— 参考 Apple Human Interface Guidelines（iOS 26 / Liquid Glass）
-   系统色取自 HIG Color 页 2025-06 版本（含 Increased Contrast 版本）
+   UI Kit · apple.css —— 参考 Apple Human Interface Guidelines（iOS 27 / Liquid Glass）
+   系统色取自 HIG Color 页（2025-06 起未变，2026-10 核对；含 Increased Contrast 版本）
    字号取自 iOS Dynamic Type 默认（Large）档位
+   尺寸按 iOS 27 校准，逐项来源与偏差见 specs-apple.json / CALIBRATION-apple.md
    这是风格参考实现，不是 Apple 官方组件；不包含 SF Pro 字体文件，Apple 设备上由 -apple-system 调用。
    ========================================================================== */
 html[data-lang="apple"] {
@@ -67,18 +68,18 @@ html[data-lang="apple"] {
   --ui-shadow-3: 0 12px 40px rgb(0 0 0 / 16%), 0 30px 70px rgb(0 0 0 / 12%);
   --ui-margin: 16px; --ui-margin-web: 22px; --ui-wrap: 980px;
   --ui-ctl-h: 44px; --ui-btn-h: 44px; --ui-btn-px: 20px; --ui-btn-radius: 999px; --ui-btn-weight: 600;
-  --ui-btn-h-xs: 28px; --ui-btn-h-sm: 34px; --ui-btn-h-lg: 50px; --ui-btn-h-xl: 56px; --fs-btn-xl: var(--fs-headline); --ui-btn-radius-square: 14px;
-  --ui-row-h: 48px; --ui-row-px: 16px; --ui-row-gap: 14px; --ui-row-icon-size: 30px;
+  --ui-btn-h-xs: 28px; --ui-btn-h-sm: 34px; --ui-btn-h-lg: 50px; --ui-btn-h-xl: 56px; --fs-btn-xl: var(--fs-headline); --ui-btn-radius-square: 12px;
+  --ui-row-h: 52px; --ui-row-px: 16px; --ui-row-gap: 14px; --ui-row-icon-size: 30px;
   --ui-list-radius: 24px; --ui-list-gap: 0px; --ui-list-sep: var(--ui-line); --ui-list-bg: var(--ui-surface);
   --ui-card-radius: 22px; --ui-card-bg: var(--ui-surface); --ui-card-pad: 16px; --ui-widget-radius: 22px;
   --ui-field-h: 50px; --ui-field-radius: 14px; --ui-field-bg: var(--ui-fill); --ui-field-border: transparent;
-  --ui-topbar-h: 52px; --ui-topbar-px: 16px; --ui-topbar-cols: 1fr auto 1fr; --ui-topbar-title-align: center;
+  --ui-topbar-h: 54px; --ui-topbar-px: 16px; --ui-topbar-cols: 1fr auto 1fr; --ui-topbar-title-align: center;
   --ui-tabbar-h: 62px; --ui-icon-stroke: 1.85;
   --ui-group-header-px: 16px; --ui-group-gap: 32px;
   --ui-seg-bg: var(--ui-fill); --ui-seg-active-bg: #fff; --ui-seg-active-shadow: 0 3px 8px rgb(0 0 0 / 12%), 0 0 0 .5px rgb(0 0 0 / 4%);
   --ui-seg-h: 32px; --ui-seg-pad: 2px;
   --ui-chip-h: 34px; --ui-chip-bg: var(--ui-fill);
-  --ui-search-h: 40px; --ui-search-bg: var(--ui-fill);
+  --ui-search-h: 44px; --ui-search-bg: var(--ui-fill);
   --ui-tag-radius: 6px; --ui-check-radius: 50%; --ui-check-border: rgb(60 60 67 / 30%);
   --ui-menu-item-radius: 12px; --ui-side-radius: 10px;
   --ui-side-active-bg: var(--ui-fill-2); --ui-side-active-fg: var(--ui-text);
@@ -88,20 +89,40 @@ html[data-lang="apple"] {
   --ui-nav-link: rgb(0 0 0 / 80%);
   --ui-dot-active-w: 8px;
 
-  /* ---- Liquid Glass（regular）---- */
-  --ui-glass-bg: rgb(250 250 252 / 62%); --ui-glass-blur: 14px; --ui-glass-sat: 190%;
-  --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 85%), inset 0 0 0 .5px rgb(255 255 255 / 55%), 0 0 0 .5px rgb(0 0 0 / 6%);
-  --ui-glass-shadow: 0 6px 24px rgb(0 0 0 / 10%), 0 1px 3px rgb(0 0 0 / 6%);
-  --ui-glass-thick: rgb(250 250 252 / 84%);
+  /* ---- Liquid Glass（iOS 27）----
+     --glass-t 对应 iOS 27 设置里的透明度滑杆：0 = fully tinted，1 = ultra clear，默认 .5（系统默认外观）。
+     可以在 <html> 上直接写（ui.js 的 ?glass=0.3 也写到这里）；所有玻璃的底色不透明度、模糊、饱和度都从它算。
+     对照：t=.5 → 底色 70%、模糊 18px、饱和 180%；t=.9（clear）→ 30%、10px、156%；t=0 → 96%、28px。 */
+  --glass-t: .5;
+  --gt: clamp(0, var(--glass-t), 1);
+  --ui-glass-tint: rgb(250 250 252); --ui-glass-tint-thick: rgb(250 250 252);
+  --ui-glass-a: calc(96% - 26% * var(--gt) - 52% * var(--gt) * var(--gt));
+  --ui-glass-thick-a: calc(98% - 12% * var(--gt) - 16% * var(--gt) * var(--gt));
+  --ui-glass-bg: color-mix(in srgb, var(--ui-glass-tint) var(--ui-glass-a), transparent);
+  --ui-glass-thick: color-mix(in srgb, var(--ui-glass-tint-thick) var(--ui-glass-thick-a), transparent);
+  --ui-glass-blur: calc(28px - 20px * var(--gt));          /* 更强的扩散：默认 18px（iOS 26 版 14px）*/
+  --ui-glass-blur-thick: calc(40px - 16px * var(--gt));    /* sheet、警告框、侧栏：默认 32px */
+  --ui-glass-sat: calc(210% - 60% * var(--gt));
+  /* 边缘：更亮的顶部/底部高光 + 内圈亮边 + iOS 27 新增的外圈加暗边缘 */
+  --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 100%), inset 0 -1px 0 rgb(255 255 255 / 45%), inset 0 0 0 .5px rgb(255 255 255 / 75%),
+    0 0 0 .5px rgb(0 0 0 / 14%), 0 0 0 1.5px rgb(0 0 0 / 3%);
+  --ui-glass-edge-prominent: inset 0 1px 0 rgb(255 255 255 / 40%), inset 0 0 0 .5px rgb(255 255 255 / 20%), 0 0 0 .5px rgb(0 0 0 / 12%);
+  --ui-glass-shadow: 0 8px 28px rgb(0 0 0 / 10%), 0 1px 3px rgb(0 0 0 / 6%);
   --ui-glass-press: rgb(255 255 255 / 30%);
   --ui-topbar-bg: transparent; --ui-topbar-bg-scrolled: transparent;
+  /* 滚动到浮动栏下方时的统一工具栏背景（iOS 27），不透明度同样跟随 --glass-t：默认 85% */
+  --ui-topbar-uniform-a: calc(100% - 30% * var(--gt));
+  --ui-topbar-uniform-blur: 10px; --ui-topbar-uniform-edge: rgb(0 0 0 / 6%);
+  /* iOS 27 通栏侧栏（.sidebar.edge）的背景材质 */
+  --ui-sidebar-tint: rgb(246 246 248);
+  --ui-sidebar-material: color-mix(in srgb, var(--ui-sidebar-tint) calc(92% - 12% * var(--gt) - 16% * var(--gt) * var(--gt)), transparent);
 
   /* ---- 动效：SwiftUI 弹簧 ---- */
   --ui-dur-fast: 180ms; --ui-dur: var(--spring-apple-smooth-ms); --ui-dur-slow: 600ms;
   --ui-ease: var(--spring-apple-smooth); --ui-ease-spatial: var(--spring-apple-snappy); --ui-ease-bouncy: var(--spring-apple-bouncy);
   --sw-ease: var(--spring-apple-bouncy); --sw-dur: var(--spring-apple-bouncy-ms);
 
-  /* ---- 开关（iOS 26：更宽的轨道 + 胶囊形滑块）---- */
+  /* ---- 开关（iOS 26 起的更宽轨道 + 胶囊形滑块；iOS 27 没有可靠的新尺寸来源，沿用）---- */
   --sw-w: 62px; --sw-h: 28px; --sw-knob-w: 38px; --sw-knob-h: 24px; --sw-inset: 2px;
   --sw-off: rgb(120 120 128 / 16%); --sw-on: var(--ios-green); --sw-knob: #fff;
   --sw-knob-shadow: 0 3px 8px rgb(0 0 0 / 15%), 0 1px 1px rgb(0 0 0 / 6%);
@@ -130,10 +151,14 @@ html[data-lang="apple"] {
     --ui-seg-active-bg: rgb(99 99 102 / 85%); --ui-seg-active-shadow: 0 3px 8px rgb(0 0 0 / 30%);
     --ui-bubble-in: rgb(38 37 42);
     --ui-tile-bg: #161617; --ui-section-alt: #101010; --ui-footer-bg: #161617; --ui-site-bg: #000; --ui-nav-link: rgb(255 255 255 / 80%);
-    --ui-glass-bg: rgb(36 36 40 / 58%);
-    --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 16%), inset 0 0 0 .5px rgb(255 255 255 / 12%), 0 0 0 .5px rgb(0 0 0 / 40%);
+    --ui-glass-tint: rgb(30 30 34); --ui-glass-tint-thick: rgb(38 38 42);
+    --ui-glass-edge: inset 0 1px 0 rgb(255 255 255 / 28%), inset 0 -1px 0 rgb(255 255 255 / 8%), inset 0 0 0 .5px rgb(255 255 255 / 16%),
+      0 0 0 .5px rgb(0 0 0 / 65%), 0 0 0 1.5px rgb(0 0 0 / 18%);
+    --ui-glass-edge-prominent: inset 0 1px 0 rgb(255 255 255 / 30%), inset 0 0 0 .5px rgb(255 255 255 / 14%), 0 0 0 .5px rgb(0 0 0 / 50%);
     --ui-glass-shadow: 0 8px 28px rgb(0 0 0 / 45%);
-    --ui-glass-thick: rgb(40 40 44 / 86%); --ui-glass-press: rgb(255 255 255 / 10%);
+    --ui-glass-press: rgb(255 255 255 / 10%);
+    --ui-topbar-uniform-a: calc(92% - 40% * var(--gt)); --ui-topbar-uniform-edge: rgb(255 255 255 / 8%);
+    --ui-sidebar-tint: rgb(22 22 24);
     --sw-off: rgb(120 120 128 / 32%); --range-rest: rgb(120 120 128 / 36%);
   }
   /* 高对比度：换成 HIG 的 Increased Contrast 色值，分隔线加深 */
@@ -142,19 +167,33 @@ html[data-lang="apple"] {
     --ios-mint: rgb(0 133 117); --ios-teal: rgb(0 129 152); --ios-cyan: rgb(0 126 174); --ios-blue: rgb(30 110 244);
     --ios-indigo: rgb(86 74 222); --ios-purple: rgb(176 47 194); --ios-pink: rgb(231 18 77); --ios-brown: rgb(149 109 81);
     --ui-text-2: rgb(60 60 67 / 82%); --ui-text-3: rgb(60 60 67 / 60%); --ui-line: rgb(60 60 67 / 50%);
+    --ios-gray: rgb(108 108 112); --ios-gray2: rgb(142 142 147); --ios-gray3: rgb(174 174 178); --ios-gray4: rgb(188 188 192);
+    --ios-gray5: rgb(216 216 220); --ios-gray6: rgb(235 235 240);
   }
   &[data-contrast="more"][data-scheme="dark"] {
     --ios-red: rgb(255 97 101); --ios-orange: rgb(255 160 86); --ios-yellow: rgb(254 223 67); --ios-green: rgb(74 217 104);
     --ios-mint: rgb(84 223 203); --ios-teal: rgb(59 221 236); --ios-cyan: rgb(109 217 255); --ios-blue: rgb(92 184 255);
     --ios-indigo: rgb(167 170 255); --ios-purple: rgb(234 141 255); --ios-pink: rgb(255 138 196); --ios-brown: rgb(219 166 121);
     --ui-text-2: rgb(235 235 245 / 84%); --ui-text-3: rgb(235 235 245 / 60%); --ui-line: rgb(120 120 128 / 80%);
+    --ios-gray: rgb(174 174 178); --ios-gray2: rgb(124 124 128); --ios-gray3: rgb(84 84 86); --ios-gray4: rgb(68 68 70);
+    --ios-gray5: rgb(54 54 56); --ios-gray6: rgb(36 36 38);
   }
 
-  /* Liquid Glass 变体：clear（更透，用在照片、视频上）/ opaque（对应“降低透明度”辅助功能）*/
-  &[data-glass="clear"] { --ui-glass-bg: rgb(255 255 255 / 22%); --ui-glass-sat: 150%; --ui-glass-blur: 8px; }
-  &[data-glass="clear"][data-scheme="dark"] { --ui-glass-bg: rgb(30 30 34 / 28%); }
-  &[data-glass="opaque"] { --ui-glass-bg: rgb(246 246 248); --ui-glass-thick: rgb(246 246 248); --ui-glass-blur: 0px; }
-  &[data-glass="opaque"][data-scheme="dark"] { --ui-glass-bg: rgb(36 36 38); --ui-glass-thick: rgb(36 36 38); }
+  /* Liquid Glass 变体：clear（≈ 透明度滑杆 .9，用在照片、视频上）/ opaque（对应“降低透明度”：完全不透明、不模糊）。
+     “降低透明度”“增强对比度”在 iOS 27 仍然优先于滑杆，所以 opaque 直接给定实色，不读 --glass-t。 */
+  &[data-glass="clear"] { --glass-t: .9; --ui-glass-tint: rgb(255 255 255); }
+  &[data-glass="clear"][data-scheme="dark"] { --ui-glass-tint: rgb(30 30 34); }
+  &[data-glass="opaque"] { --glass-t: 0; --ui-glass-bg: rgb(246 246 248); --ui-glass-thick: rgb(246 246 248); --ui-sidebar-material: rgb(242 242 246);
+    --ui-glass-blur: 0px; --ui-glass-blur-thick: 0px; --ui-glass-sat: 100%; --ui-topbar-uniform-a: 100%; --ui-topbar-uniform-blur: 0px; }
+  &[data-glass="opaque"][data-scheme="dark"] { --ui-glass-bg: rgb(36 36 38); --ui-glass-thick: rgb(36 36 38); --ui-sidebar-material: rgb(28 28 30); }
+  &[data-glass="opaque"] :is(.glass.clear, .topbar.transparent .bar-btn:not(.prominent)) { --ui-glass-bg: rgb(58 58 62 / 94%); }
+  /* 系统级“降低透明度”（浏览器支持 prefers-reduced-transparency 时）等同 opaque */
+  @media (prefers-reduced-transparency: reduce) {
+    & { --glass-t: 0; --ui-glass-bg: rgb(246 246 248); --ui-glass-thick: rgb(246 246 248); --ui-sidebar-material: rgb(242 242 246);
+      --ui-glass-blur: 0px; --ui-glass-blur-thick: 0px; --ui-glass-sat: 100%; --ui-topbar-uniform-a: 100%; --ui-topbar-uniform-blur: 0px; }
+    &[data-scheme="dark"] { --ui-glass-bg: rgb(36 36 38); --ui-glass-thick: rgb(36 36 38); --ui-sidebar-material: rgb(28 28 30); --ui-topbar-uniform-a: 100%; }
+    :is(.glass.clear, .topbar.transparent .bar-btn:not(.prominent)) { --ui-glass-bg: rgb(58 58 62 / 94%); }
+  }
 
   /* ======================= 材质 ======================= */
   .glass, .tabbar, .toolbar.floating, .bar-group, .topbar .bar-btn, .toast, .menu, .fab, .composer, .bar-btn.glass, .btn.glass, .icon-btn.glass {
@@ -167,20 +206,22 @@ html[data-lang="apple"] {
   .glass:active, .topbar .bar-btn:active, .btn.glass:active, .icon-btn.glass:active, .fab:active { transform: scale(1.06); }
 
   /* ======================= 顶栏 ======================= */
-  .topbar { column-gap: 12px; }
+  /* iOS 27 顶部工具栏：54pt 高，左右 16，按钮行 44 贴顶、下方留 10 */
+  .topbar { column-gap: 12px; padding: var(--safe-top) var(--ui-topbar-px) 10px; }
   .topbar-title { font-weight: 600; font-size: calc(var(--fs-headline) * var(--ts)); letter-spacing: var(--ls-headline); }
   .topbar-sub { display: block; font-size: calc(var(--fs-caption) * var(--ts)); font-weight: 400; color: var(--ui-text-2); text-align: center; }
-  /* 滚动边缘效果：内容滚到栏下方时，栏背后出现渐隐的模糊 */
-  .topbar::before { content: ""; position: absolute; inset: 0 0 -24px; z-index: -1; pointer-events: none; opacity: 0;
-    background: linear-gradient(var(--ui-bg) 0%, color-mix(in srgb, var(--ui-bg) 70%, transparent) 55%, transparent);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    -webkit-mask: linear-gradient(#000 55%, transparent); mask: linear-gradient(#000 55%, transparent);
+  /* 滚动边缘效果（iOS 27 统一工具栏背景）：内容滚到浮动栏下方时，整条栏（含状态栏区域）铺一层均匀的半透明底 + 底部发丝线，
+     不再是上实下虚的渐隐。不透明度跟随 --glass-t（默认浅色 85% / 深色 72%），opaque 时为实色。 */
+  .topbar::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
+    background: color-mix(in srgb, var(--ui-topbar-uniform-base, var(--ui-bg)) var(--ui-topbar-uniform-a), transparent);
+    -webkit-backdrop-filter: blur(var(--ui-topbar-uniform-blur)) saturate(180%); backdrop-filter: blur(var(--ui-topbar-uniform-blur)) saturate(180%);
+    box-shadow: 0 1px 0 var(--ui-topbar-uniform-edge);
     transition: opacity var(--ui-dur-fast) linear; }
   &.scrolled .topbar:not(.transparent)::before { opacity: 1; }
   .topbar .bar-btn { --ui-bar-btn-color: var(--ui-text); font-weight: 500; font-size: calc(var(--fs-body) * var(--ts)); padding: 0 14px; }
   .topbar .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { padding: 0; }
   .topbar .bar-btn.prominent, .bar-btn.prominent { background: var(--ui-accent); color: var(--ui-on-accent);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%), var(--ui-glass-shadow); }
+    box-shadow: var(--ui-glass-edge-prominent), var(--ui-glass-shadow); }
   .bar-btn .i { --ui-icon: 22px; }
   .bar-btn.back .i { --ui-icon: 24px; stroke-width: 2.2; }
   .topbar.transparent .bar-btn { --ui-glass-bg: rgb(255 255 255 / 20%); color: #fff; }
@@ -188,26 +229,30 @@ html[data-lang="apple"] {
   &.title-in .topbar.transparent::before { opacity: 1; }
   &.title-in .topbar.transparent .bar-btn:not(.prominent) { --ui-glass-bg: inherit; color: var(--ui-text); }
   .page-title { font: var(--fw-large-title) calc(var(--fs-large-title) * var(--ts)) / var(--lh-large-title) var(--ui-font-display);
-    letter-spacing: var(--ls-large-title); padding: 2px 0 10px; }
+    letter-spacing: var(--ls-large-title); padding: 0 0 10px; }
 
   /* ======================= 标签栏（浮动玻璃胶囊）======================= */
   .tabbar { left: 20px; right: 20px; bottom: max(10px, calc(var(--safe-bottom) - 12px)); height: var(--ui-tabbar-h);
     padding: 4px; border-radius: 999px; gap: 0; }
-  .tab { border-radius: 999px; gap: 1px; font-size: calc(10px * var(--ts)); font-weight: 600; letter-spacing: .1px; color: var(--ui-text);
+  /* 标签：10pt Semibold，行高 12，选中时字距 -0.1（iOS 27 kit 实测，第三方） */
+  .tab { border-radius: 999px; gap: 1px; font-size: calc(10px * var(--ts)); line-height: 1.2; font-weight: 600; letter-spacing: 0; color: var(--ui-text);
     transition: background-color var(--ui-dur) var(--ui-ease), color var(--ui-dur); }
   .tab .i { --ui-icon: 26px; }
-  .tab.is-active { background: rgb(0 0 0 / 6%); color: var(--ui-accent); }
+  .tab.is-active { background: rgb(0 0 0 / 6%); color: var(--ui-accent); letter-spacing: -.1px; }
   &[data-scheme="dark"] .tab.is-active { background: rgb(255 255 255 / 12%); }
   .tab.is-active .i { stroke-width: 2.2; }
-  /* 可选：搜索标签独立成右侧圆形玻璃按钮 */
-  .tabbar:has(> .tab-group) { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: 0; gap: 10px; }
+  /* 独立胶囊位（iOS 27 “Prominent Tab”，原 iOS 26 “Separate Search”）：主标签组 + 右侧 62pt 圆形玻璃按钮，玻璃之间留 8。
+     .tab.prominent 可以放任意标签；.tab.search 保留兼容，外观相同 */
+  .tabbar:has(> .tab-group) { background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; padding: 0; gap: 8px; }
   .tab-group { flex: 1; display: flex; padding: 4px; border-radius: 999px; background: var(--ui-glass-bg);
     -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat));
     box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
-  .tabbar > .tab.search { flex: 0 0 var(--ui-tabbar-h); background: var(--ui-glass-bg);
+  .tabbar > .tab:is(.search, .prominent) { flex: 0 0 var(--ui-tabbar-h); background: var(--ui-glass-bg);
     -webkit-backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur)) saturate(var(--ui-glass-sat));
     box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
-  .tabbar > .tab.search > span { display: none; }
+  .tabbar > .tab:is(.search, .prominent) > span:not(.badge) { display: none; }
+  .tabbar > .tab:is(.search, .prominent).is-active { background: linear-gradient(rgb(0 0 0 / 6%), rgb(0 0 0 / 6%)), var(--ui-glass-bg); }
+  &[data-scheme="dark"] .tabbar > .tab:is(.search, .prominent).is-active { background: linear-gradient(rgb(255 255 255 / 12%), rgb(255 255 255 / 12%)), var(--ui-glass-bg); }
 
   /* ======================= 浮动按钮与工具栏 ======================= */
   .fab { width: 54px; height: 54px; border-radius: 999px; color: var(--ui-accent); }
@@ -215,7 +260,9 @@ html[data-lang="apple"] {
   .fab.extended { width: auto; padding: 0 20px; font-weight: 600; }
   .fab.md { width: 64px; height: 64px; } .fab.lg { width: 76px; height: 76px; } .fab.lg .i { --ui-icon: 32px; }
   .fab.prominent { background: var(--ui-accent); color: #fff; }
-  .toolbar.floating { height: 52px; padding: 4px; border-radius: 999px; }
+  /* 底部工具栏：控件高 48，离底 32（iOS 27 kit：402×84 框，下边距 32），内部按钮 40 */
+  .toolbar.floating { height: 48px; padding: 4px; border-radius: 999px; bottom: max(10px, calc(var(--safe-bottom) - 2px));
+    --ui-ctl-h: 40px; --ui-icon-btn-size: 40px; }
   .toolbar.floating .icon-btn:not(.is-active, .filled, .tonal), .toolbar.floating .bar-btn:not(.prominent) { --b-fg: var(--ui-text); color: var(--ui-text); }
   .toolbar.floating .icon-btn.is-active { --b-bg: transparent; --b-fg: var(--ui-accent); }
   .toolbar.docked { background: linear-gradient(transparent, color-mix(in srgb, var(--ui-bg) 85%, transparent) 40%); }
@@ -247,6 +294,9 @@ html[data-lang="apple"] {
   --ui-icon-btn-fg: var(--ui-accent); --ui-btn-glass-bg: var(--ui-glass-bg);
   .btn.filled { box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%); }
   .btn.text { font-weight: 500; }
+  /* iOS 27 kit 按钮三档：Small 28 / Medium 34 / Large 50，左右内边距 10 / 14 / 20（玻璃按钮 Medium 为 12）；默认 44 档 kit 自留 */
+  .btn.xs { --ui-btn-px: 10px; } .btn.sm { --ui-btn-px: 14px; } .btn.lg { --ui-btn-px: 20px; }
+  .btn.glass.sm { --ui-btn-px: 12px; }
   .btn:active, .icon-btn:active { transform: scale(.96); filter: brightness(.94); }
   .btn.filled:active { filter: brightness(1.08); }
   .btn-group { padding: 2px; background: var(--ui-fill); border-radius: 999px; gap: 0; }
@@ -287,27 +337,38 @@ html[data-lang="apple"] {
   .loader { border-radius: 30%; }
 
   /* ======================= 浮层 ======================= */
-  .sheet { left: 8px; right: 8px; bottom: 8px; border-radius: 36px; background: var(--ui-glass-thick);
-    -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3);
-    max-height: calc(100dvh - var(--safe-top) - 20px); }
-  .sheet.full { left: 0; right: 0; bottom: 0; border-radius: 36px 36px 0 0; background: var(--ui-bg); max-height: calc(100dvh - var(--safe-top) - 8px); }
-  .sheet-head { padding: 12px 14px 4px; }
+  /* iOS 27 sheet（kit 合并为一个组件三种变体）：Medium 浮动卡片四周留 6、圆角上 34 下 58；Large 贴边、顶到安全区、上圆角 38 */
+  .sheet { left: 6px; right: 6px; bottom: 6px; border-radius: 34px 34px 58px 58px; background: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); max-height: calc(100dvh - var(--safe-top) - 20px); }
+  .sheet.full { left: 0; right: 0; bottom: 0; border-radius: 38px 38px 0 0; background: var(--ui-bg); max-height: calc(100dvh - var(--safe-top)); }
+  /* grabber 58×4，占 16pt 高（上 5） */
+  .sheet-grabber { width: 58px; height: 4px; margin: 5px auto 7px; }
+  /* sheet 顶部：16pt grabber 区 + 54pt 工具栏（按钮 44、下方 10），左右 16；有 .sheet-grabber 时由它占那 16pt */
+  .sheet-head { padding: 16px 16px 10px; }
+  .sheet-grabber + .sheet-head { padding-top: 0; }
   .sheet-head .bar-btn { background: var(--ui-fill); box-shadow: none; }
   .sheet-head .bar-btn.prominent { background: var(--ui-accent); }
   .sheet-title { font-size: calc(var(--fs-headline) * var(--ts)); }
   .sheet-body { padding-bottom: calc(max(var(--safe-bottom) - 8px, 0px) + 20px); }
-  .dialog { --ui-dialog-w: 300px; padding: 22px 22px 18px; border-radius: 34px; background: var(--ui-glass-thick);
-    -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); gap: 6px; }
+  /* iOS 27 警告框：宽 300、四周 14、圆角 34；标题+正文块左右再缩 8、上 8、下 24，二者间距 10；按钮 48 高胶囊，横排竖排间距都是 8 */
+  .dialog { --ui-dialog-w: 300px; padding: 14px; border-radius: 34px; background: var(--ui-glass-thick);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); gap: 10px; }
+  .dialog > :not(.dialog-actions) { margin-inline: 8px; }
+  .dialog > :first-child:not(.dialog-actions) { margin-top: 8px; }
   .dialog-title { font-size: calc(var(--fs-headline) * var(--ts)); line-height: var(--lh-headline); }
   .dialog-body { font-size: calc(var(--fs-subhead) * var(--ts)); line-height: var(--lh-subhead); color: var(--ui-text); }
-  .dialog-actions { margin-top: 14px; }
-  .dialog-actions > .btn { flex: 1; --b-bg: var(--ui-fill); --b-fg: var(--ui-text); font-weight: 600; }
+  .dialog-actions { margin-top: 14px; gap: 8px; }
+  .dialog-actions > .btn { flex: 1; --ui-btn-h: 48px; --b-bg: var(--ui-fill); --b-fg: var(--ui-text); font-weight: 600; }
   .dialog-actions > .btn.filled { --b-bg: var(--ui-accent); --b-fg: #fff; }
   .dialog-actions > .btn.danger { --b-fg: var(--ui-danger); }
   .dialog-actions > .btn.filled.danger { --b-bg: var(--ui-danger); --b-fg: #fff; }
   .dialog-actions.stack { flex-direction: column; }
   .dialog-actions.stack > .btn { flex: none; }
-  .menu { border-radius: 26px; padding: 8px; --ui-glass-bg: var(--ui-glass-thick); box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); }
+  /* iOS 27 菜单：圆角 34（iOS 26 kit 为 26 左右），标准宽 238 */
+  .menu { border-radius: 34px; padding: 8px; min-width: 238px; --ui-glass-bg: var(--ui-glass-thick); --ui-glass-blur: var(--ui-glass-blur-thick);
+    box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); }
   .menu-item { font-size: calc(var(--fs-body) * var(--ts)); }
   .menu-item .i { order: 2; }
   .menu-item:not(.destructive) .i { color: var(--ui-text); }
@@ -316,16 +377,27 @@ html[data-lang="apple"] {
   .menu-sep { height: 8px; margin: 2px -8px; background: rgb(0 0 0 / 5%); }
   &[data-scheme="dark"] .menu-sep { background: rgb(0 0 0 / 30%); }
   .action-sheet > .list { --ui-list-radius: 28px; --ui-list-bg: var(--ui-glass-thick);
-    -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px); box-shadow: var(--ui-shadow-3); }
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-shadow-3); }
   .action-sheet .row { justify-content: center; color: var(--ui-accent); font-size: calc(20px * var(--ts)); min-height: 56px; }
   .action-sheet .row.destructive { color: var(--ui-danger); }
 
   /* ======================= 侧栏（iPadOS 浮动玻璃侧栏）======================= */
   .sidebar.floating { margin: 8px; border-radius: 26px; min-height: calc(100dvh - 16px); background: var(--ui-glass-thick);
-    -webkit-backdrop-filter: blur(24px) saturate(180%); backdrop-filter: blur(24px) saturate(180%); box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat));
+    box-shadow: var(--ui-glass-edge), var(--ui-glass-shadow); }
   .side-item { font-size: calc(var(--fs-body) * var(--ts)); min-height: 44px; }
-  .side-item .i { --ui-icon: 22px; }
+  /* 侧栏图标默认用 accent；单个条目可用 --tint 着色（iOS 27 恢复彩色侧栏图标，例如 style="--tint:var(--c-yellow)"） */
+  .side-item .i { --ui-icon: 22px; color: var(--tint, var(--ui-side-icon, var(--ui-accent))); }
   .sidebar-section { font-size: calc(var(--fs-headline) * var(--ts)); color: var(--ui-text); font-weight: 700; padding-top: 20px; }
+  /* iOS 27 通栏侧栏：不再是浮动圆角面板，材质从屏幕边缘铺到分栏线；行 44、选中是整行胶囊、图标始终着色、分组标题 Body 常规字重 */
+  .sidebar.edge { margin: 0; border-radius: 0; min-height: 100dvh; padding-inline: 10px; background: var(--ui-sidebar-material);
+    -webkit-backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); backdrop-filter: blur(var(--ui-glass-blur-thick)) saturate(var(--ui-glass-sat)); }
+  .sidebar.edge .side-item { --ui-side-radius: 999px; padding: 0 8px 0 16px; gap: 10px; }
+  .sidebar.edge .side-item.is-active { --ui-side-active-bg: rgb(0 0 0 / 7%); --ui-side-active-fg: var(--ui-text); }
+  &[data-scheme="dark"] .sidebar.edge .side-item.is-active { --ui-side-active-bg: rgb(255 255 255 / 12%); }
+  .sidebar.edge .sidebar-section { font-size: calc(var(--fs-body) * var(--ts)); font-weight: 400; color: var(--ui-text-2); padding: 21px 10px 11px; }
+  .sidebar.edge .sidebar-title { padding-inline: 10px; }
   .rail { gap: 8px; }
   .rail-item::before { width: 60px; height: 52px; translate: -50% -6px; border-radius: 16px; }
   .rail-item.is-active { color: var(--ui-accent); }

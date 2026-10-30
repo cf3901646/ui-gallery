@@ -4,15 +4,15 @@
 
 | | `data-lang="apple"` | `data-lang="google"` |
 | :--- | :--- | :--- |
-| 参考 | Apple HIG，iOS 26 / Liquid Glass | Material 3 Expressive（Android 16） |
+| 参考 | Apple HIG，iOS 27 / Liquid Glass（校准记录见 `kit/CALIBRATION-apple.md`） | Material 3 Expressive（Android 16） |
 | 颜色 | iOS 系统色，`--accent` 是 tint | 由种子色 `--accent` 推导 M3 色彩角色（OKLCH 近似） |
 | 材质 | 浮动玻璃（标签栏、工具栏、栏按钮、sheet、菜单） | 不透明 surface container，靠色调分层 |
 | 字体 | SF Pro（Apple 设备）/ Inter / 系统字体 | Google Sans Flex / Roboto Flex / 系统字体 |
 | 形状 | 胶囊按钮、24px 圆角分组列表 | 按下变形的按钮、分段列表（首尾大圆角，中间 4px） |
 | 动效 | SwiftUI 弹簧（smooth / snappy / bouncy） | M3 motion scheme（expressive 空间弹簧 + effects） |
 
-明暗：`data-scheme="light|dark"`。高对比：`data-contrast="more"`。Apple 玻璃：`data-glass="clear|opaque"`。紧凑：`data-density="compact"`（Google）。
-这些都可以用 URL 参数设置：`settings.html?lang=google&scheme=dark&accent=%23006a6a&scale=1.2&safe=54,34`。
+明暗：`data-scheme="light|dark"`。高对比：`data-contrast="more"`。Apple 玻璃：`data-glass="clear|opaque"`，或用 `--glass-t` 连续调透明度（iOS 27 透明度滑杆：`0` = fully tinted，`1` = ultra clear，默认 `.5`；`clear` ≈ `.9`；`opaque` 对应“降低透明度”，完全不透明、不模糊，优先于 `--glass-t`）。紧凑：`data-density="compact"`（Google）。
+这些都可以用 URL 参数设置：`settings.html?lang=google&scheme=dark&accent=%23006a6a&scale=1.2&safe=54,34`；`?glass=0.3` 这类数值写到 `--glass-t`。
 
 ---
 
@@ -76,6 +76,8 @@
 
 修饰：`.t-2` `.t-3` `.t-4`（次要文字层级）、`.t-accent` `.t-danger` `.t-success` `.t-warning`、`.t-bold` `.t-semibold` `.t-medium` `.t-regular`、`.t-num`（等宽数字）、`.t-mono`、`.t-center` `.t-right`、`.t-clamp-1/2/3`、`.t-upper`。
 
+`.t-emphasized`（只在 Google 下生效）：M3 Expressive 的 emphasized 字体，叠在任意 `.t-*` 上，字号行高不变，只加粗：display / headline / title-large / body 变 500，title-medium（`.t-headline`）、title-small（`.t-subhead` `.t-eyebrow`）、label（`.t-caption` `.t-caption2`）变 700。Apple 下没有效果，需要两边都加粗时用 `.t-semibold` / `.t-bold`。
+
 ## 4. Token（页面样式可用）
 
 - 背景与表面：`--ui-bg`（页面）、`--ui-bg-plain`、`--ui-surface`、`--ui-surface-2`、`--ui-surface-3`、`--ui-fill`、`--ui-fill-2`
@@ -83,7 +85,7 @@
 - 强调：`--ui-accent` / `--ui-on-accent`、`--ui-accent-soft` / `--ui-on-accent-soft`、`--ui-accent-2-soft` / `--ui-on-accent-2-soft`、`--ui-accent-3` / `--ui-accent-3-soft` / `--ui-on-accent-3-soft`
 - 状态：`--ui-danger` `--ui-success` `--ui-warning`，各有 `-soft` 与 `--ui-on-*-soft`；反色：`--ui-inverse` / `--ui-on-inverse`
 - 命名色板：`--c-red` `--c-orange` `--c-yellow` `--c-green` `--c-mint` `--c-teal` `--c-cyan` `--c-blue` `--c-indigo` `--c-purple` `--c-pink` `--c-brown` `--c-gray`。Google 深色下会自动提亮；放在实心命名色上的文字用 `color: var(--c-on)`（通常是白色，Google 深色下变成深色）
-- 形状：`--ui-radius-xs/s/m/l/xl/full`；阴影：`--ui-shadow-1/2/3`；玻璃底色：`--ui-glass-bg`
+- 形状：`--ui-radius-xs/s/m/l/xl/full`；阴影：`--ui-shadow-1/2/3`；玻璃底色：`--ui-glass-bg`（Apple 下由 `--glass-t` 算出，页面里只读不写；要更透明请改 `--glass-t`）
 - 间距：`--sp-1`(4)…`--sp-24`(96)；页面边距 `--ui-margin`；安全区 `--safe-top` `--safe-bottom`；文字缩放 `--ts`
 - 动效：`--ui-dur` `--ui-ease` `--ui-ease-spatial`，以及 `generated.css` 里的 `--spring-apple-*`、`--spring-md-*`
 
@@ -118,7 +120,7 @@ Apple 用 Lucide（ISC），Google 用 Material Symbols（Apache-2.0）。平台
     </div>
   </header>
   <main class="content">                       <!-- 左右已有页边距；.content.flush 去掉边距 -->
-    <h1 class="page-title">通知</h1>            <!-- 配合 has-large；Google 下是 headline -->
+    <h1 class="page-title">通知</h1>            <!-- 配合 has-large；Google 下是 large flexible 顶栏标题 display-small 36，.page-title.medium 是 headline-medium 28 -->
     …
   </main>
   <nav class="tabbar">
@@ -133,7 +135,7 @@ Apple 用 Lucide（ISC），Google 用 Material Symbols（Apache-2.0）。平台
 - 顶栏：`.topbar`（Apple 标题居中、按钮是玻璃圆钮；Google 标题居左，64px）、`.topbar.transparent`（盖在媒体上，固定定位）、`.topbar.static`。
 - `.bar-btn`：只有图标时自动变成圆钮；`.bar-btn.prominent` 是强调按钮（iOS 蓝色玻璃 ✓ / Android 实心按钮）；`.bar-group` 把多个按钮合进一个玻璃胶囊（Apple）。
 - `.page-head`：大标题 + 右侧操作并排。
-- 标签栏：Apple 是浮动玻璃胶囊，选中项有高亮底；Google 是满宽导航栏，选中图标外有药丸指示器。iOS 26 的独立搜索钮：`<nav class="tabbar"><div class="tab-group">…四个 .tab…</div><a class="tab search">…</a></nav>`。
+- 标签栏：Apple 是浮动玻璃胶囊，选中项有高亮底；Google 是满宽导航栏，选中图标外有药丸指示器。iOS 27 的独立胶囊位（Prominent Tab，原 iOS 26 的“独立搜索”）：`<nav class="tabbar"><div class="tab-group">…四个 .tab…</div><a class="tab prominent">…</a></nav>`。`.tab.prominent` 可以放任意标签（Apple 下只显示图标、文字隐藏，给 `<a>` 加 `aria-label`），搜索用 `.tab.search`，两者外观相同；Google 下都是普通标签。
 - `.fab`（`.extended` 带文字、`.lg` `.md`、`.prominent`、`.tertiary`）：Google 是 FAB；Apple 下是玻璃圆钮，多数情况用 `.only-google`。
 - `.toolbar.floating`（底部浮动工具栏，Google 可加 `.vibrant`）里放 `.icon-btn`；`.toolbar.docked` 是贴底工具栏。
 
@@ -185,13 +187,26 @@ Apple 用 Lucide（ISC），Google 用 Material Symbols（Apache-2.0）。平台
 <button class="btn filled lg block">继续</button>
 <button class="btn filled danger">删除</button>  <button class="btn tonal danger">移除</button>
 <button class="btn filled" disabled>禁用</button>  <button class="btn filled is-loading">提交</button>
-<button class="icon-btn"><svg class="i"><use href="#i-heart"/></svg></button>  <!-- .filled .tonal .neutral .outlined .glass .on-media .sm .lg .xl .is-active -->
+<button class="icon-btn"><svg class="i"><use href="#i-heart"/></svg></button>  <!-- .filled .tonal .neutral .outlined .glass .on-media .sm .lg .xl .is-active；Google 另有 .square .xxl -->
 <div class="btn-group"><button class="btn is-active">日</button><button class="btn">周</button><button class="btn">月</button></div>
 <div class="split-btn"><button class="btn filled">发送</button><button class="btn filled"><svg class="i"><use href="#i-chevron-down"/></svg></button></div>
 <a class="link-arrow" href="#">进一步了解</a>
 ```
 
-尺寸：`.xs` `.sm` 默认 `.lg` `.xl`（Google 的 XL 是 96px 高）；形状：`.square`；`.icon-only`；`.on-media`（盖在图片上）。按钮排列：`.btn-row`（`.end` `.center` `.stretch`）、`.btn-stack`。
+尺寸：`.xs` `.sm` 默认 `.lg` `.xl`；形状：`.square`；`.icon-only`；`.on-media`（盖在图片上）。按钮排列：`.btn-row`（`.end` `.center` `.stretch`）、`.btn-stack`。
+
+Google 下的尺寸对应 M3 Expressive 按钮尺寸（数值来自 Compose token，见 `kit/specs-google.json`）：
+
+| 类 | M3 尺寸 | 高 | 左右内边距 | 字体 | 图标 | `.square` 圆角 | 按下圆角 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `.btn.xs` | XSmall | 32 | 16 | label-large 14 | 20 | 12 | 8 |
+| `.btn.sm` | Small | 40 | 16 | label-large 14 | 20 | 12 | 8 |
+| `.btn` | 基准按钮（Compose `Button()` 默认） | 40 | 24 | label-large 14 | 20 | 12 | 8 |
+| `.btn.lg` | Medium | 56 | 24 | title-medium 16 | 24 | 16 | 12 |
+| `.btn.xl` | Large | 96 | 48 | headline-small 24 | 32 | 28 | 16 |
+| `.btn.xxl` | XLarge（只在 Google 下定义） | 136 | 64 | headline-large 32 | 40 | 28 | 16 |
+
+图标按钮同理：`.icon-btn.sm` 32（XSmall）、默认 40（Small，透明按钮外留 48 触控区）、`.lg` 56（Medium）、`.xl` 96（Large）、`.xxl` 136（XLarge，只在 Google 下定义）。图标按钮默认是圆形，`.icon-btn.square` 是方形（Apple 下无效果）；`.is-active` 时圆形变圆角方形、方形变圆形。`.btn-group` 按下时内角收成 4px，`.split-btn` 悬停/按下时内角放大到 12px。
 
 ## 10. 分段、标签页、筛选片
 
@@ -277,6 +292,9 @@ Apple 用 Lucide（ISC），Google 用 Material Symbols（Apache-2.0）。平台
   <section class="pane">…</section>
 </div>
 ```
+
+- Apple 侧栏两种：`.sidebar.floating` 是 iPadOS 26 的浮动圆角玻璃面板；`.sidebar.edge` 是 iOS / iPadOS 27 的通栏侧栏（材质铺满整栏、选中项是整行胶囊、分组标题用常规字重）。Google 下两者都是抽屉。
+- 侧栏图标默认用强调色；单个条目可写 `style="--tint:var(--c-yellow)"` 换成固定颜色（Apple 生效，例如 VIP、废纸篓），少量使用。
 
 `.rail` + `.rail-item`（Google 导航轨，96px；Apple 下是紧凑侧边图标栏）、`.app-frame`（rail + `.app-main`）。
 
