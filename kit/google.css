@@ -43,10 +43,11 @@ html[data-lang="google"] {
   --md-warning: oklch(.62 .14 70); --md-warning-container: oklch(.93 .07 85); --md-on-warning-container: oklch(.4 .09 65);
 
   /* ---- 字体 ---- */
-  --ui-font: "Google Sans Flex", "Google Sans Text", "Google Sans", "Roboto Flex", Roboto, "Noto Sans SC", "Segoe UI Variable Text", "Segoe UI",
-    "Microsoft YaHei", system-ui, sans-serif;
-  --ui-font-display: "Google Sans Flex", "Google Sans Display", "Google Sans", "Roboto Flex", Roboto, "Noto Sans SC", "Segoe UI Variable Display",
-    "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  /* 随 kit 打包 Google Sans Flex 与 Noto Sans SC（Android 的中文系统字体就是 Noto Sans CJK），都是 OFL 许可 */
+  --ui-font: "Google Sans Flex Variable", "Google Sans Flex", "Google Sans Text", "Google Sans", "Roboto Flex", Roboto, "Noto Sans SC Variable",
+    "Noto Sans SC", "Noto Sans CJK SC", "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --ui-font-display: "Google Sans Flex Variable", "Google Sans Flex", "Google Sans Display", "Google Sans", "Roboto Flex", Roboto,
+    "Noto Sans SC Variable", "Noto Sans SC", "Noto Sans CJK SC", "Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
   --ui-font-mono: "Google Sans Code", "Roboto Mono", "Cascadia Code", Consolas, monospace;
 
   /* ---- M3 type scale（映射到同名角色）---- */
@@ -203,15 +204,15 @@ html[data-lang="google"] {
   .topbar-lead:empty + .topbar-title { padding-left: 12px; }
   .topbar-sub { display: block; font: 500 calc(12px * var(--ts)) / 16px var(--ui-font); letter-spacing: .5px; color: var(--md-on-surface-variant); }  /* AppBarSmall：subtitle LabelMedium */
   .topbar .bar-btn { --ui-bar-btn-color: var(--md-on-surface-variant); min-width: 48px; height: 48px; font-weight: 500; font-size: calc(14px * var(--ts)); color: var(--md-primary); padding: 0 12px; }
-  .topbar .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge))) { color: var(--md-on-surface-variant); width: 48px; padding: 0; }
-  .topbar-lead .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge))) { color: var(--md-on-surface); }
-  .bar-btn.prominent:has(> .i:first-child):not(:has(> :not(.i, .badge))) { width: 40px; padding: 0; }
+  .topbar .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { color: var(--md-on-surface-variant); width: 48px; padding: 0; }
+  .topbar-lead .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { color: var(--md-on-surface); }
+  .bar-btn.prominent:has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { width: 40px; padding: 0; }
   .topbar .bar-btn.prominent, .bar-btn.prominent { background: var(--md-primary); color: var(--md-on-primary); height: 40px; padding: 0 16px; margin: 0 8px; }
   .topbar.transparent { --ui-topbar-bg: transparent; }
   .topbar.transparent .bar-btn { color: #fff; }
   &.title-in .topbar.transparent { background: var(--ui-topbar-bg-scrolled); }
   &.title-in .topbar.transparent .bar-btn:not(.prominent) { color: var(--md-on-surface-variant) !important; background: transparent !important; }
-  .topbar.transparent .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { color: #fff; background: rgb(0 0 0 / 22%); width: 40px; height: 40px; margin: 4px; }
+  .topbar.transparent .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { color: #fff; background: rgb(0 0 0 / 22%); width: 40px; height: 40px; margin: 4px; }
   .bar-group { gap: 0; }
   /* 大标题 = large flexible app bar 的标题（DisplaySmall 36/44）；.medium = medium flexible（HeadlineMedium 28/36） */
   .page-title { font: 400 calc(36px * var(--ts)) / 1.222 var(--ui-font-display); padding: 8px 0 20px; }
@@ -471,7 +472,7 @@ html[data-lang="google"] {
   .sheet-head { grid-template-columns: auto 1fr auto; padding: 0 8px 8px; }
   .sheet-title { text-align: left; font: 400 calc(var(--fs-title2) * var(--ts)) / 1.33 var(--ui-font-display); padding-left: 16px; }
   .sheet-head .bar-btn:not(.prominent) { color: var(--md-primary); }
-  .sheet-head .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge))) { color: var(--md-on-surface-variant); }
+  .sheet-head .bar-btn:not(.prominent):has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { color: var(--md-on-surface-variant); }
   .dialog { --ui-dialog-w: 340px; padding: 24px; border-radius: 28px; background: var(--md-surface-container-high); box-shadow: var(--ui-shadow-3); gap: 16px; }
   .dialog:has(.dialog-icon) { text-align: center; align-items: center; }
   .dialog-icon { color: var(--md-secondary); }

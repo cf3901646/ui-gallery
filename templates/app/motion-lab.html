@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="apple">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>动效与交互</title>
+<meta name="ui:title" content="动效与交互演示">
+<meta name="ui:desc" content="可以直接上手操作的动效合集：标签栏滚动最小化、玻璃高光与按压（Apple）/ 水波纹（Google）、按钮组按压挤开、开关拉伸、加载指示器形状变形、sheet 分档拖动、浮层入场和弹簧曲线对比。">
+<meta name="ui:category" content="动效与交互">
+<meta name="ui:platform" content="phone">
+<meta name="ui:tags" content="动效,弹簧,标签栏最小化,sheet 分档,形状变形,水波纹,玻璃">
+<link rel="stylesheet" href="../../kit/ui.css">
+<script src="../../kit/icons.js"></script>
+<script src="../../kit/ui.js"></script>
+<style>
+  .ml-stage { position: relative; height: 150px; border-radius: var(--ui-radius-l); overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .ml-stage > .art { position: absolute; inset: 0; }
+  .ml-stage > :not(.art) { position: relative; }
+  .ml-pill { display: flex; align-items: center; gap: 2px; height: 52px; padding: 4px; border-radius: 999px; }
+  .ml-pill .icon-btn { --b-fg: var(--ui-text); }
+  html[data-lang="google"] .ml-pill { background: var(--md-surface-container-high); box-shadow: var(--ui-shadow-2); }
+  .ml-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .ml-loaders { display: flex; align-items: center; gap: 28px; }
+  .ml-loaders > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .ml-springs { display: flex; flex-direction: column; gap: 10px; }
+  .ml-spring { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; gap: 10px; }
+  .ml-track { position: relative; height: 28px; border-radius: 99px; background: var(--ui-fill); }
+  .ml-dot { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--ui-accent); }
+  .ml-go:checked ~ .ml-springs .ml-dot { left: calc(100% - 24px); }
+  .ml-hint { display: flex; align-items: center; gap: 8px; }
+  .ml-hint .i { --ui-icon: 18px; color: var(--ui-accent); }
+  .card.pad.ml-card { gap: 14px; }
+</style>
+</head>
+<body class="app">
+<div class="screen">
+  <header class="topbar has-large">
+    <div class="topbar-lead"></div>
+    <div class="topbar-title">动效</div>
+    <div class="topbar-trail"><button class="bar-btn" data-open="ml-menu" aria-label="更多"><svg class="i"><use href="#i-overflow"/></svg></button></div>
+  </header>
+
+  <main class="content">
+    <h1 class="page-title">动效</h1>
+    <p class="t-callout t-2 ml-hint"><svg class="i"><use href="#i-sparkles"/></svg><span>每一项都可以直接操作。向下滚动这一页，底部标签栏会<span class="only-apple">缩成小胶囊</span><span class="only-google">滑出屏幕</span>。</span></p>
+
+    <section class="group">
+      <h2 class="group-header"><span class="only-apple">玻璃：高光跟随指针，按下轻微放大</span><span class="only-google">按下：水波纹与形状变化</span></h2>
+      <div class="ml-stage">
+        <div class="art a1"></div>
+        <div class="ml-pill glass"><button class="icon-btn"><svg class="i"><use href="#i-play"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-heart"/></svg></button><button class="icon-btn"><svg class="i"><use href="#i-share"/></svg></button></div>
+        <button class="btn glass">玻璃按钮</button>
+      </div>
+      <p class="group-footer"><span class="only-apple">鼠标在玻璃上移动时高光跟着走；触屏上按下时高光出现在手指位置。</span><span class="only-google">M3 Expressive 的按钮按下时圆角变小，同时从按下点扩散水波纹。</span></p>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">按钮组与开关</h2>
+      <div class="card pad ml-card">
+        <div class="btn-group"><button class="btn is-active">日</button><button class="btn">周</button><button class="btn">月</button><button class="btn">年</button></div>
+        <div class="ml-row"><button class="btn filled">主要操作</button><button class="btn tonal">次要</button><button class="icon-btn tonal"><svg class="i"><use href="#i-bookmark"/></svg></button></div>
+        <div class="ml-row"><input type="checkbox" class="switch" checked aria-label="开关一"><input type="checkbox" class="switch" aria-label="开关二"><span class="t-footnote t-2"><span class="only-apple">按住开关，滑块会拉宽变成玻璃</span><span class="only-google">按住开关，滑块会变大</span></span></div>
+      </div>
+      <p class="group-footer only-google">按住按钮组里的一项：它会变宽，两边的按钮让出空间。</p>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">加载与进度</h2>
+      <div class="card pad ml-card">
+        <div class="ml-loaders">
+          <div><span class="loader"></span><span class="t-caption t-2"><span class="only-google">形状变形</span><span class="only-apple">loader</span></span></div>
+          <div class="only-google"><span class="loader contained"></span><span class="t-caption t-2">带容器</span></div>
+          <div><span class="spinner" style="--size:32px"></span><span class="t-caption t-2">spinner</span></div>
+        </div>
+        <div class="progress indeterminate"></div>
+        <div class="progress wavy" style="--value:62%"></div>
+      </div>
+      <p class="group-footer only-google">加载指示器按 Compose 源码里的顺序变形：柔和星芒 → 九瓣饼干 → 五边形 → 胶囊 → 太阳 → 四瓣饼干 → 椭圆，每段 650ms。</p>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">sheet 分档与浮层入场</h2>
+      <ul class="list has-icons">
+        <li><button class="row" data-open="ml-sheet"><span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-layers"/></svg></span><span class="row-body"><span class="row-title">可拖动的 sheet</span><span class="row-sub">拖顶部在半屏和全屏之间切换，往下甩关闭</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></button></li>
+        <li><button class="row" data-open="ml-dialog"><span class="row-icon" style="--tint:var(--c-orange)"><svg class="i"><use href="#i-alert"/></svg></span><span class="row-body"><span class="row-title">对话框</span><span class="row-sub">弹簧缩放入场</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></button></li>
+        <li><button class="row" data-open="ml-toast"><span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-check"/></svg></span><span class="row-body"><span class="row-title">提示条</span><span class="row-sub">从底部滑入</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></button></li>
+        <li><button class="row" data-open="ml-menu"><span class="row-icon" style="--tint:var(--c-purple)"><svg class="i"><use href="#i-more"/></svg></span><span class="row-body"><span class="row-title">菜单</span><span class="row-sub">从右上角展开</span></span><svg class="i row-chevron"><use href="#i-chevron-right"/></svg></button></li>
+      </ul>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">弹簧曲线</h2>
+      <div class="card pad ml-card">
+        <input type="checkbox" class="ml-go" id="ml-go" hidden>
+        <label class="btn tonal sm" for="ml-go" style="align-self:flex-start">播放 / 复位</label>
+        <div class="ml-springs">
+          <div class="ml-spring only-apple"><span class="t-footnote t-mono">smooth</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-apple-smooth-ms) var(--spring-apple-smooth)"></span></span></div>
+          <div class="ml-spring only-apple"><span class="t-footnote t-mono">snappy</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-apple-snappy-ms) var(--spring-apple-snappy)"></span></span></div>
+          <div class="ml-spring only-apple"><span class="t-footnote t-mono">bouncy</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-apple-bouncy-ms) var(--spring-apple-bouncy)"></span></span></div>
+          <div class="ml-spring only-google"><span class="t-footnote t-mono">std spatial</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-md-std-spatial-ms) var(--spring-md-std-spatial)"></span></span></div>
+          <div class="ml-spring only-google"><span class="t-footnote t-mono">exp fast</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-md-exp-fast-spatial-ms) var(--spring-md-exp-fast-spatial)"></span></span></div>
+          <div class="ml-spring only-google"><span class="t-footnote t-mono">exp spatial</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-md-exp-spatial-ms) var(--spring-md-exp-spatial)"></span></span></div>
+          <div class="ml-spring only-google"><span class="t-footnote t-mono">exp slow</span><span class="ml-track"><span class="ml-dot" style="transition:left var(--spring-md-exp-slow-spatial-ms) var(--spring-md-exp-slow-spatial)"></span></span></div>
+        </div>
+      </div>
+      <p class="group-footer">曲线由 SwiftUI 弹簧参数（duration、bounce）和 Compose 官方 motion scheme（damping、stiffness）数值积分得到。</p>
+    </section>
+
+    <section class="group">
+      <h2 class="group-header">滚动区域</h2>
+      <ul class="list has-icons">
+        <li><div class="row"><span class="row-icon" style="--tint:var(--c-teal)"><svg class="i"><use href="#i-map"/></svg></span><span class="row-body"><span class="row-title">继续向下滚动</span><span class="row-sub">看标签栏的变化，向上滚动时恢复</span></span></div></li>
+        <li><div class="row"><span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span><span class="row-body"><span class="row-title">大标题收起</span><span class="row-sub">页面滚动后，大标题收进顶栏</span></span></div></li>
+        <li><div class="row"><span class="row-icon" style="--tint:var(--c-pink)"><svg class="i"><use href="#i-layers"/></svg></span><span class="row-body"><span class="row-title only-apple">统一顶栏背景（iOS 27）</span><span class="row-title only-google">顶栏变为 surface-container</span><span class="row-sub">内容滚到顶栏下方时出现</span></span></div></li>
+      </ul>
+      <div class="art a7 rounded-l mt-4" style="height:360px"><svg class="i xxl"><use href="#i-mountain"/></svg></div>
+    </section>
+  </main>
+
+  <nav class="tabbar" data-minimize>
+    <div class="tab-group">
+      <a class="tab is-active" href="#"><svg class="i"><use href="#i-sparkles"/></svg><span>动效</span></a>
+      <a class="tab" href="#"><svg class="i"><use href="#i-layers"/></svg><span>组件</span></a>
+      <a class="tab" href="#"><svg class="i"><use href="#i-palette"/></svg><span>主题</span></a>
+      <a class="tab" href="#"><svg class="i"><use href="#i-settings"/></svg><span>设置</span></a>
+    </div>
+    <a class="tab search" href="#"><svg class="i"><use href="#i-search"/></svg><span>搜索</span></a>
+  </nav>
+</div>
+
+<div class="scrim" data-for="ml-sheet" hidden></div>
+<div class="sheet" id="ml-sheet" data-detents="medium large" hidden>
+  <div class="sheet-grabber"></div>
+  <div class="sheet-head"><button class="bar-btn" data-close aria-label="关闭"><svg class="i"><use href="#i-close"/></svg></button><div class="sheet-title">拖我</div><button class="bar-btn prominent" data-close>完成</button></div>
+  <div class="sheet-body">
+    <p class="t-callout t-2 mb-4">按住顶部上下拖动：放手后按速度吸附到半屏或全屏<span class="only-apple">；全屏时 sheet 贴边，半屏时四周留边</span>。用力往下甩会关闭。</p>
+    <ul class="list has-icons">
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-wifi"/></svg></span><span class="row-body"><span class="row-title">无线局域网</span></span><span class="row-value">Home-5G</span></div></li>
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-blue)"><svg class="i"><use href="#i-bluetooth"/></svg></span><span class="row-body"><span class="row-title">蓝牙</span></span><span class="row-value">打开</span></div></li>
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-green)"><svg class="i"><use href="#i-battery"/></svg></span><span class="row-body"><span class="row-title">电池</span></span><span class="row-value">86%</span></div></li>
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-indigo)"><svg class="i"><use href="#i-moon"/></svg></span><span class="row-body"><span class="row-title">专注模式</span></span><span class="row-value">睡眠</span></div></li>
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-red)"><svg class="i"><use href="#i-bell"/></svg></span><span class="row-body"><span class="row-title">通知</span></span></div></li>
+      <li><div class="row"><span class="row-icon" style="--tint:var(--c-gray)"><svg class="i"><use href="#i-settings"/></svg></span><span class="row-body"><span class="row-title">通用</span></span></div></li>
+    </ul>
+  </div>
+</div>
+<div class="scrim" data-for="ml-dialog" hidden></div>
+<div class="dialog" id="ml-dialog" role="alertdialog" hidden>
+  <h2 class="dialog-title">保存这组动效设置？</h2>
+  <p class="dialog-body">弹簧参数会同步到这台设备上的所有原型。</p>
+  <div class="dialog-actions"><button class="btn" data-close>取消</button><button class="btn filled" data-close>保存</button></div>
+</div>
+<div class="toast" id="ml-toast" role="status" hidden><span>已复制弹簧参数</span><button class="btn" data-close>好</button></div>
+<div class="menu" id="ml-menu" style="top:calc(var(--safe-top) + 56px);right:12px" hidden>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-play"/></svg><span>全部播放</span></button>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-refresh"/></svg><span>复位</span></button>
+  <div class="menu-sep"></div>
+  <button class="menu-item" data-close><svg class="i"><use href="#i-copy"/></svg><span>复制参数</span></button>
+</div>
+</body>
+</html>

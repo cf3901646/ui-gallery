@@ -161,7 +161,7 @@ html.scrolled .topbar:not(.transparent) { background: var(--ui-topbar-bg-scrolle
   height: var(--ui-ctl-h); padding: 0 10px; border-radius: var(--ui-radius-full); color: var(--ui-bar-btn-color, var(--ui-text));
   font-weight: 500; white-space: nowrap; transition: transform var(--ui-dur-fast) var(--ui-ease), background-color var(--ui-dur-fast); }
 /* 纯图标按钮：只含图标（可以再带一个 .badge） */
-.bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { padding: 0; width: var(--ui-ctl-h); }
+.bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { padding: 0; width: var(--ui-ctl-h); }
 .bar-btn { position: relative; }
 .bar-btn > .badge, .icon-btn > .badge { position: absolute; top: 2px; right: 2px; pointer-events: none; }
 .bar-btn > .badge.dot, .icon-btn > .badge.dot { top: 8px; right: 8px; }

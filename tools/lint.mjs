@@ -8,13 +8,13 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const KIT = ['generated.css', 'base.css', 'apple.css', 'google.css', 'utilities.css'];
+const KIT = ['generated.css', 'base.css', 'apple.css', 'google.css', 'motion.css', 'utilities.css'];
 const kitCss = (await Promise.all(KIT.map((f) => readFile(path.join(ROOT, 'kit', f), 'utf8')))).join('\n');
 const classesIn = (css) => new Set([...css.replace(/url\([^)]*\)/g, '').matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1]));
 const KNOWN = classesIn(kitCss);
 // 运行时由 ui.js 添加或纯语义用途、允许不带样式的类
 for (const c of ['is-active', 'is-done', 'is-current', 'is-muted', 'is-today', 'is-selected', 'is-error', 'is-loading', 'is-disabled',
-  'scrolled', 'title-in', 'toggle', 'selectable', 'single', 'hi', 'off', 'down', 'up', 'num', 'count']) KNOWN.add(c);
+  'scrolled', 'title-in', 'toggle', 'selectable', 'single', 'hi', 'off', 'down', 'up', 'num', 'count', 'is-min', 'is-large']) KNOWN.add(c);
 const iconsJs = await readFile(path.join(ROOT, 'kit', 'icons.js'), 'utf8');
 const ICONS = new Set(JSON.parse(iconsJs.match(/var NAMES = (\[.*?\]);/)[1]));
 for (const n of [...ICONS]) ICONS.add(n + '-fill');

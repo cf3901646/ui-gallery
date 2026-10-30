@@ -19,10 +19,11 @@ html[data-lang="apple"] {
   --ios-red-text: rgb(233 21 45); --ios-green-text: rgb(0 137 50); --ios-orange-text: rgb(197 83 0); --ios-blue-text: rgb(30 110 244);
 
   /* ---- 字体 ---- */
-  --ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "Inter", "PingFang SC", "Hiragino Sans GB",
-    "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
-  --ui-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "Inter Display", "Inter", "PingFang SC",
-    "Hiragino Sans GB", "Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  /* Apple 设备：-apple-system = SF Pro + 苹方。其他系统：Inter（带 opsz，大字号自动变成 Display 字形）+ Noto Sans SC（可变字重，有真正的 Semibold）*/
+  --ui-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", "PingFang SC", "Inter Variable", "Inter", "Noto Sans SC Variable",
+    "Hiragino Sans GB", "Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --ui-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", "PingFang SC", "Inter Variable", "Inter Display", "Inter",
+    "Noto Sans SC Variable", "Hiragino Sans GB", "Segoe UI Variable Display", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
   --ui-font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 
   /* ---- Dynamic Type（iOS，默认档）：字号 / 行高比 / 字重 / 字距 ---- */
@@ -219,7 +220,7 @@ html[data-lang="apple"] {
     transition: opacity var(--ui-dur-fast) linear; }
   &.scrolled .topbar:not(.transparent)::before { opacity: 1; }
   .topbar .bar-btn { --ui-bar-btn-color: var(--ui-text); font-weight: 500; font-size: calc(var(--fs-body) * var(--ts)); padding: 0 14px; }
-  .topbar .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge))) { padding: 0; }
+  .topbar .bar-btn:has(> .i:first-child):not(:has(> :not(.i, .badge, .ui-ripple-host))) { padding: 0; }
   .topbar .bar-btn.prominent, .bar-btn.prominent { background: var(--ui-accent); color: var(--ui-on-accent);
     box-shadow: var(--ui-glass-edge-prominent), var(--ui-glass-shadow); }
   .bar-btn .i { --ui-icon: 22px; }

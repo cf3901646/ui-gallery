@@ -1,0 +1,93 @@
+/* ==========================================================================
+   UI Kit · motion.css —— 动效与交互（配合 kit/src/motion.js）
+   1. 浮层入场        2. Apple 玻璃高光跟随指针、按压放大     3. 标签栏滚动最小化（.tabbar[data-minimize]）
+   4. sheet 分档拖动（.sheet[data-detents]）   5. Google 按钮组按压挤开   6. Google 水波纹
+   7. Google 加载指示器形状变形（官方序列）    8. Apple 开关按压拉伸
+   系统“减少动态效果”打开时，base.css 会把所有动画和过渡压到 0.01ms。
+   ========================================================================== */
+
+/* ---------- 1. 浮层入场 ---------- */
+@keyframes ui-in-up { from { transform: translateY(105%); } }
+@keyframes ui-in-fade { from { opacity: 0; } }
+@keyframes ui-in-pop { from { opacity: 0; scale: .88; } }
+@keyframes ui-in-menu { from { opacity: 0; scale: .7; } }
+@keyframes ui-in-toast { from { opacity: 0; translate: 0 18px; } }
+@keyframes ui-in-toast-top { from { opacity: 0; translate: 0 -18px; } }
+.sheet:not([hidden], .inline), .action-sheet:not([hidden], .inline) { animation: ui-in-up var(--ui-dur-sheet, 520ms) var(--ui-ease-spatial) both; }
+.scrim:not([hidden]) { animation: ui-in-fade 220ms linear both; }
+.dialog:not([hidden], .inline) { animation: ui-in-pop var(--ui-dur) var(--ui-ease-spatial) both; }
+.menu:not([hidden], .inline) { transform-origin: top right; animation: ui-in-menu var(--ui-dur) var(--ui-ease-spatial) both; }
+.toast:not([hidden], .inline) { animation: ui-in-toast var(--ui-dur) var(--ui-ease-spatial) both; }
+.toast.top:not([hidden], .inline) { animation-name: ui-in-toast-top; }
+html[data-lang="apple"] { --ui-dur-sheet: var(--spring-apple-smooth-ms); }
+html[data-lang="google"] { --ui-dur-sheet: var(--spring-md-exp-spatial-ms); }
+
+/* ---------- 2. Apple：玻璃上的高光跟随指针，按下时轻微放大（iOS 26 起的 Liquid Glass 交互） ---------- */
+@property --gh { syntax: "<number>"; inherits: false; initial-value: 0; }
+html[data-lang="apple"] :is(.glass, .tab-group, .tabbar:not(:has(> .tab-group)), .toolbar.floating, .bar-group, .topbar .bar-btn, .fab,
+  .btn.glass, .icon-btn.glass, .bar-btn.glass, .tabbar > .tab:is(.search, .prominent)) {
+  background-image: radial-gradient(140px circle at var(--gx, 50%) var(--gy, -60%), rgb(255 255 255 / calc(var(--gh) * .6)), transparent 70%);
+  transition: --gh .35s ease, transform var(--spring-apple-bouncy-ms) var(--spring-apple-bouncy), background-color var(--ui-dur-fast),
+    border-radius var(--ui-dur) var(--ui-ease-spatial), opacity var(--ui-dur-fast), right var(--spring-apple-snappy-ms) var(--spring-apple-snappy),
+    flex-grow var(--spring-apple-snappy-ms) var(--spring-apple-snappy), flex-basis var(--spring-apple-snappy-ms) var(--spring-apple-snappy);
+}
+html[data-lang="apple"][data-scheme="dark"] :is(.glass, .tab-group, .tabbar, .toolbar.floating, .bar-group, .topbar .bar-btn, .fab, .btn.glass, .icon-btn.glass, .bar-btn.glass) {
+  background-image: radial-gradient(140px circle at var(--gx, 50%) var(--gy, -60%), rgb(255 255 255 / calc(var(--gh) * .2)), transparent 70%);
+}
+html[data-lang="apple"] .ui-lit { --gh: 1; }
+html[data-lang="apple"] .ui-pressed:is(.glass, .tab-group, .toolbar.floating, .bar-group, .topbar .bar-btn, .fab, .btn.glass, .icon-btn.glass, .bar-btn.glass) { transform: scale(1.07); }
+
+/* ---------- 3. 标签栏滚动最小化 ---------- */
+/* Apple（iOS 26/27 tabBarMinimizeBehavior）：向下滚动时缩成只显示当前标签的小胶囊，独立胶囊（搜索 / prominent）保留在右侧；向上滚动恢复 */
+html[data-lang="apple"] .tabbar[data-minimize] .tab { transition: flex-grow var(--spring-apple-snappy-ms) var(--spring-apple-snappy),
+  flex-basis var(--spring-apple-snappy-ms) var(--spring-apple-snappy), opacity 160ms linear, padding var(--spring-apple-snappy-ms) var(--spring-apple-snappy),
+  background-color var(--ui-dur) var(--ui-ease), color var(--ui-dur); }
+html[data-lang="apple"] .tabbar[data-minimize]:not(:has(> .tab-group)) { transition: right var(--spring-apple-snappy-ms) var(--spring-apple-snappy), --gh .35s ease, transform var(--spring-apple-bouncy-ms) var(--spring-apple-bouncy); }
+html[data-lang="apple"] .tabbar.is-min:not(:has(> .tab-group)) { right: calc(100% - 20px - var(--ui-tabbar-h)); }
+html[data-lang="apple"] .tabbar.is-min .tab-group { flex: 0 0 var(--ui-tabbar-h); }
+html[data-lang="apple"] .tabbar.is-min:has(> .tab-group) { justify-content: space-between; }
+html[data-lang="apple"] .tabbar.is-min > .tab:not(.search, .prominent, .is-active),
+html[data-lang="apple"] .tabbar.is-min .tab-group > .tab:not(.is-active) { flex: 0 0 0; min-width: 0; padding: 0; opacity: 0; overflow: hidden; pointer-events: none; }
+html[data-lang="apple"] .tabbar.is-min .tab.is-active > span:not(.badge) { display: none; }
+html[data-lang="apple"] .tabbar.is-min .tab.is-active { background: transparent; }
+/* Google：导航栏向下滚动时滑出屏幕（与 FAB 一起下移），向上滚动滑回 */
+html[data-lang="google"] .tabbar[data-minimize] { transition: translate var(--spring-md-std-spatial-ms) var(--spring-md-std-spatial); }
+html[data-lang="google"] .tabbar.is-min { translate: 0 100%; }
+html[data-lang="google"] body:has(.tabbar[data-minimize]) .fab { transition: bottom var(--spring-md-std-spatial-ms) var(--spring-md-std-spatial),
+  transform var(--ui-dur) var(--ui-ease-spatial), border-radius var(--ui-dur) var(--ui-ease-spatial); }
+html[data-lang="google"] body:has(.tabbar.is-min) .fab { --ui-fab-offset: 16px; }
+
+/* ---------- 4. sheet 分档：拖动顶部在 medium / large 之间切换，放手后按速度吸附；Apple 的 large 档贴边 ---------- */
+.sheet[data-detents] { height: var(--sheet-h, 50dvh); max-height: calc(100dvh - var(--safe-top) - 8px);
+  transition: height var(--ui-dur-sheet) var(--ui-ease-spatial), left var(--ui-dur-sheet) var(--ui-ease-spatial), right var(--ui-dur-sheet) var(--ui-ease-spatial),
+    bottom var(--ui-dur-sheet) var(--ui-ease-spatial), border-radius var(--ui-dur-sheet) var(--ui-ease-spatial); }
+.sheet[data-detents].is-dragging { transition: none; }
+.sheet[data-detents] :is(.sheet-grabber, .sheet-head) { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sheet[data-detents].is-dragging :is(.sheet-grabber, .sheet-head) { cursor: grabbing; }
+.sheet[data-detents] .sheet-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+html[data-lang="apple"] .sheet[data-detents].is-large { left: 0; right: 0; bottom: 0; border-radius: 38px 38px 0 0; }
+
+/* ---------- 5. Google：按钮组按下时，被按的按钮变宽、相邻按钮让出空间（M3 Expressive button group） ---------- */
+html[data-lang="google"] .btn-group > .btn { transition: padding var(--spring-md-exp-fast-spatial-ms) var(--spring-md-exp-fast-spatial),
+  border-radius var(--spring-md-exp-fast-spatial-ms) var(--spring-md-exp-fast-spatial), background-color var(--ui-dur-fast), color var(--ui-dur-fast); }
+html[data-lang="google"] .btn-group > .btn:active { padding-inline: calc(var(--ui-btn-px) + 12px); }
+html[data-lang="google"] .btn-group > .btn:has(+ .btn:active), html[data-lang="google"] .btn-group > .btn:active + .btn { padding-inline: max(8px, calc(var(--ui-btn-px) - 6px)); }
+
+/* ---------- 6. Google：水波纹（由 motion.js 在按下点插入） ---------- */
+html[data-lang="google"] :is(.chip, .side-item, .menu-item, .segmented > *, .rail-item, .option) { position: relative; }
+.ui-ripple-host { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+.ui-ripple { position: absolute; border-radius: 50%; background: currentColor; transform: scale(0); opacity: .14; animation: ui-ripple 560ms cubic-bezier(.2, 0, 0, 1) forwards; }
+@keyframes ui-ripple { 55% { transform: scale(1); opacity: .12; } 100% { transform: scale(1); opacity: 0; } }
+
+/* ---------- 7. Google：加载指示器按官方序列变形（SoftBurst → Cookie9 → Pentagon → Pill → Sunny → Cookie4 → Oval），同时旋转 ---------- */
+html[data-lang="google"] .loader { -webkit-mask: none; mask: none; border-radius: 0; clip-path: polygon(50% 50%, 50% 50%, 50% 50%);
+  animation: ui-m3-morph var(--m3-morph-ms) var(--spring-md-exp-fast-spatial) infinite, ui-spin 4666ms linear infinite; }
+html[data-lang="google"] .loader.contained { background: var(--md-primary-container); clip-path: none; border-radius: 50%; animation: none; position: relative; }
+html[data-lang="google"] .loader.contained::after { content: ""; position: absolute; inset: 0; background: var(--md-on-primary-container);
+  animation: ui-m3-morph var(--m3-morph-ms) var(--spring-md-exp-fast-spatial) infinite, ui-spin 4666ms linear infinite; }
+
+/* ---------- 8. Apple：开关按下时滑块拉宽并变成玻璃（iOS 26 起） ---------- */
+html[data-lang="apple"] .switch::before { transition: left var(--sw-dur) var(--sw-ease), width var(--spring-apple-snappy-ms) var(--spring-apple-snappy),
+  background-color var(--ui-dur-fast), box-shadow var(--ui-dur-fast); }
+html[data-lang="apple"] .switch:active { --sw-knob-w: 46px; --sw-knob-on-w: 46px; }
+html[data-lang="apple"] .switch:active::before { background: rgb(255 255 255 / 78%); box-shadow: inset 0 0 0 .5px rgb(255 255 255 / 90%), 0 4px 14px rgb(0 0 0 / 18%); }
