@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="gallery/app.css">
 <script>
   // 先套用上次的明暗，避免闪烁
-  try { var s = JSON.parse(localStorage.getItem('uig:settings') || '{}'); document.documentElement.setAttribute('data-g-scheme', s.scheme === 'dark' ? 'dark' : 'light'); } catch (e) {}
+  try { var s = JSON.parse(localStorage.getItem('uig:settings:v2') || localStorage.getItem('uig:settings') || '{}'); document.documentElement.setAttribute('data-g-scheme', s.scheme === 'dark' ? 'dark' : 'light'); } catch (e) {}
 </script>
 </head>
 <body>

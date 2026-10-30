@@ -523,7 +523,7 @@ a.row, button.row, label.row { cursor: pointer; }
 .sidebar-section { padding: 16px 12px 6px; color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); font-weight: 600; }
 .side-item { display: flex; align-items: center; gap: 12px; min-height: 40px; padding: 0 12px; border-radius: var(--ui-side-radius, 10px);
   color: var(--ui-text); white-space: nowrap; }
-.side-item .i { --ui-icon: 20px; color: var(--ui-side-icon, var(--ui-accent)); }
+.side-item .i { --ui-icon: 20px; color: var(--tint, var(--ui-side-icon, var(--ui-accent))); }
 .side-item > span:first-of-type { flex: 1; overflow: hidden; text-overflow: ellipsis; }
 .side-item .count { color: var(--ui-text-2); font-size: calc(var(--fs-footnote) * var(--ts)); font-variant-numeric: tabular-nums; }
 .side-item.is-active { background: var(--ui-side-active-bg, var(--ui-accent-soft)); color: var(--ui-side-active-fg, var(--ui-on-accent-soft)); }

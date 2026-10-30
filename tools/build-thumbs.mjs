@@ -11,7 +11,8 @@ const force = argv.includes('--force');
 const rest = argv.filter((a) => a !== '--force');
 const conc = +(rest[0] || 6), filter = rest[1] || '';
 // 视口与缩放：缩略图宽约 240～480 像素
-const SPEC = { phone: { w: 402, h: 874, s: 0.6 }, tablet: { w: 1180, h: 820, s: 0.4 }, desktop: { w: 1440, h: 900, s: 0.34 }, web: { w: 1280, h: 800, s: 0.36 } };
+// 按卡片显示宽度的 2 倍渲染（高分屏不糊）；网页截两屏高，能看到首屏以下的内容
+const SPEC = { phone: { w: 402, h: 874, s: 1 }, tablet: { w: 1180, h: 820, s: 0.68 }, desktop: { w: 1440, h: 900, s: 0.56 }, web: { w: 1280, h: 1600, s: 0.6 } };
 const SAFE = { phone: { apple: '62,34', google: '48,24' }, tablet: { apple: '24,20', google: '24,20' } };
 const OUT = path.join(ROOT, 'gallery', 'thumbs');
 await mkdir(OUT, { recursive: true });

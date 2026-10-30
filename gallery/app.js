@@ -19,9 +19,17 @@
   T.forEach(function (t) { byId[t.id] = t; });
 
   /* ---------------- 设置（存在 localStorage） ---------------- */
-  var DEF = { lang: 'apple', scheme: 'light', accent: '', scale: 1, contrast: 'normal', glass: 'regular', density: 'normal', cardMode: 'single', compBoth: false, kit: [] };
-  var S = (function () { try { return Object.assign({}, DEF, JSON.parse(localStorage.getItem('uig:settings') || '{}')); } catch (e) { return Object.assign({}, DEF); } })();
-  function save() { try { localStorage.setItem('uig:settings', JSON.stringify(S)); } catch (e) { /* 忽略 */ } }
+  // glass：'regular'（默认，= 透明度 0.5）/ 0～1 的数值（iOS 27 透明度滑杆）/ 'opaque'（降低透明度）
+  var DEF = { lang: 'apple', scheme: 'light', accent: '', scale: 1, contrast: 'normal', glass: 'regular', density: 'normal', cardMode: 'both', compBoth: false, kit: [] };
+  var SKEY = 'uig:settings:v2';
+  var S = (function () {
+    try {
+      var old = JSON.parse(localStorage.getItem('uig:settings') || 'null');   // 旧版设置：只继承收藏和明暗
+      var cur = JSON.parse(localStorage.getItem(SKEY) || 'null');
+      return Object.assign({}, DEF, old ? { kit: old.kit || [], scheme: old.scheme || 'light' } : {}, cur || {});
+    } catch (e) { return Object.assign({}, DEF); }
+  })();
+  function save() { try { localStorage.setItem(SKEY, JSON.stringify(S)); } catch (e) { /* 忽略 */ } }
 
   /* ---------------- 图标（展示站自己的，和 kit 无关） ---------------- */
   var I = {
@@ -60,7 +68,7 @@
   /* ---------------- 设备与平台 ---------------- */
   var PLAT = {
     phone: { name: '手机', icon: 'phone', ar: '402 / 874' }, tablet: { name: '平板', icon: 'tablet', ar: '1180 / 820' },
-    desktop: { name: '桌面', icon: 'desktop', ar: '1440 / 900' }, web: { name: '网页', icon: 'web', ar: '1280 / 800' }
+    desktop: { name: '桌面', icon: 'desktop', ar: '1440 / 900' }, web: { name: '网页', icon: 'web', ar: '1280 / 1600' }
   };
   var DEVICES = {
     'iphone-17-pro': { name: 'iPhone 17 Pro', w: 402, h: 874, safe: [62, 34], kind: 'iphone', plat: 'phone' },
@@ -84,7 +92,7 @@
     if (plat === 'desktop') return 'desktop-1440';
     return 'web-1280';
   }
-  var LANGS = { apple: 'Apple · iOS 26', google: 'Google · Material 3 Expressive' };
+  var LANGS = { apple: 'Apple · iOS 27', google: 'Google · Material 3 Expressive' };
   var ACCENTS = [
     ['', '默认（Apple 蓝 / Material 紫）'], ['#0088ff', 'iOS 蓝'], ['#6155f5', 'iOS 靛'], ['#cb30e0', 'iOS 紫'], ['#ff2d55', 'iOS 粉'],
     ['#ff383c', 'iOS 红'], ['#ff8d28', 'iOS 橙'], ['#34c759', 'iOS 绿'], ['#00c3d0', 'iOS 青'], ['#ac7f5e', 'iOS 棕'],
@@ -269,11 +277,11 @@
     top.innerHTML =
       '<a class="g-brand" href="#/"><span class="g-mark"></span><span>UI 模板库</span></a>' +
       '<nav class="g-nav">' +
-      '<a href="#/" data-nav="/">' + ic('grid') + '<span class="g-hide-sm">模板</span></a>' +
-      '<a href="#/components" data-nav="/components">' + ic('layers') + '<span class="g-hide-sm">组件</span></a>' +
-      '<a href="#/lang/apple" data-nav="/lang">' + ic('info') + '<span class="g-hide-sm">设计语言</span></a>' +
-      '<a href="#/theme" data-nav="/theme">' + ic('palette') + '<span class="g-hide-sm">主题</span></a>' +
-      '<a href="#/kit" data-nav="/kit">' + ic('star') + '<span class="g-hide-sm">套件</span><span class="g-count" id="g-kitcount"></span></a>' +
+      '<a href="#/" data-nav="/">' + ic('grid') + '<span class="g-nav-l">模板</span></a>' +
+      '<a href="#/components" data-nav="/components">' + ic('layers') + '<span class="g-nav-l">组件</span></a>' +
+      '<a href="#/lang/apple" data-nav="/lang">' + ic('info') + '<span class="g-nav-l">设计语言</span></a>' +
+      '<a href="#/theme" data-nav="/theme">' + ic('palette') + '<span class="g-nav-l">主题</span></a>' +
+      '<a href="#/kit" data-nav="/kit">' + ic('star') + '<span class="g-nav-l">套件</span><span class="g-count" id="g-kitcount"></span></a>' +
       '</nav><div class="g-spacer"></div>' +
       '<div class="g-seg" id="g-lang" title="设计语言"><button data-v="apple">Apple</button><button data-v="google">Google</button></div>' +
       '<button class="g-btn icon" id="g-scheme" title="浅色 / 深色"></button>' +
@@ -291,7 +299,7 @@
     $('#g-kitcount').textContent = S.kit.filter(function (id) { return byId[id]; }).length || '';
   }
   function setNav(path) {
-    $$('.g-nav a').forEach(function (a) { var n = a.dataset.nav; a.classList.toggle('is-active', n === '/' ? (path === '/' || path.indexOf('/t/') === 0) : path.indexOf(n) === 0); });
+    $$('.g-nav a').forEach(function (a) { var n = a.dataset.nav; a.classList.toggle('is-active', n === '/' ? (path === '/' || path.indexOf('/t/') === 0 || path.indexOf('/flow/') === 0) : path.indexOf(n) === 0); });
   }
   function setLang(v) {
     S.lang = v; if (S.cardMode === 'both' && routeName() === 'browse') S.cardMode = 'single';
@@ -336,13 +344,20 @@
     popover(anchor,
       '<div class="g-pop-h">文字大小（Dynamic Type / 字体缩放）</div><div class="g-seg g-seg-full" data-k="scale"><button data-v="0.85">小</button><button data-v="1">默认</button><button data-v="1.15">大</button><button data-v="1.3">特大</button></div>' +
       '<div class="g-pop-h">对比度</div><div class="g-seg g-seg-full" data-k="contrast"><button data-v="normal">标准</button><button data-v="more">增强</button></div>' +
-      '<div class="g-pop-h">Apple 玻璃材质</div><div class="g-seg g-seg-full" data-k="glass"><button data-v="regular">常规</button><button data-v="clear">透明 clear</button><button data-v="opaque">降低透明度</button></div>' +
+      '<div class="g-pop-h">Apple 玻璃透明度（iOS 27 设置里的滑杆）</div>' +
+      '<div class="g-glass"><span>着色</span><input type="range" min="0" max="1" step="0.05" id="p-glass" aria-label="玻璃透明度"><span>透明</span></div>' +
+      '<label class="g-check"><input type="checkbox" id="p-opaque">降低透明度（辅助功能，优先于滑杆）</label>' +
       '<div class="g-pop-h">Google 信息密度</div><div class="g-seg g-seg-full" data-k="density"><button data-v="normal">标准</button><button data-v="compact">紧凑</button></div>',
       function (el) {
         $$('.g-seg', el).forEach(function (seg) {
           var k = seg.dataset.k;
           segBind(seg, S[k], function (v) { S[k] = k === 'scale' ? +v : v; save(); broadcast(); if (after) after(); });
         });
+        var gr = $('#p-glass', el), op = $('#p-opaque', el);
+        gr.value = /^[\d.]+$/.test(S.glass) ? S.glass : 0.5;
+        op.checked = S.glass === 'opaque'; gr.disabled = op.checked;
+        gr.oninput = function () { S.glass = gr.value === '0.5' ? 'regular' : gr.value; save(); broadcast(); if (after) after(); };
+        op.onchange = function () { S.glass = op.checked ? 'opaque' : (gr.value === '0.5' ? 'regular' : gr.value); gr.disabled = op.checked; save(); broadcast(); if (after) after(); };
       });
   }
 
@@ -356,6 +371,7 @@
   function routeName(p) {
     p = p || route.path;
     if (p.indexOf('/t/') === 0) return 'detail';
+    if (p.indexOf('/flow/') === 0) return 'flow';
     if (p.indexOf('/components') === 0) return 'components';
     if (p.indexOf('/lang') === 0) return 'lang';
     if (p === '/theme') return 'theme';
@@ -382,6 +398,7 @@
     view.dataset.view = name;
     window.scrollTo(0, 0);
     if (name === 'detail') viewDetail(route.path.slice(3));
+    else if (name === 'flow') viewFlow(route.path.slice(6));
     else if (name === 'components') viewComponents(route.path.split('/')[2] || '');
     else if (name === 'lang') viewLang(route.path.split('/')[2] || 'apple');
     else if (name === 'theme') viewTheme();
@@ -415,6 +432,30 @@
   function count(f, skip, key, val) {
     return T.filter(function (t) { return matches(t, f, skip) && (val === '' || t[key] === val); }).length;
   }
+  var FLOWS = [
+    { id: 'auth', title: '注册登录', desc: '第一次打开到开通会员：引导、登录、注册、验证码、权限、付费墙', ids: ['app/onboarding', 'app/sign-in', 'app/sign-up', 'app/otp-verify', 'app/permissions', 'app/paywall'] },
+    { id: 'shop', title: '电商下单', desc: '从首页逛到收货：首页、商品详情、购物车、确认订单、订单跟踪', ids: ['app/shop-home', 'app/product-detail', 'app/cart', 'app/checkout', 'app/order-tracking'] },
+    { id: 'travel', title: '出行订票', desc: '机票搜索、登机牌、酒店、打车', ids: ['app/travel-search', 'app/boarding-pass', 'app/hotel-detail', 'app/ride-hailing', 'app/food-delivery'] },
+    { id: 'social', title: '社交消息', desc: '信息流、消息列表、聊天、评论、通知、个人主页', ids: ['app/feed', 'app/chat-list', 'app/chat-thread', 'app/comments', 'app/notifications', 'app/profile'] },
+    { id: 'money', title: '金融理财', desc: '银行首页、转账、钱包、股票', ids: ['app/bank-home', 'app/transfer', 'app/wallet', 'app/stocks'] },
+    { id: 'work', title: '效率工具', desc: '邮件、日程、待办、笔记、文件', ids: ['app/inbox', 'app/mail-compose', 'app/calendar', 'app/tasks', 'app/notes-list', 'app/note-editor', 'app/files'] },
+    { id: 'web-store', title: '官网与购买', desc: '官网首页、产品页、技术规格、机型对比、购买配置', ids: ['web/home-tiles', 'web/product-landing', 'web/product-specs', 'web/compare-models', 'web/store-buy'] },
+    { id: 'web-saas', title: 'SaaS 官网', desc: '落地页、定价、文档、更新日志、登录', ids: ['web/saas-landing', 'web/pricing', 'web/docs', 'web/changelog', 'web/web-auth'] }
+  ].map(function (fl) { fl.ids = fl.ids.filter(function (id) { return byId[id]; }); return fl; }).filter(function (fl) { return fl.ids.length > 1; });
+  function flowOf(id) { for (var i = 0; i < FLOWS.length; i++) if (FLOWS[i].ids.indexOf(id) >= 0) return FLOWS[i]; return null; }
+  var PICKS = ['app/settings', 'app/bank-home', 'app/shop-home', 'app/music-player', 'app/chat-thread', 'app/smart-home', 'app/motion-lab', 'app/weather']
+    .filter(function (id) { return byId[id]; });
+
+  // 把若干 .g-fit 设备缩放到容器里（宽度和最大高度两个约束）
+  function fitInto(box, maxH, gap) {
+    var fits = $$('.g-fit', box); if (!fits.length) return 1;
+    var cw = box.clientWidth, tw = fits.reduce(function (a, el) { return a + +el.dataset.w; }, 0) + (gap || 0) * (fits.length - 1);
+    var th = Math.max.apply(null, fits.map(function (el) { return +el.dataset.h; }));
+    var s = Math.max(.15, Math.min(1, cw / tw, maxH / th));
+    fits.forEach(function (el) { el.style.width = el.dataset.w * s + 'px'; el.style.height = el.dataset.h * s + 'px'; el.firstElementChild.style.setProperty('--s', s); });
+    return s;
+  }
+
   function cardHTML(t) {
     var langs = S.cardMode === 'both' ? ['apple', 'google'] : [S.lang];
     var other = S.scheme === 'dark' ? 'light' : 'dark';
@@ -425,42 +466,99 @@
         '<img src="' + thumb(t, l, S.scheme) + '" alt="" loading="lazy" decoding="async">' +
         '<img class="alt" src="' + thumb(t, l, other) + '" alt="" loading="lazy" decoding="async">' + sb + '</span>';
     }).join('');
+    var fl = flowOf(t.id);
     return '<article class="g-card"><a class="g-thumb' + (langs.length > 1 ? ' dual' : '') + '" href="#/t/' + t.id + '" title="' + esc(t.desc) + '">' + shots + '</a>' +
-      '<div class="g-meta"><div><h3>' + esc(t.title) + '</h3><p>' + esc(t.category) + ' · ' + PLAT[t.platform].name + '</p></div>' +
+      '<div class="g-meta"><div><h3>' + esc(t.title) + '</h3><p>' + PLAT[t.platform].name + (t.dark ? ' · 深色页' : '') +
+      (fl ? ' · <a class="g-flowlink" href="#/flow/' + fl.id + '">' + esc(fl.title) + '流程</a>' : '') + '</p></div>' +
       '<button class="g-star' + (inKit(t.id) ? ' is-on' : '') + '" data-id="' + t.id + '" title="加入套件">' + ic('star') + '</button></div></article>';
   }
+  function flowCardHTML(fl) {
+    var ids = fl.ids.slice(0, 5), lang = S.cardMode === 'both' ? 'apple' : S.lang;
+    var plat = byId[fl.ids[0]].platform;
+    return '<a class="g-flowcard" href="#/flow/' + fl.id + '"><span class="g-flowstrip' + (plat === 'phone' ? '' : ' wide') + '">' + ids.map(function (id, i) {
+      var t = byId[id];
+      return '<span class="g-shot" style="--ar:' + PLAT[t.platform].ar + ';--i:' + i + '"><img src="' + thumb(t, lang, S.scheme) + '" alt="" loading="lazy"></span>';
+    }).join('') + '</span><span class="g-flowmeta"><b>' + esc(fl.title) + '</b><small>' + fl.ids.length + ' 屏 · ' + esc(fl.desc) + '</small></span></a>';
+  }
+
   function viewBrowse() {
     var q = route.q;
     var f = { q: q.get('q') || '', plat: q.get('plat') || '', cat: q.get('cat') || '', comp: q.get('comp') || '' };
+    var specsN = (R.specs && (R.specs.apple + R.specs.google)) || 0;
     view.innerHTML =
-      '<div class="g-browse' + (S.cardMode === 'both' ? ' both' : '') + '">' +
-      '<aside class="g-filters">' +
+      '<section class="g-hero2" id="b-hero"><div class="g-hero2-text">' +
+      '<span class="g-eyebrow">Apple iOS 27 · Google Material 3 Expressive</span>' +
+      '<h1>一份 HTML，<br>两种设计语言。</h1>' +
+      '<p>' + T.length + ' 个 App 和网页模板。同一份代码在 Apple 与 Google 之间切换，实时调整明暗、强调色、字号和玻璃透明度，挑好就能下载。</p>' +
+      '<div class="g-stats"><span><b>' + T.length + '</b>模板</span><span><b>' + FLOWS.length + '</b>组流程</span>' +
+      (specsN ? '<span><b>' + specsN + '</b>项规格校准</span>' : '') + '<span><b>' + R.components.length + '</b>类组件</span></div>' +
+      '<div class="g-actions"><button class="g-btn primary" id="b-go">浏览全部模板</button><a class="g-btn" href="#/lang/compare">两种语言怎么不同</a>' +
+      (specsN ? '<a class="g-btn" href="#/lang/specs">规格校准表</a>' : '') + '</div></div>' +
+      '<div class="g-hero2-demo"><div class="g-hero2-frames" id="b-frames"></div><div class="g-hero2-picks" id="b-picks"></div></div></section>' +
+      '<section class="g-flows" id="b-flows"><div class="g-flows-head"><h2>流程合集</h2><span class="g-sub">把同一个场景的几屏串起来看</span></div>' +
+      '<div class="g-flows-row">' + FLOWS.map(flowCardHTML).join('') + '</div></section>' +
+      '<div class="g-browse' + (S.cardMode === 'both' ? ' both' : '') + '" id="b-main">' +
+      '<aside class="g-filters"><div class="g-filters-head"><b>筛选</b><button class="g-btn icon ghost" id="b-fclose" title="关闭">' + ic('close') + '</button></div>' +
       '<label class="g-search">' + ic('search') + '<input id="b-q" type="search" placeholder="搜索模板、标签、组件" value="' + esc(f.q) + '"></label>' +
-      '<div class="g-fgroup"><h4>卡片显示</h4><div class="g-seg g-seg-full" id="b-mode"><button data-v="apple">Apple</button><button data-v="google">Google</button><button data-v="both">并排</button></div></div>' +
+      '<div class="g-fgroup"><h4>卡片显示</h4><div class="g-seg g-seg-full" id="b-mode"><button data-v="both">并排</button><button data-v="apple">Apple</button><button data-v="google">Google</button></div></div>' +
       '<div class="g-fgroup" id="b-plat"></div><div class="g-fgroup" id="b-cats"></div>' +
       '<div class="g-fgroup"><h4>用到的组件</h4><select class="g-select g-w" id="b-comp"></select></div>' +
-      '<p class="g-fnote">悬停卡片看另一种明暗。打开模板后可以切换设备、并排对比两种设计语言、查看和下载代码。</p>' +
+      '<p class="g-fnote">悬停卡片看另一种明暗。打开模板后可以换设备、并排或分割对照两种语言、查看和下载代码。</p>' +
       '</aside><section class="g-results"><div class="g-results-head"><h1 id="b-title"></h1><span class="g-sub" id="b-count"></span><span class="g-spacer"></span>' +
-      '<button class="g-btn ghost" id="b-reset" hidden>清除筛选</button></div><div id="b-list"></div></section></div>';
+      '<button class="g-btn ghost" id="b-reset" hidden>清除筛选</button><button class="g-btn g-show-sm" id="b-fopen">' + ic('sliders', 'sm') + '筛选<span class="g-count" id="b-fcount"></span></button></div>' +
+      '<label class="g-search g-show-sm g-msearch">' + ic('search') + '<input id="b-q2" type="search" placeholder="搜索模板" value="' + esc(f.q) + '"></label>' +
+      '<div id="b-list"></div></section></div>';
+
+    /* ---- 首屏：两台设备实时对照 ---- */
+    var pick = PICKS[0], heroFrames = $('#b-frames');
+    function hero() {
+      LIVE = LIVE.filter(function (x) { return x.group !== 'hero'; });
+      heroFrames.innerHTML = '';
+      var t = byId[pick];
+      ['apple', 'google'].forEach(function (l) {
+        var w = deviceFrame(t, l, defaultDevice('phone', l), l === 'apple' ? 'Apple · iOS 27' : 'Google · M3 Expressive');
+        LIVE[LIVE.length - 1].group = 'hero';
+        heroFrames.appendChild(w);
+      });
+      fitHero();
+      $('#b-picks').innerHTML = PICKS.map(function (id) {
+        return '<button class="g-chip' + (id === pick ? ' is-on' : '') + '" data-id="' + id + '">' + esc(byId[id].title) + '</button>';
+      }).join('') + '<a class="g-chip g-chip-link" href="#/t/' + pick + '?mode=compare">打开对比 →</a>';
+      $$('#b-picks button').forEach(function (b) { b.onclick = function () { pick = b.dataset.id; hero(); }; });
+    }
+    function fitHero() { fitInto(heroFrames, Math.min(560, window.innerHeight * .62), 28); }
+    var ro = new ResizeObserver(fitHero); ro.observe(heroFrames); cleanups.push(function () { ro.disconnect(); });
+    $('#b-go').onclick = function () { $('#b-main').scrollIntoView({ behavior: 'smooth' }); };
+
+    function heroVisible() {
+      var on = !f.q && !f.plat && !f.cat && !f.comp;
+      $('#b-hero').hidden = !on; $('#b-flows').hidden = !on;
+      if (on && !heroFrames.firstChild) hero();
+    }
+
     segBind($('#b-mode'), S.cardMode === 'both' ? 'both' : S.lang, function (v) {
       if (v === 'both') S.cardMode = 'both'; else { S.cardMode = 'single'; S.lang = v; }
-      save(); syncTop(); $('.g-browse').classList.toggle('both', S.cardMode === 'both'); list();
+      save(); syncTop(); $('.g-browse').classList.toggle('both', S.cardMode === 'both'); list(); flows();
     });
-    onLang = function () { segBind($('#b-mode'), S.cardMode === 'both' ? 'both' : S.lang, function () {}); viewBrowse(); };
-    onScheme = list;
-    var qi = $('#b-q'), timer;
-    qi.oninput = function () { clearTimeout(timer); timer = setTimeout(function () { f.q = qi.value.trim(); apply(); }, 160); };
-    $('#b-reset').onclick = function () { f = { q: '', plat: '', cat: '', comp: '' }; qi.value = ''; apply(); };
+    onLang = function () { S.cardMode = 'single'; save(); segBind($('#b-mode'), S.lang, function () {}); viewBrowse(); };
+    onScheme = function () { list(); flows(); };
+    function flows() { $('.g-flows-row').innerHTML = FLOWS.map(flowCardHTML).join(''); }
+    var qi = $('#b-q'), qi2 = $('#b-q2'), timer;
+    function onQ(el, other) { return function () { clearTimeout(timer); other.value = el.value; timer = setTimeout(function () { f.q = el.value.trim(); apply(); }, 160); }; }
+    qi.oninput = onQ(qi, qi2); qi2.oninput = onQ(qi2, qi);
+    $('#b-reset').onclick = function () { f = { q: '', plat: '', cat: '', comp: '' }; qi.value = qi2.value = ''; apply(); };
     $('#b-comp').onchange = function () { f.comp = this.value; apply(); };
+    $('#b-fopen').onclick = function () { $('#b-main').classList.add('filters-open'); };
+    $('#b-fclose').onclick = function () { $('#b-main').classList.remove('filters-open'); };
     $('#b-list').addEventListener('error', function (e) { if (e.target.tagName === 'IMG' && !e.target.classList.contains('alt')) e.target.parentNode.classList.add('no-thumb'); }, true);
-    $('#b-list').addEventListener('click', function (e) {
+    view.addEventListener('click', function (e) {
       var st = e.target.closest('.g-star');
       if (st) { e.preventDefault(); st.classList.toggle('is-on', toggleKit(st.dataset.id)); }
     });
     function apply() {
       var nq = new URLSearchParams();
       Object.keys(f).forEach(function (k) { if (f[k]) nq.set(k, f[k]); });
-      replaceQuery(nq); remember(); side(); list();
+      replaceQuery(nq); remember(); side(); list(); heroVisible();
     }
     function remember() { try { sessionStorage.setItem('uig:lastq', route.q.toString() ? '?' + route.q.toString() : ''); } catch (e) { /* 忽略 */ } }
     remember();
@@ -475,13 +573,16 @@
       var cats = function (list) { return list.map(function (c) { return item('cat', c, c, count(f, 'cat', 'category', c)); }).join(''); };
       $('#b-cats').innerHTML = '<h4>分类</h4>' + item('cat', '', '全部分类', count(f, 'cat', 'category', '')) +
         '<h4>App</h4>' + cats(R.categories.app) + '<h4>网页</h4>' + cats(R.categories.web);
-      $$('.g-fitem', $('.g-filters')).forEach(function (b) { b.onclick = function () { f[b.dataset.k] = f[b.dataset.k] === b.dataset.v ? '' : b.dataset.v; apply(); }; });
+      $$('.g-fitem', $('.g-filters')).forEach(function (b) {
+        b.onclick = function () { f[b.dataset.k] = f[b.dataset.k] === b.dataset.v ? '' : b.dataset.v; apply(); $('#b-main').classList.remove('filters-open'); };
+      });
       $('#b-comp').innerHTML = '<option value="">不限</option>' + R.components.filter(function (c) { return c.used; }).map(function (c) {
-        return '<option value="' + c.id + '"' + (f.comp === c.id ? ' selected' : '') + '>' + c.name + '（' + count(f, 'comp', 'id', '') + '）</option>';
+        var n = T.filter(function (t) { return matches(t, Object.assign({}, f, { comp: c.id })); }).length;
+        return '<option value="' + c.id + '"' + (f.comp === c.id ? ' selected' : '') + '>' + c.name + '（' + n + '）</option>';
       }).join('');
-      $$('#b-comp option').forEach(function (o) { if (o.value) { var n = T.filter(function (t) { return matches(t, Object.assign({}, f, { comp: o.value })); }).length; o.textContent = o.textContent.replace(/（\d+）/, '（' + n + '）'); } });
+      var active = ['plat', 'cat', 'comp'].filter(function (k) { return f[k]; }).length;
+      $('#b-fcount').textContent = active || '';
     }
-
     function list() {
       var res = T.filter(function (t) { return matches(t, f); });
       LAST_LIST = res.map(function (t) { return t.id; });
@@ -491,18 +592,60 @@
       if (f.comp) parts.push('用到「' + R.components.filter(function (c) { return c.id === f.comp; })[0].name + '」');
       if (f.q) parts.push('“' + f.q + '”');
       $('#b-title').textContent = parts.length ? parts.join(' · ') : '全部模板';
-      $('#b-count').textContent = '共 ' + res.length + ' 个' + (parts.length ? '' : '，同一份 HTML 可切换 Apple / Google 两种设计语言');
+      $('#b-count').textContent = '共 ' + res.length + ' 个';
       $('#b-reset').hidden = !parts.length;
-      var html = '';
-      Object.keys(PLAT).forEach(function (p) {
-        var items = res.filter(function (t) { return t.platform === p; });
+      // 按分类分组；分类顺序与筛选栏一致
+      var html = '', cats = R.categories.app.concat(R.categories.web);
+      cats.forEach(function (c) {
+        var items = res.filter(function (t) { return t.category === c; });
         if (!items.length) return;
-        html += '<section class="g-sec"><h2>' + ic(PLAT[p].icon) + PLAT[p].name + ' <small>' + items.length + '</small></h2>' +
-          '<div class="g-grid' + (p === 'phone' ? '' : ' wide') + '">' + items.map(cardHTML).join('') + '</div></section>';
+        var wide = items.some(function (t) { return t.platform !== 'phone'; });
+        var plats = items.map(function (t) { return t.platform; }).filter(function (p, i, a) { return a.indexOf(p) === i; });
+        html += '<section class="g-sec"><h2>' + plats.map(function (p) { return ic(PLAT[p].icon); }).join('') + esc(c) + ' <small>' + items.length + '</small>' +
+          (f.cat ? '' : '<button class="g-sec-more" data-cat="' + esc(c) + '">只看这一类</button>') + '</h2>' +
+          '<div class="g-grid' + (wide ? ' wide' : '') + '">' + items.map(cardHTML).join('') + '</div></section>';
       });
       $('#b-list').innerHTML = html || '<div class="g-empty"><h2>没有符合条件的模板</h2><p>换个关键词，或者清除筛选。</p></div>';
+      $$('.g-sec-more', $('#b-list')).forEach(function (b) { b.onclick = function () { f.cat = b.dataset.cat; apply(); $('#b-main').scrollIntoView(); }; });
     }
-    side(); list();
+    side(); list(); heroVisible();
+  }
+
+  /* ================= 流程 ================= */
+  function viewFlow(id) {
+    var fl = FLOWS.filter(function (x) { return x.id === id; })[0];
+    if (!fl) { view.innerHTML = '<div class="g-empty"><h2>找不到这个流程</h2><p><a class="g-btn" href="#/">返回</a></p></div>'; return; }
+    var lang = S.lang;
+    view.innerHTML = '<div class="g-flowview"><div class="g-dbar"><a class="g-btn icon ghost" href="#/" title="返回">' + ic('back') + '</a>' +
+      '<div class="g-dtitle"><b>' + esc(fl.title) + '流程 · ' + fl.ids.length + ' 屏</b><span>' + esc(fl.desc) + '</span></div>' +
+      '<div class="g-seg" id="fl-lang"><button data-v="apple">Apple</button><button data-v="google">Google</button></div>' +
+      '<button class="g-btn icon" id="fl-opts" title="显示选项">' + ic('sliders') + '</button>' +
+      '<button class="g-btn" id="fl-kit">' + ic('star', 'sm') + '全部加入套件</button></div>' +
+      '<div class="g-flowstage" id="fl-stage"></div>' +
+      '<div class="g-flownav">' + FLOWS.map(function (x) { return '<a class="g-chip' + (x.id === fl.id ? ' is-on' : '') + '" href="#/flow/' + x.id + '">' + esc(x.title) + '</a>'; }).join('') + '</div></div>';
+    var stage = $('#fl-stage');
+    function draw() {
+      LIVE = []; stage.innerHTML = '';
+      var row = h('<div class="g-flowrow"></div>');
+      fl.ids.forEach(function (tid, i) {
+        var t = byId[tid];
+        var w = deviceFrame(t, lang, defaultDevice(t.platform, lang), '');
+        LIVE[LIVE.length - 1].group = '';
+        var step = h('<div class="g-flowstep"><div class="g-flowcap"><span class="g-stepn">' + (i + 1) + '</span><a href="#/t/' + tid + '">' + esc(t.title) + ' ↗</a></div></div>');
+        step.insertBefore(w, step.firstChild);
+        row.appendChild(step);
+        if (i < fl.ids.length - 1) row.appendChild(h('<span class="g-flowarrow">' + ic('right') + '</span>'));
+      });
+      stage.appendChild(row);
+      var plat = byId[fl.ids[0]].platform;
+      var s = Math.min(1, (plat === 'phone' ? 560 : 420) / (+$('.g-fit', stage).dataset.h), Math.max(.36, (window.innerHeight - 230) / (+$('.g-fit', stage).dataset.h)));
+      $$('.g-fit', stage).forEach(function (el) { el.style.width = el.dataset.w * s + 'px'; el.style.height = el.dataset.h * s + 'px'; el.firstElementChild.style.setProperty('--s', s); });
+    }
+    segBind($('#fl-lang'), lang, function (v) { lang = v; S.lang = v; save(); syncTop(); draw(); });
+    $('#fl-opts').onclick = function () { optionsPop(this); };
+    $('#fl-kit').onclick = function () { fl.ids.forEach(function (x) { if (!inKit(x)) S.kit.push(x); }); save(); syncTop(); toast('已把 ' + fl.ids.length + ' 屏加入套件'); };
+    onLang = function (v) { lang = v; segBind($('#fl-lang'), v, function (x) { lang = x; S.lang = x; save(); syncTop(); draw(); }); draw(); };
+    draw();
   }
 
   /* ================= 模板详情 ================= */
@@ -566,6 +709,10 @@
     if (!t) { view.innerHTML = '<div class="g-empty"><h2>找不到模板</h2><p>' + esc(id) + '</p><p><a class="g-btn" href="#/">返回模板列表</a></p></div>'; return; }
     if (D.device && (!DEVICES[D.device] || DEVICES[D.device].plat !== t.platform)) D.device = '';
     var qm = route.q.get('mode'); if (qm) D.mode = qm;
+    // 分割对照只对手机和平板开放：网页和桌面两种语言的布局本来就不同，叠在一起只会错位
+    var canSplit = t.platform === 'phone' || t.platform === 'tablet';
+    if (D.mode === 'split' && !canSplit) D.mode = 'compare';
+    if (D.mode !== 'single') D.info = false;
     var idx = LAST_LIST.indexOf(id);
     var prev = idx > 0 ? LAST_LIST[idx - 1] : '', next = idx >= 0 && idx < LAST_LIST.length - 1 ? LAST_LIST[idx + 1] : '';
     var devOpts = '<option value="">自动（' + (t.platform === 'phone' ? 'iPhone / Pixel' : t.platform === 'tablet' ? 'iPad / Android 平板' : '默认') + '）</option>' +
@@ -579,7 +726,7 @@
       '<a class="g-btn icon ghost" title="上一个（←）" ' + (prev ? 'href="#/t/' + prev + '"' : 'aria-disabled="true" style="opacity:.35"') + '>' + ic('left') + '</a>' +
       '<a class="g-btn icon ghost" title="下一个（→）" ' + (next ? 'href="#/t/' + next + '"' : 'aria-disabled="true" style="opacity:.35"') + '>' + ic('right') + '</a>' +
       '<div class="g-seg" id="d-mode"><button data-v="single">单个</button><button data-v="compare">' + ic('columns', 'sm') + '<span class="g-hide-md">并排对比</span></button>' +
-      '<button data-v="split">' + ic('split', 'sm') + '<span class="g-hide-md">分割对照</span></button></div>' +
+      '<button data-v="split"' + (canSplit ? '' : ' disabled title="网页和桌面两种语言布局不同，请用并排对比"') + '>' + ic('split', 'sm') + '<span class="g-hide-md">分割对照</span></button></div>' +
       '<select class="g-select" id="d-device" title="设备">' + devOpts + '</select>' +
       '<button class="g-btn icon" id="d-opts" title="文字大小、对比度、材质、密度">' + ic('sliders') + '</button>' +
       '<button class="g-btn" id="d-fit" title="适应窗口 / 实际大小">' + ic('fit', 'sm') + '<span id="d-zoom">100%</span></button>' +
@@ -616,7 +763,11 @@
     }
     var ro = new ResizeObserver(function () { fit(); });
     ro.observe(stage); cleanups.push(function () { ro.disconnect(); });
-    segBind($('#d-mode'), D.mode, function (v) { D.mode = v; renderStage(); });
+    segBind($('#d-mode'), D.mode, function (v) {
+      D.mode = v; D.info = v === 'single';   // 对比时收起侧栏，把空间留给两台设备
+      $('.g-detail').classList.toggle('info-off', !D.info); $('#d-info').classList.toggle('is-on', D.info);
+      renderStage();
+    });
     $('#d-device').onchange = function () { D.device = this.value; renderStage(); };
     $('#d-opts').onclick = function () { optionsPop(this); };
     $('#d-fit').onclick = function () { D.fit = !D.fit; fit(); };
@@ -647,7 +798,12 @@
       }
       var comps = R.components.filter(function (c) { return t.components.indexOf(c.id) >= 0; });
       var related = T.filter(function (x) { return x.category === t.category && x.id !== t.id; }).slice(0, 8);
-      p.innerHTML = '<h2>' + esc(t.title) + '</h2><p class="g-desc">' + esc(t.desc) + '</p>' +
+      var fl = flowOf(t.id), fi = fl ? fl.ids.indexOf(t.id) : -1;
+      var flowHTML = fl ? '<div class="g-flowbox"><div><b>' + esc(fl.title) + '流程</b><span>第 ' + (fi + 1) + ' / ' + fl.ids.length + ' 屏</span></div><div class="g-flowbtns">' +
+        (fi > 0 ? '<a class="g-btn" href="#/t/' + fl.ids[fi - 1] + '">' + ic('left', 'sm') + esc(byId[fl.ids[fi - 1]].title) + '</a>' : '') +
+        (fi < fl.ids.length - 1 ? '<a class="g-btn" href="#/t/' + fl.ids[fi + 1] + '">' + esc(byId[fl.ids[fi + 1]].title) + ic('right', 'sm') + '</a>' : '') +
+        '<a class="g-btn ghost" href="#/flow/' + fl.id + '">整体查看</a></div></div>' : '';
+      p.innerHTML = '<h2>' + esc(t.title) + '</h2><p class="g-desc">' + esc(t.desc) + '</p>' + flowHTML +
         '<div class="g-actions"><button class="g-btn primary" id="i-zip">' + ic('download', 'sm') + '下载 zip（含 kit）</button>' +
         '<button class="g-btn" id="i-copy">' + ic('copy', 'sm') + '复制 HTML</button>' +
         '<button class="g-btn" id="i-kit">' + ic('star', 'sm') + (inKit(t.id) ? '已在套件中' : '加入套件') + '</button></div>' +
@@ -708,29 +864,33 @@
   /* ================= 设计语言 ================= */
   var LANG_DOC = {
     apple: {
-      title: 'Apple · Liquid Glass（iOS 26）',
-      lead: 'Apple 在 2025 年 6 月发布的新设计，第一次统一了 iOS 26、iPadOS 26、macOS Tahoe 26、watchOS 26 和 tvOS 26。核心是一种叫 Liquid Glass 的半透明材质：它会折射和反射背后的内容，颜色随内容变化，并在浅色和深色环境之间自动适应。',
+      title: 'Apple · Liquid Glass（iOS 27）',
+      lead: 'Liquid Glass 是 Apple 在 2025 年 6 月随 iOS 26 推出的半透明材质，会折射和反射背后的内容，颜色随内容和明暗环境变化。2026 年 6 月的 iOS 27 没有换掉它，而是做了一轮可读性调整：材质对复杂背景扩散得更强，边缘多了一圈加暗的描边，高光更亮，设置里还加了一个从“超透明”到“完全着色”的透明度滑杆。',
       points: [
         ['功能层浮在内容之上', 'Liquid Glass 用在标签栏、侧栏、工具栏这类控件和导航上，内容在它下面滚动透出。HIG 明确写着：不要把 Liquid Glass 用在内容层。'],
         ['少用', '系统组件会自动带上玻璃效果。自定义控件只给最重要的几个加，用多了会把注意力从内容上抢走。'],
         ['两种变体', 'regular 会模糊背景并调整亮度，文字多的地方（提醒框、侧栏、弹出框）用它；clear 高度透明，只用在照片、视频这类丰富背景上，背景亮时加一层 35% 的暗层。'],
         ['内容层用标准材质', 'iOS 仍有 ultraThin、thin、regular、thick 四档标准材质，配合 label 到 quaternaryLabel 四级 vibrant 文字颜色使用；quaternary 不要放在 thin 和 ultraThin 上。'],
-        ['系统色重新调过', '2025 年 6 月的 HIG 更新了系统色值。每种颜色都有浅色、深色和“增强对比度”浅色、深色共四个值，kit 里全部照抄。'],
+        ['iOS 27 的调整', '内容滚到浮动栏下方时，顶部出现一条统一的工具栏背景，保证文字可读；标签栏的“独立搜索”改名为 Prominent Tab，独立胶囊里可以放任意标签；“降低透明度”和“增强对比度”仍然优先于透明度滑杆。'],
+        ['系统色', '2025 年 6 月的 HIG 更新了系统色值，2026 年没有再改。每种颜色都有浅色、深色和“增强对比度”浅色、深色共四个值，kit 里全部照抄。'],
         ['Dynamic Type', '正文默认 17pt，最小 11pt。字号表从 Large Title 34 到 Caption 2 11，用户可以整体放大。']
       ],
       kit: [
-        ['标签栏', '浮动的玻璃胶囊，选中项有高亮底；iOS 26 的独立搜索按钮用 .tab-group + .tab.search'],
-        ['顶栏', '标题居中，按钮是玻璃圆钮，多个按钮合进一个胶囊（.bar-group），滚动后出现渐隐的边缘模糊'],
+        ['标签栏', '浮动的玻璃胶囊，选中项有高亮底；独立胶囊用 .tab-group + .tab.search 或 .tab.prominent；加 data-minimize 后向下滚动会缩成小胶囊'],
+        ['顶栏', '标题居中，按钮是玻璃圆钮，多个按钮合进一个胶囊（.bar-group）；滚动后出现 iOS 27 的统一顶栏背景'],
         ['列表', '24px 圆角的内嵌分组，发丝分隔线从文字起点开始，彩色方块图标'],
-        ['浮层', 'sheet 四周留边、圆角 36px；对话框和菜单用更厚的玻璃'],
+        ['浮层', 'sheet 半屏时四周留 6、圆角上 34 下 58，拖到全屏后贴边；对话框和菜单用更厚的玻璃'],
         ['动效', 'SwiftUI 的 smooth、snappy、bouncy 弹簧，按 duration 和 bounce 数值积分成 CSS linear() 曲线'],
-        ['可调项', 'data-glass="clear" 对应 clear 变体，"opaque" 对应“降低透明度”；data-contrast="more" 换成增强对比度色值']
+        ['可调项', '透明度滑杆是 --glass-t（0 完全着色，1 超透明，默认 0.5）或 ?glass=0.3；data-glass="clear" 是 clear 变体，"opaque" 是“降低透明度”；data-contrast="more" 换成增强对比度色值'],
+        ['校准', '106 项尺寸和数值逐项对照 HIG 与第三方从官方 iOS 27 设计套件量出的值，见“规格校准”']
       ],
       sources: [
         ['Apple HIG · Materials（2025-09 更新 Liquid Glass 指南）', 'https://developer.apple.com/design/human-interface-guidelines/materials'],
         ['Apple HIG · Color（系统色值）', 'https://developer.apple.com/design/human-interface-guidelines/color'],
         ['Apple HIG · Typography', 'https://developer.apple.com/design/human-interface-guidelines/typography'],
-        ['Apple Newsroom · 2025-06-09 新设计发布', 'https://www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/']
+        ['Apple Newsroom · 2025-06-09 新设计发布', 'https://www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/'],
+        ['Apple Developer · 2026-06-23 iOS 27 设计套件发布', 'https://developer.apple.com/news/?id=e2lxw9l1'],
+        ['MacRumors · 2026-06-10 iOS 27 的 Liquid Glass 变化', 'https://www.macrumors.com/2026/06/10/how-liquid-glass-is-changing-in-ios-27']
       ]
     },
     google: {
@@ -745,7 +905,8 @@
         ['动态颜色', '从一个种子色生成整套色彩角色：primary、secondary、tertiary 三组主色和容器色，加上从 lowest 到 highest 五级 surface container。']
       ],
       kit: [
-        ['颜色', '由 --accent 在 OKLCH 空间推导 M3 色彩角色。这是近似算法，不是 Google 的 HCT，色值会和 Material Theme Builder 有出入'],
+        ['颜色', '运行时用 Google 官方的 material-color-utilities（HCT 色彩空间、Tonal Spot 方案、2025 色彩规范）从 --accent 算出全部 M3 色彩角色，浅色、深色、增强对比度各算一次；没有 JS 时退回 OKLCH 近似'],
+        ['校准', '241 项尺寸、字号、形状、色彩角色和弹簧参数逐项对照 Compose Material3 的官方生成 token，见“规格校准”'],
         ['层级', '不用模糊，用 surface container 的深浅分层；FAB、卡片、菜单靠色调和阴影区分'],
         ['导航', '满宽导航栏，选中图标外有药丸指示器；平板和桌面用导航轨（.rail）或抽屉'],
         ['列表', '分段列表：每项独立、间隔 2px，首尾大圆角'],
@@ -756,19 +917,21 @@
         ['Google Blog · 2025-05-13 Material 3 Expressive 发布', 'https://blog.google/products/android/material-3-expressive-android-wearos-launch/'],
         ['Google Design · Expressive Design 背后的研究', 'https://design.google/library/expressive-material-design-google-research'],
         ['Compose Material3 发布说明（组件 API 进展）', 'https://developer.android.com/jetpack/androidx/releases/compose-material3'],
-        ['Material Design 3 官方规范', 'https://m3.material.io/']
+        ['Material Design 3 官方规范', 'https://m3.material.io/'],
+        ['Compose Material3 生成 token（校准依据）', 'https://github.com/androidx/androidx/tree/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/tokens'],
+        ['material-color-utilities（官方配色算法）', 'https://github.com/material-foundation/material-color-utilities']
       ]
     }
   };
   var COMPARE = [
     ['颜色', 'iOS 系统色 + 语义层级（label、fill、separator）；强调色是 tint', '种子色推导整套色彩角色（primary / secondary / tertiary / surface container）'],
     ['材质与层级', 'Liquid Glass 浮在内容上方；内容层用四档标准材质', '不透明的 surface container，靠色调和阴影分层'],
-    ['字体', 'SF Pro（Text / Display 按字号自动切换）', 'Google Sans Flex / Roboto Flex'],
+    ['字体', 'SF Pro + 苹方；其他系统上 kit 用 Inter（带光学尺寸）+ Noto Sans SC 补位', 'Google Sans Flex + Noto Sans SC（都随 kit 打包，OFL 许可）'],
     ['字号', 'Dynamic Type：Large Title 34 … Caption 2 11，正文 17', 'Type scale：Display / Headline / Title / Body / Label × 大中小，正文 16'],
     ['形状', '胶囊按钮，同心圆角，24px 分组列表', '形状随状态变化；28px 卡片、48px 大容器；装饰形状库'],
-    ['动效', 'SwiftUI 弹簧（smooth / snappy / bouncy），玻璃随触摸形变', 'motion scheme：expressive 空间弹簧 + effects 弹簧'],
+    ['动效', 'SwiftUI 弹簧（smooth / snappy / bouncy）；玻璃按下放大、高光跟随手指；标签栏滚动最小化', 'motion scheme：expressive 空间弹簧 + effects 弹簧；按钮按下变形、水波纹；加载指示器在 7 个形状之间变形'],
     ['顶栏', '标题居中；大标题滚动后收起；玻璃圆钮', '标题居左，64px；可伸缩大标题；图标按钮无底'],
-    ['底部导航', '浮动玻璃标签栏，搜索可独立成圆钮', '满宽导航栏 + 药丸指示器；FAB 在右下'],
+    ['底部导航', '浮动玻璃标签栏，独立胶囊（Prominent Tab）可放搜索或任意标签', '满宽导航栏 + 药丸指示器；FAB 在右下'],
     ['列表', '内嵌分组 + 发丝分隔线 + chevron', '分段列表项，无分隔线，无 chevron'],
     ['文本框', '灰底圆角，标签在上方', 'outlined / filled，浮动标签'],
     ['对话框', '玻璃底，按钮等宽并排', 'surface-container-high，文字按钮右对齐'],
@@ -782,9 +945,12 @@
     return f;
   }
   function viewLang(which) {
-    if (!LANG_DOC[which] && which !== 'compare') which = 'apple';
-    var tabs = '<div class="g-seg g-doc-tabs" id="l-tabs"><button data-v="apple">' + LANGS.apple + '</button><button data-v="google">' + LANGS.google + '</button><button data-v="compare">两者对比</button></div>';
-    if (which === 'compare') {
+    if (!LANG_DOC[which] && which !== 'compare' && which !== 'specs') which = 'apple';
+    var tabs = '<div class="g-seg g-doc-tabs" id="l-tabs"><button data-v="apple">' + LANGS.apple + '</button><button data-v="google">' + LANGS.google + '</button>' +
+      '<button data-v="compare">两者对比</button><button data-v="specs">规格校准</button></div>';
+    if (which === 'specs') {
+      viewSpecs(tabs);
+    } else if (which === 'compare') {
       view.innerHTML = '<div class="g-doc">' + tabs + '<div class="g-hero"><h1>Apple 与 Google 对比</h1><p>两套语言在同一组件上的不同处理。kit 用同一套类名实现两者，切换 <code>data-lang</code> 就能看到差异。</p></div>' +
         '<table class="g-table"><thead><tr><th></th><th>' + LANGS.apple + '</th><th>' + LANGS.google + '</th></tr></thead><tbody>' +
         COMPARE.map(function (r) { return '<tr><th>' + r[0] + '</th><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>'; }).join('') + '</tbody></table>' +
@@ -803,7 +969,58 @@
       $('#l-browse').onclick = function () { setLang(which); };
     }
     segBind($('#l-tabs'), which, function (v) { location.hash = '#/lang/' + v; });
-    onLang = function (v) { if (which !== 'compare') location.hash = '#/lang/' + v; };
+    onLang = function (v) { if (which !== 'compare' && which !== 'specs') location.hash = '#/lang/' + v; };
+  }
+
+  /* ---- 规格校准表：kit/specs-apple.json 与 kit/specs-google.json（build-registry 打包成 gallery/specs.js）---- */
+  var specsP = null;
+  function loadSpecs() {
+    if (window.UI_SPECS) return Promise.resolve(window.UI_SPECS);
+    if (!specsP) specsP = new Promise(function (res, rej) {
+      var s = document.createElement('script'); s.src = 'gallery/specs.js';
+      s.onload = function () { res(window.UI_SPECS); };
+      s.onerror = function () { specsP = null; rej(new Error('gallery/specs.js 加载失败，请先运行 node tools/build-registry.mjs')); };
+      document.head.appendChild(s);
+    });
+    return specsP;
+  }
+  var ST = { lang: 'apple', status: '' };
+  var STATUS = { match: ['一致', 'g-ok'], fixed: ['已修正', 'g-fix'], deviation: ['偏差', 'g-dev'] };
+  var CONF = { official: '官方', 'official-source': '官方源码', 'official-provisional': '官方（暂定）', 'third-party-measured': '第三方实测', derived: '推导', inferred: '推断', estimate: '估计' };
+  function viewSpecs(tabs) {
+    view.innerHTML = '<div class="g-doc">' + tabs + '<div class="g-hero"><h1>规格校准</h1><p>kit 里每个组件的尺寸、字号、圆角、颜色角色和动效参数，逐项和来源对照。' +
+      'Google 一侧对照 Compose Material3 的官方生成 token；Apple 没有公开 token，对照 HIG 和第三方从 iOS 27 官方设计套件量出的数值，每一项都标了来源和可信度。</p></div>' +
+      '<div class="g-specbar"><div class="g-seg" id="sp-lang"><button data-v="apple">Apple · iOS 27</button><button data-v="google">Google · M3 Expressive</button></div>' +
+      '<div class="g-seg" id="sp-status"><button data-v="">全部</button><button data-v="deviation">偏差</button><button data-v="fixed">已修正</button><button data-v="match">一致</button></div>' +
+      '<label class="g-search g-specq">' + ic('search') + '<input id="sp-q" type="search" placeholder="搜索组件或属性"></label></div>' +
+      '<div class="g-specsum" id="sp-sum"></div><div id="sp-table"><p class="g-desc">正在加载…</p></div></div>';
+    var q = '';
+    loadSpecs().then(function (D0) {
+      function draw() {
+        var all = D0[ST.lang] || [], rows = all.filter(function (r) {
+          return (!ST.status || r.status === ST.status) && (!q || (r.group + r.item + r.note + r.official + r.kit).toLowerCase().indexOf(q) >= 0);
+        });
+        var cnt = function (k, v) { return all.filter(function (r) { return r[k] === v; }).length; };
+        $('#sp-sum').innerHTML = '<span><b>' + all.length + '</b>项</span>' + Object.keys(STATUS).map(function (k) {
+          return '<span class="' + STATUS[k][1] + '"><b>' + cnt('status', k) + '</b>' + STATUS[k][0] + '</span>'; }).join('') +
+          '<span class="g-sub">可信度：' + Object.keys(CONF).filter(function (k) { return cnt('confidence', k); }).map(function (k) { return CONF[k] + ' ' + cnt('confidence', k); }).join(' · ') + '</span>';
+        var groups = [];
+        rows.forEach(function (r) { if (groups.indexOf(r.group) < 0) groups.push(r.group); });
+        $('#sp-table').innerHTML = groups.length ? groups.map(function (g) {
+          return '<h3 class="g-spech">' + esc(g) + '</h3><table class="g-table g-spectable"><thead><tr><th>属性</th><th>来源值</th><th>kit</th><th>状态</th><th>来源</th></tr></thead><tbody>' +
+            rows.filter(function (r) { return r.group === g; }).map(function (r) {
+              var st = STATUS[r.status] || [r.status, ''];
+              return '<tr><td><b>' + esc(r.item) + '</b>' + (r.note ? '<small>' + esc(r.note) + '</small>' : '') + '</td><td><code>' + esc(r.official) + '</code></td><td><code>' + esc(r.kit) + '</code></td>' +
+                '<td><span class="g-badge ' + st[1] + '">' + st[0] + '</span></td><td>' + (r.sourceUrl ? '<a href="' + esc(r.sourceUrl) + '" target="_blank" rel="noopener">' + esc(r.source) + '</a>' : esc(r.source || '')) +
+                '<small>' + esc(CONF[r.confidence] || r.confidence || '') + '</small></td></tr>';
+            }).join('') + '</tbody></table>';
+        }).join('') : '<div class="g-empty"><h2>没有匹配的项目</h2></div>';
+      }
+      segBind($('#sp-lang'), ST.lang, function (v) { ST.lang = v; draw(); });
+      segBind($('#sp-status'), ST.status, function (v) { ST.status = v; draw(); });
+      var tm; $('#sp-q').oninput = function () { var el = this; clearTimeout(tm); tm = setTimeout(function () { q = el.value.trim().toLowerCase(); draw(); }, 150); };
+      draw();
+    }).catch(function (e) { $('#sp-table').innerHTML = '<p class="g-desc">' + esc(e.message) + '</p>'; });
   }
 
   /* ================= 主题 ================= */

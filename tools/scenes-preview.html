@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>scenes preview</title>
+<!-- 由 tools/build-scenes.mjs 生成。查询串：cols=6 ratio=4/3 only=a,b group=landscape scheme=dark label=0 -->
+<link rel="stylesheet" href="../kit/scenes.css">
+<style>
+  body { margin: 0; padding: 16px; font: 13px/1.3 system-ui, sans-serif; background: #f2f2f4; color: #333; }
+  html[data-scheme="dark"] body { background: #000; color: #ccc; }
+  h2 { font-size: 13px; margin: 14px 0 8px; text-transform: uppercase; letter-spacing: .06em; color: #888; }
+  .g { display: grid; grid-template-columns: repeat(var(--cols, 6), 1fr); gap: 12px; }
+  figure { margin: 0; }
+  figcaption { margin-top: 4px; font: 12px ui-monospace, Consolas, monospace; }
+  .art { position: relative; overflow: hidden; display: grid; place-items: center; aspect-ratio: var(--ratio, 4 / 3); border-radius: 10px; background: #888; }
+</style>
+</head>
+<body>
+<script>
+  const GROUPS = {"landscape":["mountain","sea","forest","city","city-night","street","desert","snow","lake","countryside","sky","aurora"],"interior":["cafe","room","hotel","hotel-day","pool","office"],"food":["food-bowl","food-table","coffee","fruit","dimsum","dimsum-crab","shengjian","wonton"],"product":["phone-orange","phone-dark","phone-purple","phone-white","watch","headphones","earbuds","laptop","tablet","speaker","bedding","jacket","mug","nuts","charger","pillow"],"person":["person-1","person-2","person-3","person-4","person-5","person-6"],"album":["album-1","album-2","album-3","album-4","album-5","album-6","album-7","album-8"],"abstract":["abstract-1","abstract-2","abstract-3","abstract-4","abstract-5","abstract-6"]};
+  const q = new URLSearchParams(location.search);
+  if (q.get('scheme') === 'dark') document.documentElement.dataset.scheme = 'dark';
+  const only = (q.get('only') || '').split(',').filter(Boolean);
+  const label = q.get('label') !== '0';
+  document.body.style.setProperty('--cols', q.get('cols') || 6);
+  if (q.get('ratio')) document.body.style.setProperty('--ratio', q.get('ratio'));
+  for (const [g, names] of Object.entries(GROUPS)) {
+    if (q.get('group') && q.get('group') !== g) continue;
+    const list = names.filter((n) => !only.length || only.includes(n));
+    if (!list.length) continue;
+    if (label) document.body.insertAdjacentHTML('beforeend', '<h2>' + g + '</h2>');
+    const grid = document.createElement('div'); grid.className = 'g';
+    for (const n of list) grid.insertAdjacentHTML('beforeend', '<figure><div class="art sc-' + n + '"></div>' + (label ? '<figcaption>.sc-' + n + '</figcaption>' : '') + '</figure>');
+    document.body.appendChild(grid);
+  }
+</script>
+</body>
+</html>

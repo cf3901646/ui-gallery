@@ -1,6 +1,6 @@
 # 写模板的任务说明（给子代理）
 
-项目：`c:\网站\ui-gallery`，一个自用的 UI 模板库。同一份 HTML 通过 `<html data-lang="apple|google">` 在 Apple（iOS 26 / Liquid Glass）和 Google（Material 3 Expressive）两种设计语言之间切换，并支持明暗模式。
+项目：`c:\网站\ui-gallery`，一个自用的 UI 模板库。同一份 HTML 通过 `<html data-lang="apple|google">` 在 Apple（iOS 27 / Liquid Glass）和 Google（Material 3 Expressive）两种设计语言之间切换，并支持明暗模式。
 
 ## 开始前必读
 

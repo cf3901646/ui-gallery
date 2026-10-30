@@ -1,0 +1,84 @@
+/* 由 tools/build-scenes.mjs 生成，不要手改。用法见 COMPONENTS.md 第 16 节。 */
+.art[class*="sc-"] > .i { display: none; }
+.art.sc-mountain { background: url("scenes/mountain.svg") center / cover no-repeat, #7f9fbf; }
+.art.sc-sea { background: url("scenes/sea.svg") center / cover no-repeat, #c9727f; }
+.art.sc-forest { background: url("scenes/forest.svg") center / cover no-repeat, #9fb89a; }
+.art.sc-city { background: url("scenes/city.svg") center / cover no-repeat, #c9708a; }
+.art.sc-city-night { background: url("scenes/city-night.svg") center / cover no-repeat, #141a3a; }
+.art.sc-street { background: url("scenes/street.svg") center / cover no-repeat, #d9a347; }
+.art.sc-desert { background: url("scenes/desert.svg") center / cover no-repeat, #e3a466; }
+.art.sc-snow { background: url("scenes/snow.svg") center / cover no-repeat, #c7d8e8; }
+.art.sc-lake { background: url("scenes/lake.svg") center / cover no-repeat, #c3ccc6; }
+.art.sc-countryside { background: url("scenes/countryside.svg") center / cover no-repeat, #c9a94a; }
+.art.sc-sky { background: url("scenes/sky.svg") center / cover no-repeat, #e9c0a8; }
+.art.sc-aurora { background: url("scenes/aurora.svg") center / cover no-repeat, #0b2a3a; }
+.art.sc-cafe { background: url("scenes/cafe.svg") center / cover no-repeat, #c9a47e; }
+.art.sc-room { background: url("scenes/room.svg") center / cover no-repeat, #cdbfae; }
+.art.sc-hotel { background: url("scenes/hotel.svg") center / cover no-repeat, #7a6252; }
+.art.sc-hotel-day { background: url("scenes/hotel-day.svg") center / cover no-repeat, #c2a88c; }
+.art.sc-pool { background: url("scenes/pool.svg") center / cover no-repeat, #3c97b8; }
+.art.sc-office { background: url("scenes/office.svg") center / cover no-repeat, #d9dee3; }
+.art.sc-food-bowl { background: url("scenes/food-bowl.svg") center / cover no-repeat, #7a5236; }
+.art.sc-food-table { background: url("scenes/food-table.svg") center / cover no-repeat, #8a6242; }
+.art.sc-coffee { background: url("scenes/coffee.svg") center / cover no-repeat, #d9cbb8; }
+.art.sc-fruit { background: url("scenes/fruit.svg") center / cover no-repeat, #f3c9a6; }
+.art.sc-dimsum { background: url("scenes/dimsum.svg") center / cover no-repeat, #c9a46a; }
+.art.sc-dimsum-crab { background: url("scenes/dimsum-crab.svg") center / cover no-repeat, #c9a46a; }
+.art.sc-shengjian { background: url("scenes/shengjian.svg") center / cover no-repeat, #3a3330; }
+.art.sc-wonton { background: url("scenes/wonton.svg") center / cover no-repeat, #6e5a48; }
+.art.sc-phone-orange { background: url("scenes/phone-orange.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #fbf3ec, #e9d8c8) #e9d8c8; }
+.art.sc-phone-dark { background: url("scenes/phone-dark.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f3f5f8, #d9dfe7) #d9dfe7; }
+.art.sc-phone-purple { background: url("scenes/phone-purple.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f7f3fb, #e2d9ee) #e2d9ee; }
+.art.sc-phone-white { background: url("scenes/phone-white.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-watch { background: url("scenes/watch.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f3f5f8, #d9dfe7) #d9dfe7; }
+.art.sc-headphones { background: url("scenes/headphones.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f3f5f8, #d9dfe7) #d9dfe7; }
+.art.sc-earbuds { background: url("scenes/earbuds.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-laptop { background: url("scenes/laptop.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f3f5f8, #d9dfe7) #d9dfe7; }
+.art.sc-tablet { background: url("scenes/tablet.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-speaker { background: url("scenes/speaker.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f8efe7, #e8d5c4) #e8d5c4; }
+.art.sc-bedding { background: url("scenes/bedding.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-jacket { background: url("scenes/jacket.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f2f4f0, #dbe0d8) #dbe0d8; }
+.art.sc-mug { background: url("scenes/mug.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f3f5f8, #d9dfe7) #d9dfe7; }
+.art.sc-nuts { background: url("scenes/nuts.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f8efe7, #e8d5c4) #e8d5c4; }
+.art.sc-charger { background: url("scenes/charger.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-pillow { background: url("scenes/pillow.svg") center / cover no-repeat, radial-gradient(120% 100% at 50% 30%, #f4f4f2, #dcdbd7) #dcdbd7; }
+.art.sc-person-1 { background: url("scenes/person-1.svg") center / cover no-repeat, #a9c1e0; }
+.art.sc-person-2 { background: url("scenes/person-2.svg") center / cover no-repeat, #f0b99a; }
+.art.sc-person-3 { background: url("scenes/person-3.svg") center / cover no-repeat, #a9d2bb; }
+.art.sc-person-4 { background: url("scenes/person-4.svg") center / cover no-repeat, #bca8e0; }
+.art.sc-person-5 { background: url("scenes/person-5.svg") center / cover no-repeat, #f2d77e; }
+.art.sc-person-6 { background: url("scenes/person-6.svg") center / cover no-repeat, #d9a184; }
+.art.sc-album-1 { background: url("scenes/album-1.svg") center / cover no-repeat, #e9a08e; }
+.art.sc-album-2 { background: url("scenes/album-2.svg") center / cover no-repeat, #f6d3c4; }
+.art.sc-album-3 { background: url("scenes/album-3.svg") center / cover no-repeat, #7e3a86; }
+.art.sc-album-4 { background: url("scenes/album-4.svg") center / cover no-repeat, #3a0f4f; }
+.art.sc-album-5 { background: url("scenes/album-5.svg") center / cover no-repeat, #22356e; }
+.art.sc-album-6 { background: url("scenes/album-6.svg") center / cover no-repeat, #163f46; }
+.art.sc-album-7 { background: url("scenes/album-7.svg") center / cover no-repeat, #e8a93a; }
+.art.sc-album-8 { background: url("scenes/album-8.svg") center / cover no-repeat, #2b2a8f; }
+.art.sc-abstract-1 { background: url("scenes/abstract-1.svg") center / cover no-repeat, #3b2a8a; }
+.art.sc-abstract-2 { background: url("scenes/abstract-2.svg") center / cover no-repeat, #ff8a5c; }
+.art.sc-abstract-3 { background: url("scenes/abstract-3.svg") center / cover no-repeat, #14605a; }
+.art.sc-abstract-4 { background: url("scenes/abstract-4.svg") center / cover no-repeat, #0b1433; }
+.art.sc-abstract-5 { background: url("scenes/abstract-5.svg") center / cover no-repeat, #d9cdf5; }
+.art.sc-abstract-6 { background: url("scenes/abstract-6.svg") center / cover no-repeat, #1a6d8f; }
+/* 产品图的影棚底色跟随明暗模式 */
+html[data-scheme="dark"] .art.sc-phone-orange { background-image: url("scenes/phone-orange.svg"), radial-gradient(120% 100% at 50% 30%, #2b2521, #100d0b); background-color: #100d0b; }
+html[data-scheme="dark"] .art.sc-phone-dark { background-image: url("scenes/phone-dark.svg"), radial-gradient(120% 100% at 50% 30%, #23272e, #0c0e12); background-color: #0c0e12; }
+html[data-scheme="dark"] .art.sc-phone-purple { background-image: url("scenes/phone-purple.svg"), radial-gradient(120% 100% at 50% 30%, #27232f, #0f0d13); background-color: #0f0d13; }
+html[data-scheme="dark"] .art.sc-phone-white { background-image: url("scenes/phone-white.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+html[data-scheme="dark"] .art.sc-watch { background-image: url("scenes/watch.svg"), radial-gradient(120% 100% at 50% 30%, #23272e, #0c0e12); background-color: #0c0e12; }
+html[data-scheme="dark"] .art.sc-headphones { background-image: url("scenes/headphones.svg"), radial-gradient(120% 100% at 50% 30%, #23272e, #0c0e12); background-color: #0c0e12; }
+html[data-scheme="dark"] .art.sc-earbuds { background-image: url("scenes/earbuds.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+html[data-scheme="dark"] .art.sc-laptop { background-image: url("scenes/laptop.svg"), radial-gradient(120% 100% at 50% 30%, #23272e, #0c0e12); background-color: #0c0e12; }
+html[data-scheme="dark"] .art.sc-tablet { background-image: url("scenes/tablet.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+html[data-scheme="dark"] .art.sc-speaker { background-image: url("scenes/speaker.svg"), radial-gradient(120% 100% at 50% 30%, #28221e, #100d0b); background-color: #100d0b; }
+html[data-scheme="dark"] .art.sc-bedding { background-image: url("scenes/bedding.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+html[data-scheme="dark"] .art.sc-jacket { background-image: url("scenes/jacket.svg"), radial-gradient(120% 100% at 50% 30%, #222621, #0c0e0c); background-color: #0c0e0c; }
+html[data-scheme="dark"] .art.sc-mug { background-image: url("scenes/mug.svg"), radial-gradient(120% 100% at 50% 30%, #23272e, #0c0e12); background-color: #0c0e12; }
+html[data-scheme="dark"] .art.sc-nuts { background-image: url("scenes/nuts.svg"), radial-gradient(120% 100% at 50% 30%, #28221e, #100d0b); background-color: #100d0b; }
+html[data-scheme="dark"] .art.sc-charger { background-image: url("scenes/charger.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+html[data-scheme="dark"] .art.sc-pillow { background-image: url("scenes/pillow.svg"), radial-gradient(120% 100% at 50% 30%, #262629, #0e0e10); background-color: #0e0e10; }
+/* 裁切位置：默认居中；主体靠上或靠下时用 */
+.art[class*="sc-"].sc-top { background-position: center top; }
+.art[class*="sc-"].sc-bottom { background-position: center bottom; }

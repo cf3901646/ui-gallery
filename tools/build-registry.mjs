@@ -77,8 +77,10 @@ for (const f of await readdir(path.join(ROOT, 'kit'))) {
 let version = '';
 try { version = execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch {}
 
+let specCount = { apple: 0, google: 0 };
+for (const l of ['apple', 'google']) { try { specCount[l] = JSON.parse(await readFile(path.join(ROOT, 'kit', `specs-${l}.json`), 'utf8')).length; } catch {} }
 const registry = {
-  generated: new Date().toISOString(), version, count: templates.length,
+  generated: new Date().toISOString(), version, count: templates.length, specs: specCount,
   categories: { app: APP_CATS.filter((c) => templates.some((t) => t.category === c)), web: WEB_CATS.filter((c) => templates.some((t) => t.category === c)) },
   components: SECTIONS.map(([id, name]) => ({ id, name, used: templates.filter((t) => t.components.includes(id)).length })),
   templates,
@@ -86,6 +88,11 @@ const registry = {
 await mkdir(path.join(ROOT, 'gallery'), { recursive: true });
 await writeFile(path.join(ROOT, 'gallery', 'registry.js'), '/* 自动生成，勿手改：node tools/build-registry.mjs */\nwindow.UI_REGISTRY = ' + JSON.stringify(registry) + ';\n');
 await writeFile(path.join(ROOT, 'gallery', 'sources.js'), '/* 自动生成，勿手改：node tools/build-registry.mjs */\nwindow.UI_SOURCES = ' + JSON.stringify(sources) + ';\n');
+const specs = {};
+for (const l of ['apple', 'google']) {
+  try { specs[l] = JSON.parse(await readFile(path.join(ROOT, 'kit', `specs-${l}.json`), 'utf8')); } catch { specs[l] = []; }
+}
+await writeFile(path.join(ROOT, 'gallery', 'specs.js'), '/* 自动生成，勿手改：node tools/build-registry.mjs */\nwindow.UI_SPECS = ' + JSON.stringify(specs) + ';\n');
 const byPlat = PLATS.map((p) => `${p} ${templates.filter((t) => t.platform === p).length}`).join(' / ');
 console.log(`模板 ${templates.length} 个（${byPlat}），有缩略图 ${templates.filter((t) => t.thumbs).length} 个，源码 ${Object.keys(sources).length} 个文件`);
 if (warnings.length) console.log('警告：\n  ' + warnings.join('\n  '));
